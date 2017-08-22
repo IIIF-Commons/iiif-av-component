@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>iiif-av-component: test</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/iiif-av-component.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
+    <script src="js/base-component.js"></script>
+    <script src="js/iiif-av-component.js"></script>
+    <script src="js/manifold.bundle.js"></script>
+</head>
+<body>
+
+    <div id="av" class="iiif-av-component">
+        loading...
+    </div>
+
+    <script>
+
+        var helper, component;
+        
+        function resize() {
+            var height = window.innerHeight;
+            var $av = $('#av');
+            // var $opts = $('#opts');
+            // var $main = $av.find('.main');
+            // var $header = $av.find('.header');
+            // $av.height(height - $opts.height());
+            // $main.height(height - $header.height() - $opts.height());
+        }
+
+        window.onresize = function() {
+            resize();
+        }
+
+        $(function() {
+
+            Manifold.loadManifest({
+                iiifResourceUri: 'http://wellcomelibrary.org/iiif/b18035978/manifest',
+                collectionIndex: 0,
+                manifestIndex: 0,
+                sequenceIndex: 0,
+                canvasIndex: 0
+            }).then(function(h){
+                
+                helper = h;
+                
+                component = new IIIFComponents.AVComponent({
+                    target: document.querySelector('#av'),
+                    data: {
+                        helper: h
+                    }
+                });
+
+                component.set();
+
+                resize();
+
+            }).catch(function(e) {
+                console.error(e);
+            });
+
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "iiif-av-component",
+  "version": "1.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "typings install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viewdir/iiif-av-component.git"
+  },
+  "author": "Edward Silverton <e.silverton@gmail.com> (http://edsilv.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/viewdir/iiif-av-component/issues"
+  },
+  "homepage": "https://github.com/viewdir/iiif-av-component#readme",
+  "devDependencies": {
+    "base-component": "viewdir/base-component#v1.1.0",
+    "gulp": "^3.9.1",
+    "gulp-tasks": "viewdir/gulp-tasks#v1.0.5",
+    "jquery-ui": "^1.12.1",
+    "manifold": "viewdir/manifold#v1.2.0",
+    "typings": "^2.1.0"
+  },
+  "dependencies": {}
+}
