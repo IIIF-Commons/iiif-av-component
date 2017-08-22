@@ -4,6 +4,10 @@ namespace IIIFComponents {
 
         public options: _Components.IBaseComponentOptions;
 
+        //private _$rangeNavigationContainer: JQuery;
+
+        private _canvasInstances: any[] = [];
+
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
 
@@ -18,8 +22,7 @@ namespace IIIFComponents {
                 console.error("Component failed to initialise");
             }
 
-            this._$element.empty();
-            this._$element.append('test');
+            this._reload();
 
             return success;
         }
@@ -30,6 +33,23 @@ namespace IIIFComponents {
             }
         }
 
+        public set(data: IAVComponentData): void {
+            this._reload();
+        }
+
+        private _reload(): void {
+
+            for (let i = 0; i < this._canvasInstances.length; i++) {
+                window.clearInterval(this._canvasInstances[i].highPriorityInterval);
+                window.clearInterval(this._canvasInstances[i].lowPriorityInterval);
+                window.clearInterval(this._canvasInstances[i].canvasClockInterval);
+            }
+
+            this._canvasInstances = [];
+
+            this._$element.empty();
+        }
+
         protected _resize(): void {
 
         }
@@ -38,7 +58,7 @@ namespace IIIFComponents {
 
 namespace IIIFComponents.AVComponent {
     export class Events {
-        static EXPLORER_NODE_SELECTED: string = 'explorerNodeSelected';
+        
     }
 }
 

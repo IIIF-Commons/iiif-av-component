@@ -4,15 +4,17 @@
 declare namespace IIIFComponents {
     class AVComponent extends _Components.BaseComponent {
         options: _Components.IBaseComponentOptions;
+        private _canvasInstances;
         constructor(options: _Components.IBaseComponentOptions);
         protected _init(): boolean;
         data(): IAVComponentData;
+        set(data: IAVComponentData): void;
+        private _reset();
         protected _resize(): void;
     }
 }
 declare namespace IIIFComponents.AVComponent {
     class Events {
-        static EXPLORER_NODE_SELECTED: string;
     }
 }
 

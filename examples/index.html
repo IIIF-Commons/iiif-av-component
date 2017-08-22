@@ -9,14 +9,46 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
+    <script src="ui.js"></script>
     <script src="js/base-component.js"></script>
     <script src="js/iiif-av-component.js"></script>
-    <script src="js/manifold.bundle.js"></script>
+    <script src="https://rawgit.com/viewdir/manifesto/master/dist/client/manifesto.js"></script>
+    <script src="https://rawgit.com/viewdir/manifold/av/dist/manifold.js"></script>
+    <!-- <script src="js/manifold.bundle.js"></script> -->
 </head>
 <body>
 
-    <div id="av" class="iiif-av-component">
-        loading...sdfg
+    <div class="testFixtureSelection">
+        <button class="testFixture" data-json="https://digirati-co-uk.github.io/iiif-av-bl/data/bl/01_gapless_audio.json">Load Test 1</button>
+        <button class="testFixture" data-json="https://digirati-co-uk.github.io/iiif-av-bl/data/bl/02_gapless_video.json">Load Test 2</button>
+        <button class="testFixture" data-json="https://digirati-co-uk.github.io/iiif-av-bl/data/bl/03_synchronised_video.json">Load Test 3</button>
+        <button class="testFixture" data-json="https://digirati-co-uk.github.io/iiif-av-bl/data/bl/04_synchronised_av.json">Load Test 4</button>
+        <button class="testFixture" data-json="https://digirati-co-uk.github.io/iiif-av-bl/data/bl/05_synchronised_av_text.json">Load Test 5</button>
+        <button class="testFixture" data-json="https://digirati-co-uk.github.io/iiif-av-bl/data/iiif/fire.json">Load Test 6</button>
+        <button class="testFixture" data-json="https://digirati-co-uk.github.io/iiif-av-bl/data/iiif/mahler-symphony.json">Load Test 7</button>
+        <button class="testFixture" data-json="https://digirati-co-uk.github.io/iiif-av-bl/data/iiif/lunchroom-manners.json">Load Test 8</button>
+        <button class="testFixture" data-json="https://digirati-co-uk.github.io/iiif-av-bl/data/iiif/02.json">Load Test 10</button>
+        <button class="testFixture" data-json="https://digirati-co-uk.github.io/iiif-av-bl/data/iiif/16.json">Load Test 11</button>
+    </div>
+    <input type="text" name="manifestInput" id="manifestInput"/>
+    <button id="parseManifestButton">Parse Manifest</button>
+    <button id="viewManifestButton">View Manifest</button>
+
+    <hr>
+
+    <h3 class="title"></h3>
+    <div class="description"></div>
+
+    <div class="canvasNavigationContainer"></div>
+
+    <div id="av" class="playerContainer iiif-av-component">
+        loading...
+    </div>
+
+    <button id="toggleLogsButton">Show / Hide Logs</button>
+    <div class="logContainer">
+        <textarea></textarea>
+        <button id="clearLogsButton">Clear</button>
     </div>
 
     <script>
@@ -37,31 +69,35 @@
             resize();
         }
 
-        $(function() {
+        function loadManifest(manifest, successcb, errorcb) {
 
             Manifold.loadManifest({
-                iiifResourceUri: 'http://wellcomelibrary.org/iiif/b18035978/manifest',
+                iiifResourceUri: manifest,
                 collectionIndex: 0,
                 manifestIndex: 0,
                 sequenceIndex: 0,
                 canvasIndex: 0
-            }).then(function(h){
-                
-                helper = h;
-                
-                component = new IIIFComponents.AVComponent({
-                    target: document.querySelector('#av'),
-                    data: {
-                        helper: h
-                    }
-                });
+            }).then(function(helper){
 
-                component.set();
+                component.set({
+                    helper: helper
+                });
 
                 resize();
 
+                successcb(helper);
+
             }).catch(function(e) {
-                console.error(e);
+                errorcb(e);
+            });
+        }
+
+        $(function() {
+
+            initUI();
+
+            component = new IIIFComponents.AVComponent({
+                target: document.querySelector('#av')
             });
 
         });

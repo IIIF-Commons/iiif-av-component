@@ -1,0 +1,61 @@
+{
+    "id": "https://digirati-co-uk.github.io/iiif-av-bl/data/bl/03_synchronised_video.json",
+    "type": "Manifest",
+    "label": "Synchronised video example",
+    "description": "Videos playing at the same time. The source videos contain markers to demonstrate the synchronisation points. One IIIF canvas annotated with three videos.",
+    "sequences": [
+        {
+            "type": "Sequence",
+            "canvases": [
+                {
+                    "id": "https://digirati-co-uk.github.io/iiif-av-bl/data/bl/03_synchronised_video/canvas/1",
+                    "duration": 120,
+                    "content": [
+                        {
+                            "id": "https://digirati-co-uk.github.io/iiif-av-bl/data/bl/03_synchronised_video/content/page/1",
+                            "type": "AnnotationPage",
+                            "items": [
+                                {
+                                    "id": "https://digirati-co-uk.github.io/iiif-av-bl/data/bl/03_synchronised_video/content/anno/1",
+                                    "type": "Annotation",
+                                    "motivation": "painting",
+                                    "body": {
+                                        "id": "https://digirati-co-uk.github.io/iiif-av-bl/data/media/sample-6m-gray.mp4",
+                                        "type": "Video",
+                                        "format": "video/mp4",
+                                        "duration": 120
+                                    },
+                                    "target": "https://digirati-co-uk.github.io/iiif-av-bl/data/bl/03_synchronised_video/canvas/1#xywh=0,0,300,200&t=0,120"
+                                },                            
+                                {
+                                    "id": "https://digirati-co-uk.github.io/iiif-av-bl/data/bl/03_synchronised_video/content/anno/2",
+                                    "type": "Annotation",
+                                    "motivation": "painting",
+                                    "body": {
+                                        "id": "https://digirati-co-uk.github.io/iiif-av-bl/data/media/sample-6m-orange.mp4",
+                                        "type": "Video",
+                                        "format": "video/mp4",
+                                        "duration": 60
+                                    },
+                                    "target": "https://digirati-co-uk.github.io/iiif-av-bl/data/bl/03_synchronised_video/canvas/1##xywh=0,200,300,200&t=0,60"
+                                },
+                                {
+                                    "id": "https://digirati-co-uk.github.io/iiif-av-bl/data/bl/03_synchronised_video/content/anno/3",
+                                    "type": "Annotation",
+                                    "motivation": "painting",
+                                    "body": {
+                                        "id": "https://digirati-co-uk.github.io/iiif-av-bl/data/media/sample-6m-red.mp4",
+                                        "type": "Video",
+                                        "format": "video/mp4",
+                                        "duration": 60
+                                    },
+                                    "target": "https://digirati-co-uk.github.io/iiif-av-bl/data/bl/03_synchronised_video/canvas/1##xywh=300,200,300,200&t=60,120"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

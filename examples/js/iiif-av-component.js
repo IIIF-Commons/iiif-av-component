@@ -19,6 +19,8 @@ var IIIFComponents;
         __extends(AVComponent, _super);
         function AVComponent(options) {
             var _this = _super.call(this, options) || this;
+            //private _$rangeNavigationContainer: JQuery;
+            _this._canvasInstances = [];
             _this._init();
             _this._resize();
             return _this;
@@ -28,14 +30,25 @@ var IIIFComponents;
             if (!success) {
                 console.error("Component failed to initialise");
             }
-            this._$element.empty();
-            this._$element.append('test');
+            this._reset();
             return success;
         };
         AVComponent.prototype.data = function () {
             return {
                 helper: null
             };
+        };
+        AVComponent.prototype.set = function (data) {
+            this._reset();
+        };
+        AVComponent.prototype._reset = function () {
+            for (var i = 0; i < this._canvasInstances.length; i++) {
+                window.clearInterval(this._canvasInstances[i].highPriorityInterval);
+                window.clearInterval(this._canvasInstances[i].lowPriorityInterval);
+                window.clearInterval(this._canvasInstances[i].canvasClockInterval);
+            }
+            this._canvasInstances = [];
+            this._$element.empty();
         };
         AVComponent.prototype._resize = function () {
         };
@@ -49,7 +62,6 @@ var IIIFComponents;
         var Events = (function () {
             function Events() {
             }
-            Events.EXPLORER_NODE_SELECTED = 'explorerNodeSelected';
             return Events;
         }());
         AVComponent.Events = Events;
