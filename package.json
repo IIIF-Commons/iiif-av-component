@@ -22,7 +22,7 @@
     "gulp-tasks": "viewdir/gulp-tasks#v1.0.5",
     "jquery-ui": "^1.12.1",
     "manifesto.js": "viewdir/manifesto.js#v1.2.0",
-    "manifold": "viewdir/manifold#v1.2.0",
+    "manifold": "viewdir/manifold#v1.2.2",
     "typings": "^2.1.0"
   },
   "dependencies": {
