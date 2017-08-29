@@ -1,10 +1,6 @@
 .iiif-av-component .canvasNavigationContainer {
   margin-bottom: 10px;
 }
-.iiif-av-component .playerContainer {
-  position: relative;
-  width: 700px;
-}
 .iiif-av-component .rangeNavigationContainer {
   position: absolute;
   top: 0px;
@@ -55,6 +51,7 @@
   background: #AFAFAF;
   height: 20px;
   width: 0px;
+  border: none;
 }
 .iiif-av-component .timelineItemContainer {
   position: relative;
@@ -89,6 +86,7 @@
   width: 16px;
   margin-left: -8px;
   background: transparent;
+  border: none;
 }
 .iiif-av-component .timelineContainer .ui-slider-handle:focus {
   outline: none;

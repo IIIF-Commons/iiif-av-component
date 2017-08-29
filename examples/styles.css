@@ -32,6 +32,11 @@ hr {
 	margin-top: 10px;
 }
 
+.playerContainer {
+    position: relative;
+    width: 700px;
+}
+
 #toggleLogsButton {
 	position: fixed;
 	bottom: 18px;
