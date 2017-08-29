@@ -19,15 +19,6 @@ var IIIFComponents;
         __extends(AVComponent, _super);
         function AVComponent(options) {
             var _this = _super.call(this, options) || this;
-            // private _$canvasContainer: JQuery;
-            // private _$controlsContainer: JQuery;
-            // private _$pauseButton: JQuery;
-            // private _$playButton: JQuery;
-            // private _$player: JQuery;
-            // //private _$rangeNavigationContainer: JQuery;
-            // private _$timelineContainer: JQuery;
-            // private _$timelineItemContainer: JQuery;
-            // private _$timingControls: JQuery;
             _this._defaultCanvasHeight = 400; // todo: remove hard-coded value
             _this._defaultCanvasWidth = 600; // todo: remove hard-coded value
             _this.canvasInstances = [];

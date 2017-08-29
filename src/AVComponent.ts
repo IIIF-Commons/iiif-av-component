@@ -3,15 +3,6 @@ namespace IIIFComponents {
     export class AVComponent extends _Components.BaseComponent {
 
         public options: _Components.IBaseComponentOptions;
-        // private _$canvasContainer: JQuery;
-        // private _$controlsContainer: JQuery;
-        // private _$pauseButton: JQuery;
-        // private _$playButton: JQuery;
-        // private _$player: JQuery;
-        // //private _$rangeNavigationContainer: JQuery;
-        // private _$timelineContainer: JQuery;
-        // private _$timelineItemContainer: JQuery;
-        // private _$timingControls: JQuery;
         private _defaultCanvasHeight: number = 400; // todo: remove hard-coded value
         private _defaultCanvasWidth: number = 600; // todo: remove hard-coded value
 

@@ -46,9 +46,9 @@ function initUI() {
 				initCanvasNavigation(canvases);
 			}
 
-			// if (data.structures) {
-			// 	initRangeNavigation(data.structures);
-			// }
+			if (data.structures) {
+				initRangeNavigation(data.structures);
+			}
             
         }, function(error) {
 
