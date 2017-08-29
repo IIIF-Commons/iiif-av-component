@@ -111,7 +111,7 @@ namespace IIIFComponents {
             }
 
             canvasInstance.$playerElement = $player;
-            canvasInstance.logMessage = this._logMessage;
+            canvasInstance.logMessage = this._logMessage.bind(this);
 
             $timelineContainer.slider({
                 value: 0,
@@ -166,13 +166,17 @@ namespace IIIFComponents {
                     const $canvasContainer = canvasInstance.$playerElement.find('.canvasContainer');
                     const $timelineContainer = canvasInstance.$playerElement.find('.timelineContainer');
 
-                    const containerWidth: number = $canvasContainer.width();
-                    $timelineContainer.width(containerWidth);
+                    const containerWidth: number | undefined = $canvasContainer.width();
 
-                    const resizeFactorY: number = containerWidth / canvasInstance.canvasWidth;
-                    //const newHeight: number = canvasInstance.canvasHeight * resizeFactorY; not used
+                    if (containerWidth) {
+                        $timelineContainer.width(containerWidth);
 
-                    $canvasContainer.height(canvasInstance.canvasHeight * resizeFactorY);
+                        const resizeFactorY: number = containerWidth / canvasInstance.canvasWidth;
+                        //const newHeight: number = canvasInstance.canvasHeight * resizeFactorY; not used
+
+                        $canvasContainer.height(canvasInstance.canvasHeight * resizeFactorY);
+                    }
+                    
                 }
 
             }
@@ -188,7 +192,7 @@ namespace IIIFComponents.AVComponent {
 }
 
 (function(g:any) {
-    if (!g.IIIFComponents){
+    if (!g.IIIFComponents) {
         g.IIIFComponents = IIIFComponents;
     } else {
         g.IIIFComponents.AVComponent = IIIFComponents.AVComponent;

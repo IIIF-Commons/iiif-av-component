@@ -102,7 +102,7 @@ var IIIFComponents;
                 canvasInstance.canvasHeight = canvasHeight;
             }
             canvasInstance.$playerElement = $player;
-            canvasInstance.logMessage = this._logMessage;
+            canvasInstance.logMessage = this._logMessage.bind(this);
             $timelineContainer.slider({
                 value: 0,
                 step: 0.01,
@@ -143,10 +143,12 @@ var IIIFComponents;
                     var $canvasContainer = canvasInstance.$playerElement.find('.canvasContainer');
                     var $timelineContainer = canvasInstance.$playerElement.find('.timelineContainer');
                     var containerWidth = $canvasContainer.width();
-                    $timelineContainer.width(containerWidth);
-                    var resizeFactorY = containerWidth / canvasInstance.canvasWidth;
-                    //const newHeight: number = canvasInstance.canvasHeight * resizeFactorY; not used
-                    $canvasContainer.height(canvasInstance.canvasHeight * resizeFactorY);
+                    if (containerWidth) {
+                        $timelineContainer.width(containerWidth);
+                        var resizeFactorY = containerWidth / canvasInstance.canvasWidth;
+                        //const newHeight: number = canvasInstance.canvasHeight * resizeFactorY; not used
+                        $canvasContainer.height(canvasInstance.canvasHeight * resizeFactorY);
+                    }
                 }
             }
         };
@@ -200,7 +202,7 @@ var IIIFComponents;
             if (!this.data)
                 return;
             this._mediaElements = [];
-            var mediaItems = this.data.content[0].items; //todo: use canvas.getContent()
+            var mediaItems = this.data.__jsonld.content[0].items; //todo: use canvas.getContent()
             for (var i = 0; i < mediaItems.length; i++) {
                 var mediaItem = mediaItems[i];
                 /*
@@ -429,7 +431,10 @@ var IIIFComponents;
         CanvasInstance.prototype.highPriorityUpdater = function () {
             if (!this.$playerElement)
                 return;
-            this.$playerElement.find('.timelineContainer').slider('value', this.canvasClockTime);
+            var $timeLineContainer = this.$playerElement.find('.timelineContainer');
+            $timeLineContainer.slider({
+                value: this.canvasClockTime
+            });
             this.$playerElement.find('.canvasTime').text(IIIFComponents.AVComponentUtils.Utils.formatTime(this.canvasClockTime));
         };
         CanvasInstance.prototype.lowPriorityUpdater = function () {

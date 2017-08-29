@@ -33,7 +33,7 @@ namespace IIIFComponents {
 
             this._mediaElements = [];
 
-            var mediaItems = (<any>this.data).content[0].items; //todo: use canvas.getContent()
+            var mediaItems = (<any>this.data).__jsonld.content[0].items; //todo: use canvas.getContent()
 
             for (let i = 0; i < mediaItems.length; i++) {
 
@@ -330,7 +330,10 @@ namespace IIIFComponents {
 
             if (!this.$playerElement) return;
 
-            this.$playerElement.find('.timelineContainer').slider('value', this.canvasClockTime);
+            const $timeLineContainer: JQuery = this.$playerElement.find('.timelineContainer');
+            $timeLineContainer.slider({
+                value: this.canvasClockTime
+            });
             this.$playerElement.find('.canvasTime').text(AVComponentUtils.Utils.formatTime(this.canvasClockTime) );
         }
 
