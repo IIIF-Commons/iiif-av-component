@@ -79,7 +79,7 @@ function initCanvasNavigation(canvases) {
 	}
 
 	window.setTimeout(function() {
-		var firstID = canvasInstances[0].data.id;
+		var firstID = component.canvasInstances[0].data.id;
 		navigateToCanvas(firstID);
 	}, 10);
 	
@@ -152,11 +152,11 @@ function initRangeNavigation(structures) {
 }
 
 function navigateToCanvas(canvasID) {
-	for (var i=0; i<canvasInstances.length; i++) {
-		canvasInstances[i].pauseCanvas();
+	for (var i = 0; i < component.canvasInstances.length; i++) {
+		component.canvasInstances[i].pauseCanvas();
 	}
 	$('.playerContainer .player').hide();
-	getCanvasInstanceByID(canvasID).playerElement.show();
+	getCanvasInstanceByID(canvasID).$playerElement.show();
 }
 
 /*
@@ -180,10 +180,10 @@ function hideWorkingIndicator() {
 
 function getCanvasInstanceByID(canvasID) {
 	cleanCanvasID = canvasID.replace('http://', '').replace('https://', '').split('#')[0];
-	for (var i=0; i<canvasInstances.length; i++) {
-		var cleanInstanceID = canvasInstances[i].data.id.replace('http://', '').replace('https://', '').split('#')[0];
+	for (var i=0; i<component.canvasInstances.length; i++) {
+		var cleanInstanceID = component.canvasInstances[i].data.id.replace('http://', '').replace('https://', '').split('#')[0];
 		if (cleanInstanceID == cleanCanvasID) {
-			return canvasInstances[i];
+			return component.canvasInstances[i];
 		}
 	}
 

@@ -6,7 +6,7 @@ declare namespace IIIFComponents {
         options: _Components.IBaseComponentOptions;
         private _defaultCanvasHeight;
         private _defaultCanvasWidth;
-        private _canvasInstances;
+        canvasInstances: any[];
         constructor(options: _Components.IBaseComponentOptions);
         protected _init(): boolean;
         data(): IAVComponentData;

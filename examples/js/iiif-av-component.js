@@ -30,7 +30,7 @@ var IIIFComponents;
             // private _$timingControls: JQuery;
             _this._defaultCanvasHeight = 400; // todo: remove hard-coded value
             _this._defaultCanvasWidth = 600; // todo: remove hard-coded value
-            _this._canvasInstances = [];
+            _this.canvasInstances = [];
             _this._init();
             _this._resize();
             return _this;
@@ -57,12 +57,12 @@ var IIIFComponents;
             this._resize();
         };
         AVComponent.prototype._reset = function () {
-            for (var i = 0; i < this._canvasInstances.length; i++) {
-                window.clearInterval(this._canvasInstances[i].highPriorityInterval);
-                window.clearInterval(this._canvasInstances[i].lowPriorityInterval);
-                window.clearInterval(this._canvasInstances[i].canvasClockInterval);
+            for (var i = 0; i < this.canvasInstances.length; i++) {
+                window.clearInterval(this.canvasInstances[i].highPriorityInterval);
+                window.clearInterval(this.canvasInstances[i].lowPriorityInterval);
+                window.clearInterval(this.canvasInstances[i].canvasClockInterval);
             }
-            this._canvasInstances = [];
+            this.canvasInstances = [];
         };
         AVComponent.prototype._render = function () {
             this._$element.empty();
@@ -120,7 +120,7 @@ var IIIFComponents;
                     //canvasInstance.setCurrentTime(ui.value);
                 }
             });
-            this._canvasInstances.push(canvasInstance);
+            this.canvasInstances.push(canvasInstance);
             canvasInstance.initContents();
             $playButton.on('click', function () {
                 canvasInstance.playCanvas();
@@ -137,8 +137,8 @@ var IIIFComponents;
         };
         AVComponent.prototype._resize = function () {
             // loop through all canvases resizing their elements
-            for (var i = 0; i < this._canvasInstances.length; i++) {
-                var canvasInstance = this._canvasInstances[i];
+            for (var i = 0; i < this.canvasInstances.length; i++) {
+                var canvasInstance = this.canvasInstances[i];
                 if (canvasInstance.$playerElement) {
                     var $canvasContainer = canvasInstance.$playerElement.find('.canvasContainer');
                     var $timelineContainer = canvasInstance.$playerElement.find('.timelineContainer');

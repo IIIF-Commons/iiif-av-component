@@ -15,7 +15,7 @@ namespace IIIFComponents {
         private _defaultCanvasHeight: number = 400; // todo: remove hard-coded value
         private _defaultCanvasWidth: number = 600; // todo: remove hard-coded value
 
-        private _canvasInstances: any[] = [];
+        public canvasInstances: any[] = [];
 
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
@@ -55,13 +55,13 @@ namespace IIIFComponents {
         }
 
         private _reset(): void {
-            for (let i = 0; i < this._canvasInstances.length; i++) {
-                window.clearInterval(this._canvasInstances[i].highPriorityInterval);
-                window.clearInterval(this._canvasInstances[i].lowPriorityInterval);
-                window.clearInterval(this._canvasInstances[i].canvasClockInterval);
+            for (let i = 0; i < this.canvasInstances.length; i++) {
+                window.clearInterval(this.canvasInstances[i].highPriorityInterval);
+                window.clearInterval(this.canvasInstances[i].lowPriorityInterval);
+                window.clearInterval(this.canvasInstances[i].canvasClockInterval);
             }
 
-            this._canvasInstances = [];
+            this.canvasInstances = [];
         }
 
         private _render(): void {
@@ -131,7 +131,7 @@ namespace IIIFComponents {
                 }
             });
 
-            this._canvasInstances.push(canvasInstance);
+            this.canvasInstances.push(canvasInstance);
 
             canvasInstance.initContents();
 
@@ -158,9 +158,9 @@ namespace IIIFComponents {
 
             // loop through all canvases resizing their elements
 
-            for (let i = 0; i < this._canvasInstances.length; i++) {
+            for (let i = 0; i < this.canvasInstances.length; i++) {
 
-                const canvasInstance: CanvasInstance = this._canvasInstances[i];
+                const canvasInstance: CanvasInstance = this.canvasInstances[i];
 
                 if (canvasInstance.$playerElement) {
                     const $canvasContainer = canvasInstance.$playerElement.find('.canvasContainer');
