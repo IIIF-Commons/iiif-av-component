@@ -7,17 +7,21 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="css/iiif-av-component.css" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsviews/0.9.76/jsviews.min.js"></script>
+
     <script src="ui.js"></script>
     <script src="js/base-component.js"></script>
     <script src="js/iiif-av-component.js"></script>
+    <script src="https://rawgit.com/viewdir/iiif-tree-component/dev/dist/iiif-tree-component.js"></script>
 
-    <!-- todo: use bundle -->
+    <!-- todo: use manifold.bundle.js -->
     <script src="https://rawgit.com/BSick7/exjs/master/dist/ex.es3.min.js"></script>
-    <script src="https://rawgit.com/viewdir/manifesto/av/dist/client/manifesto.js"></script>
-    <script src="https://rawgit.com/viewdir/manifold/av/dist/manifold.js"></script>
+    <script src="https://rawgit.com/viewdir/manifesto/dev/dist/client/manifesto.js"></script>
+    <script src="https://rawgit.com/viewdir/manifold/dev/dist/manifold.js"></script>
 
     <!-- <script src="js/manifold.bundle.js"></script> -->
 </head>
@@ -50,6 +54,8 @@
         loading...
     </div>
 
+    <div id="tree" class="iiif-tree-component"></div>
+
     <button id="toggleLogsButton">Show / Hide Logs</button>
     <div class="logContainer">
         <textarea></textarea>
@@ -58,10 +64,10 @@
 
     <script>
 
-        var helper, component;
+        var helper, avcomponent, treecomponent;
         
         function resize() {
-            // resizing stuff outside the component
+            // resizing stuff outside of the component
         }
 
         window.onresize = function() {
@@ -76,15 +82,20 @@
                 manifestIndex: 0,
                 sequenceIndex: 0,
                 canvasIndex: 0
-            }).then(function(helper){
+            }).then(function(helper) {
 
-                component.set({
+                avcomponent.set({
                     helper: helper
                 });
 
-                resize();
+                treecomponent.set({
+                    branchNodesSelectable: false,
+                    helper: helper
+                });
 
                 successcb(helper);
+
+                resize();
 
             }).catch(function(e) {
                 errorcb(e);
@@ -95,12 +106,16 @@
 
             initUI();
 
-            component = new IIIFComponents.AVComponent({
+            avcomponent = new IIIFComponents.AVComponent({
                 target: document.querySelector('#av')
             });
 
-            component.on('log', function(message) {
+            avcomponent.on('log', function(message) {
                 logMessage(message);
+            });
+
+            treecomponent = new IIIFComponents.TreeComponent({
+                target: document.querySelector('#tree')
             });
 
         });

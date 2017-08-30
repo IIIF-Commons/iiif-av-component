@@ -44,7 +44,7 @@ function initUI() {
             var ranges = helper.getRanges();
 
 			if (ranges) {
-				initRangeNavigation(ranges);
+				initRangeNavigation(helper);
 			}
             
         }, function(error) {
@@ -76,14 +76,19 @@ function initCanvasNavigation(canvases) {
 	}
 
 	window.setTimeout(function() {
-		var firstID = component.canvasInstances[0].data.id;
+		var firstID = avcomponent.canvasInstances[0].data.id;
 		navigateToCanvas(firstID);
 	}, 10);
 	
 }
 
-function initRangeNavigation(structures) {
-	
+function initRangeNavigation(helper) {
+    
+    treecomponent.set({
+        helper: helper
+    });
+
+    /*
 	var rangeNavigationContainer = $('<ul class="rangeNavigationContainer"></ul>');
 	
 	for (var s=0; s<structures.length; s++) {
@@ -140,17 +145,17 @@ function initRangeNavigation(structures) {
 
 		
 		rangeNavigationContainer.append(structureSelector);
-		rangeNavigationContainer.append(rangeContainer);
-	}
+        rangeNavigationContainer.append(rangeContainer);
 
-	
+    }	
 
-	$('.playerContainer').append(rangeNavigationContainer);
+    $('.playerContainer').append(rangeNavigationContainer);
+    */
 }
 
 function navigateToCanvas(canvasID) {
-	for (var i = 0; i < component.canvasInstances.length; i++) {
-		component.canvasInstances[i].pauseCanvas();
+	for (var i = 0; i < avcomponent.canvasInstances.length; i++) {
+		avcomponent.canvasInstances[i].pauseCanvas();
 	}
 	$('.playerContainer .player').hide();
 	getCanvasInstanceByID(canvasID).$playerElement.show();
@@ -177,10 +182,10 @@ function hideWorkingIndicator() {
 
 function getCanvasInstanceByID(canvasID) {
 	cleanCanvasID = canvasID.replace('http://', '').replace('https://', '').split('#')[0];
-	for (var i=0; i<component.canvasInstances.length; i++) {
-		var cleanInstanceID = component.canvasInstances[i].data.id.replace('http://', '').replace('https://', '').split('#')[0];
+	for (var i=0; i<avcomponent.canvasInstances.length; i++) {
+		var cleanInstanceID = avcomponent.canvasInstances[i].data.id.replace('http://', '').replace('https://', '').split('#')[0];
 		if (cleanInstanceID == cleanCanvasID) {
-			return component.canvasInstances[i];
+			return avcomponent.canvasInstances[i];
 		}
 	}
 

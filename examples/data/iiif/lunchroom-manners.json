@@ -67,7 +67,6 @@
         {
             "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/0",
             "type": "Range",
-            "viewingHint": "top",
             "label": "Table of Contents",
             "members": [
                 {
