@@ -86,7 +86,7 @@
                         },
                         {
                             "type": "Range",
-                            "label": "",
+                            "label": "No Table of Contents",
                             "viewingHint": "no-table-of-contents", 
                             "members": [
                                 {
