@@ -37,17 +37,14 @@ function initUI() {
 
             var canvases = helper.getCanvases();
 
-            // this happens internally in the component
-			// for (var i = 0; i < canvases.length; i++) {
-			// 	initCanvas(canvases[i]);
-			// }
-
-			if (canvases.length > 1) {
+            if (canvases.length > 1) {
 				initCanvasNavigation(canvases);
-			}
+            }
+            
+            var ranges = helper.getRanges();
 
-			if (data.structures) {
-				initRangeNavigation(data.structures);
+			if (ranges) {
+				initRangeNavigation(ranges);
 			}
             
         }, function(error) {
