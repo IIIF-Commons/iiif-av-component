@@ -19,8 +19,7 @@
     <script src="https://rawgit.com/viewdir/iiif-tree-component/dev/dist/iiif-tree-component.js"></script>
 
     <!-- todo: use manifold.bundle.js -->
-    <script src="https://rawgit.com/BSick7/exjs/master/dist/ex.es3.min.js"></script>
-    <script src="https://rawgit.com/viewdir/manifesto/dev/dist/client/manifesto.js"></script>
+    <script src="https://rawgit.com/viewdir/manifesto/dev/dist/client/manifesto.bundle.js"></script>
     <script src="https://rawgit.com/viewdir/manifold/dev/dist/manifold.js"></script>
 
     <!-- <script src="js/manifold.bundle.js"></script> -->
@@ -82,7 +81,9 @@
                 manifestIndex: 0,
                 sequenceIndex: 0,
                 canvasIndex: 0
-            }).then(function(helper) {
+            }).then(function(h) {
+
+                helper = h;
 
                 avcomponent.set({
                     helper: helper
@@ -116,6 +117,52 @@
 
             treecomponent = new IIIFComponents.TreeComponent({
                 target: document.querySelector('#tree')
+            });
+
+            function getCanvasInstanceByID(canvasID) {
+                cleanCanvasID = canvasID.replace('http://', '').replace('https://', '').split('#')[0];
+                for (var i = 0; i < avcomponent.canvasInstances.length; i++) {
+                    var cleanInstanceID = avcomponent.canvasInstances[i].data.id.replace('http://', '').replace('https://', '').split('#')[0];
+                    if (cleanInstanceID == cleanCanvasID) {
+                        return avcomponent.canvasInstances[i];
+                    }
+                }
+
+                return null;
+            } 
+
+            function showCanvas(canvasId) {
+                for (var i = 0; i < avcomponent.canvasInstances.length; i++) {
+                    avcomponent.canvasInstances[i].pauseCanvas();
+                }
+                $('.playerContainer .player').hide();
+                getCanvasInstanceByID(canvasId).$playerElement.show();
+            }
+
+            treecomponent.on('treeNodeSelected', function(node) {
+                console.log('selected: ' + node.label);
+
+                var canvasId = node.data.canvases[0];
+                var canvas = helper.getCanvasById(canvasId);
+
+                if (canvas) {
+                    
+                    showCanvas(canvas.id);
+
+                    var canvasInstance = getCanvasInstanceByID(canvasId);
+
+                    var temporal = /t=([^&]+)/g.exec(canvasId);
+                    
+                    if (temporal && temporal[1]) {
+                        var rangeTiming = temporal[1].split(',');
+                        canvasInstance.setCurrentTime(rangeTiming[0]);
+                        canvasInstance.playCanvas();
+                    }
+
+                    logMessage('SELECT RANGE: '+ node.label);
+                } else {
+                    logMessage('ERROR: Could not find canvas for range '+ node.label);
+                }
             });
 
         });
