@@ -267,7 +267,6 @@ namespace IIIFComponents {
             this.canvasClockUpdater();
             this.highPriorityUpdater();
             this.lowPriorityUpdater();
-
             this.synchronizeMedia();            
         }
 
@@ -303,7 +302,6 @@ namespace IIIFComponents {
         public pauseCanvas(withoutUpdate?: boolean): void {
             window.clearInterval(this._highPriorityInterval);
             window.clearInterval(this._lowPriorityInterval);
-
             window.clearInterval(this._canvasClockInterval);
 
             this.isPlaying = false;
@@ -417,10 +415,7 @@ namespace IIIFComponents {
                     if (mediaElement.element[0].currentTime > mediaElement.element[0].duration - mediaElement.endOffset) {
                         mediaElement.element[0].pause();
                     }
-
                 }
-
-
             }
 
             this.logMessage('SYNC MEDIA at: '+ this.canvasClockTime + ' seconds.');
@@ -456,11 +451,8 @@ namespace IIIFComponents {
                         mediaElement.outOfSync = false;
                         //this.playbackStalled(false, mediaElement);
                     }
-
                 }
-
             }
-
         }
 
         public playbackStalled(aBoolean: boolean, syncMediaRequestingStall: any): void {
@@ -478,16 +470,14 @@ namespace IIIFComponents {
                     }
 
                     this.wasPlaying = this.isPlaying;
-
                     this.pauseCanvas(true);
-
                     this.isStalled = aBoolean;
-
                 }
 
             } else {
 
                 var idx = this.stallRequestedBy.indexOf(syncMediaRequestingStall);
+                
                 if (idx >= 0) {
                     this.stallRequestedBy.splice(idx, 1);
                 }
@@ -497,17 +487,12 @@ namespace IIIFComponents {
                     this._hideWorkingIndicator();
 
                     if (this.isStalled && this.wasPlaying) {
-
                         this.playCanvas(true);
-
                     }
 
                     this.isStalled = aBoolean;
-
                 }
-
             }
-
         }
 
         private _showWorkingIndicator($targetElement: JQuery): void {

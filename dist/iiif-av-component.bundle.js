@@ -318,12 +318,12 @@ var Manifesto;
         IIIFResourceType.prototype.sequence = function () {
             return new IIIFResourceType(IIIFResourceType.SEQUENCE.toString());
         };
-        IIIFResourceType.ANNOTATION = new IIIFResourceType("oa:annotation");
-        IIIFResourceType.CANVAS = new IIIFResourceType("sc:canvas");
-        IIIFResourceType.COLLECTION = new IIIFResourceType("sc:collection");
-        IIIFResourceType.MANIFEST = new IIIFResourceType("sc:manifest");
-        IIIFResourceType.RANGE = new IIIFResourceType("sc:range");
-        IIIFResourceType.SEQUENCE = new IIIFResourceType("sc:sequence");
+        IIIFResourceType.ANNOTATION = new IIIFResourceType("annotation");
+        IIIFResourceType.CANVAS = new IIIFResourceType("canvas");
+        IIIFResourceType.COLLECTION = new IIIFResourceType("collection");
+        IIIFResourceType.MANIFEST = new IIIFResourceType("manifest");
+        IIIFResourceType.RANGE = new IIIFResourceType("range");
+        IIIFResourceType.SEQUENCE = new IIIFResourceType("sequence");
         return IIIFResourceType;
     }(Manifesto.StringValue));
     Manifesto.IIIFResourceType = IIIFResourceType;
@@ -460,10 +460,18 @@ var Manifesto;
             return _super !== null && _super.apply(this, arguments) || this;
         }
         // todo: use getters when ES3 target is no longer required.
+        ResourceType.prototype.choice = function () {
+            return new ResourceType(ResourceType.CHOICE.toString());
+        };
         ResourceType.prototype.image = function () {
             return new ResourceType(ResourceType.IMAGE.toString());
         };
+        ResourceType.prototype.text = function () {
+            return new ResourceType(ResourceType.TEXT.toString());
+        };
+        ResourceType.CHOICE = new ResourceType("choice");
         ResourceType.IMAGE = new ResourceType("dctypes:image");
+        ResourceType.TEXT = new ResourceType("textualbody");
         return ResourceType;
     }(Manifesto.StringValue));
     Manifesto.ResourceType = ResourceType;
@@ -763,7 +771,7 @@ var Manifesto;
             return _this;
         }
         ManifestResource.prototype.getIIIFResourceType = function () {
-            return new Manifesto.IIIFResourceType(this.getProperty('@type'));
+            return new Manifesto.IIIFResourceType(Manifesto.Utils.normaliseType(this.getProperty('type')));
         };
         ManifestResource.prototype.getLabel = function () {
             return Manifesto.TranslationCollection.parse(this.getProperty('label'), this.options.locale);
@@ -983,6 +991,9 @@ var Manifesto;
             }
             return content;
         };
+        Canvas.prototype.getDuration = function () {
+            return this.getProperty('duration');
+        };
         Canvas.prototype.getImages = function () {
             var images = [];
             if (!this.__jsonld.images)
@@ -1082,12 +1093,7 @@ var Manifesto;
             return [];
         };
         IIIFResource.prototype.getIIIFResourceType = function () {
-            var type = this.getProperty('type');
-            if (type) {
-                return new Manifesto.IIIFResourceType(type);
-            }
-            type = this.getProperty('@type');
-            return new Manifesto.IIIFResourceType(type);
+            return new Manifesto.IIIFResourceType(Manifesto.Utils.normaliseType(this.getProperty('type')));
         };
         IIIFResource.prototype.getLogo = function () {
             var logo = this.getProperty('logo');
@@ -1122,19 +1128,13 @@ var Manifesto;
             return this.defaultTree;
         };
         IIIFResource.prototype.isCollection = function () {
-            if (this.getIIIFResourceType().toString().toLowerCase() === 'collection') {
-                return true;
-            }
-            else if (this.getIIIFResourceType().toString() === Manifesto.IIIFResourceType.COLLECTION.toString()) {
+            if (this.getIIIFResourceType().toString() === Manifesto.IIIFResourceType.COLLECTION.toString()) {
                 return true;
             }
             return false;
         };
         IIIFResource.prototype.isManifest = function () {
-            if (this.getIIIFResourceType().toString().toLowerCase() === 'manifest') {
-                return true;
-            }
-            else if (this.getIIIFResourceType().toString() === Manifesto.IIIFResourceType.MANIFEST.toString()) {
+            if (this.getIIIFResourceType().toString() === Manifesto.IIIFResourceType.MANIFEST.toString()) {
                 return true;
             }
             return false;
@@ -1235,7 +1235,7 @@ var Manifesto;
             if (this.__jsonld.structures && this.__jsonld.structures.length) {
                 for (var i = 0; i < this.__jsonld.structures.length; i++) {
                     var r = this.__jsonld.structures[i];
-                    if (r['@id'] === id) {
+                    if (r['@id'] === id || r.id === id) {
                         return r;
                     }
                 }
@@ -1267,25 +1267,26 @@ var Manifesto;
             else {
                 parentRange.members.push(range);
             }
-            if (r.ranges) {
-                for (var i = 0; i < r.ranges.length; i++) {
-                    this._parseRanges(r.ranges[i], path + '/' + i, range);
+            if (r.members) {
+                for (var i = 0; i < r.members.length; i++) {
+                    var child = r.members[i];
+                    // todo: use constants
+                    if (child['@type'] && child['@type'].toLowerCase() === 'sc:range' || child['type'] && child['type'].toLowerCase() === 'range') {
+                        this._parseRanges(child, path + '/' + i, range);
+                    }
+                    else if (child['@type'] && child['@type'].toLowerCase() === 'sc:canvas' || child['type'] && child['type'].toLowerCase() === 'canvas') {
+                        // store the ids on the __jsonld object to be used by Range.getCanvasIds()
+                        if (!range.canvases) {
+                            range.canvases = [];
+                        }
+                        var id_1 = child['@id'] || child.id;
+                        range.canvases.push(id_1);
+                    }
                 }
             }
-            if (r.members) {
-                var _loop_1 = function (i) {
-                    var child = r.members[i];
-                    // only add to members if not already parsed from backwards-compatible ranges/canvases arrays
-                    if (r.members.en().where(function (m) { return m.id === child.id; }).first()) {
-                        return "continue";
-                    }
-                    if (child['@type'].toLowerCase() === 'sc:range') {
-                        this_1._parseRanges(child, path + '/' + i, range);
-                    }
-                };
-                var this_1 = this;
-                for (var i = 0; i < r.members.length; i++) {
-                    _loop_1(i);
+            else if (r.ranges) {
+                for (var i = 0; i < r.ranges.length; i++) {
+                    this._parseRanges(r.ranges[i], path + '/' + i, range);
                 }
             }
         };
@@ -1495,8 +1496,8 @@ var Manifesto;
         __extends(Range, _super);
         function Range(jsonld, options) {
             var _this = _super.call(this, jsonld, options) || this;
-            _this._canvases = null;
             _this._ranges = null;
+            _this.canvases = null;
             _this.members = [];
             return _this;
         }
@@ -1504,14 +1505,17 @@ var Manifesto;
             if (this.__jsonld.canvases) {
                 return this.__jsonld.canvases;
             }
+            else if (this.canvases) {
+                return this.canvases;
+            }
             return [];
         };
-        Range.prototype.getCanvases = function () {
-            if (this._canvases) {
-                return this._canvases;
-            }
-            return this._canvases = this.members.en().where(function (m) { return m.isCanvas(); }).toArray();
-        };
+        // getCanvases(): ICanvas[] {
+        //     if (this._canvases) {
+        //         return this._canvases;
+        //     }
+        //     return this._canvases = <ICanvas[]>this.members.en().where(m => m.isCanvas()).toArray();
+        // }
         Range.prototype.getRanges = function () {
             if (this._ranges) {
                 return this._ranges;
@@ -1628,7 +1632,9 @@ var Manifesto;
         Sequence.prototype.getCanvasById = function (id) {
             for (var i = 0; i < this.getTotalCanvases(); i++) {
                 var canvas = this.getCanvasByIndex(i);
-                if (canvas.id === id) {
+                // normalise canvas id
+                var canvasId = Manifesto.Utils.normaliseUrl(canvas.id);
+                if (Manifesto.Utils.normaliseUrl(id) === canvasId) {
                     return canvas;
                 }
             }
@@ -2218,10 +2224,23 @@ var Manifesto;
                 Utils.generateTreeNodeIds(n, i);
             }
         };
+        Utils.normaliseType = function (type) {
+            type = type.toLowerCase();
+            if (type.indexOf(':') !== -1) {
+                var split = type.split(':');
+                return split[1];
+            }
+            return type;
+        };
+        Utils.normaliseUrl = function (url) {
+            url = url.substr(url.indexOf('://'));
+            if (url.indexOf('#') !== -1) {
+                url = url.split('#')[0];
+            }
+            return url;
+        };
         Utils.normalisedUrlsMatch = function (url1, url2) {
-            var url1norm = url1.substr(url1.indexOf('://'));
-            var url2norm = url1.substr(url1.indexOf('://'));
-            return url1norm === url2norm;
+            return Utils.normaliseUrl(url1) === Utils.normaliseUrl(url2);
         };
         Utils.isImageProfile = function (profile) {
             if (Utils.normalisedUrlsMatch(profile.toString(), Manifesto.ServiceProfile.STANFORDIIIFIMAGECOMPLIANCE0.toString()) ||
@@ -2330,10 +2349,10 @@ var Manifesto;
                 request.end();
             });
         };
-        Utils.loadExternalResourcesAuth1 = function (resources, openContentProviderInteraction, openTokenService, userInteractedWithContentProvider, getContentProviderInteraction, handleMovedTemporarily, showOutOfOptionsMessages) {
+        Utils.loadExternalResourcesAuth1 = function (resources, openContentProviderInteraction, openTokenService, getStoredAccessToken, userInteractedWithContentProvider, getContentProviderInteraction, handleMovedTemporarily, showOutOfOptionsMessages) {
             return new Promise(function (resolve, reject) {
                 var promises = resources.map(function (resource) {
-                    return Utils.loadExternalResourceAuth1(resource, openContentProviderInteraction, openTokenService, userInteractedWithContentProvider, getContentProviderInteraction, handleMovedTemporarily, showOutOfOptionsMessages);
+                    return Utils.loadExternalResourceAuth1(resource, openContentProviderInteraction, openTokenService, getStoredAccessToken, userInteractedWithContentProvider, getContentProviderInteraction, handleMovedTemporarily, showOutOfOptionsMessages);
                 });
                 Promise.all(promises)
                     .then(function () {
@@ -2343,19 +2362,41 @@ var Manifesto;
                 });
             });
         };
-        Utils.loadExternalResourceAuth1 = function (resource, openContentProviderInteraction, openTokenService, userInteractedWithContentProvider, getContentProviderInteraction, handleMovedTemporarily, showOutOfOptionsMessages) {
+        Utils.loadExternalResourceAuth1 = function (resource, openContentProviderInteraction, openTokenService, getStoredAccessToken, userInteractedWithContentProvider, getContentProviderInteraction, handleMovedTemporarily, showOutOfOptionsMessages) {
             return __awaiter(this, void 0, void 0, function () {
+                var storedAccessToken;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, resource.getData()];
+                        case 0: return [4 /*yield*/, getStoredAccessToken(resource)];
                         case 1:
-                            _a.sent();
-                            if (!(resource.status === HTTPStatusCode.MOVED_TEMPORARILY || resource.status === HTTPStatusCode.UNAUTHORIZED)) return [3 /*break*/, 3];
-                            return [4 /*yield*/, Utils.doAuthChain(resource, openContentProviderInteraction, openTokenService, userInteractedWithContentProvider, getContentProviderInteraction, handleMovedTemporarily, showOutOfOptionsMessages)];
+                            storedAccessToken = _a.sent();
+                            if (!storedAccessToken) return [3 /*break*/, 6];
+                            return [4 /*yield*/, resource.getData(storedAccessToken)];
                         case 2:
                             _a.sent();
-                            _a.label = 3;
-                        case 3:
+                            if (!(resource.status === HTTPStatusCode.OK)) return [3 /*break*/, 3];
+                            return [2 /*return*/, resource];
+                        case 3: 
+                        // the stored token is no good for this resource
+                        return [4 /*yield*/, Utils.doAuthChain(resource, openContentProviderInteraction, openTokenService, userInteractedWithContentProvider, getContentProviderInteraction, handleMovedTemporarily, showOutOfOptionsMessages)];
+                        case 4:
+                            // the stored token is no good for this resource
+                            _a.sent();
+                            _a.label = 5;
+                        case 5:
+                            if (resource.status === HTTPStatusCode.OK || resource.status === HTTPStatusCode.MOVED_TEMPORARILY) {
+                                return [2 /*return*/, resource];
+                            }
+                            throw Utils.createAuthorizationFailedError();
+                        case 6: return [4 /*yield*/, resource.getData()];
+                        case 7:
+                            _a.sent();
+                            if (!(resource.status === HTTPStatusCode.MOVED_TEMPORARILY || resource.status === HTTPStatusCode.UNAUTHORIZED)) return [3 /*break*/, 9];
+                            return [4 /*yield*/, Utils.doAuthChain(resource, openContentProviderInteraction, openTokenService, userInteractedWithContentProvider, getContentProviderInteraction, handleMovedTemporarily, showOutOfOptionsMessages)];
+                        case 8:
+                            _a.sent();
+                            _a.label = 9;
+                        case 9:
                             if (resource.status === HTTPStatusCode.OK || resource.status === HTTPStatusCode.MOVED_TEMPORARILY) {
                                 return [2 /*return*/, resource];
                             }
@@ -2484,7 +2525,7 @@ var Manifesto;
                         case 0:
                             tokenService = authService.getService(Manifesto.ServiceProfile.AUTH1TOKEN.toString());
                             if (!tokenService) return [3 /*break*/, 3];
-                            return [4 /*yield*/, openTokenService(tokenService)];
+                            return [4 /*yield*/, openTokenService(resource, tokenService)];
                         case 1:
                             tokenMessage = _a.sent();
                             if (!(tokenMessage && tokenMessage.accessToken)) return [3 /*break*/, 3];
