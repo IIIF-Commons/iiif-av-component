@@ -19,8 +19,6 @@ var IIIFComponents;
         __extends(AVComponent, _super);
         function AVComponent(options) {
             var _this = _super.call(this, options) || this;
-            _this._defaultCanvasHeight = 400; // todo: remove hard-coded value
-            _this._defaultCanvasWidth = 600; // todo: remove hard-coded value
             _this.canvasInstances = [];
             _this._init();
             _this._resize();
@@ -35,7 +33,9 @@ var IIIFComponents;
         };
         AVComponent.prototype.data = function () {
             return {
-                helper: null
+                helper: null,
+                defaultCanvasHeight: 400,
+                defaultCanvasWidth: 600
             };
         };
         AVComponent.prototype.set = function (data) {
@@ -81,13 +81,13 @@ var IIIFComponents;
             var canvasWidth = canvas.getWidth();
             var canvasHeight = canvas.getHeight();
             if (!canvasWidth) {
-                canvasInstance.canvasWidth = this._defaultCanvasWidth;
+                canvasInstance.canvasWidth = this.options.data.defaultCanvasWidth;
             }
             else {
                 canvasInstance.canvasWidth = canvasWidth;
             }
             if (!canvasHeight) {
-                canvasInstance.canvasHeight = this._defaultCanvasHeight;
+                canvasInstance.canvasHeight = this.options.data.defaultCanvasHeight;
             }
             else {
                 canvasInstance.canvasHeight = canvasHeight;

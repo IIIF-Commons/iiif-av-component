@@ -6,5 +6,7 @@ namespace IIIFComponents {
     
     export interface IAVComponentData {
         helper: Manifold.IHelper | null;
+        defaultCanvasHeight: number;
+        defaultCanvasWidth: number;
     }
 }

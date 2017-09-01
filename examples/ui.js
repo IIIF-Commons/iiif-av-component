@@ -39,6 +39,8 @@ function initUI() {
 
             if (canvases.length > 1) {
 				initCanvasNavigation(canvases);
+            } else {
+                $('.canvasNavigationContainer').hide();
             }
             
             var ranges = helper.getRanges();
@@ -71,8 +73,8 @@ function initCanvasNavigation(canvases) {
 			navigateToCanvas( $(this).attr('data-canvas-id') );
 		});
 
-		$('.canvasNavigationContainer').append(canvasNavigationButton);
-
+        $('.canvasNavigationContainer').append(canvasNavigationButton);
+        $('.canvasNavigationContainer').show();
 	}
 
 	window.setTimeout(function() {
@@ -83,10 +85,6 @@ function initCanvasNavigation(canvases) {
 }
 
 function initRangeNavigation(helper) {
-    
-    treecomponent.set({
-        helper: helper
-    });
 
     /*
 	var rangeNavigationContainer = $('<ul class="rangeNavigationContainer"></ul>');

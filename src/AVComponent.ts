@@ -3,9 +3,6 @@ namespace IIIFComponents {
     export class AVComponent extends _Components.BaseComponent {
 
         public options: _Components.IBaseComponentOptions;
-        private _defaultCanvasHeight: number = 400; // todo: remove hard-coded value
-        private _defaultCanvasWidth: number = 600; // todo: remove hard-coded value
-
         public canvasInstances: any[] = [];
 
         constructor(options: _Components.IBaseComponentOptions) {
@@ -27,7 +24,9 @@ namespace IIIFComponents {
 
         public data(): IAVComponentData {
             return <IAVComponentData> {
-                helper: null
+                helper: null,
+                defaultCanvasHeight: 400,
+                defaultCanvasWidth: 600
             }
         }
 
@@ -91,12 +90,12 @@ namespace IIIFComponents {
             const canvasHeight: number = canvas.getHeight();
 
             if (!canvasWidth) {
-                canvasInstance.canvasWidth = this._defaultCanvasWidth;
+                canvasInstance.canvasWidth = this.options.data.defaultCanvasWidth;
             } else {
                 canvasInstance.canvasWidth = canvasWidth;
             }
             if (!canvasHeight) {
-                canvasInstance.canvasHeight = this._defaultCanvasHeight;
+                canvasInstance.canvasHeight = this.options.data.defaultCanvasHeight;
             } else {
                 canvasInstance.canvasHeight = canvasHeight;
             }

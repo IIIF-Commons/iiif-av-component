@@ -4,8 +4,6 @@
 declare namespace IIIFComponents {
     class AVComponent extends _Components.BaseComponent {
         options: _Components.IBaseComponentOptions;
-        private _defaultCanvasHeight;
-        private _defaultCanvasWidth;
         canvasInstances: any[];
         constructor(options: _Components.IBaseComponentOptions);
         protected _init(): boolean;
@@ -78,6 +76,8 @@ declare namespace IIIFComponents {
     }
     interface IAVComponentData {
         helper: Manifold.IHelper | null;
+        defaultCanvasHeight: number;
+        defaultCanvasWidth: number;
     }
 }
 
