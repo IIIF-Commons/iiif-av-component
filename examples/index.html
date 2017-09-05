@@ -13,7 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsviews/0.9.76/jsviews.min.js"></script>
 
-    <script src="ui.js"></script>
     <script src="js/base-component.js"></script>
     <script src="js/iiif-av-component.js"></script>
     <script src="https://rawgit.com/viewdir/iiif-tree-component/master/dist/iiif-tree-component.js"></script>
@@ -106,8 +105,6 @@
 
         $(function() {
 
-            initUI();
-
             avcomponent = new IIIFComponents.AVComponent({
                 target: document.querySelector('#av')
             });
@@ -139,6 +136,113 @@
                 $('.playerContainer .player').hide();
                 getCanvasInstanceByID(canvasId).$playerElement.show();
             }
+
+            function initCanvasNavigation(canvases) {
+
+                for (var i=0; i<canvases.length; i++) {
+                    
+                    var canvasLabel = i+1;
+                    var canvasNavigationButton = $('<button class="canvasNavigationButton" data-canvas-id="'+ canvases[i].id +'">Canvas '+ canvasLabel +'</button>');
+                    
+                    canvasNavigationButton.click(function() {
+                        navigateToCanvas( $(this).attr('data-canvas-id') );
+                    });
+
+                    $('.canvasNavigationContainer').append(canvasNavigationButton);
+                    $('.canvasNavigationContainer').show();
+                }
+
+                window.setTimeout(function() {
+                    var firstID = avcomponent.canvasInstances[0].data.id;
+                    navigateToCanvas(firstID);
+                }, 10);
+                
+            }
+
+            function navigateToCanvas(canvasID) {
+                for (var i = 0; i < avcomponent.canvasInstances.length; i++) {
+                    avcomponent.canvasInstances[i].pauseCanvas();
+                }
+                $('.playerContainer .player').hide();
+                getCanvasInstanceByID(canvasID).$playerElement.show();
+            }
+
+            function showWorkingIndicator(targetElement) {
+                var workingIndicator = $('<div class="workingIndicator">Waiting ...</div>');
+                if (targetElement.find('.workingIndicator').length == 0) {
+                    targetElement.append(workingIndicator);
+                }
+                //console.log('show working');
+            }
+
+            function hideWorkingIndicator() {
+                $('.workingIndicator').remove();
+                //console.log('hide working');
+            }
+
+            function logMessage(message, logObj) {
+                if (logObj) {
+                    //console.log(message, logObj);
+                } else {
+                    //console.log(message);
+                }
+
+                $('.logContainer textarea')[0].value = $('.logContainer textarea')[0].value += '\n'+ message;
+            }
+
+            function clearLogs() {
+                $('.logContainer textarea')[0].value = '';
+            }
+
+            $('#manifestInput').val('');
+
+            $('#clearLogsButton').click(clearLogs);
+
+            $('#toggleLogsButton').click(function() {
+                $('.logContainer').toggle();
+            });
+
+            $('.testFixture').click(function() {
+                $('#manifestInput').val( $(this).data('json') );
+                $('#parseManifestButton').click();
+            });
+
+            $('#viewManifestButton').click(function() {
+                var absoluteManifestURL = $('#manifestInput').val();
+                window.open(absoluteManifestURL, '_blank', 'location=yes,height=600,width=580,scrollbars=yes,status=yes');
+            });
+            
+            $('#parseManifestButton').click(function() {
+
+                var manifestURL = $('#manifestInput').val();
+
+                loadManifest(manifestURL, function(helper) {
+
+                    clearLogs();
+
+                    $('.title').text(helper.getLabel());
+                    $('.description').text(helper.getDescription());
+
+                    logMessage('SUCCESS: Manifest data loaded.', helper.manifest);
+
+                    var canvases = helper.getCanvases();
+
+                    if (canvases.length > 1) {
+                        initCanvasNavigation(canvases);
+                    } else {
+                        $('.canvasNavigationContainer').hide();
+                    }
+                    
+                }, function(error) {
+
+                    $('.title').text('ERROR: Could not load manifest data.');
+                    $('.description').text('');
+                    
+                    logMessage('ERROR: Could not load manifest data.', error);
+
+                });
+
+            });
 
             treecomponent.on('treeNodeSelected', function(node) {
                 console.log('selected: ' + node.label);
