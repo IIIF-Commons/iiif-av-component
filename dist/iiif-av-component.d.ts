@@ -1,4 +1,4 @@
-// iiif-av-component v1.1.0 https://github.com/viewdir/iiif-av-component#readme
+// iiif-av-component v0.0.1 https://github.com/viewdir/iiif-av-component#readme
 /// <reference path="../node_modules/typescript/lib/lib.es6.d.ts" />
 
 declare namespace IIIFComponents {
