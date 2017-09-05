@@ -86,6 +86,8 @@ namespace IIIFComponents {
             this._$element.append($player);
 
             const canvasInstance: CanvasInstance = new CanvasInstance(canvas);
+
+            // todo: make the canvas dimensions relative to the containing this.$element
             const canvasWidth: number = canvas.getWidth();
             const canvasHeight: number = canvas.getHeight();
 
@@ -142,6 +144,10 @@ namespace IIIFComponents {
 
         private _logMessage(message: string): void {
             this.fire(AVComponent.Events.LOG, message);
+        }
+
+        public resize(): void {
+            this._resize();
         }
 
         protected _resize(): void {

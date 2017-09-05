@@ -78,20 +78,20 @@ var IIIFComponents;
             $player.append($canvasContainer, $timelineContainer, $timelineItemContainer, $controlsContainer);
             this._$element.append($player);
             var canvasInstance = new IIIFComponents.CanvasInstance(canvas);
-            var canvasWidth = canvas.getWidth();
-            var canvasHeight = canvas.getHeight();
-            if (!canvasWidth) {
-                canvasInstance.canvasWidth = this.options.data.defaultCanvasWidth;
-            }
-            else {
-                canvasInstance.canvasWidth = canvasWidth;
-            }
-            if (!canvasHeight) {
-                canvasInstance.canvasHeight = this.options.data.defaultCanvasHeight;
-            }
-            else {
-                canvasInstance.canvasHeight = canvasHeight;
-            }
+            canvasInstance.canvasWidth = this._$element.width();
+            canvasInstance.canvasHeight = this._$element.height();
+            //const canvasWidth: number = canvas.getWidth();
+            //const canvasHeight: number = canvas.getHeight();
+            // if (!canvasWidth) {
+            //     canvasInstance.canvasWidth = this.options.data.defaultCanvasWidth;
+            // } else {
+            //     canvasInstance.canvasWidth = canvasWidth;
+            // }
+            // if (!canvasHeight) {
+            //     canvasInstance.canvasHeight = this.options.data.defaultCanvasHeight;
+            // } else {
+            //     canvasInstance.canvasHeight = canvasHeight;
+            // }
             canvasInstance.$playerElement = $player;
             canvasInstance.logMessage = this._logMessage.bind(this);
             $timelineContainer.slider({
@@ -125,6 +125,9 @@ var IIIFComponents;
         };
         AVComponent.prototype._logMessage = function (message) {
             this.fire(AVComponent.Events.LOG, message);
+        };
+        AVComponent.prototype.resize = function () {
+            this._resize();
         };
         AVComponent.prototype._resize = function () {
             // loop through all canvases resizing their elements

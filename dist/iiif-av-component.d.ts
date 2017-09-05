@@ -14,6 +14,7 @@ declare namespace IIIFComponents {
         private _getCanvases();
         private _initCanvas(canvas);
         private _logMessage(message);
+        resize(): void;
         protected _resize(): void;
     }
 }

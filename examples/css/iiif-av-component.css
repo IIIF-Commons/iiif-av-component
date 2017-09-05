@@ -1,3 +1,6 @@
+.iiif-av-component {
+  position: relative;
+}
 .iiif-av-component .canvasContainer {
   position: relative;
   background: #000000;
