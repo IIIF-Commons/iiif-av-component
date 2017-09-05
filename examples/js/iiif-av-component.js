@@ -78,20 +78,21 @@ var IIIFComponents;
             $player.append($canvasContainer, $timelineContainer, $timelineItemContainer, $controlsContainer);
             this._$element.append($player);
             var canvasInstance = new IIIFComponents.CanvasInstance(canvas);
-            canvasInstance.canvasWidth = this._$element.width();
-            canvasInstance.canvasHeight = this._$element.height();
-            //const canvasWidth: number = canvas.getWidth();
-            //const canvasHeight: number = canvas.getHeight();
-            // if (!canvasWidth) {
-            //     canvasInstance.canvasWidth = this.options.data.defaultCanvasWidth;
-            // } else {
-            //     canvasInstance.canvasWidth = canvasWidth;
-            // }
-            // if (!canvasHeight) {
-            //     canvasInstance.canvasHeight = this.options.data.defaultCanvasHeight;
-            // } else {
-            //     canvasInstance.canvasHeight = canvasHeight;
-            // }
+            // todo: make the canvas dimensions relative to the containing this.$element
+            var canvasWidth = canvas.getWidth();
+            var canvasHeight = canvas.getHeight();
+            if (!canvasWidth) {
+                canvasInstance.canvasWidth = this.options.data.defaultCanvasWidth;
+            }
+            else {
+                canvasInstance.canvasWidth = canvasWidth;
+            }
+            if (!canvasHeight) {
+                canvasInstance.canvasHeight = this.options.data.defaultCanvasHeight;
+            }
+            else {
+                canvasInstance.canvasHeight = canvasHeight;
+            }
             canvasInstance.$playerElement = $player;
             canvasInstance.logMessage = this._logMessage.bind(this);
             $timelineContainer.slider({
