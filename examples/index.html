@@ -21,6 +21,12 @@
     <script src="https://rawgit.com/viewdir/manifold/dev/dist/manifold.js"></script> -->
 
     <script src="js/manifold.bundle.js"></script>
+
+    <style>
+        .playerContainer {
+            border: 1px solid red;
+        }
+    </style>
 </head>
 <body>
 
@@ -62,9 +68,11 @@
     <script>
 
         var helper, avcomponent, treecomponent;
-        
+
         function resize() {
-            // resizing stuff outside of the component
+            var $playerContainer = $('.playerContainer');
+            $playerContainer.height($playerContainer.width() * .75);
+            avcomponent.resize();
         }
 
         window.onresize = function() {
@@ -85,8 +93,7 @@
 
                 avcomponent.set({
                     helper: helper,
-                    defaultCanvasHeight: 400,
-                    defaultCanvasWidth: 600
+                    defaultAspectRatio: 0.56
                 });
 
                 treecomponent.set({

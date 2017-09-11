@@ -25,8 +25,7 @@ namespace IIIFComponents {
         public data(): IAVComponentData {
             return <IAVComponentData> {
                 helper: null,
-                defaultCanvasHeight: 400,
-                defaultCanvasWidth: 600
+                defaultAspectRatio: 0.56
             }
         }
 
@@ -69,10 +68,11 @@ namespace IIIFComponents {
             return this.options.data.helper.getCanvases();
         }
 
-        private _initCanvas(canvas: Manifesto.ICanvas) {
+        private _initCanvas(canvas: Manifesto.ICanvas): void {
     
             const $player = $('<div class="player"></div>');
             const $canvasContainer = $('<div class="canvasContainer"></div>');
+            const $optionsContainer = $('<div class="optionsContainer"></div>');
             const $timelineContainer = $('<div class="timelineContainer"></div>');
             const $timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             const $controlsContainer = $('<div class="controlsContainer"></div>');
@@ -81,23 +81,23 @@ namespace IIIFComponents {
             const $timingControls = $('<span>Current Time: <span class="canvasTime"></span> / Duration: <span class="canvasDuration"></span></span>');
 
             $controlsContainer.append($playButton, $pauseButton, $timingControls);
-            $player.append($canvasContainer, $timelineContainer, $timelineItemContainer, $controlsContainer);
+            $optionsContainer.append($timelineContainer, $timelineItemContainer, $controlsContainer);
+            $player.append($canvasContainer, $optionsContainer);
 
             this._$element.append($player);
 
             const canvasInstance: CanvasInstance = new CanvasInstance(canvas);
 
-            // todo: make the canvas dimensions relative to the containing this.$element
             const canvasWidth: number = canvas.getWidth();
             const canvasHeight: number = canvas.getHeight();
 
             if (!canvasWidth) {
-                canvasInstance.canvasWidth = this.options.data.defaultCanvasWidth;
+                canvasInstance.canvasWidth = <number>this._$element.width(); // this.options.data.defaultCanvasWidth;
             } else {
                 canvasInstance.canvasWidth = canvasWidth;
             }
             if (!canvasHeight) {
-                canvasInstance.canvasHeight = this.options.data.defaultCanvasHeight;
+                canvasInstance.canvasHeight = canvasInstance.canvasWidth * this.options.data.defaultAspectRatio; //this.options.data.defaultCanvasHeight;
             } else {
                 canvasInstance.canvasHeight = canvasHeight;
             }
@@ -167,10 +167,11 @@ namespace IIIFComponents {
                     if (containerWidth) {
                         $timelineContainer.width(containerWidth);
 
-                        const resizeFactorY: number = containerWidth / canvasInstance.canvasWidth;
-                        //const newHeight: number = canvasInstance.canvasHeight * resizeFactorY; not used
+                        //const resizeFactorY: number = containerWidth / canvasInstance.canvasWidth;
+                        //$canvasContainer.height(canvasInstance.canvasHeight * resizeFactorY);
 
-                        $canvasContainer.height(canvasInstance.canvasHeight * resizeFactorY);
+                        const $options: JQuery = canvasInstance.$playerElement.find('.optionsContainer');
+                        $canvasContainer.height(<number>this._$element.height() - <number>$options.height());
                     }
                     
                 }

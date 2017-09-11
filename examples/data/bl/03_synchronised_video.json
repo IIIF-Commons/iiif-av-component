@@ -10,6 +10,8 @@
                 {
                     "id": "http://viewdir.github.io/iiif-av-component/examples/data/bl/03_synchronised_video/canvas/1",
                     "duration": 120,
+                    "width": 600,
+                    "height": 400,
                     "content": [
                         {
                             "id": "http://viewdir.github.io/iiif-av-component/examples/data/bl/03_synchronised_video/content/page/1",

@@ -77,8 +77,7 @@ declare namespace IIIFComponents {
     }
     interface IAVComponentData {
         helper: Manifold.IHelper | null;
-        defaultCanvasHeight: number;
-        defaultCanvasWidth: number;
+        defaultAspectRatio: number;
     }
 }
 

@@ -33,7 +33,7 @@ hr {
 }
 
 .playerContainer {
-    width: 700px;
+	max-width: 800px;
 }
 
 #toggleLogsButton {
