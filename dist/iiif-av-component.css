@@ -69,6 +69,7 @@
   margin-left: -8px;
   background: transparent;
   border: none;
+  z-index: 1;
 }
 .iiif-av-component .timelineContainer .ui-slider-handle:focus {
   outline: none;
