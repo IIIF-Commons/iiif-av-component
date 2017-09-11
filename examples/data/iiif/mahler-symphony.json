@@ -23,6 +23,7 @@
                                     "motivation":"painting",
                                     "body":[
                                         {
+                                            "id":"https://dlib.indiana.edu/iiif_av/mahler-symphony-3/annobody/1/1",
                                             "type":"Choice",
                                             "choiceHint":"user",
                                             "items":[
@@ -62,6 +63,7 @@
                                     "motivation":"painting",
                                     "body":[
                                         {
+                                            "id":"https://dlib.indiana.edu/iiif_av/mahler-symphony-3/annobody/2/2",
                                             "type":"Choice",
                                             "choiceHint":"user",
                                             "items":[
