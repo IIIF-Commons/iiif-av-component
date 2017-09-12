@@ -138,6 +138,7 @@ var IIIFComponents;
             return null;
         };
         AVComponent.prototype.playCanvas = function (canvasId) {
+            this.showCanvas(canvasId);
             var canvasInstance = this.getCanvasInstanceById(canvasId);
             if (canvasInstance) {
                 var temporal = /t=([^&]+)/g.exec(canvasId);

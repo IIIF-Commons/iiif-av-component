@@ -164,6 +164,8 @@ namespace IIIFComponents {
 
         public playCanvas(canvasId: string): void {
 
+            this.showCanvas(canvasId);
+
             const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
             
             if (canvasInstance) {
