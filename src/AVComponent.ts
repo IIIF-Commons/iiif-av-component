@@ -3,7 +3,7 @@ namespace IIIFComponents {
     export class AVComponent extends _Components.BaseComponent {
 
         public options: _Components.IBaseComponentOptions;
-        public canvasInstances: any[] = [];
+        public canvasInstances: CanvasInstance[] = [];
 
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
@@ -140,6 +140,58 @@ namespace IIIFComponents {
             $timingControls.find('.canvasDuration').text(AVComponentUtils.Utils.formatTime(canvasInstance.canvasClockDuration));
 
             this._logMessage('CREATED CANVAS: '+ canvasInstance.canvasClockDuration +' seconds, '+ canvasInstance.canvasWidth +' x '+ canvasInstance.canvasHeight+' px.');
+        }
+
+        public getCanvasInstanceById(canvasId: string): CanvasInstance | null {
+            
+            canvasId = manifesto.Utils.normaliseUrl(canvasId);
+    
+            for (let i = 0; i < this.canvasInstances.length; i++) {
+    
+                const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
+    
+                if (canvasInstance.data && canvasInstance.data.id) {
+                    const canvasInstanceId: string = manifesto.Utils.normaliseUrl(canvasInstance.data.id);
+                    
+                    if (canvasInstanceId === canvasId) {
+                        return canvasInstance;
+                    }
+                }
+            }
+    
+            return null;
+        }
+
+        public playCanvas(canvasId: string): void {
+
+            const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
+            
+            if (canvasInstance) {
+                const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
+                
+                if (temporal && temporal[1]) {
+                    const rangeTiming: string[] = temporal[1].split(',');
+                    canvasInstance.setCurrentTime(rangeTiming[0]);
+                    canvasInstance.playCanvas();
+                }
+            }
+        }
+
+        public showCanvas(canvasId: string): void {
+
+            // pause all canvases
+            for (var i = 0; i < this.canvasInstances.length; i++) {
+                this.canvasInstances[i].pauseCanvas();
+            }
+
+            // hide all players
+            this._$element.find('.player').hide();
+
+            const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
+
+            if (canvasInstance && canvasInstance.$playerElement) {
+                canvasInstance.$playerElement.show();
+            }
         }
 
         private _logMessage(message: string): void {

@@ -5,9 +5,9 @@ namespace IIIFComponents {
 	    private _highPriorityFrequency: number = 25;
 	    private _lowPriorityFrequency: number = 100;
         private _canvasClockFrequency: number = 25;
-        private _canvasClockInterval: number;
-        private _highPriorityInterval: number;
-        private _lowPriorityInterval: number;
+        public canvasClockInterval: number;
+        public highPriorityInterval: number;
+        public lowPriorityInterval: number;
         private _mediaElements: any[]; // todo: type as HTMLMediaElement?
         public $playerElement: JQuery | null = null;
         public canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
@@ -280,13 +280,13 @@ namespace IIIFComponents {
             this.canvasClockStartDate = Date.now() - (this.canvasClockTime * 1000);
 
             var self = this;
-            this._highPriorityInterval = window.setInterval(function() {
+            this.highPriorityInterval = window.setInterval(function() {
                 self.highPriorityUpdater();
             }, this._highPriorityFrequency);
-            this._lowPriorityInterval = window.setInterval(function() {
+            this.lowPriorityInterval = window.setInterval(function() {
                 self.lowPriorityUpdater();
             }, this._lowPriorityFrequency);
-            this._canvasClockInterval = window.setInterval(function() {
+            this.canvasClockInterval = window.setInterval(function() {
                 self.canvasClockUpdater();
             }, this._canvasClockFrequency);
 
@@ -300,9 +300,9 @@ namespace IIIFComponents {
         }
 
         public pauseCanvas(withoutUpdate?: boolean): void {
-            window.clearInterval(this._highPriorityInterval);
-            window.clearInterval(this._lowPriorityInterval);
-            window.clearInterval(this._canvasClockInterval);
+            window.clearInterval(this.highPriorityInterval);
+            window.clearInterval(this.lowPriorityInterval);
+            window.clearInterval(this.canvasClockInterval);
 
             this.isPlaying = false;
 

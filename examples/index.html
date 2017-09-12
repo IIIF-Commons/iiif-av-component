@@ -125,26 +125,6 @@
                 target: document.querySelector('#tree')
             });
 
-            function getCanvasInstanceByID(canvasID) {
-                cleanCanvasID = canvasID.replace('http://', '').replace('https://', '').split('#')[0];
-                for (var i = 0; i < avcomponent.canvasInstances.length; i++) {
-                    var cleanInstanceID = avcomponent.canvasInstances[i].data.id.replace('http://', '').replace('https://', '').split('#')[0];
-                    if (cleanInstanceID == cleanCanvasID) {
-                        return avcomponent.canvasInstances[i];
-                    }
-                }
-
-                return null;
-            } 
-
-            function showCanvas(canvasId) {
-                for (var i = 0; i < avcomponent.canvasInstances.length; i++) {
-                    avcomponent.canvasInstances[i].pauseCanvas();
-                }
-                $('.playerContainer .player').hide();
-                getCanvasInstanceByID(canvasId).$playerElement.show();
-            }
-
             function initCanvasNavigation(canvases) {
 
                 $('.canvasNavigationContainer').empty();
@@ -155,7 +135,7 @@
                     var canvasNavigationButton = $('<button class="canvasNavigationButton" data-canvas-id="'+ canvases[i].id +'">Canvas '+ canvasLabel +'</button>');
                     
                     canvasNavigationButton.click(function() {
-                        navigateToCanvas( $(this).attr('data-canvas-id') );
+                        avcomponent.showCanvas($(this).attr('data-canvas-id'));
                     });
 
                     $('.canvasNavigationContainer').append(canvasNavigationButton);
@@ -164,17 +144,9 @@
 
                 window.setTimeout(function() {
                     var firstID = avcomponent.canvasInstances[0].data.id;
-                    navigateToCanvas(firstID);
+                    avcomponent.showCanvas(firstID);
                 }, 10);
                 
-            }
-
-            function navigateToCanvas(canvasID) {
-                for (var i = 0; i < avcomponent.canvasInstances.length; i++) {
-                    avcomponent.canvasInstances[i].pauseCanvas();
-                }
-                $('.playerContainer .player').hide();
-                getCanvasInstanceByID(canvasID).$playerElement.show();
             }
 
             function showWorkingIndicator(targetElement) {
@@ -262,17 +234,8 @@
 
                 if (canvas) {
                     
-                    showCanvas(canvas.id);
-
-                    var canvasInstance = getCanvasInstanceByID(canvasId);
-
-                    var temporal = /t=([^&]+)/g.exec(canvasId);
-                    
-                    if (temporal && temporal[1]) {
-                        var rangeTiming = temporal[1].split(',');
-                        canvasInstance.setCurrentTime(rangeTiming[0]);
-                        canvasInstance.playCanvas();
-                    }
+                    avcomponent.showCanvas(canvasId);
+                    avcomponent.playCanvas(canvasId);
 
                     logMessage('SELECT RANGE: '+ node.label);
                 } else {

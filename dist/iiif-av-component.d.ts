@@ -4,7 +4,7 @@
 declare namespace IIIFComponents {
     class AVComponent extends _Components.BaseComponent {
         options: _Components.IBaseComponentOptions;
-        canvasInstances: any[];
+        canvasInstances: CanvasInstance[];
         constructor(options: _Components.IBaseComponentOptions);
         protected _init(): boolean;
         data(): IAVComponentData;
@@ -13,6 +13,9 @@ declare namespace IIIFComponents {
         private _render();
         private _getCanvases();
         private _initCanvas(canvas);
+        getCanvasInstanceById(canvasId: string): CanvasInstance | null;
+        playCanvas(canvasId: string): void;
+        showCanvas(canvasId: string): void;
         private _logMessage(message);
         resize(): void;
         protected _resize(): void;
@@ -31,9 +34,9 @@ declare namespace IIIFComponents {
         private _highPriorityFrequency;
         private _lowPriorityFrequency;
         private _canvasClockFrequency;
-        private _canvasClockInterval;
-        private _highPriorityInterval;
-        private _lowPriorityInterval;
+        canvasClockInterval: number;
+        highPriorityInterval: number;
+        lowPriorityInterval: number;
         private _mediaElements;
         $playerElement: JQuery | null;
         canvasClockDuration: number;
