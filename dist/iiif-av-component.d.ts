@@ -1,6 +1,7 @@
-// iiif-av-component v0.0.1 https://github.com/viewdir/iiif-av-component#readme
+// iiif-av-component v0.0.1 https://github.com/iiif-commons/iiif-av-component#readme
 /// <reference path="../node_modules/typescript/lib/lib.es6.d.ts" />
 
+/// <reference types="base-component" />
 declare namespace IIIFComponents {
     class AVComponent extends _Components.BaseComponent {
         options: _Components.IBaseComponentOptions;
@@ -29,6 +30,7 @@ declare namespace IIIFComponents.AVComponent {
 
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
+/// <reference types="manifesto.js" />
 declare namespace IIIFComponents {
     class CanvasInstance {
         private _highPriorityFrequency;
@@ -75,6 +77,7 @@ declare namespace IIIFComponents {
     }
 }
 
+/// <reference types="manifold" />
 declare namespace IIIFComponents {
     interface IAVComponentContent {
     }

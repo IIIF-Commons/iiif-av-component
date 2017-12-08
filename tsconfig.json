@@ -13,7 +13,9 @@
         "types": [
             "manifesto.js",
             "manifold",
-            "base-component"
+            "base-component",
+            "jquery",
+            "jqueryui"
         ]
     },
     "files": [

@@ -1,6 +1,6 @@
 # iiif-av-component
 
-http://viewdir.github.io/iiif-av-component/examples/
+http://iiif-commons.github.io/iiif-av-component/examples/
 
 **Ensure you have the [typings](https://github.com/typings/typings) CLI installed**
 

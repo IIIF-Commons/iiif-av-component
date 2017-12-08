@@ -1,7 +1,6 @@
 var __extends=this&&this.__extends||function(){var r=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(r,e){r.__proto__=e}||function(r,e){for(var t in e)e.hasOwnProperty(t)&&(r[t]=e[t])};return function(e,t){function n(){this.constructor=e}r(e,t),e.prototype=null===t?Object.create(t):(n.prototype=t.prototype,new n)}}(),exjs;!function(r){r.version="0.5.0"}(exjs||(exjs={}));var exjs;!function(r){Array.isArray||(Array.isArray=function(r){return"[object Array]"===Object.prototype.toString.call(r)})}(exjs||(exjs={}));var exjs;!function(r){var e=function(){function r(){}return r.prototype.getEnumerator=function(){return{moveNext:function(){return!1},current:void 0}},r.prototype.aggregate=function(r,e){for(var t=r,n=this.getEnumerator();n.moveNext();)t=e(t,n.current);return t},r.prototype.all=function(r){if(r)for(var e=this.getEnumerator(),t=0;e.moveNext();){if(!r(e.current,t))return!1;t++}return!0},r.prototype.any=function(r){for(var e=this.getEnumerator(),t=0;e.moveNext();){if(!r)return!0;if(r(e.current,t))return!0;t++}return!1},r.prototype.append=function(){for(var r=[],e=0;e<arguments.length;e++)r[e]=arguments[e];throw new Error("Not implemented")},r.prototype.apply=function(r){throw new Error("Not implemented")},r.prototype.at=function(r){for(var e=this.getEnumerator(),t=0;e.moveNext();){if(t===r)return e.current;t++}},r.prototype.average=function(r){var e=0,t=0;r=r||function(r){if("number"!=typeof r)throw new Error("Object is not a number.");return r};for(var n=this.getEnumerator();n.moveNext();)t+=r(n.current),e++;return 0===e?0:t/e},r.prototype.concat=function(r){throw new Error("Not implemented")},r.prototype.count=function(r){for(var e=0,t=this.getEnumerator();t.moveNext();)r&&!r(t.current)||e++;return e},r.prototype.difference=function(r,e){return e=e||function(r,e){return r===e},r instanceof Array&&(r=r.en()),{intersection:this.intersect(r,e).toArray().en(),aNotB:this.except(r,e).toArray().en(),bNotA:r.except(this,e).toArray().en()}},r.prototype.distinct=function(r){throw new Error("Not implemented")},r.prototype.except=function(r,e){throw new Error("Not implemented")},r.prototype.first=function(r){for(var e=this.getEnumerator();e.moveNext();)if(!r||r(e.current))return e.current},r.prototype.firstIndex=function(r){for(var e=this.getEnumerator(),t=0;e.moveNext();t++)if(!r||r(e.current))return t;return-1},r.prototype.forEach=function(r){for(var e=this.getEnumerator();e.moveNext();)r(e.current)},r.prototype.groupBy=function(r,e){throw new Error("Not implemented")},r.prototype.intersect=function(r,e){throw new Error("Not implemented")},r.prototype.join=function(r,e,t,n,o){throw new Error("Not implemented")},r.prototype.last=function(r){for(var e,t=this.getEnumerator();t.moveNext();)r&&!r(t.current)||(e=t.current);return e},r.prototype.lastIndex=function(r){for(var e=-1,t=this.getEnumerator(),n=0;t.moveNext();n++)r&&!r(t.current)||(e=n);return e},r.prototype.max=function(r){var e=this.getEnumerator();if(!e.moveNext())return 0;r=r||function(r){if("number"!=typeof r)throw new Error("Object is not a number.");return r};for(var t=r(e.current);e.moveNext();)t=Math.max(t,r(e.current));return t},r.prototype.min=function(r){var e=this.getEnumerator();if(!e.moveNext())return 0;r=r||function(r){if("number"!=typeof r)throw new Error("Object is not a number.");return r};for(var t=r(e.current);e.moveNext();)t=Math.min(t,r(e.current));return t},r.prototype.orderBy=function(r,e){throw new Error("Not implemented")},r.prototype.orderByDescending=function(r,e){throw new Error("Not implemented")},r.prototype.prepend=function(){for(var r=[],e=0;e<arguments.length;e++)r[e]=arguments[e];throw new Error("Not implemented")},r.prototype.reverse=function(){throw new Error("Not implemented")},r.prototype.select=function(r){throw new Error("Not implemented")},r.prototype.selectMany=function(r){throw new Error("Not implemented")},r.prototype.skip=function(r){throw new Error("Not implemented")},r.prototype.skipWhile=function(r){throw new Error("Not implemented")},r.prototype.standardDeviation=function(r){var e=this.average(r),t=0,n=0;r=r||function(r){if("number"!=typeof r)throw new Error("Object is not a number.");return r};for(var o=this.getEnumerator();o.moveNext();){var u=r(o.current)-e;t+=u*u,n++}return Math.sqrt(t/n)},r.prototype.sum=function(r){var e=0;r=r||function(r){if("number"!=typeof r)throw new Error("Object is not a number.");return r};for(var t=this.getEnumerator();t.moveNext();)e+=r(t.current);return e},r.prototype.take=function(r){throw new Error("Not implemented")},r.prototype.takeWhile=function(r){throw new Error("Not implemented")},r.prototype.traverse=function(r){throw new Error("Not implemented")},r.prototype.traverseUnique=function(r,e){throw new Error("Not implemented")},r.prototype.toArray=function(){for(var r=[],e=this.getEnumerator();e.moveNext();)r.push(e.current);return r},r.prototype.toMap=function(r,e){throw new Error("Not implemented")},r.prototype.toList=function(){throw new Error("Not implemented")},r.prototype.union=function(r,e){throw new Error("Not implemented")},r.prototype.where=function(r){throw new Error("Not implemented")},r.prototype.zip=function(r,e){throw new Error("Not implemented")},r}();r.Enumerable=e}(exjs||(exjs={}));var exjs;!function(r){var e=function(){function e(r){this.size=0,this._keys=[],this._values=[];var e;if(r instanceof Array?e=r.en():r&&r.getEnumerator instanceof Function&&(e=r),e)for(var t=e.getEnumerator();t&&t.moveNext();)this.set(t.current[0],t.current[1])}return e.prototype.clear=function(){this._keys.length=0,this._values.length=0,this.size=0},e.prototype.delete=function(r){var e=this._keys.indexOf(r);return e>-1&&(this._keys.splice(e,1),this._values.splice(e,1),this.size--,!0)},e.prototype.entries=function(){var e=this;return r.range(0,this.size).select(function(r){return[e._keys[r],e._values[r]]})},e.prototype.forEach=function(r,e){null==e&&(e=this);for(var t=0,n=this._keys,o=this._values,u=n.length;t<u;t++)r.call(e,o[t],n[t],this)},e.prototype.get=function(r){var e=this._keys.indexOf(r);return this._values[e]},e.prototype.has=function(r){return this._keys.indexOf(r)>-1},e.prototype.keys=function(){return this._keys.en()},e.prototype.set=function(r,e){var t=this._keys.indexOf(r);t>-1?this._values[t]=e:(this._keys.push(r),this._values.push(e),this.size++)},e.prototype.values=function(){return this._values.en()},e}();r.Map3=e,r.Enumerable.prototype.toMap=function(r,t){for(var n=new e,o=this.getEnumerator();o.moveNext();)n.set(r(o.current),t(o.current));return n},r.List&&(r.List.prototype.toMap=r.Enumerable.prototype.toMap)}(exjs||(exjs={})),function(r){r.Map||(r.Map=exjs.Map3)}("undefined"==typeof window?global:window);var exjs;!function(r){function e(e){var t=new r.Enumerable;return t.getEnumerator=function(){var r={current:void 0,moveNext:function(){return e(r)}};return r},t}r.anonymous=e}(exjs||(exjs={}));var exjs;!function(r){function e(r,e){var t,n,o=1,u={current:void 0,moveNext:function(){if(o<2){if(t=t||r.getEnumerator(),t.moveNext())return u.current=t.current,!0;o++}return n=n||e.en().getEnumerator(),n.moveNext()?(u.current=n.current,!0):(u.current=void 0,!1)}};return u}r.Enumerable.prototype.append=function(){for(var t=this,n=[],o=0;o<arguments.length;o++)n[o]=arguments[o];var u=new r.Enumerable;return u.getEnumerator=function(){return e(t,n)},u},r.List&&(r.List.prototype.append=r.Enumerable.prototype.append)}(exjs||(exjs={}));var exjs;!function(r){function e(r,e){var t,n=0,o={current:void 0,moveNext:function(){return t||(t=r.getEnumerator()),!!t.moveNext()&&(e(o.current=t.current,n),n++,!0)}};return o}r.Enumerable.prototype.apply=function(t){var n=this,o=new r.Enumerable;return o.getEnumerator=function(){return e(n,t)},o},r.List&&(r.List.prototype.apply=r.Enumerable.prototype.apply)}(exjs||(exjs={}));var exjs;!function(r){function e(r){var e=r.length,t={moveNext:void 0,current:void 0},n=-1;return t.moveNext=function(){return n++,n>=e?(t.current=void 0,!1):(t.current=r[n],!0)},t}function t(){return this&&Array.isArray(this)?new n(this):new r.Enumerable}var n=function(r){function t(t){var n=r.call(this)||this;return n.getEnumerator=function(){return e(t)},n.toArray=function(){return t.slice(0)},n}return __extends(t,r),t}(r.Enumerable);try{Object.defineProperty(Array.prototype,"en",{value:t,enumerable:!1,writable:!1,configurable:!1})}catch(r){Array.prototype.en=t}}(exjs||(exjs={}));var exjs;!function(r){function e(r,e){var t,n=!1,o={current:void 0,moveNext:function(){return t||(t=r.getEnumerator()),o.current=void 0,t.moveNext()?(o.current=t.current,!0):!n&&(n=!0,t=e.getEnumerator(),!!t.moveNext()&&(o.current=t.current,!0))}};return o}r.Enumerable.prototype.concat=function(t){var n=this,o=t instanceof Array?t.en():t,u=new r.Enumerable;return u.getEnumerator=function(){return e(n,o)},u},r.List&&(r.List.prototype.concat=r.Enumerable.prototype.concat)}(exjs||(exjs={}));var exjs;!function(r){function e(r,e){var t,n=[],o={current:void 0,moveNext:function(){if(t||(t=r.getEnumerator()),o.current=void 0,!e){for(;t.moveNext();)if(n.indexOf(t.current)<0)return n.push(o.current=t.current),!0;return!1}for(;t.moveNext();){for(var u=0,i=n.length,c=!1;u<i&&!c;u++)c=!!e(n[u],t.current);if(!c)return n.push(o.current=t.current),!0}return!1}};return o}r.Enumerable.prototype.distinct=function(t){var n=this,o=new r.Enumerable;return o.getEnumerator=function(){return e(n,t)},o},r.List&&(r.List.prototype.distinct=r.Enumerable.prototype.distinct)}(exjs||(exjs={}));var exjs;!function(r){function e(r,e,t){t=t||function(r,e){return r===e};var n,o={current:void 0,moveNext:function(){for(n||(n=r.getEnumerator()),o.current=void 0;n.moveNext();){for(var u=!1,i=e.getEnumerator();i.moveNext()&&!u;)u=t(n.current,i.current);if(!u)return o.current=n.current,!0}return!1}};return o}r.Enumerable.prototype.except=function(t,n){var o=this,u=t instanceof Array?t.en():t,i=new r.Enumerable;return i.getEnumerator=function(){return e(o,u,n)},i},r.List&&(r.List.prototype.except=r.Enumerable.prototype.except)}(exjs||(exjs={})),Function.prototype.fromJson=function(r,e){function t(r,e){if(null==r)return r;if(e instanceof Function)return e(r);if(e instanceof Array){if(e=e[0],!(e instanceof Function&&r instanceof Array))return;for(var t=[],n=0;n<r.length;n++)t.push(e(r[n]));return t}}var n=new this;if(null==r)return n;var o=[];for(var u in e){var i=t(r[u],e[u]);void 0!==i&&(n[u]=i,o.push(u))}for(var u in this.$jsonMappings)if(!(o.indexOf(u)>-1)){var i=t(r[u],this.$jsonMappings[u]);void 0!==i&&(n[u]=i,o.push(u))}for(var u in r)o.indexOf(u)>-1||(n[u]=r[u]);return n};var exjs;!function(r){function e(r,e,n){var o,u=0,i={current:void 0,moveNext:function(){return o||(o=t(r,e,n)),i.current=void 0,!(u>=o.length)&&(i.current=o[u],u++,!0)}};return i}function t(r,e,t){t=t||function(r,e){return r===e};for(var o,u=[],i=[],c=r.getEnumerator();c.moveNext();){o=e(c.current);for(var a=-1,p=0,f=i.length;p<f;p++)if(t(o,i[p])){a=p;break}var s;a<0?(i.push(o),u.push(s=new n(o))):s=u[a],s._add(c.current)}return u}var n=function(r){function e(e){var t=r.call(this)||this;return t.key=e,t._arr=[],t.getEnumerator=function(){return t._arr.en().getEnumerator()},t}return __extends(e,r),e.prototype._add=function(r){this._arr.push(r)},e}(r.Enumerable);r.Enumerable.prototype.groupBy=function(t,n){var o=this,u=new r.Enumerable;return u.getEnumerator=function(){return e(o,t,n)},u},r.List&&(r.List.prototype.groupBy=r.Enumerable.prototype.groupBy)}(exjs||(exjs={}));var exjs;!function(r){function e(e,t,n){n=n||function(r,e){return r===e};var o,u={current:void 0,moveNext:function(){for(o||(o=r.en(e).distinct().getEnumerator()),u.current=void 0;o.moveNext();){for(var i=!1,c=t.getEnumerator();c.moveNext()&&!i;)i=n(o.current,c.current);if(i)return u.current=o.current,!0}return!1}};return u}r.Enumerable.prototype.intersect=function(t,n){var o=this,u=t instanceof Array?t.en():t,i=new r.Enumerable;return i.getEnumerator=function(){return e(o,u,n)},i},r.List&&(r.List.prototype.intersect=r.Enumerable.prototype.intersect)}(exjs||(exjs={}));var exjs;!function(r){function e(e,t,n,o,u,i){i=i||function(r,e){return r===e};var c,a,p=0,f={current:void 0,moveNext:function(){if(f.current=void 0,!c){if(c=e.getEnumerator(),!c.moveNext())return!1;a=r.en(t).toArray()}var s;do{for(;p<a.length;p++)if(s=a[p],i(n(c.current),o(s)))return p++,f.current=u(c.current,s),!0;p=0}while(c.moveNext());return!1}};return f}r.Enumerable.prototype.join=function(t,n,o,u,i){var c=this,a=t instanceof Array?t.en():t,p=new r.Enumerable;return p.getEnumerator=function(){return e(c,a,n,o,u,i)},p},r.List&&(r.List.prototype.join=r.Enumerable.prototype.join)}(exjs||(exjs={}));var exjs;!function(r){function e(){this.constructor=t}r.Enumerable.prototype.toList=function(){for(var r=new t,e=this.getEnumerator();e.moveNext();)r.push(e.current);return r};var t=function(r){function e(){return null!==r&&r.apply(this,arguments)||this}return __extends(e,r),e.prototype.toString=function(){throw new Error("Not implemented")},e.prototype.toLocaleString=function(){throw new Error("Not implemented")},e.prototype.pop=function(){throw new Error("Not implemented")},e.prototype.push=function(){for(var r=[],e=0;e<arguments.length;e++)r[e]=arguments[e];throw new Error("Not implemented")},e.prototype.shift=function(){throw new Error("Not implemented")},e.prototype.slice=function(r,e){throw new Error("Not implemented")},e.prototype.sort=function(r){throw new Error("Not implemented")},e.prototype.splice=function(){throw new Error("Not implemented")},e.prototype.unshift=function(){for(var r=[],e=0;e<arguments.length;e++)r[e]=arguments[e];throw new Error("Not implemented")},e.prototype.indexOf=function(r,e){throw new Error("Not implemented")},e.prototype.lastIndexOf=function(r,e){throw new Error("Not implemented")},e.prototype.every=function(r,e){throw new Error("Not implemented")},e.prototype.some=function(r,e){throw new Error("Not implemented")},e.prototype.forEach=function(r,e){throw new Error("Not implemented")},e.prototype.map=function(r,e){throw new Error("Not implemented")},e.prototype.filter=function(r,e){throw new Error("Not implemented")},e.prototype.reduce=function(r,e){throw new Error("Not implemented")},e.prototype.reduceRight=function(r,e){throw new Error("Not implemented")},e.prototype.remove=function(r){throw new Error("Not implemented")},e.prototype.removeWhere=function(r){throw new Error("Not implemented")},e}(r.Enumerable);r.List=t;for(var n in Array)Array.hasOwnProperty(n)&&(t[n]=Array[n]);e.prototype=Array.prototype,t.prototype=new e;for(var o in r.Enumerable.prototype)"getEnumerator"!==o&&(t.prototype[o]=r.Enumerable.prototype[o]);t.prototype.getEnumerator=function(){var r=this,e=r.length,t={moveNext:void 0,current:void 0},n=-1;return t.moveNext=function(){return n++,n>=e?(t.current=void 0,!1):(t.current=r[n],!0)},t},t.prototype.remove=function(r){return this.removeWhere(function(e){return e===r}).any()},t.prototype.removeWhere=function(r){for(var e,t=[],n=this.length-1;n>=0;n--)e=this[n],r(e,n)===!0&&(this.splice(n,1),t.push(e));return t.en().reverse()}}(exjs||(exjs={}));var exjs;!function(r){function e(r,e,n,o){return new t(r,e,n,o)}var t=function(e){function t(r,t,n,o){var u=e.call(this)||this;u.Source=r,o=o||function(r,e){return r>e?1:r<e?-1:0};var i=n===!0?-1:1;return u.Sorter=function(r,e){return i*o(t(r),t(e))},u}return __extends(t,e),t.prototype.getEnumerator=function(){var e,t=this.Source,n=this.Sorter,o=0,u={current:void 0,moveNext:function(){return e||(e=r.en(t).toArray(),e.sort(n)),u.current=void 0,!(o>=e.length)&&(u.current=e[o],o++,!0)}};return u},t.prototype.thenBy=function(r,e){return new n(this,r,!1,e)},t.prototype.thenByDescending=function(r,e){return new n(this,r,!0,e)},t}(r.Enumerable),n=function(r){function e(e,t,n,o){var u=r.call(this,e,t,n,o)||this,i=e.Sorter,c=u.Sorter;return u.Sorter=function(r,e){return i(r,e)||c(r,e)},u}return __extends(e,r),e}(t),o=r.Enumerable.prototype;o.orderBy=function(r,t){return e(this,r,!1,t)},o.orderByDescending=function(r,t){return e(this,r,!0,t)},r.List&&(r.List.prototype.orderBy=r.Enumerable.prototype.orderBy,r.List.prototype.orderByDescending=r.Enumerable.prototype.orderByDescending)}(exjs||(exjs={}));var exjs;!function(r){function e(r,e){var t,n,o=1,u={current:void 0,moveNext:function(){if(o<2){if(t=t||e.en().getEnumerator(),t.moveNext())return u.current=t.current,!0;o++}return n=n||r.getEnumerator(),n.moveNext()?(u.current=n.current,!0):(u.current=void 0,!1)}};return u}r.Enumerable.prototype.prepend=function(){for(var t=this,n=[],o=0;o<arguments.length;o++)n[o]=arguments[o];var u=new r.Enumerable;return u.getEnumerator=function(){return e(t,n)},u},r.List&&(r.List.prototype.prepend=r.Enumerable.prototype.prepend)}(exjs||(exjs={}));var exjs;!function(r){function e(r,e,t){var n=r-t,o={current:void 0,moveNext:function(){return n+=t,!(n>=e)&&(o.current=n,!0)}};return o}function t(t,n,o){if(t=t||0,n=n||0,t>n)throw new Error("Start cannot be greater than end.");null==o&&(o=1);var u=new r.Enumerable;return u.getEnumerator=function(){return e(t,n,o)},u}r.range=t}(exjs||(exjs={}));var exjs;!function(r){function e(e){var t,n=0,o={current:void 0,moveNext:function(){return t||(t=r.en(e).toArray(),n=t.length),n--,o.current=t[n],n>=0}};return o}r.Enumerable.prototype.reverse=function(){var t=this,n=new r.Enumerable;return n.getEnumerator=function(){return e(t)},n},r.List&&(r.List.prototype.reverse=r.Enumerable.prototype.reverse)}(exjs||(exjs={}));var exjs;!function(r){function e(r,e){if(e=e||0,0===e)return Math.round(r);var t=Math.pow(10,e);return Math.round(r*t)/t}r.round=e}(exjs||(exjs={}));var exjs;!function(r){function e(r,e){var t,n=0,o={current:void 0,moveNext:function(){return t||(t=r.getEnumerator()),!!t.moveNext()&&(o.current=e(t.current,n),n++,!0)}};return o}function t(e,t){var n,o,u={current:void 0,moveNext:function(){for(u.current=void 0,n||(n=e.getEnumerator());!o||!o.moveNext();){if(!n.moveNext())return!1;o=r.selectorEnumerator(t(n.current))}return u.current=o.current,!0}};return u}r.Enumerable.prototype.select=function(t){var n=this,o=new r.Enumerable;return o.getEnumerator=function(){return e(n,t)},o},r.Enumerable.prototype.selectMany=function(e){var n=this,o=new r.Enumerable;return o.getEnumerator=function(){return t(n,e)},o},r.List&&(r.List.prototype.select=r.Enumerable.prototype.select,r.List.prototype.selectMany=r.Enumerable.prototype.selectMany)}(exjs||(exjs={}));var exjs;!function(r){function e(r){return Array.isArray(r)?r.en().getEnumerator():null!=r&&"function"==typeof r.getEnumerator?r.getEnumerator():null}r.selectorEnumerator=e}(exjs||(exjs={}));var exjs;!function(r){function e(r,e){var t,n={current:void 0,moveNext:function(){if(!t){t=r.getEnumerator();for(var o=0;o<e;o++)if(!t.moveNext())return!1}return t.moveNext()?(n.current=t.current,!0):(n.current=void 0,!1)}};return n}function t(r,e){var t,n={current:void 0,moveNext:function(){if(!t){t=r.getEnumerator();for(var o=0;t.moveNext();o++)if(!e(n.current=t.current,o))return!0;return n.current=void 0,!1}return t.moveNext()?(n.current=t.current,!0):(n.current=void 0,!1)}};return n}r.Enumerable.prototype.skip=function(t){var n=this,o=new r.Enumerable;return o.getEnumerator=function(){return e(n,t)},o},r.Enumerable.prototype.skipWhile=function(e){var n=this,o=new r.Enumerable;return o.getEnumerator=function(){return t(n,e)},o},r.List&&(r.List.prototype.skip=r.Enumerable.prototype.skip,r.List.prototype.skipWhile=r.Enumerable.prototype.skipWhile)}(exjs||(exjs={}));var exjs;!function(r){function e(r,e){var t,n=0,o={current:void 0,moveNext:function(){return t||(t=r.getEnumerator()),n++,!(n>e)&&(o.current=void 0,!!t.moveNext()&&(o.current=t.current,!0))}};return o}function t(r,e){var t,n=0,o={current:void 0,moveNext:function(){return t||(t=r.getEnumerator()),t.moveNext()&&e(t.current,n)?(n++,o.current=t.current,!0):(o.current=void 0,!1)}};return o}r.Enumerable.prototype.take=function(t){var n=this,o=new r.Enumerable;return o.getEnumerator=function(){return e(n,t)},o},r.Enumerable.prototype.takeWhile=function(e){var n=this,o=new r.Enumerable;return o.getEnumerator=function(){return t(n,e)},o},r.List&&(r.List.prototype.take=r.Enumerable.prototype.take,r.List.prototype.takeWhile=r.Enumerable.prototype.takeWhile)}(exjs||(exjs={}));var exjs;!function(r){function e(e,t){var n,o=!1,u=[],i={current:void 0,moveNext:function(){if(o){if(null==n)return!1;u.push(n),n=r.selectorEnumerator(t(i.current))}else n=e.getEnumerator(),o=!0;for(;!(n&&n.moveNext()||u.length<1);)n=u.pop();return i.current=null==n?void 0:n.current,void 0!==i.current}};return i}function t(e,t,n){var o,u=!1,i=[],c={current:void 0,moveNext:function(){if(u){if(null==o)return!1;i.push(o),o=r.selectorEnumerator(t(c.current))}else o=e.getEnumerator(),u=!0;do{for(;!(o&&o.moveNext()||i.length<1);)o=i.pop();c.current=null==o?void 0:o.current}while(n(c.current));return void 0!==c.current}};return c}r.Enumerable.prototype.traverse=function(t){var n=this,o=new r.Enumerable;return o.getEnumerator=function(){return e(n,t)},o},r.Enumerable.prototype.traverseUnique=function(e,n){var o=this,u=[],i=new r.Enumerable;return n?i.getEnumerator=function(){return t(o,e,function(r){return!!u.some(function(e){return n(r,e)})||(u.push(r),!1)})}:i.getEnumerator=function(){return t(o,e,function(r){return u.indexOf(r)>-1||(u.push(r),!1)})},i},r.List&&(r.List.prototype.traverse=r.Enumerable.prototype.traverse,r.List.prototype.traverseUnique=r.Enumerable.prototype.traverseUnique)}(exjs||(exjs={}));var exjs;!function(r){function e(e,t,n){n=n||function(r,e){return r===e};var o,u,i=[],c={current:void 0,moveNext:function(){if(o||(o=r.en(e).distinct().getEnumerator()),c.current=void 0,!u&&o.moveNext())return i.push(c.current=o.current),!0;for(u=u||r.en(t).distinct().getEnumerator();u.moveNext();){for(var a=0,p=!1,f=i.length;a<f&&!p;a++)p=n(i[a],u.current);if(!p)return c.current=u.current,!0}return!1}};return c}r.Enumerable.prototype.union=function(t,n){var o=this,u=t instanceof Array?t.en():t,i=new r.Enumerable;return i.getEnumerator=function(){return e(o,u,n)},i},r.List&&(r.List.prototype.union=r.Enumerable.prototype.union)}(exjs||(exjs={}));var exjs;!function(r){function e(r,e){var t,n={current:void 0,moveNext:function(){t||(t=r.getEnumerator());for(var o;t.moveNext();)if(e(o=t.current))return n.current=o,!0;return!1}};return n}r.Enumerable.prototype.where=function(t){var n=this,o=new r.Enumerable;return o.getEnumerator=function(){return e(n,t)},o},r.List&&(r.List.prototype.where=r.Enumerable.prototype.where)}(exjs||(exjs={}));var exjs;!function(r){function e(e){var n=new r.Enumerable;return n.getEnumerator=function(){return t(e)},n}function t(r){var e=r.getEnumerator(),t={current:void 0,moveNext:void 0};return t.moveNext=function(){return e.moveNext()?(t.current=e.current,!0):(t.current=void 0,!1)},t}r.en=e}(exjs||(exjs={}));var ex=exjs.en,exjs;!function(r){function e(r,e,t){var n,o,u={current:void 0,moveNext:function(){return n||(n=r.getEnumerator()),o||(o=e.getEnumerator()),u.current=void 0,!(!n.moveNext()||!o.moveNext())&&(u.current=t(n.current,o.current),!0)}};return u}r.Enumerable.prototype.zip=function(t,n){var o=this,u=t instanceof Array?t.en():t,i=new r.Enumerable;return i.getEnumerator=function(){return e(o,u,n)},i},r.List&&(r.List.prototype.zip=r.Enumerable.prototype.zip)}(exjs||(exjs={}));
 //# sourceMappingURL=ex.es3.min.js.map
 
-// http-status-codes v0.0.5 https://github.com/edsilv/http-status-codes
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.httpStatusCodes = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 var HTTPStatusCode;
@@ -74,11 +73,10 @@ var HTTPStatusCode;
 });
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.manifesto = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
-///<reference path="../node_modules/typescript/lib/lib.es6.d.ts"/>   
 
 var Manifesto;
 (function (Manifesto) {
-    var StringValue = (function () {
+    var StringValue = /** @class */ (function () {
         function StringValue(value) {
             this.value = "";
             if (value) {
@@ -105,7 +103,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var AnnotationMotivation = (function (_super) {
+    var AnnotationMotivation = /** @class */ (function (_super) {
         __extends(AnnotationMotivation, _super);
         function AnnotationMotivation() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -184,54 +182,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var ElementType = (function (_super) {
-        __extends(ElementType, _super);
-        function ElementType() {
-            return _super !== null && _super.apply(this, arguments) || this;
-        }
-        // todo: use getters when ES3 target is no longer required.
-        ElementType.prototype.canvas = function () {
-            return new ElementType(ElementType.CANVAS.toString());
-        };
-        ElementType.prototype.document = function () {
-            return new ElementType(ElementType.DOCUMENT.toString());
-        };
-        ElementType.prototype.image = function () {
-            return new ElementType(ElementType.IMAGE.toString());
-        };
-        ElementType.prototype.movingimage = function () {
-            return new ElementType(ElementType.MOVINGIMAGE.toString());
-        };
-        ElementType.prototype.physicalobject = function () {
-            return new ElementType(ElementType.PHYSICALOBJECT.toString());
-        };
-        ElementType.prototype.sound = function () {
-            return new ElementType(ElementType.SOUND.toString());
-        };
-        ElementType.CANVAS = new ElementType("sc:canvas");
-        ElementType.DOCUMENT = new ElementType("foaf:document");
-        ElementType.IMAGE = new ElementType("dcTypes:image");
-        ElementType.MOVINGIMAGE = new ElementType("dctypes:movingimage");
-        ElementType.PHYSICALOBJECT = new ElementType("dctypes:physicalobject");
-        ElementType.SOUND = new ElementType("dctypes:sound");
-        return ElementType;
-    }(Manifesto.StringValue));
-    Manifesto.ElementType = ElementType;
-})(Manifesto || (Manifesto = {}));
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var Manifesto;
-(function (Manifesto) {
-    var IIIFResourceType = (function (_super) {
+    var IIIFResourceType = /** @class */ (function (_super) {
         __extends(IIIFResourceType, _super);
         function IIIFResourceType() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -278,7 +229,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var ManifestType = (function (_super) {
+    var ManifestType = /** @class */ (function (_super) {
         __extends(ManifestType, _super);
         function ManifestType() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -313,7 +264,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var RenderingFormat = (function (_super) {
+    var RenderingFormat = /** @class */ (function (_super) {
         __extends(RenderingFormat, _super);
         function RenderingFormat() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -348,7 +299,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var MediaType = (function (_super) {
+    var MediaType = /** @class */ (function (_super) {
         __extends(MediaType, _super);
         function MediaType() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -391,23 +342,43 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var ResourceType = (function (_super) {
+    var ResourceType = /** @class */ (function (_super) {
         __extends(ResourceType, _super);
         function ResourceType() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
         // todo: use getters when ES3 target is no longer required.
+        ResourceType.prototype.canvas = function () {
+            return new ResourceType(ResourceType.CANVAS.toString());
+        };
         ResourceType.prototype.choice = function () {
             return new ResourceType(ResourceType.CHOICE.toString());
+        };
+        ResourceType.prototype.document = function () {
+            return new ResourceType(ResourceType.DOCUMENT.toString());
         };
         ResourceType.prototype.image = function () {
             return new ResourceType(ResourceType.IMAGE.toString());
         };
+        ResourceType.prototype.movingimage = function () {
+            return new ResourceType(ResourceType.MOVINGIMAGE.toString());
+        };
+        ResourceType.prototype.physicalobject = function () {
+            return new ResourceType(ResourceType.PHYSICALOBJECT.toString());
+        };
+        ResourceType.prototype.sound = function () {
+            return new ResourceType(ResourceType.SOUND.toString());
+        };
         ResourceType.prototype.text = function () {
             return new ResourceType(ResourceType.TEXT.toString());
         };
+        ResourceType.CANVAS = new ResourceType("canvas");
         ResourceType.CHOICE = new ResourceType("choice");
-        ResourceType.IMAGE = new ResourceType("dctypes:image");
+        ResourceType.DOCUMENT = new ResourceType("document");
+        ResourceType.IMAGE = new ResourceType("image");
+        ResourceType.MOVINGIMAGE = new ResourceType("movingimage");
+        ResourceType.PHYSICALOBJECT = new ResourceType("physicalobject");
+        ResourceType.SOUND = new ResourceType("sound");
         ResourceType.TEXT = new ResourceType("textualbody");
         return ResourceType;
     }(Manifesto.StringValue));
@@ -426,7 +397,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var ServiceProfile = (function (_super) {
+    var ServiceProfile = /** @class */ (function (_super) {
         __extends(ServiceProfile, _super);
         function ServiceProfile() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -590,7 +561,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var ViewingDirection = (function (_super) {
+    var ViewingDirection = /** @class */ (function (_super) {
         __extends(ViewingDirection, _super);
         function ViewingDirection() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -629,7 +600,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var ViewingHint = (function (_super) {
+    var ViewingHint = /** @class */ (function (_super) {
         __extends(ViewingHint, _super);
         function ViewingHint() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -666,7 +637,7 @@ var Manifesto;
 
 var Manifesto;
 (function (Manifesto) {
-    var JSONLDResource = (function () {
+    var JSONLDResource = /** @class */ (function () {
         function JSONLDResource(jsonld) {
             this.__jsonld = jsonld;
             this.context = this.getProperty('context');
@@ -700,7 +671,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var ManifestResource = (function (_super) {
+    var ManifestResource = /** @class */ (function (_super) {
         __extends(ManifestResource, _super);
         function ManifestResource(jsonld, options) {
             var _this = _super.call(this, jsonld) || this;
@@ -769,6 +740,16 @@ var Manifesto;
         ManifestResource.prototype.getServices = function () {
             return Manifesto.Utils.getServices(this);
         };
+        ManifestResource.prototype.getThumbnail = function () {
+            var thumbnail = this.getProperty('thumbnail');
+            if (Array.isArray(thumbnail)) {
+                thumbnail = thumbnail[0];
+            }
+            if (thumbnail) {
+                return new Manifesto.Thumbnail(thumbnail, this.options);
+            }
+            return null;
+        };
         ManifestResource.prototype.isAnnotation = function () {
             return this.getIIIFResourceType().toString() === Manifesto.IIIFResourceType.ANNOTATION.toString();
         };
@@ -804,12 +785,19 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var Element = (function (_super) {
-        __extends(Element, _super);
-        function Element(jsonld, options) {
+    var Resource = /** @class */ (function (_super) {
+        __extends(Resource, _super);
+        function Resource(jsonld, options) {
             return _super.call(this, jsonld, options) || this;
         }
-        Element.prototype.getResources = function () {
+        Resource.prototype.getFormat = function () {
+            var format = this.getProperty('format');
+            if (format) {
+                return new Manifesto.MediaType(format.toLowerCase());
+            }
+            return null;
+        };
+        Resource.prototype.getResources = function () {
             var resources = [];
             if (!this.__jsonld.resources)
                 return resources;
@@ -820,12 +808,34 @@ var Manifesto;
             }
             return resources;
         };
-        Element.prototype.getType = function () {
-            return new Manifesto.ElementType(this.getProperty('type'));
+        Resource.prototype.getType = function () {
+            var type = this.getProperty('type');
+            if (type) {
+                return new Manifesto.ResourceType(Manifesto.Utils.normaliseType(type));
+            }
+            return null;
         };
-        return Element;
+        Resource.prototype.getWidth = function () {
+            return this.getProperty('width');
+        };
+        Resource.prototype.getHeight = function () {
+            return this.getProperty('height');
+        };
+        Resource.prototype.getMaxWidth = function () {
+            return this.getProperty('maxWidth');
+        };
+        Resource.prototype.getMaxHeight = function () {
+            var maxHeight = this.getProperty('maxHeight');
+            // if a maxHeight hasn't been specified, default to maxWidth.
+            // maxWidth in essence becomes maxEdge
+            if (!maxHeight) {
+                return this.getMaxWidth();
+            }
+            return null;
+        };
+        return Resource;
     }(Manifesto.ManifestResource));
-    Manifesto.Element = Element;
+    Manifesto.Resource = Resource;
 })(Manifesto || (Manifesto = {}));
 
 var __extends = (this && this.__extends) || (function () {
@@ -840,7 +850,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var Canvas = (function (_super) {
+    var Canvas = /** @class */ (function (_super) {
         __extends(Canvas, _super);
         function Canvas(jsonld, options) {
             return _super.call(this, jsonld, options) || this;
@@ -882,11 +892,25 @@ var Manifesto;
                         id = service.id;
                         quality = Manifesto.Utils.getImageQuality(service.getProfile());
                     }
+                    else if (width === resource.getWidth()) {
+                        // if the passed width is the same as the resource width
+                        // i.e. not looking for a thumbnail
+                        // return the full size image.
+                        // used for download options when loading static images.
+                        return resource.id;
+                    }
                 }
-                // todo: this is not compatible and should be moved to getThumbUri
+                // todo: should this be moved to getThumbUri?
                 if (!id) {
-                    return "undefined" == typeof this.__jsonld.thumbnail
-                        ? null : this.__jsonld.thumbnail;
+                    var thumbnail = this.getProperty('thumbnail');
+                    if (thumbnail) {
+                        if (typeof (thumbnail) === 'string') {
+                            return thumbnail;
+                        }
+                        else {
+                            return thumbnail['@id'];
+                        }
+                    }
                 }
             }
             size = width + ',';
@@ -945,6 +969,23 @@ var Manifesto;
         Canvas.prototype.getIndex = function () {
             return this.getProperty('index');
         };
+        Canvas.prototype.getOtherContent = function () {
+            var _this = this;
+            var otherContent = Array.isArray(this.getProperty('otherContent')) ?
+                this.getProperty('otherContent') :
+                [this.getProperty('otherContent')];
+            var canonicalComparison = function (typeA, typeB) {
+                if (typeof typeA !== 'string' || typeof typeB !== 'string') {
+                    return false;
+                }
+                return typeA.toLowerCase() === typeA.toLowerCase();
+            };
+            var otherPromises = otherContent
+                .filter(function (otherContent) { return otherContent && canonicalComparison(otherContent['@type'], 'sc:AnnotationList'); })
+                .map(function (annotationList, i) { return ((new Manifesto.AnnotationList(annotationList['label'] || "Annotation list " + i, annotationList, _this.options))); })
+                .map(function (annotationList) { return annotationList.load(); });
+            return Promise.all(otherPromises);
+        };
         // Prefer thumbnail service to image service if supplied and if
         // the thumbnail service can provide a satisfactory size +/- x pixels.
         // this is used to get thumb URIs *before* the info.json has been requested
@@ -984,7 +1025,7 @@ var Manifesto;
             return this.getProperty('height');
         };
         return Canvas;
-    }(Manifesto.Element));
+    }(Manifesto.Resource));
     Manifesto.Canvas = Canvas;
 })(Manifesto || (Manifesto = {}));
 
@@ -1000,7 +1041,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var IIIFResource = (function (_super) {
+    var IIIFResource = /** @class */ (function (_super) {
         __extends(IIIFResource, _super);
         function IIIFResource(jsonld, options) {
             var _this = _super.call(this, jsonld, options) || this;
@@ -1059,6 +1100,9 @@ var Manifesto;
             }
             return [];
         };
+        IIIFResource.prototype.getDefaultLabel = function () {
+            return Manifesto.TranslationCollection.getValue(this.getLabel());
+        };
         IIIFResource.prototype.getDefaultTree = function () {
             this.defaultTree = new Manifesto.TreeNode('root');
             this.defaultTree.data = this;
@@ -1116,7 +1160,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var Manifest = (function (_super) {
+    var Manifest = /** @class */ (function (_super) {
         __extends(Manifest, _super);
         function Manifest(jsonld, options) {
             var _this = _super.call(this, jsonld, options) || this;
@@ -1135,7 +1179,7 @@ var Manifesto;
         }
         Manifest.prototype.getDefaultTree = function () {
             _super.prototype.getDefaultTree.call(this);
-            this.defaultTree.data.type = Manifesto.TreeNodeType.MANIFEST.toString();
+            this.defaultTree.data.type = Manifesto.Utils.normaliseType(Manifesto.TreeNodeType.MANIFEST.toString());
             if (!this.isLoaded) {
                 return this.defaultTree;
             }
@@ -1332,7 +1376,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var Collection = (function (_super) {
+    var Collection = /** @class */ (function (_super) {
         __extends(Collection, _super);
         function Collection(jsonld, options) {
             var _this = _super.call(this, jsonld, options) || this;
@@ -1355,13 +1399,21 @@ var Manifesto;
             return this._manifests = this.members.en().where(function (m) { return m.isManifest(); }).toArray();
         };
         Collection.prototype.getCollectionByIndex = function (collectionIndex) {
-            var collection = this.getCollections()[collectionIndex];
+            var collections = this.getCollections();
+            if (!collections[collectionIndex]) {
+                throw new Error("Collection index is outside range of array");
+            }
+            var collection = collections[collectionIndex];
             collection.options.index = collectionIndex;
             // id for collection MUST be dereferenceable
             return collection.load();
         };
         Collection.prototype.getManifestByIndex = function (manifestIndex) {
-            var manifest = this.getManifests()[manifestIndex];
+            var manifests = this.getManifests();
+            if (!manifests[manifestIndex]) {
+                throw new Error("Manifest index is outside range of array");
+            }
+            var manifest = manifests[manifestIndex];
             manifest.options.index = manifestIndex;
             return manifest.load();
         };
@@ -1379,7 +1431,7 @@ var Manifesto;
          */
         Collection.prototype.getDefaultTree = function () {
             _super.prototype.getDefaultTree.call(this);
-            this.defaultTree.data.type = Manifesto.TreeNodeType.COLLECTION.toString();
+            this.defaultTree.data.type = Manifesto.Utils.normaliseType(Manifesto.TreeNodeType.COLLECTION.toString());
             this._parseManifests(this);
             this._parseCollections(this);
             Manifesto.Utils.generateTreeNodeIds(this.defaultTree);
@@ -1393,7 +1445,7 @@ var Manifesto;
                     tree.label = manifest.parentLabel || Manifesto.TranslationCollection.getValue(manifest.getLabel(), this.options.locale) || 'manifest ' + (i + 1);
                     tree.navDate = manifest.getNavDate();
                     tree.data.id = manifest.id;
-                    tree.data.type = Manifesto.TreeNodeType.MANIFEST.toString();
+                    tree.data.type = Manifesto.Utils.normaliseType(Manifesto.TreeNodeType.MANIFEST.toString());
                     parentCollection.defaultTree.addNode(tree);
                 }
             }
@@ -1406,7 +1458,7 @@ var Manifesto;
                     tree.label = collection.parentLabel || Manifesto.TranslationCollection.getValue(collection.getLabel(), this.options.locale) || 'collection ' + (i + 1);
                     tree.navDate = collection.getNavDate();
                     tree.data.id = collection.id;
-                    tree.data.type = Manifesto.TreeNodeType.COLLECTION.toString();
+                    tree.data.type = Manifesto.Utils.normaliseType(Manifesto.TreeNodeType.COLLECTION.toString());
                     parentCollection.defaultTree.addNode(tree);
                     this._parseCollections(collection);
                 }
@@ -1429,7 +1481,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var Range = (function (_super) {
+    var Range = /** @class */ (function (_super) {
         __extends(Range, _super);
         function Range(jsonld, options) {
             var _this = _super.call(this, jsonld, options) || this;
@@ -1489,7 +1541,7 @@ var Manifesto;
         Range.prototype._parseTreeNode = function (node, range) {
             node.label = Manifesto.TranslationCollection.getValue(range.getLabel(), this.options.locale);
             node.data = range;
-            node.data.type = Manifesto.TreeNodeType.RANGE.toString();
+            node.data.type = Manifesto.Utils.normaliseType(Manifesto.TreeNodeType.RANGE.toString());
             range.treeNode = node;
             var ranges = range.getRanges();
             if (ranges && ranges.length) {
@@ -1518,7 +1570,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var Rendering = (function (_super) {
+    var Rendering = /** @class */ (function (_super) {
         __extends(Rendering, _super);
         function Rendering(jsonld, options) {
             return _super.call(this, jsonld, options) || this;
@@ -1543,17 +1595,18 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var Sequence = (function (_super) {
+    var Sequence = /** @class */ (function (_super) {
         __extends(Sequence, _super);
         function Sequence(jsonld, options) {
             var _this = _super.call(this, jsonld, options) || this;
-            _this.canvases = null;
+            _this._canvases = null;
+            _this._thumbnails = null;
             return _this;
         }
         Sequence.prototype.getCanvases = function () {
-            if (this.canvases != null)
-                return this.canvases;
-            this.canvases = [];
+            if (this._canvases != null)
+                return this._canvases;
+            this._canvases = [];
             // if IxIF elements are present, use them. Otherwise fall back to IIIF canvases.
             var children = this.__jsonld.elements || this.__jsonld.canvases;
             if (children) {
@@ -1561,10 +1614,10 @@ var Manifesto;
                     var c = children[i];
                     var canvas = new Manifesto.Canvas(c, this.options);
                     canvas.index = i;
-                    this.canvases.push(canvas);
+                    this._canvases.push(canvas);
                 }
             }
-            return this.canvases;
+            return this._canvases;
         };
         Sequence.prototype.getCanvasById = function (id) {
             for (var i = 0; i < this.getTotalCanvases(); i++) {
@@ -1708,14 +1761,30 @@ var Manifesto;
             // default to first canvas.
             return 0;
         };
+        // todo: deprecate
         Sequence.prototype.getThumbs = function (width, height) {
+            console.warn('getThumbs will be deprecated, use getThumbnails instead');
             var thumbs = [];
             var totalCanvases = this.getTotalCanvases();
             for (var i = 0; i < totalCanvases; i++) {
                 var canvas = this.getCanvasByIndex(i);
-                thumbs.push(new Manifesto.Thumb(width, canvas));
+                var thumb = new Manifesto.Thumb(width, canvas);
+                thumbs.push(thumb);
             }
             return thumbs;
+        };
+        Sequence.prototype.getThumbnails = function () {
+            if (this._thumbnails != null)
+                return this._thumbnails;
+            this._thumbnails = [];
+            var canvases = this.getCanvases();
+            for (var i = 0; i < canvases.length; i++) {
+                var thumbnail = canvases[i].getThumbnail();
+                if (thumbnail) {
+                    this._thumbnails.push(thumbnail);
+                }
+            }
+            return this._thumbnails;
         };
         Sequence.prototype.getStartCanvas = function () {
             return this.getProperty('startCanvas');
@@ -1764,7 +1833,7 @@ var Manifesto;
 
 var Manifesto;
 (function (Manifesto) {
-    var Deserialiser = (function () {
+    var Deserialiser = /** @class */ (function () {
         function Deserialiser() {
         }
         Deserialiser.parse = function (manifest, options) {
@@ -1895,7 +1964,7 @@ var Manifesto;
         return Deserialiser;
     }());
     Manifesto.Deserialiser = Deserialiser;
-    var Serialiser = (function () {
+    var Serialiser = /** @class */ (function () {
         function Serialiser() {
         }
         Serialiser.serialise = function (manifest) {
@@ -1919,7 +1988,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var Service = (function (_super) {
+    var Service = /** @class */ (function (_super) {
         __extends(Service, _super);
         function Service(jsonld, options) {
             return _super.call(this, jsonld, options) || this;
@@ -1968,7 +2037,9 @@ var Manifesto;
 
 var Manifesto;
 (function (Manifesto) {
-    var Thumb = (function () {
+    // todo: deprecate
+    // this is used by Sequence.getThumbs
+    var Thumb = /** @class */ (function () {
         function Thumb(width, canvas) {
             this.data = canvas;
             this.index = canvas.index;
@@ -1991,7 +2062,7 @@ var Manifesto;
 
 var Manifesto;
 (function (Manifesto) {
-    var TreeNode = (function () {
+    var TreeNode = /** @class */ (function () {
         function TreeNode(label, data) {
             this.label = label;
             this.data = data || {};
@@ -2002,13 +2073,13 @@ var Manifesto;
             node.parentNode = this;
         };
         TreeNode.prototype.isCollection = function () {
-            return this.data.type === Manifesto.TreeNodeType.COLLECTION.toString();
+            return this.data.type === Manifesto.Utils.normaliseType(Manifesto.TreeNodeType.COLLECTION.toString());
         };
         TreeNode.prototype.isManifest = function () {
-            return this.data.type === Manifesto.TreeNodeType.MANIFEST.toString();
+            return this.data.type === Manifesto.Utils.normaliseType(Manifesto.TreeNodeType.MANIFEST.toString());
         };
         TreeNode.prototype.isRange = function () {
-            return this.data.type === Manifesto.TreeNodeType.RANGE.toString();
+            return this.data.type === Manifesto.Utils.normaliseType(Manifesto.TreeNodeType.RANGE.toString());
         };
         return TreeNode;
     }());
@@ -2027,7 +2098,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var TreeNodeType = (function (_super) {
+    var TreeNodeType = /** @class */ (function (_super) {
         __extends(TreeNodeType, _super);
         function TreeNodeType() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -2042,9 +2113,9 @@ var Manifesto;
         TreeNodeType.prototype.range = function () {
             return new TreeNodeType(TreeNodeType.RANGE.toString());
         };
-        TreeNodeType.COLLECTION = new TreeNodeType("sc:collection");
-        TreeNodeType.MANIFEST = new TreeNodeType("sc:manifest");
-        TreeNodeType.RANGE = new TreeNodeType("sc:range");
+        TreeNodeType.COLLECTION = new TreeNodeType("collection");
+        TreeNodeType.MANIFEST = new TreeNodeType("manifest");
+        TreeNodeType.RANGE = new TreeNodeType("range");
         return TreeNodeType;
     }(Manifesto.StringValue));
     Manifesto.TreeNodeType = TreeNodeType;
@@ -2090,7 +2161,7 @@ var https = require("https");
 var url = require("url");
 var Manifesto;
 (function (Manifesto) {
-    var Utils = (function () {
+    var Utils = /** @class */ (function () {
         function Utils() {
         }
         Utils.getMediaType = function (type) {
@@ -2762,7 +2833,7 @@ var Manifesto;
 
 var Manifesto;
 (function (Manifesto) {
-    var MetadataItem = (function () {
+    var MetadataItem = /** @class */ (function () {
         function MetadataItem(defaultLocale) {
             this.defaultLocale = defaultLocale;
         }
@@ -2812,7 +2883,7 @@ var Manifesto;
 
 var Manifesto;
 (function (Manifesto) {
-    var Translation = (function () {
+    var Translation = /** @class */ (function () {
         function Translation(value, locale) {
             this.value = value;
             this.locale = locale;
@@ -2834,7 +2905,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var TranslationCollection = (function (_super) {
+    var TranslationCollection = /** @class */ (function (_super) {
         __extends(TranslationCollection, _super);
         function TranslationCollection() {
             return _super !== null && _super.apply(this, arguments) || this;
@@ -2891,7 +2962,7 @@ var Manifesto;
 
 var Manifesto;
 (function (Manifesto) {
-    var Size = (function () {
+    var Size = /** @class */ (function () {
         function Size(width, height) {
             this.width = width;
             this.height = height;
@@ -2901,9 +2972,9 @@ var Manifesto;
     Manifesto.Size = Size;
 })(Manifesto || (Manifesto = {}));
 
+/// <reference types="http-status-codes" />
 global.manifesto = global.Manifesto = module.exports = {
     AnnotationMotivation: new Manifesto.AnnotationMotivation(),
-    ElementType: new Manifesto.ElementType(),
     IIIFResourceType: new Manifesto.IIIFResourceType(),
     ManifestType: new Manifesto.ManifestType(),
     MediaType: new Manifesto.MediaType(),
@@ -2945,7 +3016,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var Annotation = (function (_super) {
+    var Annotation = /** @class */ (function (_super) {
         __extends(Annotation, _super);
         function Annotation(jsonld, options) {
             return _super.call(this, jsonld, options) || this;
@@ -2953,8 +3024,23 @@ var Manifesto;
         Annotation.prototype.getBody = function () {
             var bodies = [];
             var body = this.getProperty('body');
+            // todo: make this a generic "property that can be an object or array enumerator" util
             if (body) {
-                if (body.items) {
+                if (Array.isArray(body)) {
+                    for (var i = 0; i < body.length; i++) {
+                        var b = body[i];
+                        if (b.items) {
+                            for (var i_1 = 0; i_1 < b.items.length; i_1++) {
+                                var c = b.items[i_1];
+                                bodies.push(new Manifesto.AnnotationBody(c, this.options));
+                            }
+                        }
+                        else {
+                            bodies.push(new Manifesto.AnnotationBody(b, this.options));
+                        }
+                    }
+                }
+                else if (body.items) {
                     for (var i = 0; i < body.items.length; i++) {
                         var b = body.items[i];
                         bodies.push(new Manifesto.AnnotationBody(b, this.options));
@@ -3000,7 +3086,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var AnnotationBody = (function (_super) {
+    var AnnotationBody = /** @class */ (function (_super) {
         __extends(AnnotationBody, _super);
         function AnnotationBody(jsonld, options) {
             return _super.call(this, jsonld, options) || this;
@@ -3015,7 +3101,7 @@ var Manifesto;
         AnnotationBody.prototype.getType = function () {
             var type = this.getProperty('type');
             if (type) {
-                return new Manifesto.ResourceType(type.toLowerCase());
+                return new Manifesto.ResourceType(Manifesto.Utils.normaliseType(this.getProperty('type')));
             }
             return null;
         };
@@ -3036,7 +3122,64 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var AnnotationPage = (function (_super) {
+    var AnnotationList = /** @class */ (function (_super) {
+        __extends(AnnotationList, _super);
+        function AnnotationList(label, jsonld, options) {
+            var _this = _super.call(this, jsonld) || this;
+            _this.label = label;
+            _this.options = options;
+            return _this;
+        }
+        AnnotationList.prototype.getIIIFResourceType = function () {
+            return new Manifesto.IIIFResourceType(Manifesto.Utils.normaliseType(this.getProperty('type')));
+        };
+        AnnotationList.prototype.getLabel = function () {
+            return this.label;
+        };
+        AnnotationList.prototype.getResources = function () {
+            var _this = this;
+            var resources = this.getProperty('resources');
+            return resources.map(function (resource) { return new Manifesto.Annotation(resource, _this.options); });
+        };
+        AnnotationList.prototype.load = function () {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                if (_this.isLoaded) {
+                    resolve(_this);
+                }
+                else {
+                    var id = _this.__jsonld.id;
+                    if (!id) {
+                        id = _this.__jsonld['@id'];
+                    }
+                    Manifesto.Utils.loadResource(id).then(function (data) {
+                        _this.__jsonld = JSON.parse(data);
+                        _this.context = _this.getProperty('context');
+                        _this.id = _this.getProperty('id');
+                        _this.isLoaded = true;
+                        resolve(_this);
+                    }).catch(reject);
+                }
+            });
+        };
+        return AnnotationList;
+    }(Manifesto.JSONLDResource));
+    Manifesto.AnnotationList = AnnotationList;
+})(Manifesto || (Manifesto = {}));
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var Manifesto;
+(function (Manifesto) {
+    var AnnotationPage = /** @class */ (function (_super) {
         __extends(AnnotationPage, _super);
         function AnnotationPage(jsonld, options) {
             return _super.call(this, jsonld, options) || this;
@@ -3069,6 +3212,10 @@ var Manifesto;
 
 
 
+
+
+
+
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -3081,46 +3228,14 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Manifesto;
 (function (Manifesto) {
-    var Resource = (function (_super) {
-        __extends(Resource, _super);
-        function Resource(jsonld, options) {
+    var Thumbnail = /** @class */ (function (_super) {
+        __extends(Thumbnail, _super);
+        function Thumbnail(jsonld, options) {
             return _super.call(this, jsonld, options) || this;
         }
-        Resource.prototype.getFormat = function () {
-            var format = this.getProperty('format');
-            if (format) {
-                return new Manifesto.MediaType(format.toLowerCase());
-            }
-            return null;
-        };
-        Resource.prototype.getType = function () {
-            var type = this.getProperty('type');
-            if (type) {
-                return new Manifesto.ResourceType(type.toLowerCase());
-            }
-            return null;
-        };
-        Resource.prototype.getWidth = function () {
-            return this.getProperty('width');
-        };
-        Resource.prototype.getHeight = function () {
-            return this.getProperty('height');
-        };
-        Resource.prototype.getMaxWidth = function () {
-            return this.getProperty('maxWidth');
-        };
-        Resource.prototype.getMaxHeight = function () {
-            var maxHeight = this.getProperty('maxHeight');
-            // if a maxHeight hasn't been specified, default to maxWidth.
-            // maxWidth in essence becomes maxEdge
-            if (!maxHeight) {
-                return this.getMaxWidth();
-            }
-            return null;
-        };
-        return Resource;
-    }(Manifesto.ManifestResource));
-    Manifesto.Resource = Resource;
+        return Thumbnail;
+    }(Manifesto.Resource));
+    Manifesto.Thumbnail = Thumbnail;
 })(Manifesto || (Manifesto = {}));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -10710,5 +10825,5 @@ function extend() {
 
 },{}]},{},[1])(1)
 });
-!function(f){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=f();else if("function"==typeof define&&define.amd)define([],f);else{var g;g="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,g.manifold=f()}}(function(){return function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a="function"==typeof require&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}for(var i="function"==typeof require&&require,o=0;o<r.length;o++)s(r[o]);return s}({1:[function(require,module,exports){(function(global){var Manifold;!function(Manifold){var StringValue=function(){function StringValue(value){this.value="",value&&(this.value=value.toLowerCase())}return StringValue.prototype.toString=function(){return this.value},StringValue}();Manifold.StringValue=StringValue}(Manifold||(Manifold={}));var Manifold,__extends=this&&this.__extends||function(){var extendStatics=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(d,b){d.__proto__=b}||function(d,b){for(var p in b)b.hasOwnProperty(p)&&(d[p]=b[p])};return function(d,b){function __(){this.constructor=d}extendStatics(d,b),d.prototype=null===b?Object.create(b):(__.prototype=b.prototype,new __)}}();!function(Manifold){var TreeSortType=function(_super){function TreeSortType(){return null!==_super&&_super.apply(this,arguments)||this}return __extends(TreeSortType,_super),TreeSortType.prototype.date=function(){return new TreeSortType(TreeSortType.DATE.toString())},TreeSortType.prototype.none=function(){return new TreeSortType(TreeSortType.NONE.toString())},TreeSortType.DATE=new TreeSortType("date"),TreeSortType.NONE=new TreeSortType("none"),TreeSortType}(Manifold.StringValue);Manifold.TreeSortType=TreeSortType}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var AnnotationGroup=function(){function AnnotationGroup(resource,canvasIndex){this.rects=[],this.canvasIndex=canvasIndex,this.addRect(resource)}return AnnotationGroup.prototype.addRect=function(resource){var rect=new Manifold.AnnotationRect(resource);rect.canvasIndex=this.canvasIndex,rect.index=this.rects.length,this.rects.push(rect),this.rects.sort(function(a,b){return a.index-b.index})},AnnotationGroup}();Manifold.AnnotationGroup=AnnotationGroup}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var AnnotationRect=function(){function AnnotationRect(result){this.isVisible=!0;var xywh=result.on.match(/.*xywh=(\d*),(\d*),(\d*),(\d*)/);this.x=Number(xywh[1]),this.y=Number(xywh[2]),this.width=Number(xywh[3]),this.height=Number(xywh[4]),this.chars=result.resource.chars}return AnnotationRect}();Manifold.AnnotationRect=AnnotationRect}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var Bootstrapper=function(){function Bootstrapper(options){this._options=options,this._options.locale=this._options.locale||"en-GB"}return Bootstrapper.prototype.bootstrap=function(){var that=this;return new Promise(function(resolve,reject){var msie=that._detectIE();if(msie===!1)manifesto.loadManifest(that._options.iiifResourceUri).then(function(json){that._loaded(that,json,resolve,reject)});else if(msie>0)if(9===msie){var settings={url:that._options.iiifResourceUri,type:"GET",dataType:"jsonp",jsonp:"callback",jsonpCallback:"manifestCallback"};$.ajax(settings),global.manifestCallback=function(json){that._loaded(that,JSON.stringify(json),resolve,reject)}}else $.getJSON(that._options.iiifResourceUri,function(json){that._loaded(that,JSON.stringify(json),resolve,reject)})})},Bootstrapper.prototype._loaded=function(bootstrapper,json,resolve,reject){var iiifResource=manifesto.create(json,{locale:bootstrapper._options.locale});if(bootstrapper._options.iiifResource||(bootstrapper._options.iiifResource=iiifResource),iiifResource.getIIIFResourceType().toString()===manifesto.IIIFResourceType.collection().toString()||"collection"===iiifResource.getIIIFResourceType().toString().toLowerCase()){var collections=iiifResource.getCollections();collections&&collections.length?iiifResource.getCollectionByIndex(bootstrapper._options.collectionIndex).then(function(collection){collection||reject("Collection index not found"),0===collection.getTotalManifests()&&0===bootstrapper._options.manifestIndex&&collection.getTotalCollections()>0&&(bootstrapper._options.collectionIndex=0,bootstrapper._options.iiifResourceUri=collection.id,bootstrapper.bootstrap()),collection.getManifestByIndex(bootstrapper._options.manifestIndex).then(function(manifest){bootstrapper._options.manifest=manifest;var helper=new Manifold.Helper(bootstrapper._options);resolve(helper)})}):iiifResource.getManifestByIndex(bootstrapper._options.manifestIndex).then(function(manifest){bootstrapper._options.manifest=manifest;var helper=new Manifold.Helper(bootstrapper._options);resolve(helper)})}else{bootstrapper._options.manifest=iiifResource;var helper=new Manifold.Helper(bootstrapper._options);resolve(helper)}},Bootstrapper.prototype._detectIE=function(){var ua=window.navigator.userAgent,msie=ua.indexOf("MSIE ");if(msie>0)return parseInt(ua.substring(msie+5,ua.indexOf(".",msie)),10);var trident=ua.indexOf("Trident/");if(trident>0){var rv=ua.indexOf("rv:");return parseInt(ua.substring(rv+3,ua.indexOf(".",rv)),10)}var edge=ua.indexOf("Edge/");return edge>0&&parseInt(ua.substring(edge+5,ua.indexOf(".",edge)),10)},Bootstrapper}();Manifold.Bootstrapper=Bootstrapper}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var ExternalResource=function(){function ExternalResource(resource,dataUriFunc,index,authApiVersion){void 0===authApiVersion&&(authApiVersion=.9),this.authHoldingPage=null,this.clickThroughService=null,this.externalService=null,this.isResponseHandled=!1,this.loginService=null,this.logoutService=null,this.tokenService=null,resource.externalResource=this,this.dataUri=dataUriFunc(resource),this.index=index,this.authAPIVersion=authApiVersion,this._parseAuthServices(resource)}return ExternalResource.prototype._parseAuthServices=function(resource){.9===this.authAPIVersion?(this.clickThroughService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.clickThrough().toString()),this.loginService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.login().toString()),this.restrictedService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.restricted().toString()),this.clickThroughService?(this.logoutService=this.clickThroughService.getService(manifesto.ServiceProfile.logout().toString()),this.tokenService=this.clickThroughService.getService(manifesto.ServiceProfile.token().toString())):this.loginService?(this.logoutService=this.loginService.getService(manifesto.ServiceProfile.logout().toString()),this.tokenService=this.loginService.getService(manifesto.ServiceProfile.token().toString())):this.restrictedService&&(this.logoutService=this.restrictedService.getService(manifesto.ServiceProfile.logout().toString()),this.tokenService=this.restrictedService.getService(manifesto.ServiceProfile.token().toString()))):(this.clickThroughService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.auth1Clickthrough().toString()),this.loginService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.auth1Login().toString()),this.externalService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.auth1External().toString()),this.kioskService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.auth1Kiosk().toString()),this.clickThroughService?(this.logoutService=this.clickThroughService.getService(manifesto.ServiceProfile.auth1Logout().toString()),this.tokenService=this.clickThroughService.getService(manifesto.ServiceProfile.auth1Token().toString())):this.loginService?(this.logoutService=this.loginService.getService(manifesto.ServiceProfile.auth1Logout().toString()),this.tokenService=this.loginService.getService(manifesto.ServiceProfile.auth1Token().toString())):this.externalService?(this.logoutService=this.externalService.getService(manifesto.ServiceProfile.auth1Logout().toString()),this.tokenService=this.externalService.getService(manifesto.ServiceProfile.auth1Token().toString())):this.kioskService&&(this.logoutService=this.kioskService.getService(manifesto.ServiceProfile.auth1Logout().toString()),this.tokenService=this.kioskService.getService(manifesto.ServiceProfile.auth1Token().toString())))},ExternalResource.prototype.isAccessControlled=function(){return!!(this.clickThroughService||this.loginService||this.externalService||this.kioskService)},ExternalResource.prototype.hasServiceDescriptor=function(){return this.dataUri.endsWith("info.json")},ExternalResource.prototype.getData=function(accessToken){var that=this;return that.data={},new Promise(function(resolve,reject){var type="GET";if(!that.hasServiceDescriptor()){if(!that.isAccessControlled())return that.status=HTTPStatusCode.OK,void resolve(that);type="HEAD"}$.ajax({url:that.dataUri,type:type,dataType:"json",beforeSend:function(xhr){accessToken&&xhr.setRequestHeader("Authorization","Bearer "+accessToken.accessToken)}}).done(function(data){if(data){var uri=unescape(data["@id"]);that.data=data,that._parseAuthServices(that.data),uri.endsWith("/info.json")&&(uri=uri.substr(0,uri.lastIndexOf("/")));var dataUri=that.dataUri;dataUri.endsWith("/info.json")&&(dataUri=dataUri.substr(0,dataUri.lastIndexOf("/"))),uri!==dataUri&&that.loginService?that.status=HTTPStatusCode.MOVED_TEMPORARILY:that.status=HTTPStatusCode.OK,resolve(that)}else that.status=HTTPStatusCode.OK,resolve(that)}).fail(function(error){that.status=error.status,that.error=error,error.responseJSON&&that._parseAuthServices(error.responseJSON),resolve(that)})})},ExternalResource}();Manifold.ExternalResource=ExternalResource}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var Helper=function(){function Helper(options){this.options=options,this.iiifResource=this.options.iiifResource,this.iiifResourceUri=this.options.iiifResourceUri,this.manifest=this.options.manifest,this.collectionIndex=this.options.collectionIndex||0,this.manifestIndex=this.options.manifestIndex||0,this.sequenceIndex=this.options.sequenceIndex||0,this.canvasIndex=this.options.canvasIndex||0}return Helper.prototype.getAutoCompleteService=function(){var service=this.getSearchService();return service?service.getService(manifesto.ServiceProfile.autoComplete()):null},Helper.prototype.getAttribution=function(){var attribution=this.manifest.getAttribution();return attribution?Manifesto.TranslationCollection.getValue(attribution):null},Helper.prototype.getCanvases=function(){return this.getCurrentSequence().getCanvases()},Helper.prototype.getCanvasById=function(id){return this.getCurrentSequence().getCanvasById(id)},Helper.prototype.getCanvasesById=function(ids){for(var canvases=[],i=0;i<ids.length;i++){var id=ids[i],canvas=this.getCanvasById(id);canvas&&canvases.push(canvas)}return canvases},Helper.prototype.getCanvasByIndex=function(index){return this.getCurrentSequence().getCanvasByIndex(index)},Helper.prototype.getCanvasIndexById=function(id){return this.getCurrentSequence().getCanvasIndexById(id)},Helper.prototype.getCanvasIndexByLabel=function(label){var foliated=this.getManifestType().toString()===manifesto.ManifestType.manuscript().toString();return this.getCurrentSequence().getCanvasIndexByLabel(label,foliated)},Helper.prototype.getCanvasRange=function(canvas,path){var ranges=this.getCanvasRanges(canvas);if(path){for(var i=0;i<ranges.length;i++){var range=ranges[i];if(range.path===path)return range}return null}return ranges[0]},Helper.prototype.getCanvasRanges=function(canvas){return canvas.ranges?canvas.ranges:(canvas.ranges=this.manifest.getAllRanges().en().where(function(range){return range.getCanvasIds().en().any(function(c){return c===canvas.id})}).toArray(),canvas.ranges)},Helper.prototype.getCollectionIndex=function(iiifResource){var index=null;return iiifResource.parentCollection&&(index=iiifResource.parentCollection.index),index},Helper.prototype.getCurrentCanvas=function(){return this.getCurrentSequence().getCanvasByIndex(this.canvasIndex)},Helper.prototype.getCurrentElement=function(){return this.getCanvasByIndex(this.canvasIndex)},Helper.prototype.getCurrentSequence=function(){return this.getSequenceByIndex(this.sequenceIndex)},Helper.prototype.getDescription=function(){var description=this.manifest.getDescription();return description?Manifesto.TranslationCollection.getValue(description):null},Helper.prototype.getElementType=function(element){return element||(element=this.getCurrentCanvas()),element.getType()},Helper.prototype.getFirstPageIndex=function(){return 0},Helper.prototype.getInfoUri=function(canvas){var content=canvas.getContent(),images=canvas.getImages();if(content&&content.length){var annotation=content[0],annotationBody=annotation.getBody();return annotationBody.length?annotationBody[0].id:null}if(images&&images.length){for(var infoUri=null,firstImage=images[0],resource=firstImage.getResource(),services=resource.getServices(),i=0;i<services.length;i++){var service=services[i],id=service.id;id.endsWith("/")||(id+="/"),manifesto.Utils.isImageProfile(service.getProfile())&&(infoUri=id+"info.json")}return infoUri}var service=canvas.getService(manifesto.ServiceProfile.ixif());return service?service.getInfoUri():canvas.id},Helper.prototype.getLabel=function(){var label=this.manifest.getLabel();return label?Manifesto.TranslationCollection.getValue(label):null},Helper.prototype.getLastCanvasLabel=function(alphanumeric){return this.getCurrentSequence().getLastCanvasLabel(alphanumeric)},Helper.prototype.getLastPageIndex=function(){return this.getTotalCanvases()-1},Helper.prototype.getLicense=function(){return this.manifest.getLicense()},Helper.prototype.getLogo=function(){return this.manifest.getLogo()},Helper.prototype.getManifestType=function(){var manifestType=this.manifest.getManifestType();return""===manifestType.toString()&&(manifestType=manifesto.ManifestType.monograph()),manifestType},Helper.prototype.getMetadata=function(options){var metadataGroups=[],manifestMetadata=this.manifest.getMetadata(),manifestGroup=new Manifold.MetadataGroup(this.manifest);if(manifestMetadata&&manifestMetadata.length&&manifestGroup.addMetadata(manifestMetadata,!0),this.manifest.getDescription().length){var metadataItem=new Manifesto.MetadataItem(this.options.locale);metadataItem.label=[new Manifesto.Translation("description",this.options.locale)],metadataItem.value=this.manifest.getDescription(),metadataItem.isRootLevel=!0,manifestGroup.addItem(metadataItem)}if(this.manifest.getAttribution().length){var metadataItem=new Manifesto.MetadataItem(this.options.locale);metadataItem.label=[new Manifesto.Translation("attribution",this.options.locale)],metadataItem.value=this.manifest.getAttribution(),metadataItem.isRootLevel=!0,manifestGroup.addItem(metadataItem)}var license=this.manifest.getLicense();if(license){var item={label:"license",value:options&&options.licenseFormatter?options.licenseFormatter.format(license):license},metadataItem=new Manifesto.MetadataItem(this.options.locale);metadataItem.parse(item),metadataItem.isRootLevel=!0,manifestGroup.addItem(metadataItem)}if(this.manifest.getLogo()){var item={label:"logo",value:'<img src="'+this.manifest.getLogo()+'"/>'},metadataItem=new Manifesto.MetadataItem(this.options.locale);metadataItem.parse(item),metadataItem.isRootLevel=!0,manifestGroup.addItem(metadataItem)}return metadataGroups.push(manifestGroup),options?this._parseMetadataOptions(options,metadataGroups):metadataGroups},Helper.prototype._parseMetadataOptions=function(options,metadataGroups){var sequence=this.getCurrentSequence(),sequenceMetadata=sequence.getMetadata();if(sequenceMetadata&&sequenceMetadata.length){var sequenceGroup=new Manifold.MetadataGroup(sequence);sequenceGroup.addMetadata(sequenceMetadata),metadataGroups.push(sequenceGroup)}if(options.range){var rangeGroups=this._getRangeMetadata([],options.range);rangeGroups=rangeGroups.reverse(),metadataGroups=metadataGroups.concat(rangeGroups)}if(options.canvases&&options.canvases.length)for(var i=0;i<options.canvases.length;i++){var canvas=options.canvases[i],canvasMetadata=canvas.getMetadata();if(canvasMetadata&&canvasMetadata.length){var canvasGroup=new Manifold.MetadataGroup(canvas);canvasGroup.addMetadata(canvas.getMetadata()),metadataGroups.push(canvasGroup)}for(var images=canvas.getImages(),j=0;j<images.length;j++){var image=images[j],imageMetadata=image.getMetadata();if(imageMetadata&&imageMetadata.length){var imageGroup=new Manifold.MetadataGroup(image);imageGroup.addMetadata(imageMetadata),metadataGroups.push(imageGroup)}}}return metadataGroups},Helper.prototype._getRangeMetadata=function(metadataGroups,range){var rangeMetadata=range.getMetadata();if(rangeMetadata&&rangeMetadata.length){var rangeGroup=new Manifold.MetadataGroup(range);rangeGroup.addMetadata(rangeMetadata),metadataGroups.push(rangeGroup)}return range.parentRange?this._getRangeMetadata(metadataGroups,range.parentRange):metadataGroups},Helper.prototype.getMultiSelectState=function(){return this._multiSelectState||(this._multiSelectState=new Manifold.MultiSelectState,this._multiSelectState.ranges=this.getRanges().slice(0),this._multiSelectState.canvases=this.getCurrentSequence().getCanvases().slice(0)),this._multiSelectState},Helper.prototype.getRanges=function(){return this.manifest.getAllRanges()},Helper.prototype.getRangeByPath=function(path){return this.manifest.getRangeByPath(path)},Helper.prototype.getRangeCanvases=function(range){var ids=range.getCanvasIds();return this.getCanvasesById(ids)},Helper.prototype.getRelated=function(){return this.manifest.getRelated()},Helper.prototype.getResources=function(){var element=this.getCurrentElement();return element.getResources()},Helper.prototype.getSearchService=function(){return this.manifest.getService(manifesto.ServiceProfile.search())},Helper.prototype.getSeeAlso=function(){return this.manifest.getSeeAlso()},Helper.prototype.getSequenceByIndex=function(index){return this.manifest.getSequenceByIndex(index)},Helper.prototype.getShareServiceUrl=function(){var url=null,shareService=this.manifest.getService(manifesto.ServiceProfile.shareExtensions());return shareService&&(shareService.length&&(shareService=shareService[0]),url=shareService.__jsonld.shareUrl),url},Helper.prototype.getSortedTreeNodesByDate=function(sortedTree,tree){var all=tree.nodes.en().traverseUnique(function(node){return node.nodes}).where(function(n){return n.data.type===manifesto.TreeNodeType.collection().toString()||n.data.type===manifesto.TreeNodeType.manifest().toString()}).toArray(),manifests=tree.nodes.en().traverseUnique(function(n){return n.nodes}).where(function(n){return n.data.type===manifesto.TreeNodeType.manifest().toString()}).toArray();this.createDecadeNodes(sortedTree,all),this.sortDecadeNodes(sortedTree),this.createYearNodes(sortedTree,all),this.sortYearNodes(sortedTree),this.createMonthNodes(sortedTree,manifests),this.sortMonthNodes(sortedTree),this.createDateNodes(sortedTree,manifests),this.pruneDecadeNodes(sortedTree)},Helper.prototype.getStartCanvasIndex=function(){return this.getCurrentSequence().getStartCanvasIndex()},Helper.prototype.getThumbs=function(width,height){return this.getCurrentSequence().getThumbs(width,height)},Helper.prototype.getTopRanges=function(){return this.manifest.getTopRanges()},Helper.prototype.getTotalCanvases=function(){return this.getCurrentSequence().getTotalCanvases()},Helper.prototype.getTrackingLabel=function(){return this.manifest.getTrackingLabel()},Helper.prototype.getTree=function(topRangeIndex,sortType){if(void 0===topRangeIndex&&(topRangeIndex=0),void 0===sortType&&(sortType=Manifold.TreeSortType.NONE),!this.iiifResource)return null;var tree;if(this.iiifResource.isCollection())tree=this.iiifResource.getDefaultTree();else{var topRanges=this.iiifResource.getTopRanges(),root=new manifesto.TreeNode;if(root.label="root",root.data=this.iiifResource,!topRanges.length)return root;var range=topRanges[topRangeIndex];tree=range.getTree(root)}var sortedTree=new manifesto.TreeNode;switch(sortType.toString()){case Manifold.TreeSortType.DATE.toString():if(this.treeHasNavDates(tree)){this.getSortedTreeNodesByDate(sortedTree,tree);break}default:sortedTree=tree}return sortedTree},Helper.prototype.treeHasNavDates=function(tree){var node=tree.nodes.en().traverseUnique(function(node){return node.nodes}).where(function(n){return!isNaN(n.navDate)}).first();return!!node},Helper.prototype.getViewingDirection=function(){var viewingDirection=this.getCurrentSequence().getViewingDirection();return viewingDirection.toString()||(viewingDirection=this.manifest.getViewingDirection()),viewingDirection},Helper.prototype.getViewingHint=function(){var viewingHint=this.getCurrentSequence().getViewingHint();return viewingHint.toString()||(viewingHint=this.manifest.getViewingHint()),viewingHint},Helper.prototype.hasParentCollection=function(){return!!this.manifest.parentCollection},Helper.prototype.hasRelatedPage=function(){var related=this.getRelated();return!!related&&(related.length&&(related=related[0]),"text/html"===related.format)},Helper.prototype.hasResources=function(){return this.getResources().length>0},Helper.prototype.isBottomToTop=function(){return this.getViewingDirection().toString()===manifesto.ViewingDirection.bottomToTop().toString()},Helper.prototype.isCanvasIndexOutOfRange=function(index){return this.getCurrentSequence().isCanvasIndexOutOfRange(index)},Helper.prototype.isContinuous=function(){return this.getViewingHint().toString()===manifesto.ViewingHint.continuous().toString()},Helper.prototype.isFirstCanvas=function(index){return"undefined"!=typeof index?this.getCurrentSequence().isFirstCanvas(index):this.getCurrentSequence().isFirstCanvas(this.canvasIndex)},Helper.prototype.isHorizontallyAligned=function(){return this.isLeftToRight()||this.isRightToLeft()},Helper.prototype.isLastCanvas=function(index){return"undefined"!=typeof index?this.getCurrentSequence().isLastCanvas(index):this.getCurrentSequence().isLastCanvas(this.canvasIndex)},Helper.prototype.isLeftToRight=function(){return this.getViewingDirection().toString()===manifesto.ViewingDirection.leftToRight().toString()},Helper.prototype.isMultiCanvas=function(){return this.getCurrentSequence().isMultiCanvas()},Helper.prototype.isMultiSequence=function(){return this.manifest.isMultiSequence()},Helper.prototype.isPaged=function(){return this.getViewingHint().toString()===manifesto.ViewingHint.paged().toString()},Helper.prototype.isPagingAvailable=function(){return this.isPagingEnabled()&&this.getTotalCanvases()>2},Helper.prototype.isPagingEnabled=function(){return this.manifest.isPagingEnabled()||this.getCurrentSequence().isPagingEnabled()},Helper.prototype.isRightToLeft=function(){return this.getViewingDirection().toString()===manifesto.ViewingDirection.rightToLeft().toString()},Helper.prototype.isTopToBottom=function(){return this.getViewingDirection().toString()===manifesto.ViewingDirection.topToBottom().toString()},Helper.prototype.isTotalCanvasesEven=function(){return this.getCurrentSequence().isTotalCanvasesEven()},Helper.prototype.isUIEnabled=function(name){var uiExtensions=this.manifest.getService(manifesto.ServiceProfile.uiExtensions());if(uiExtensions){var disableUI=uiExtensions.getProperty("disableUI");if(disableUI&&(disableUI.indexOf(name)!==-1||disableUI.indexOf(name.toLowerCase())!==-1))return!1}return!0},Helper.prototype.isVerticallyAligned=function(){return this.isTopToBottom()||this.isBottomToTop()},Helper.prototype.createDateNodes=function(rootNode,nodes){for(var i=0;i<nodes.length;i++){var node=nodes[i],year=this.getNodeYear(node),month=this.getNodeMonth(node),dateNode=new manifesto.TreeNode;dateNode.id=node.id,dateNode.label=this.getNodeDisplayDate(node),dateNode.data=node.data,dateNode.data.type=manifesto.TreeNodeType.manifest().toString(),dateNode.data.year=year,dateNode.data.month=month;var decadeNode=this.getDecadeNode(rootNode,year);if(decadeNode){var yearNode=this.getYearNode(decadeNode,year);if(yearNode){var monthNode=this.getMonthNode(yearNode,month);monthNode&&monthNode.addNode(dateNode)}}}},Helper.prototype.createDecadeNodes=function(rootNode,nodes){for(var i=0;i<nodes.length;i++){var node=nodes[i],year=this.getNodeYear(node),endYear=Number(year.toString().substr(0,3)+"9");if(!this.getDecadeNode(rootNode,year)){var decadeNode=new manifesto.TreeNode;decadeNode.label=year+" - "+endYear,decadeNode.navDate=node.navDate,decadeNode.data.startYear=year,decadeNode.data.endYear=endYear,rootNode.addNode(decadeNode)}}},Helper.prototype.createMonthNodes=function(rootNode,nodes){for(var i=0;i<nodes.length;i++){var node=nodes[i],year=this.getNodeYear(node),month=this.getNodeMonth(node),decadeNode=this.getDecadeNode(rootNode,year),yearNode=null;if(decadeNode&&(yearNode=this.getYearNode(decadeNode,year)),decadeNode&&yearNode&&!this.getMonthNode(yearNode,month)){var monthNode=new manifesto.TreeNode;monthNode.label=this.getNodeDisplayMonth(node),monthNode.navDate=node.navDate,monthNode.data.year=year,monthNode.data.month=month,yearNode.addNode(monthNode)}}},Helper.prototype.createYearNodes=function(rootNode,nodes){for(var i=0;i<nodes.length;i++){var node=nodes[i],year=this.getNodeYear(node),decadeNode=this.getDecadeNode(rootNode,year);if(decadeNode&&!this.getYearNode(decadeNode,year)){var yearNode=new manifesto.TreeNode;yearNode.label=year.toString(),yearNode.navDate=node.navDate,yearNode.data.year=year,decadeNode.addNode(yearNode)}}},Helper.prototype.getDecadeNode=function(rootNode,year){for(var i=0;i<rootNode.nodes.length;i++){var n=rootNode.nodes[i];if(year>=n.data.startYear&&year<=n.data.endYear)return n}return null},Helper.prototype.getMonthNode=function(yearNode,month){for(var i=0;i<yearNode.nodes.length;i++){var n=yearNode.nodes[i];if(month===this.getNodeMonth(n))return n}return null},Helper.prototype.getNodeDisplayDate=function(node){return node.navDate.toDateString()},Helper.prototype.getNodeDisplayMonth=function(node){var months=["January","February","March","April","May","June","July","August","September","October","November","December"];return months[node.navDate.getMonth()]},Helper.prototype.getNodeMonth=function(node){return node.navDate.getMonth()},Helper.prototype.getNodeYear=function(node){return node.navDate.getFullYear()},Helper.prototype.getYearNode=function(decadeNode,year){for(var i=0;i<decadeNode.nodes.length;i++){var n=decadeNode.nodes[i];if(year===this.getNodeYear(n))return n}return null},Helper.prototype.pruneDecadeNodes=function(rootNode){for(var pruned=[],i=0;i<rootNode.nodes.length;i++){var n=rootNode.nodes[i];n.nodes.length||pruned.push(n)}for(var j=0;j<pruned.length;j++){var p=pruned[j],index=rootNode.nodes.indexOf(p);index>-1&&rootNode.nodes.splice(index,1)}},Helper.prototype.sortDecadeNodes=function(rootNode){rootNode.nodes=rootNode.nodes.sort(function(a,b){return a.data.startYear-b.data.startYear})},Helper.prototype.sortMonthNodes=function(rootNode){for(var _this=this,i=0;i<rootNode.nodes.length;i++)for(var decadeNode=rootNode.nodes[i],j=0;j<decadeNode.nodes.length;j++){var monthNode=decadeNode.nodes[j];monthNode.nodes=monthNode.nodes.sort(function(a,b){return _this.getNodeMonth(a)-_this.getNodeMonth(b)})}},Helper.prototype.sortYearNodes=function(rootNode){for(var _this=this,i=0;i<rootNode.nodes.length;i++){var decadeNode=rootNode.nodes[i];decadeNode.nodes=decadeNode.nodes.sort(function(a,b){return _this.getNodeYear(a)-_this.getNodeYear(b)})}},Helper}();Manifold.Helper=Helper}(Manifold||(Manifold={}));var Manifold;!function(Manifold){function loadManifest(options){var bootstrapper=new Manifold.Bootstrapper(options);return bootstrapper.bootstrap()}Manifold.loadManifest=loadManifest}(Manifold||(Manifold={})),function(g){g.Manifold||(g.Manifold=Manifold)}(global);var Manifold;!function(Manifold){var MetadataGroup=function(){function MetadataGroup(resource,label){this.items=[],this.resource=resource,this.label=label}return MetadataGroup.prototype.addItem=function(item){this.items.push(item)},MetadataGroup.prototype.addMetadata=function(metadata,isRootLevel){void 0===isRootLevel&&(isRootLevel=!1);for(var i=0;i<metadata.length;i++){var item=metadata[i];item.isRootLevel=isRootLevel,this.addItem(item)}},MetadataGroup}();Manifold.MetadataGroup=MetadataGroup}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var MetadataOptions=function(){function MetadataOptions(){}return MetadataOptions}();Manifold.MetadataOptions=MetadataOptions}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var MultiSelectState=function(){function MultiSelectState(){this.isEnabled=!1,this.ranges=[],this.canvases=[]}return MultiSelectState.prototype.allCanvasesSelected=function(){return this.canvases.length>0&&this.getAllSelectedCanvases().length===this.canvases.length},MultiSelectState.prototype.allRangesSelected=function(){return this.ranges.length>0&&this.getAllSelectedRanges().length===this.ranges.length},MultiSelectState.prototype.allSelected=function(){return this.allRangesSelected()&&this.allCanvasesSelected()},MultiSelectState.prototype.getAll=function(){return this.canvases.concat(this.ranges)},MultiSelectState.prototype.getAllSelectedCanvases=function(){return this.canvases.en().where(function(c){return c.multiSelected}).toArray()},MultiSelectState.prototype.getAllSelectedRanges=function(){return this.ranges.en().where(function(r){return r.multiSelected}).toArray()},MultiSelectState.prototype.getCanvasById=function(id){return this.canvases.en().where(function(c){return c.id===id}).first()},MultiSelectState.prototype.getCanvasesByIds=function(ids){for(var canvases=[],i=0;i<ids.length;i++){var id=ids[i];canvases.push(this.getCanvasById(id))}return canvases},MultiSelectState.prototype.getRangeCanvases=function(range){var ids=range.getCanvasIds();return this.getCanvasesByIds(ids)},MultiSelectState.prototype.selectAll=function(selected){this.selectRanges(this.ranges,selected),this.selectCanvases(this.canvases,selected)},MultiSelectState.prototype.selectCanvas=function(canvas,selected){var c=this.canvases.en().where(function(c){return c.id===canvas.id}).first();c.multiSelected=selected},MultiSelectState.prototype.selectAllCanvases=function(selected){this.selectCanvases(this.canvases,selected)},MultiSelectState.prototype.selectCanvases=function(canvases,selected){for(var j=0;j<canvases.length;j++){var canvas=canvases[j];canvas.multiSelected=selected}},MultiSelectState.prototype.selectRange=function(range,selected){var r=this.ranges.en().where(function(r){return r.id===range.id}).first();r.multiSelected=selected;var canvases=this.getRangeCanvases(r);this.selectCanvases(canvases,selected)},MultiSelectState.prototype.selectAllRanges=function(selected){this.selectRanges(this.ranges,selected)},MultiSelectState.prototype.selectRanges=function(ranges,selected){for(var i=0;i<ranges.length;i++){var range=ranges[i];range.multiSelected=selected;var canvases=this.getCanvasesByIds(range.getCanvasIds());this.selectCanvases(canvases,selected)}},MultiSelectState.prototype.setEnabled=function(enabled){this.isEnabled=enabled;for(var items=this.getAll(),i=0;i<items.length;i++){var item=items[i];item.multiSelectEnabled=this.isEnabled,enabled||(item.multiSelected=!1)}},MultiSelectState}();Manifold.MultiSelectState=MultiSelectState}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var Translation=function(){function Translation(value,locale){this.value=value,this.locale=locale}return Translation}();Manifold.Translation=Translation}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var UriLabeller=function(){function UriLabeller(labels){this.labels=labels}return UriLabeller.prototype.format=function(url){if(url.indexOf("<a")!=-1)return url;var label=this.labels[url]?this.labels[url]:url;return'<a href="'+url+'">'+label+"</a>"},UriLabeller}();Manifold.UriLabeller=UriLabeller;
-}(Manifold||(Manifold={}))}).call(this,"undefined"!=typeof global?global:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{}]},{},[1])(1)});
+!function(f){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=f();else if("function"==typeof define&&define.amd)define([],f);else{var g;g="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,g.manifold=f()}}(function(){return function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a="function"==typeof require&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}for(var i="function"==typeof require&&require,o=0;o<r.length;o++)s(r[o]);return s}({1:[function(require,module,exports){(function(global){var Manifold;!function(Manifold){var StringValue=function(){function StringValue(value){this.value="",value&&(this.value=value.toLowerCase())}return StringValue.prototype.toString=function(){return this.value},StringValue}();Manifold.StringValue=StringValue}(Manifold||(Manifold={}));var Manifold,__extends=this&&this.__extends||function(){var extendStatics=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(d,b){d.__proto__=b}||function(d,b){for(var p in b)b.hasOwnProperty(p)&&(d[p]=b[p])};return function(d,b){function __(){this.constructor=d}extendStatics(d,b),d.prototype=null===b?Object.create(b):(__.prototype=b.prototype,new __)}}();!function(Manifold){var TreeSortType=function(_super){function TreeSortType(){return null!==_super&&_super.apply(this,arguments)||this}return __extends(TreeSortType,_super),TreeSortType.prototype.date=function(){return new TreeSortType(TreeSortType.DATE.toString())},TreeSortType.prototype.none=function(){return new TreeSortType(TreeSortType.NONE.toString())},TreeSortType.DATE=new TreeSortType("date"),TreeSortType.NONE=new TreeSortType("none"),TreeSortType}(Manifold.StringValue);Manifold.TreeSortType=TreeSortType}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var AnnotationGroup=function(){function AnnotationGroup(resource,canvasIndex){this.rects=[],this.canvasIndex=canvasIndex,this.addRect(resource)}return AnnotationGroup.prototype.addRect=function(resource){var rect=new Manifold.AnnotationRect(resource);rect.canvasIndex=this.canvasIndex,rect.index=this.rects.length,this.rects.push(rect),this.rects.sort(function(a,b){return a.index-b.index})},AnnotationGroup}();Manifold.AnnotationGroup=AnnotationGroup}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var AnnotationRect=function(){function AnnotationRect(result){this.isVisible=!0;var xywh=result.on.match(/.*xywh=(\d*),(\d*),(\d*),(\d*)/);this.x=Number(xywh[1]),this.y=Number(xywh[2]),this.width=Number(xywh[3]),this.height=Number(xywh[4]),this.chars=result.resource.chars}return AnnotationRect}();Manifold.AnnotationRect=AnnotationRect}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var Bootstrapper=function(){function Bootstrapper(options){this._options=options,this._options.locale=this._options.locale||"en-GB"}return Bootstrapper.prototype.bootstrap=function(res,rej){var that=this;return new Promise(function(resolve,reject){res&&rej&&(resolve=res,reject=rej);var msie=that._detectIE();if(msie===!1)manifesto.loadManifest(that._options.iiifResourceUri).then(function(json){that._loaded(that,json,resolve,reject)});else if(msie>0)if(9===msie){var settings={url:that._options.iiifResourceUri,type:"GET",dataType:"jsonp",jsonp:"callback",jsonpCallback:"manifestCallback"};$.ajax(settings),global.manifestCallback=function(json){that._loaded(that,JSON.stringify(json),resolve,reject)}}else $.getJSON(that._options.iiifResourceUri,function(json){that._loaded(that,JSON.stringify(json),resolve,reject)})})},Bootstrapper.prototype._loaded=function(bootstrapper,json,resolve,reject){var iiifResource=manifesto.create(json,{locale:bootstrapper._options.locale});if(bootstrapper._options.iiifResource||(bootstrapper._options.iiifResource=iiifResource),iiifResource.getIIIFResourceType().toString()===manifesto.IIIFResourceType.collection().toString()||"collection"===iiifResource.getIIIFResourceType().toString().toLowerCase()){var collections=iiifResource.getCollections();collections&&collections.length?iiifResource.getCollectionByIndex(bootstrapper._options.collectionIndex).then(function(collection){collection||reject("Collection index not found"),0===collection.getTotalManifests()&&0===bootstrapper._options.manifestIndex&&collection.getTotalCollections()>0?(bootstrapper._options.collectionIndex=0,bootstrapper._options.iiifResourceUri=collection.id,bootstrapper.bootstrap(resolve,reject)):collection.getManifestByIndex(bootstrapper._options.manifestIndex).then(function(manifest){bootstrapper._options.manifest=manifest;var helper=new Manifold.Helper(bootstrapper._options);resolve(helper)})}):iiifResource.getManifestByIndex(bootstrapper._options.manifestIndex).then(function(manifest){bootstrapper._options.manifest=manifest;var helper=new Manifold.Helper(bootstrapper._options);resolve(helper)})}else{bootstrapper._options.manifest=iiifResource;var helper=new Manifold.Helper(bootstrapper._options);resolve(helper)}},Bootstrapper.prototype._detectIE=function(){var ua=window.navigator.userAgent,msie=ua.indexOf("MSIE ");if(msie>0)return parseInt(ua.substring(msie+5,ua.indexOf(".",msie)),10);var trident=ua.indexOf("Trident/");if(trident>0){var rv=ua.indexOf("rv:");return parseInt(ua.substring(rv+3,ua.indexOf(".",rv)),10)}var edge=ua.indexOf("Edge/");return edge>0&&parseInt(ua.substring(edge+5,ua.indexOf(".",edge)),10)},Bootstrapper}();Manifold.Bootstrapper=Bootstrapper}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var ExternalResource=function(){function ExternalResource(canvas,options){this.authHoldingPage=null,this.clickThroughService=null,this.externalService=null,this.isResponseHandled=!1,this.kioskService=null,this.loginService=null,this.logoutService=null,this.restrictedService=null,this.tokenService=null,canvas.externalResource=this,this.dataUri=this._getDataUri(canvas),this.index=canvas.index,this.authAPIVersion=options.authApiVersion,this._parseAuthServices(canvas),this._parseDimensions(canvas)}return ExternalResource.prototype._getDataUri=function(canvas){var content=canvas.getContent(),images=canvas.getImages();if(content&&content.length){var annotation=content[0],annotationBody=annotation.getBody();return annotationBody.length?annotationBody[0].id:null}if(images&&images.length){var infoUri=null,firstImage=images[0],resource=firstImage.getResource(),services=resource.getServices();if(services.length){for(var i=0;i<services.length;i++){var service=services[i],id=service.id;id.endsWith("/")||(id+="/"),manifesto.Utils.isImageProfile(service.getProfile())&&(infoUri=id+"info.json")}return infoUri}return resource.id}var service=canvas.getService(manifesto.ServiceProfile.ixif());return service?service.getInfoUri():canvas.id},ExternalResource.prototype._parseAuthServices=function(resource){.9===this.authAPIVersion?(this.clickThroughService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.clickThrough().toString()),this.loginService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.login().toString()),this.restrictedService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.restricted().toString()),this.clickThroughService?(this.logoutService=this.clickThroughService.getService(manifesto.ServiceProfile.logout().toString()),this.tokenService=this.clickThroughService.getService(manifesto.ServiceProfile.token().toString())):this.loginService?(this.logoutService=this.loginService.getService(manifesto.ServiceProfile.logout().toString()),this.tokenService=this.loginService.getService(manifesto.ServiceProfile.token().toString())):this.restrictedService&&(this.logoutService=this.restrictedService.getService(manifesto.ServiceProfile.logout().toString()),this.tokenService=this.restrictedService.getService(manifesto.ServiceProfile.token().toString()))):(this.clickThroughService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.auth1Clickthrough().toString()),this.loginService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.auth1Login().toString()),this.externalService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.auth1External().toString()),this.kioskService=manifesto.Utils.getService(resource,manifesto.ServiceProfile.auth1Kiosk().toString()),this.clickThroughService?(this.logoutService=this.clickThroughService.getService(manifesto.ServiceProfile.auth1Logout().toString()),this.tokenService=this.clickThroughService.getService(manifesto.ServiceProfile.auth1Token().toString())):this.loginService?(this.logoutService=this.loginService.getService(manifesto.ServiceProfile.auth1Logout().toString()),this.tokenService=this.loginService.getService(manifesto.ServiceProfile.auth1Token().toString())):this.externalService?(this.logoutService=this.externalService.getService(manifesto.ServiceProfile.auth1Logout().toString()),this.tokenService=this.externalService.getService(manifesto.ServiceProfile.auth1Token().toString())):this.kioskService&&(this.logoutService=this.kioskService.getService(manifesto.ServiceProfile.auth1Logout().toString()),this.tokenService=this.kioskService.getService(manifesto.ServiceProfile.auth1Token().toString())))},ExternalResource.prototype._parseDimensions=function(canvas){var images=canvas.getImages();if(images&&images.length){var firstImage=images[0],resource=firstImage.getResource();this.width=resource.getWidth(),this.height=resource.getHeight()}},ExternalResource.prototype.isAccessControlled=function(){return!!(this.clickThroughService||this.loginService||this.externalService||this.kioskService)},ExternalResource.prototype.hasServiceDescriptor=function(){return!!this.dataUri&&this.dataUri.endsWith("info.json")},ExternalResource.prototype.getData=function(accessToken){var _this=this,that=this;return that.data={},new Promise(function(resolve,reject){_this.dataUri||reject("There is no dataUri to fetch");var type="GET";if(!that.hasServiceDescriptor()){if(!that.isAccessControlled())return that.status=HTTPStatusCode.OK,void resolve(that);type="HEAD"}$.ajax({url:that.dataUri,type:type,dataType:"json",beforeSend:function(xhr){accessToken&&xhr.setRequestHeader("Authorization","Bearer "+accessToken.accessToken)}}).done(function(data){if(data){var uri=unescape(data["@id"]);that.data=data,that._parseAuthServices(that.data),uri.endsWith("/info.json")&&(uri=uri.substr(0,uri.lastIndexOf("/")));var dataUri=that.dataUri;dataUri&&dataUri.endsWith("/info.json")&&(dataUri=dataUri.substr(0,dataUri.lastIndexOf("/"))),uri!==dataUri&&that.loginService?that.status=HTTPStatusCode.MOVED_TEMPORARILY:that.status=HTTPStatusCode.OK,resolve(that)}else that.status=HTTPStatusCode.OK,resolve(that)}).fail(function(error){that.status=error.status,that.error=error,error.responseJSON&&that._parseAuthServices(error.responseJSON),resolve(that)})})},ExternalResource}();Manifold.ExternalResource=ExternalResource}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var Helper=function(){function Helper(options){this.options=options,this.iiifResource=this.options.iiifResource,this.iiifResourceUri=this.options.iiifResourceUri,this.manifest=this.options.manifest,this.collectionIndex=this.options.collectionIndex||0,this.manifestIndex=this.options.manifestIndex||0,this.sequenceIndex=this.options.sequenceIndex||0,this.canvasIndex=this.options.canvasIndex||0}return Helper.prototype.getAutoCompleteService=function(){var service=this.getSearchService();return service?service.getService(manifesto.ServiceProfile.autoComplete()):null},Helper.prototype.getAttribution=function(){var attribution=this.manifest.getAttribution();return attribution?Manifesto.TranslationCollection.getValue(attribution):null},Helper.prototype.getCanvases=function(){return this.getCurrentSequence().getCanvases()},Helper.prototype.getCanvasById=function(id){return this.getCurrentSequence().getCanvasById(id)},Helper.prototype.getCanvasesById=function(ids){for(var canvases=[],i=0;i<ids.length;i++){var id=ids[i],canvas=this.getCanvasById(id);canvas&&canvases.push(canvas)}return canvases},Helper.prototype.getCanvasByIndex=function(index){return this.getCurrentSequence().getCanvasByIndex(index)},Helper.prototype.getCanvasIndexById=function(id){return this.getCurrentSequence().getCanvasIndexById(id)},Helper.prototype.getCanvasIndexByLabel=function(label){var foliated=this.getManifestType().toString()===manifesto.ManifestType.manuscript().toString();return this.getCurrentSequence().getCanvasIndexByLabel(label,foliated)},Helper.prototype.getCanvasRange=function(canvas,path){var ranges=this.getCanvasRanges(canvas);if(path){for(var i=0;i<ranges.length;i++){var range=ranges[i];if(range.path===path)return range}return null}return ranges[0]},Helper.prototype.getCanvasRanges=function(canvas){return canvas.ranges?canvas.ranges:(canvas.ranges=this.manifest.getAllRanges().en().where(function(range){return range.getCanvasIds().en().any(function(c){return c===canvas.id})}).toArray(),canvas.ranges)},Helper.prototype.getCollectionIndex=function(iiifResource){var index=null;return iiifResource.parentCollection&&(index=iiifResource.parentCollection.index),index},Helper.prototype.getCurrentCanvas=function(){return this.getCurrentSequence().getCanvasByIndex(this.canvasIndex)},Helper.prototype.getCurrentSequence=function(){return this.getSequenceByIndex(this.sequenceIndex)},Helper.prototype.getDescription=function(){var description=this.manifest.getDescription();return description?Manifesto.TranslationCollection.getValue(description):null},Helper.prototype.getFirstPageIndex=function(){return 0},Helper.prototype.getLabel=function(){var label=this.manifest.getLabel();return label?Manifesto.TranslationCollection.getValue(label):null},Helper.prototype.getLastCanvasLabel=function(alphanumeric){return this.getCurrentSequence().getLastCanvasLabel(alphanumeric)},Helper.prototype.getLastPageIndex=function(){return this.getTotalCanvases()-1},Helper.prototype.getLicense=function(){return this.manifest.getLicense()},Helper.prototype.getLogo=function(){return this.manifest.getLogo()},Helper.prototype.getManifestType=function(){var manifestType=this.manifest.getManifestType();return""===manifestType.toString()&&(manifestType=manifesto.ManifestType.monograph()),manifestType},Helper.prototype.getMetadata=function(options){var metadataGroups=[],manifestMetadata=this.manifest.getMetadata(),manifestGroup=new Manifold.MetadataGroup(this.manifest);if(manifestMetadata&&manifestMetadata.length&&manifestGroup.addMetadata(manifestMetadata,!0),this.manifest.getDescription().length){var metadataItem=new Manifesto.MetadataItem(this.options.locale);metadataItem.label=[new Manifesto.Translation("description",this.options.locale)],metadataItem.value=this.manifest.getDescription(),metadataItem.isRootLevel=!0,manifestGroup.addItem(metadataItem)}if(this.manifest.getAttribution().length){var metadataItem=new Manifesto.MetadataItem(this.options.locale);metadataItem.label=[new Manifesto.Translation("attribution",this.options.locale)],metadataItem.value=this.manifest.getAttribution(),metadataItem.isRootLevel=!0,manifestGroup.addItem(metadataItem)}var license=this.manifest.getLicense();if(license){var item={label:"license",value:options&&options.licenseFormatter?options.licenseFormatter.format(license):license},metadataItem=new Manifesto.MetadataItem(this.options.locale);metadataItem.parse(item),metadataItem.isRootLevel=!0,manifestGroup.addItem(metadataItem)}if(this.manifest.getLogo()){var item={label:"logo",value:'<img src="'+this.manifest.getLogo()+'"/>'},metadataItem=new Manifesto.MetadataItem(this.options.locale);metadataItem.parse(item),metadataItem.isRootLevel=!0,manifestGroup.addItem(metadataItem)}return metadataGroups.push(manifestGroup),options?this._parseMetadataOptions(options,metadataGroups):metadataGroups},Helper.prototype._parseMetadataOptions=function(options,metadataGroups){var sequence=this.getCurrentSequence(),sequenceMetadata=sequence.getMetadata();if(sequenceMetadata&&sequenceMetadata.length){var sequenceGroup=new Manifold.MetadataGroup(sequence);sequenceGroup.addMetadata(sequenceMetadata),metadataGroups.push(sequenceGroup)}if(options.range){var rangeGroups=this._getRangeMetadata([],options.range);rangeGroups=rangeGroups.reverse(),metadataGroups=metadataGroups.concat(rangeGroups)}if(options.canvases&&options.canvases.length)for(var i=0;i<options.canvases.length;i++){var canvas=options.canvases[i],canvasMetadata=canvas.getMetadata();if(canvasMetadata&&canvasMetadata.length){var canvasGroup=new Manifold.MetadataGroup(canvas);canvasGroup.addMetadata(canvas.getMetadata()),metadataGroups.push(canvasGroup)}for(var images=canvas.getImages(),j=0;j<images.length;j++){var image=images[j],imageMetadata=image.getMetadata();if(imageMetadata&&imageMetadata.length){var imageGroup=new Manifold.MetadataGroup(image);imageGroup.addMetadata(imageMetadata),metadataGroups.push(imageGroup)}}}return metadataGroups},Helper.prototype._getRangeMetadata=function(metadataGroups,range){var rangeMetadata=range.getMetadata();if(rangeMetadata&&rangeMetadata.length){var rangeGroup=new Manifold.MetadataGroup(range);rangeGroup.addMetadata(rangeMetadata),metadataGroups.push(rangeGroup)}return range.parentRange?this._getRangeMetadata(metadataGroups,range.parentRange):metadataGroups},Helper.prototype.getMultiSelectState=function(){return this._multiSelectState||(this._multiSelectState=new Manifold.MultiSelectState,this._multiSelectState.ranges=this.getRanges().slice(0),this._multiSelectState.canvases=this.getCurrentSequence().getCanvases().slice(0)),this._multiSelectState},Helper.prototype.getRanges=function(){return this.manifest.getAllRanges()},Helper.prototype.getRangeByPath=function(path){return this.manifest.getRangeByPath(path)},Helper.prototype.getRangeCanvases=function(range){var ids=range.getCanvasIds();return this.getCanvasesById(ids)},Helper.prototype.getRelated=function(){return this.manifest.getRelated()},Helper.prototype.getSearchService=function(){return this.manifest.getService(manifesto.ServiceProfile.search())},Helper.prototype.getSeeAlso=function(){return this.manifest.getSeeAlso()},Helper.prototype.getSequenceByIndex=function(index){return this.manifest.getSequenceByIndex(index)},Helper.prototype.getShareServiceUrl=function(){var url=null,shareService=this.manifest.getService(manifesto.ServiceProfile.shareExtensions());return shareService&&(shareService.length&&(shareService=shareService[0]),url=shareService.__jsonld.shareUrl),url},Helper.prototype.getSortedTreeNodesByDate=function(sortedTree,tree){var all=tree.nodes.en().traverseUnique(function(node){return node.nodes}).where(function(n){return n.data.type===manifesto.TreeNodeType.collection().toString()||n.data.type===manifesto.TreeNodeType.manifest().toString()}).toArray(),manifests=tree.nodes.en().traverseUnique(function(n){return n.nodes}).where(function(n){return n.data.type===manifesto.TreeNodeType.manifest().toString()}).toArray();this.createDecadeNodes(sortedTree,all),this.sortDecadeNodes(sortedTree),this.createYearNodes(sortedTree,all),this.sortYearNodes(sortedTree),this.createMonthNodes(sortedTree,manifests),this.sortMonthNodes(sortedTree),this.createDateNodes(sortedTree,manifests),this.pruneDecadeNodes(sortedTree)},Helper.prototype.getStartCanvasIndex=function(){return this.getCurrentSequence().getStartCanvasIndex()},Helper.prototype.getThumbs=function(width,height){return this.getCurrentSequence().getThumbs(width,height)},Helper.prototype.getTopRanges=function(){return this.manifest.getTopRanges()},Helper.prototype.getTotalCanvases=function(){return this.getCurrentSequence().getTotalCanvases()},Helper.prototype.getTrackingLabel=function(){return this.manifest.getTrackingLabel()},Helper.prototype.getTree=function(topRangeIndex,sortType){if(void 0===topRangeIndex&&(topRangeIndex=0),void 0===sortType&&(sortType=Manifold.TreeSortType.NONE),!this.iiifResource)return null;var tree;if(this.iiifResource.isCollection())tree=this.iiifResource.getDefaultTree();else{var topRanges=this.iiifResource.getTopRanges(),root=new manifesto.TreeNode;if(root.label="root",root.data=this.iiifResource,!topRanges.length)return root;var range=topRanges[topRangeIndex];tree=range.getTree(root)}var sortedTree=new manifesto.TreeNode;switch(sortType.toString()){case Manifold.TreeSortType.DATE.toString():if(this.treeHasNavDates(tree)){this.getSortedTreeNodesByDate(sortedTree,tree);break}default:sortedTree=tree}return sortedTree},Helper.prototype.treeHasNavDates=function(tree){var node=tree.nodes.en().traverseUnique(function(node){return node.nodes}).where(function(n){return!isNaN(n.navDate)}).first();return!!node},Helper.prototype.getViewingDirection=function(){var viewingDirection=this.getCurrentSequence().getViewingDirection();return viewingDirection.toString()||(viewingDirection=this.manifest.getViewingDirection()),viewingDirection},Helper.prototype.getViewingHint=function(){var viewingHint=this.getCurrentSequence().getViewingHint();return viewingHint.toString()||(viewingHint=this.manifest.getViewingHint()),viewingHint},Helper.prototype.hasParentCollection=function(){return!!this.manifest.parentCollection},Helper.prototype.hasRelatedPage=function(){var related=this.getRelated();return!!related&&(related.length&&(related=related[0]),"text/html"===related.format)},Helper.prototype.hasResources=function(){var canvas=this.getCurrentCanvas();return canvas.getResources().length>0},Helper.prototype.isBottomToTop=function(){return this.getViewingDirection().toString()===manifesto.ViewingDirection.bottomToTop().toString()},Helper.prototype.isCanvasIndexOutOfRange=function(index){return this.getCurrentSequence().isCanvasIndexOutOfRange(index)},Helper.prototype.isContinuous=function(){return this.getViewingHint().toString()===manifesto.ViewingHint.continuous().toString()},Helper.prototype.isFirstCanvas=function(index){return"undefined"!=typeof index?this.getCurrentSequence().isFirstCanvas(index):this.getCurrentSequence().isFirstCanvas(this.canvasIndex)},Helper.prototype.isHorizontallyAligned=function(){return this.isLeftToRight()||this.isRightToLeft()},Helper.prototype.isLastCanvas=function(index){return"undefined"!=typeof index?this.getCurrentSequence().isLastCanvas(index):this.getCurrentSequence().isLastCanvas(this.canvasIndex)},Helper.prototype.isLeftToRight=function(){return this.getViewingDirection().toString()===manifesto.ViewingDirection.leftToRight().toString()},Helper.prototype.isMultiCanvas=function(){return this.getCurrentSequence().isMultiCanvas()},Helper.prototype.isMultiSequence=function(){return this.manifest.isMultiSequence()},Helper.prototype.isPaged=function(){return this.getViewingHint().toString()===manifesto.ViewingHint.paged().toString()},Helper.prototype.isPagingAvailable=function(){return this.isPagingEnabled()&&this.getTotalCanvases()>2},Helper.prototype.isPagingEnabled=function(){return this.manifest.isPagingEnabled()||this.getCurrentSequence().isPagingEnabled()},Helper.prototype.isRightToLeft=function(){return this.getViewingDirection().toString()===manifesto.ViewingDirection.rightToLeft().toString()},Helper.prototype.isTopToBottom=function(){return this.getViewingDirection().toString()===manifesto.ViewingDirection.topToBottom().toString()},Helper.prototype.isTotalCanvasesEven=function(){return this.getCurrentSequence().isTotalCanvasesEven()},Helper.prototype.isUIEnabled=function(name){var uiExtensions=this.manifest.getService(manifesto.ServiceProfile.uiExtensions());if(uiExtensions){var disableUI=uiExtensions.getProperty("disableUI");if(disableUI&&(disableUI.indexOf(name)!==-1||disableUI.indexOf(name.toLowerCase())!==-1))return!1}return!0},Helper.prototype.isVerticallyAligned=function(){return this.isTopToBottom()||this.isBottomToTop()},Helper.prototype.createDateNodes=function(rootNode,nodes){for(var i=0;i<nodes.length;i++){var node=nodes[i],year=this.getNodeYear(node),month=this.getNodeMonth(node),dateNode=new manifesto.TreeNode;dateNode.id=node.id,dateNode.label=this.getNodeDisplayDate(node),dateNode.data=node.data,dateNode.data.type=manifesto.TreeNodeType.manifest().toString(),dateNode.data.year=year,dateNode.data.month=month;var decadeNode=this.getDecadeNode(rootNode,year);if(decadeNode){var yearNode=this.getYearNode(decadeNode,year);if(yearNode){var monthNode=this.getMonthNode(yearNode,month);monthNode&&monthNode.addNode(dateNode)}}}},Helper.prototype.createDecadeNodes=function(rootNode,nodes){for(var i=0;i<nodes.length;i++){var node=nodes[i],year=this.getNodeYear(node),endYear=Number(year.toString().substr(0,3)+"9");if(!this.getDecadeNode(rootNode,year)){var decadeNode=new manifesto.TreeNode;decadeNode.label=year+" - "+endYear,decadeNode.navDate=node.navDate,decadeNode.data.startYear=year,decadeNode.data.endYear=endYear,rootNode.addNode(decadeNode)}}},Helper.prototype.createMonthNodes=function(rootNode,nodes){for(var i=0;i<nodes.length;i++){var node=nodes[i],year=this.getNodeYear(node),month=this.getNodeMonth(node),decadeNode=this.getDecadeNode(rootNode,year),yearNode=null;if(decadeNode&&(yearNode=this.getYearNode(decadeNode,year)),decadeNode&&yearNode&&!this.getMonthNode(yearNode,month)){var monthNode=new manifesto.TreeNode;monthNode.label=this.getNodeDisplayMonth(node),monthNode.navDate=node.navDate,monthNode.data.year=year,monthNode.data.month=month,yearNode.addNode(monthNode)}}},Helper.prototype.createYearNodes=function(rootNode,nodes){for(var i=0;i<nodes.length;i++){var node=nodes[i],year=this.getNodeYear(node),decadeNode=this.getDecadeNode(rootNode,year);if(decadeNode&&!this.getYearNode(decadeNode,year)){var yearNode=new manifesto.TreeNode;yearNode.label=year.toString(),yearNode.navDate=node.navDate,yearNode.data.year=year,decadeNode.addNode(yearNode)}}},Helper.prototype.getDecadeNode=function(rootNode,year){for(var i=0;i<rootNode.nodes.length;i++){var n=rootNode.nodes[i];if(year>=n.data.startYear&&year<=n.data.endYear)return n}return null},Helper.prototype.getMonthNode=function(yearNode,month){for(var i=0;i<yearNode.nodes.length;i++){var n=yearNode.nodes[i];if(month===this.getNodeMonth(n))return n}return null},Helper.prototype.getNodeDisplayDate=function(node){return node.navDate.toDateString()},Helper.prototype.getNodeDisplayMonth=function(node){var months=["January","February","March","April","May","June","July","August","September","October","November","December"];return months[node.navDate.getMonth()]},Helper.prototype.getNodeMonth=function(node){return node.navDate.getMonth()},Helper.prototype.getNodeYear=function(node){return node.navDate.getFullYear()},Helper.prototype.getYearNode=function(decadeNode,year){for(var i=0;i<decadeNode.nodes.length;i++){var n=decadeNode.nodes[i];if(year===this.getNodeYear(n))return n}return null},Helper.prototype.pruneDecadeNodes=function(rootNode){for(var pruned=[],i=0;i<rootNode.nodes.length;i++){var n=rootNode.nodes[i];n.nodes.length||pruned.push(n)}for(var j=0;j<pruned.length;j++){var p=pruned[j],index=rootNode.nodes.indexOf(p);index>-1&&rootNode.nodes.splice(index,1)}},Helper.prototype.sortDecadeNodes=function(rootNode){rootNode.nodes=rootNode.nodes.sort(function(a,b){return a.data.startYear-b.data.startYear})},Helper.prototype.sortMonthNodes=function(rootNode){for(var _this=this,i=0;i<rootNode.nodes.length;i++)for(var decadeNode=rootNode.nodes[i],j=0;j<decadeNode.nodes.length;j++){var monthNode=decadeNode.nodes[j];monthNode.nodes=monthNode.nodes.sort(function(a,b){return _this.getNodeMonth(a)-_this.getNodeMonth(b)})}},Helper.prototype.sortYearNodes=function(rootNode){for(var _this=this,i=0;i<rootNode.nodes.length;i++){var decadeNode=rootNode.nodes[i];decadeNode.nodes=decadeNode.nodes.sort(function(a,b){return _this.getNodeYear(a)-_this.getNodeYear(b)})}},Helper}();Manifold.Helper=Helper}(Manifold||(Manifold={}));var Manifold;!function(Manifold){function loadManifest(options){var bootstrapper=new Manifold.Bootstrapper(options);return bootstrapper.bootstrap()}Manifold.loadManifest=loadManifest}(Manifold||(Manifold={})),function(g){g.Manifold||(g.Manifold=Manifold)}(global);var Manifold;!function(Manifold){var MetadataGroup=function(){function MetadataGroup(resource,label){this.items=[],this.resource=resource,this.label=label}return MetadataGroup.prototype.addItem=function(item){this.items.push(item)},MetadataGroup.prototype.addMetadata=function(metadata,isRootLevel){void 0===isRootLevel&&(isRootLevel=!1);for(var i=0;i<metadata.length;i++){var item=metadata[i];item.isRootLevel=isRootLevel,this.addItem(item)}},MetadataGroup}();Manifold.MetadataGroup=MetadataGroup}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var MetadataOptions=function(){function MetadataOptions(){}return MetadataOptions}();Manifold.MetadataOptions=MetadataOptions}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var MultiSelectState=function(){function MultiSelectState(){this.isEnabled=!1,this.ranges=[],this.canvases=[]}return MultiSelectState.prototype.allCanvasesSelected=function(){return this.canvases.length>0&&this.getAllSelectedCanvases().length===this.canvases.length},MultiSelectState.prototype.allRangesSelected=function(){return this.ranges.length>0&&this.getAllSelectedRanges().length===this.ranges.length},MultiSelectState.prototype.allSelected=function(){return this.allRangesSelected()&&this.allCanvasesSelected()},MultiSelectState.prototype.getAll=function(){return this.canvases.concat(this.ranges)},MultiSelectState.prototype.getAllSelectedCanvases=function(){return this.canvases.en().where(function(c){return c.multiSelected}).toArray()},MultiSelectState.prototype.getAllSelectedRanges=function(){return this.ranges.en().where(function(r){return r.multiSelected}).toArray()},MultiSelectState.prototype.getCanvasById=function(id){return this.canvases.en().where(function(c){return c.id===id}).first()},MultiSelectState.prototype.getCanvasesByIds=function(ids){for(var canvases=[],i=0;i<ids.length;i++){var id=ids[i];canvases.push(this.getCanvasById(id))}return canvases},MultiSelectState.prototype.getRangeCanvases=function(range){var ids=range.getCanvasIds();return this.getCanvasesByIds(ids)},MultiSelectState.prototype.selectAll=function(selected){this.selectRanges(this.ranges,selected),this.selectCanvases(this.canvases,selected)},MultiSelectState.prototype.selectCanvas=function(canvas,selected){var c=this.canvases.en().where(function(c){return c.id===canvas.id}).first();c.multiSelected=selected},MultiSelectState.prototype.selectAllCanvases=function(selected){this.selectCanvases(this.canvases,selected)},MultiSelectState.prototype.selectCanvases=function(canvases,selected){for(var j=0;j<canvases.length;j++){var canvas=canvases[j];canvas.multiSelected=selected}},MultiSelectState.prototype.selectRange=function(range,selected){var r=this.ranges.en().where(function(r){return r.id===range.id}).first();r.multiSelected=selected;var canvases=this.getRangeCanvases(r);this.selectCanvases(canvases,selected)},MultiSelectState.prototype.selectAllRanges=function(selected){this.selectRanges(this.ranges,selected)},MultiSelectState.prototype.selectRanges=function(ranges,selected){for(var i=0;i<ranges.length;i++){var range=ranges[i];range.multiSelected=selected;var canvases=this.getCanvasesByIds(range.getCanvasIds());this.selectCanvases(canvases,selected)}},MultiSelectState.prototype.setEnabled=function(enabled){this.isEnabled=enabled;for(var items=this.getAll(),i=0;i<items.length;i++){var item=items[i];item.multiSelectEnabled=this.isEnabled,enabled||(item.multiSelected=!1)}},MultiSelectState}();Manifold.MultiSelectState=MultiSelectState}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var Translation=function(){function Translation(value,locale){this.value=value,this.locale=locale}return Translation}();Manifold.Translation=Translation}(Manifold||(Manifold={}));var Manifold;!function(Manifold){var UriLabeller=function(){function UriLabeller(labels){this.labels=labels}return UriLabeller.prototype.format=function(url){
+if(url.indexOf("<a")!=-1)return url;var label=this.labels[url]?this.labels[url]:url;return'<a href="'+url+'">'+label+"</a>"},UriLabeller}();Manifold.UriLabeller=UriLabeller}(Manifold||(Manifold={}))}).call(this,"undefined"!=typeof global?global:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{}]},{},[1])(1)});
