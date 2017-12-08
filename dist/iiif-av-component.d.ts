@@ -1,5 +1,4 @@
-// iiif-av-component v0.0.1 https://github.com/iiif-commons/iiif-av-component#readme
-/// <reference path="../node_modules/typescript/lib/lib.es6.d.ts" />
+// iiif-av-component v0.0.2 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
