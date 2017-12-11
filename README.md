@@ -2,10 +2,6 @@
 
 http://iiif-commons.github.io/iiif-av-component/examples/
 
-**Ensure you have the [typings](https://github.com/typings/typings) CLI installed**
-
-    npm install typings --global
-
 **Install node modules**
 
     npm install

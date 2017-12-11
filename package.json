@@ -1,6 +1,6 @@
 {
   "name": "iiif-av-component",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "index.js",
   "types": "./dist/iiif-av-component.d.ts",
@@ -17,7 +17,7 @@
   "homepage": "https://github.com/iiif-commons/iiif-av-component#readme",
   "devDependencies": {
     "base-component": "iiif-commons/base-component#v1.1.2",
-    "exjs": "BSick7/exjs#0.5.0",
+    "exjs": "BSick7/exjs#0.5.1",
     "gulp": "^3.9.1",
     "gulp-tasks": "iiif-commons/gulp-tasks#v1.0.7",
     "jquery-ui": "^1.12.1",
