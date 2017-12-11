@@ -1,10 +1,12 @@
 namespace IIIFComponents {
 
+    // todo: extend BaseComponent?
     export class CanvasInstance {
         
 	    private _highPriorityFrequency: number = 25;
 	    private _lowPriorityFrequency: number = 100;
         private _canvasClockFrequency: number = 25;
+        private _e: any;
         public canvasClockInterval: number;
         public highPriorityInterval: number;
         public lowPriorityInterval: number;
@@ -33,11 +35,11 @@ namespace IIIFComponents {
 
             this._mediaElements = [];
 
-            var mediaItems = (<any>this.data).__jsonld.content[0].items; //todo: use canvas.getContent()
+            const mediaItems = (<any>this.data).__jsonld.content[0].items; //todo: use canvas.getContent()
 
             for (let i = 0; i < mediaItems.length; i++) {
 
-                var mediaItem = mediaItems[i];
+                const mediaItem = mediaItems[i];
                 
                 /*
                 if (mediaItem.motivation != 'painting') {
@@ -45,13 +47,13 @@ namespace IIIFComponents {
                 }
                 */
 
-                var mediaSource;
+                let mediaSource;
 
                 if (mediaItem.body.type == 'TextualBody') {
                     mediaSource = mediaItem.body.value;
                 } else if (Array.isArray(mediaItem.body) && mediaItem.body[0].type == 'Choice') {
                     // Choose first "Choice" item as body
-                    var tmpItem = mediaItem;
+                    const tmpItem = mediaItem;
                     mediaItem.body = tmpItem.body[0].items[0];
 
                     mediaSource = mediaItem.body.id.split('#')[0];
@@ -73,48 +75,48 @@ namespace IIIFComponents {
                     mediaHeight = fragmentPosition[3];
                 */
 
-                var spatial = /xywh=([^&]+)/g.exec(mediaItem.target);
-                var temporal = /t=([^&]+)/g.exec(mediaItem.target);
+                const spatial = /xywh=([^&]+)/g.exec(mediaItem.target);
+                const temporal = /t=([^&]+)/g.exec(mediaItem.target);
                 
-                var xywh;
+                let xywh;
                 if (spatial && spatial[1]) {
                     xywh = spatial[1].split(',');
                 } else {
                     xywh = [0, 0, this.canvasWidth, this.canvasHeight];
                 }
 
-                var t;
+                let t;
                 if(temporal && temporal[1]) {
                     t = temporal[1].split(',');
                 } else {
                     t = [0, this.canvasClockDuration];
                 }
 
-                var positionLeft = parseInt(<string>xywh[0]),
+                const positionLeft = parseInt(<string>xywh[0]),
                     positionTop = parseInt(<string>xywh[1]),
                     mediaWidth = parseInt(<string>xywh[2]),
                     mediaHeight = parseInt(<string>xywh[3]),
                     startTime = parseInt(<string>t[0]),
                     endTime = parseInt(<string>t[1]);
                 
-                var percentageTop = this._convertToPercentage(positionTop, this.canvasHeight),
+                const percentageTop = this._convertToPercentage(positionTop, this.canvasHeight),
                     percentageLeft = this._convertToPercentage(positionLeft, this.canvasWidth),
                     percentageWidth = this._convertToPercentage(mediaWidth, this.canvasWidth),
                     percentageHeight = this._convertToPercentage(mediaHeight, this.canvasHeight);
 
-                var temporalOffsets = /t=([^&]+)/g.exec(mediaItem.body.id);
+                const temporalOffsets = /t=([^&]+)/g.exec(mediaItem.body.id);
 
-                var ot;
+                let ot;
                 if(temporalOffsets && temporalOffsets[1]) {
                     ot = temporalOffsets[1].split(',');
                 } else {
                     ot = [null, null];
                 }
 
-                var offsetStart = (ot[0]) ? parseInt(<string>ot[0]) : ot[0],
+                const offsetStart = (ot[0]) ? parseInt(<string>ot[0]) : ot[0],
                     offsetEnd = (ot[1]) ? parseInt(<string>ot[1]) : ot[1];
                 
-                var itemData = {
+                const itemData: any = {
                     'type': mediaItem.body.type,
                     'source': mediaSource,
                     'start': startTime, 
@@ -139,7 +141,7 @@ namespace IIIFComponents {
 
         private _renderMediaElement(data: any): void {
 
-            var mediaElement;
+            let mediaElement;
 
             switch(data.type) {
                 case 'Image':
@@ -171,11 +173,11 @@ namespace IIIFComponents {
                 
                 data.timeout = null;
 
-                var that = this;
+                const that = this;
 
                 data.checkForStall = function() {
 
-                    var self = this;
+                    const self = this;
                     
                     if (this.active) {
                         that.checkMediaSynchronization();
@@ -201,12 +203,12 @@ namespace IIIFComponents {
             this._mediaElements.push(data);
 
             if (this.$playerElement) {
-                const targetElement = this.$playerElement.find('.canvasContainer');
+                const targetElement: JQuery = this.$playerElement.find('.canvasContainer');
                 targetElement.append(mediaElement);
             }
             
             if (data.type == 'Video' || data.type == 'Audio') {
-                var self = data;
+                const self = data;
                 mediaElement.on('loadstart', function() {
                     //console.log('loadstart');
                     self.checkForStall();
@@ -246,7 +248,7 @@ namespace IIIFComponents {
             mediaElementData.timelineElement = timelineItem;
 
             if (this.$playerElement) {
-                var itemContainer = this.$playerElement.find('.timelineItemContainer');
+                const itemContainer: JQuery = this.$playerElement.find('.timelineItemContainer');
                 itemContainer.append(lineWrapper);
             }
         }
@@ -270,7 +272,7 @@ namespace IIIFComponents {
             this.synchronizeMedia();            
         }
 
-        public playCanvas(withoutUpdate?: boolean): void {
+        public play(withoutUpdate?: boolean): void {
             if (this.isPlaying) return;
 
             if (this.canvasClockTime === this.canvasClockDuration) {
@@ -279,13 +281,16 @@ namespace IIIFComponents {
 
             this.canvasClockStartDate = Date.now() - (this.canvasClockTime * 1000);
 
-            var self = this;
+            const self = this;
+
             this.highPriorityInterval = window.setInterval(function() {
                 self.highPriorityUpdater();
             }, this._highPriorityFrequency);
+
             this.lowPriorityInterval = window.setInterval(function() {
                 self.lowPriorityUpdater();
             }, this._lowPriorityFrequency);
+
             this.canvasClockInterval = window.setInterval(function() {
                 self.canvasClockUpdater();
             }, this._canvasClockFrequency);
@@ -296,10 +301,11 @@ namespace IIIFComponents {
                 this.synchronizeMedia();
             }
 
+            this.fire(AVComponent.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
         }
 
-        public pauseCanvas(withoutUpdate?: boolean): void {
+        public pause(withoutUpdate?: boolean): void {
             window.clearInterval(this.highPriorityInterval);
             window.clearInterval(this.lowPriorityInterval);
             window.clearInterval(this.canvasClockInterval);
@@ -312,6 +318,7 @@ namespace IIIFComponents {
                 this.synchronizeMedia();
             }
 
+            this.fire(AVComponent.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
         }
 
@@ -320,7 +327,7 @@ namespace IIIFComponents {
 
             if (this.canvasClockTime >= this.canvasClockDuration) {
                 this.canvasClockTime = this.canvasClockDuration;
-                this.pauseCanvas();
+                this.pause();
             }
         }
 
@@ -329,9 +336,11 @@ namespace IIIFComponents {
             if (!this.$playerElement) return;
 
             const $timeLineContainer: JQuery = this.$playerElement.find('.timelineContainer');
+
             $timeLineContainer.slider({
                 value: this.canvasClockTime
             });
+
             this.$playerElement.find('.canvasTime').text(AVComponentUtils.Utils.formatTime(this.canvasClockTime) );
         }
 
@@ -341,13 +350,13 @@ namespace IIIFComponents {
 
         public updateMediaActiveStates(): void {
 
-            var mediaElement;
+            let mediaElement;
 
-            for (var i=0; i<this._mediaElements.length; i++) {
+            for (let i = 0; i < this._mediaElements.length; i++) {
 
                 mediaElement = this._mediaElements[i];
 
-                if ( mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime ) {
+                if (mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime) {
 
                     this.checkMediaSynchronization();
 
@@ -387,9 +396,9 @@ namespace IIIFComponents {
 
         public synchronizeMedia(): void {
 
-            var mediaElement;
+            let mediaElement;
 
-            for (var i=0; i<this._mediaElements.length; i++) {
+            for (let i = 0; i < this._mediaElements.length; i++) {
 
                 mediaElement = this._mediaElements[i];
                 
@@ -397,7 +406,7 @@ namespace IIIFComponents {
 
                     mediaElement.element[0].currentTime = this.canvasClockTime - mediaElement.start + mediaElement.startOffset;
 
-                    if ( mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime ) {
+                    if (mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime) {
                         if (this.isPlaying) {
                             if (mediaElement.element[0].paused) {
                                 var promise = mediaElement.element[0].play();
@@ -424,7 +433,7 @@ namespace IIIFComponents {
 
         public checkMediaSynchronization(): void {
 	
-            var mediaElement;
+            let mediaElement;
 
             for (let i = 0, l = this._mediaElements.length; i < l; i++) {
                 
@@ -470,13 +479,13 @@ namespace IIIFComponents {
                     }
 
                     this.wasPlaying = this.isPlaying;
-                    this.pauseCanvas(true);
+                    this.pause(true);
                     this.isStalled = aBoolean;
                 }
 
             } else {
 
-                var idx = this.stallRequestedBy.indexOf(syncMediaRequestingStall);
+                const idx: number = this.stallRequestedBy.indexOf(syncMediaRequestingStall);
                 
                 if (idx >= 0) {
                     this.stallRequestedBy.splice(idx, 1);
@@ -487,7 +496,7 @@ namespace IIIFComponents {
                     this._hideWorkingIndicator();
 
                     if (this.isStalled && this.wasPlaying) {
-                        this.playCanvas(true);
+                        this.play(true);
                     }
 
                     this.isStalled = aBoolean;
@@ -496,7 +505,7 @@ namespace IIIFComponents {
         }
 
         private _showWorkingIndicator($targetElement: JQuery): void {
-            var workingIndicator = $('<div class="workingIndicator">Waiting ...</div>');
+            const workingIndicator: JQuery = $('<div class="workingIndicator">Waiting ...</div>');
             if ($targetElement.find('.workingIndicator').length == 0) {
                 $targetElement.append(workingIndicator);
             }
@@ -506,6 +515,26 @@ namespace IIIFComponents {
         private _hideWorkingIndicator() {
             $('.workingIndicator').remove();
             //console.log('hide working');
+        }
+
+        public on(name: string, callback: Function, ctx: any): void {
+            var e = this._e || (this._e = {});
+
+            (e[name] || (e[name] = [])).push({
+                fn: callback,
+                ctx: ctx
+            });
+        }
+
+        public fire(name: string, ...args: any[]): void {
+            var data = [].slice.call(arguments, 1);
+            var evtArr = ((this._e || (this._e = {}))[name] || []).slice();
+            var i = 0;
+            var len = evtArr.length;
+
+            for (i; i < len; i++) {
+                evtArr[i].fn.apply(evtArr[i].ctx, data);
+            }
         }
     }
 }

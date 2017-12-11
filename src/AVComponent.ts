@@ -13,7 +13,7 @@ namespace IIIFComponents {
         }
 
         protected _init(): boolean {
-            var success: boolean = super._init();
+            const success: boolean = super._init();
 
             if (!success) {
                 console.error("Component failed to initialise");
@@ -25,6 +25,7 @@ namespace IIIFComponents {
         public data(): IAVComponentData {
             return <IAVComponentData> {
                 helper: null,
+                autoPlay: false,
                 defaultAspectRatio: 0.56,
                 content: <IAVComponentContent>{
                     play: "Play",
@@ -111,6 +112,18 @@ namespace IIIFComponents {
             canvasInstance.$playerElement = $player;
             canvasInstance.logMessage = this._logMessage.bind(this);
 
+            canvasInstance.on(AVComponent.Events.PLAYCANVAS, function() {
+                $playButton.removeClass('play');
+                $playButton.addClass('pause');
+                $playButton.text(this.options.data.content.pause);
+            }, this);
+
+            canvasInstance.on(AVComponent.Events.PAUSECANVAS, function() {
+                $playButton.removeClass('pause');
+                $playButton.addClass('play');
+                $playButton.text(this.options.data.content.play);
+            }, this);
+
             $timelineContainer.slider({
                 value: 0,
                 step: 0.01,
@@ -136,20 +149,18 @@ namespace IIIFComponents {
             $playButton.on('click', () => {
 
                 if (canvasInstance.isPlaying) {
-                    canvasInstance.pauseCanvas();
-                    $playButton.removeClass('pause');
-                    $playButton.addClass('play');
-                    $playButton.text(this.options.data.content.play);
+                    canvasInstance.pause();
                 } else {
-                    canvasInstance.playCanvas();
-                    $playButton.removeClass('play');
-                    $playButton.addClass('pause');
-                    $playButton.text(this.options.data.content.pause);
+                    canvasInstance.play();
                 }
 	
             });
             
             canvasInstance.setCurrentTime(0);
+
+            if (this.options.data.autoPlay) {
+                canvasInstance.play();
+            }
 
             $timingControls.find('.canvasDuration').text(AVComponentUtils.Utils.formatTime(canvasInstance.canvasClockDuration));
 
@@ -176,7 +187,7 @@ namespace IIIFComponents {
             return null;
         }
 
-        public playCanvas(canvasId: string): void {
+        public play(canvasId: string): void {
 
             this.showCanvas(canvasId);
 
@@ -188,7 +199,7 @@ namespace IIIFComponents {
                 if (temporal && temporal[1]) {
                     const rangeTiming: string[] = temporal[1].split(',');
                     canvasInstance.setCurrentTime(rangeTiming[0]);
-                    canvasInstance.playCanvas();
+                    canvasInstance.play();
                 }
             }
         }
@@ -197,7 +208,7 @@ namespace IIIFComponents {
 
             // pause all canvases
             for (var i = 0; i < this.canvasInstances.length; i++) {
-                this.canvasInstances[i].pauseCanvas();
+                this.canvasInstances[i].pause();
             }
 
             // hide all players
@@ -252,6 +263,8 @@ namespace IIIFComponents {
 
 namespace IIIFComponents.AVComponent {
     export class Events {
+        static PLAYCANVAS: string = 'play';
+        static PAUSECANVAS: string = 'pause';
         static LOG: string = 'log';
     }
 }

@@ -14,7 +14,7 @@ declare namespace IIIFComponents {
         private _getCanvases();
         private _initCanvas(canvas);
         getCanvasInstanceById(canvasId: string): CanvasInstance | null;
-        playCanvas(canvasId: string): void;
+        play(canvasId: string): void;
         showCanvas(canvasId: string): void;
         private _logMessage(message);
         resize(): void;
@@ -23,6 +23,8 @@ declare namespace IIIFComponents {
 }
 declare namespace IIIFComponents.AVComponent {
     class Events {
+        static PLAYCANVAS: string;
+        static PAUSECANVAS: string;
         static LOG: string;
     }
 }
@@ -35,6 +37,7 @@ declare namespace IIIFComponents {
         private _highPriorityFrequency;
         private _lowPriorityFrequency;
         private _canvasClockFrequency;
+        private _e;
         canvasClockInterval: number;
         highPriorityInterval: number;
         lowPriorityInterval: number;
@@ -57,8 +60,8 @@ declare namespace IIIFComponents {
         private _renderMediaElement(data);
         private _renderSyncIndicator(mediaElementData);
         setCurrentTime(seconds: string | number): void;
-        playCanvas(withoutUpdate?: boolean): void;
-        pauseCanvas(withoutUpdate?: boolean): void;
+        play(withoutUpdate?: boolean): void;
+        pause(withoutUpdate?: boolean): void;
         canvasClockUpdater(): void;
         highPriorityUpdater(): void;
         lowPriorityUpdater(): void;
@@ -68,6 +71,8 @@ declare namespace IIIFComponents {
         playbackStalled(aBoolean: boolean, syncMediaRequestingStall: any): void;
         private _showWorkingIndicator($targetElement);
         private _hideWorkingIndicator();
+        on(name: string, callback: Function, ctx: any): void;
+        fire(name: string, ...args: any[]): void;
     }
 }
 
@@ -86,6 +91,7 @@ declare namespace IIIFComponents {
     }
     interface IAVComponentData {
         helper: Manifold.IHelper | null;
+        autoPlay: boolean;
         defaultAspectRatio: number;
         content: IAVComponentContent;
     }

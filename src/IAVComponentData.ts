@@ -9,6 +9,7 @@ namespace IIIFComponents {
     
     export interface IAVComponentData {
         helper: Manifold.IHelper | null;
+        autoPlay: boolean;
         defaultAspectRatio: number;
         content: IAVComponentContent;
     }
