@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.2 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.3 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 
@@ -33,7 +33,13 @@ var IIIFComponents;
         AVComponent.prototype.data = function () {
             return {
                 helper: null,
-                defaultAspectRatio: 0.56
+                defaultAspectRatio: 0.56,
+                content: {
+                    play: "Play",
+                    pause: "Pause",
+                    currentTime: "Current Time",
+                    duration: "Duration"
+                }
             };
         };
         AVComponent.prototype.set = function (data) {
@@ -64,16 +70,16 @@ var IIIFComponents;
             return this.options.data.helper.getCanvases();
         };
         AVComponent.prototype._initCanvas = function (canvas) {
+            var _this = this;
             var $player = $('<div class="player"></div>');
             var $canvasContainer = $('<div class="canvasContainer"></div>');
             var $optionsContainer = $('<div class="optionsContainer"></div>');
             var $timelineContainer = $('<div class="timelineContainer"></div>');
             var $timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             var $controlsContainer = $('<div class="controlsContainer"></div>');
-            var $playButton = $('<button class="playButton">Play</button>');
-            var $pauseButton = $('<button class="pauseButton">Pause</button>');
-            var $timingControls = $('<span>Current Time: <span class="canvasTime"></span> / Duration: <span class="canvasDuration"></span></span>');
-            $controlsContainer.append($playButton, $pauseButton, $timingControls);
+            var $playButton = $('<button class="playButton">' + this.options.data.content.play + '</button>');
+            var $timingControls = $('<span>' + this.options.data.content.currentTime + ': <span class="canvasTime"></span> / ' + this.options.data.content.duration + ': <span class="canvasDuration"></span></span>');
+            $controlsContainer.append($playButton, $timingControls);
             $optionsContainer.append($timelineContainer, $timelineItemContainer, $controlsContainer);
             $player.append($canvasContainer, $optionsContainer);
             this._$element.append($player);
@@ -114,10 +120,18 @@ var IIIFComponents;
             this.canvasInstances.push(canvasInstance);
             canvasInstance.initContents();
             $playButton.on('click', function () {
-                canvasInstance.playCanvas();
-            });
-            $pauseButton.on('click', function () {
-                canvasInstance.pauseCanvas();
+                if (canvasInstance.isPlaying) {
+                    canvasInstance.pauseCanvas();
+                    $playButton.removeClass('pause');
+                    $playButton.addClass('play');
+                    $playButton.text(_this.options.data.content.play);
+                }
+                else {
+                    canvasInstance.playCanvas();
+                    $playButton.removeClass('play');
+                    $playButton.addClass('pause');
+                    $playButton.text(_this.options.data.content.pause);
+                }
             });
             canvasInstance.setCurrentTime(0);
             $timingControls.find('.canvasDuration').text(IIIFComponents.AVComponentUtils.Utils.formatTime(canvasInstance.canvasClockDuration));

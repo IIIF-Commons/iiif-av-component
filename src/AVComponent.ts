@@ -25,7 +25,13 @@ namespace IIIFComponents {
         public data(): IAVComponentData {
             return <IAVComponentData> {
                 helper: null,
-                defaultAspectRatio: 0.56
+                defaultAspectRatio: 0.56,
+                content: <IAVComponentContent>{
+                    play: "Play",
+                    pause: "Pause",
+                    currentTime: "Current Time",
+                    duration: "Duration"
+                }
             }
         }
 
@@ -76,11 +82,10 @@ namespace IIIFComponents {
             const $timelineContainer = $('<div class="timelineContainer"></div>');
             const $timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             const $controlsContainer = $('<div class="controlsContainer"></div>');
-            const $playButton = $('<button class="playButton">Play</button>');
-            const $pauseButton = $('<button class="pauseButton">Pause</button>');
-            const $timingControls = $('<span>Current Time: <span class="canvasTime"></span> / Duration: <span class="canvasDuration"></span></span>');
+            const $playButton = $('<button class="playButton">' + this.options.data.content.play + '</button>');
+            const $timingControls = $('<span>' + this.options.data.content.currentTime + ': <span class="canvasTime"></span> / ' + this.options.data.content.duration + ': <span class="canvasDuration"></span></span>');
 
-            $controlsContainer.append($playButton, $pauseButton, $timingControls);
+            $controlsContainer.append($playButton, $timingControls);
             $optionsContainer.append($timelineContainer, $timelineItemContainer, $controlsContainer);
             $player.append($canvasContainer, $optionsContainer);
 
@@ -96,6 +101,7 @@ namespace IIIFComponents {
             } else {
                 canvasInstance.canvasWidth = canvasWidth;
             }
+
             if (!canvasHeight) {
                 canvasInstance.canvasHeight = canvasInstance.canvasWidth * this.options.data.defaultAspectRatio; //this.options.data.defaultCanvasHeight;
             } else {
@@ -128,11 +134,19 @@ namespace IIIFComponents {
             canvasInstance.initContents();
 
             $playButton.on('click', () => {
-                canvasInstance.playCanvas();	
-            });
 
-            $pauseButton.on('click', () => {
-                canvasInstance.pauseCanvas();	
+                if (canvasInstance.isPlaying) {
+                    canvasInstance.pauseCanvas();
+                    $playButton.removeClass('pause');
+                    $playButton.addClass('play');
+                    $playButton.text(this.options.data.content.play);
+                } else {
+                    canvasInstance.playCanvas();
+                    $playButton.removeClass('play');
+                    $playButton.addClass('pause');
+                    $playButton.text(this.options.data.content.pause);
+                }
+	
             });
             
             canvasInstance.setCurrentTime(0);

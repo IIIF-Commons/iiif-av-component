@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.2 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.3 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -79,10 +79,15 @@ declare namespace IIIFComponents {
 /// <reference types="manifold" />
 declare namespace IIIFComponents {
     interface IAVComponentContent {
+        play: string;
+        pause: string;
+        currentTime: string;
+        duration: string;
     }
     interface IAVComponentData {
         helper: Manifold.IHelper | null;
         defaultAspectRatio: number;
+        content: IAVComponentContent;
     }
 }
 
