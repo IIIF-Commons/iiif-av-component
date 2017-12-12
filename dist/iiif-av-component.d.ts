@@ -58,6 +58,7 @@ declare namespace IIIFComponents {
         initContents(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
+        setVolume(value: number): void;
         private _renderSyncIndicator(mediaElementData);
         setCurrentTime(seconds: string | number): void;
         play(withoutUpdate?: boolean): void;

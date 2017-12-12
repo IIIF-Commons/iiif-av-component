@@ -77,16 +77,17 @@ namespace IIIFComponents {
 
         private _initCanvas(canvas: Manifesto.ICanvas): void {
     
-            const $player = $('<div class="player"></div>');
-            const $canvasContainer = $('<div class="canvasContainer"></div>');
-            const $optionsContainer = $('<div class="optionsContainer"></div>');
-            const $timelineContainer = $('<div class="timelineContainer"></div>');
-            const $timelineItemContainer = $('<div class="timelineItemContainer"></div>');
-            const $controlsContainer = $('<div class="controlsContainer"></div>');
-            const $playButton = $('<button class="playButton">' + this.options.data.content.play + '</button>');
-            const $timingControls = $('<span>' + this.options.data.content.currentTime + ': <span class="canvasTime"></span> / ' + this.options.data.content.duration + ': <span class="canvasDuration"></span></span>');
+            const $player: JQuery = $('<div class="player"></div>');
+            const $canvasContainer: JQuery = $('<div class="canvasContainer"></div>');
+            const $optionsContainer: JQuery = $('<div class="optionsContainer"></div>');
+            const $timelineContainer: JQuery = $('<div class="timelineContainer"></div>');
+            const $timelineItemContainer: JQuery = $('<div class="timelineItemContainer"></div>');
+            const $controlsContainer: JQuery = $('<div class="controlsContainer"></div>');
+            const $playButton: JQuery = $('<button class="playButton">' + this.options.data.content.play + '</button>');
+            const $timingControls: JQuery = $('<span>' + this.options.data.content.currentTime + ': <span class="canvasTime"></span> / ' + this.options.data.content.duration + ': <span class="canvasDuration"></span></span>');
+            const $volumeControl: JQuery<HTMLInputElement> = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
 
-            $controlsContainer.append($playButton, $timingControls);
+            $controlsContainer.append($playButton, $timingControls, $volumeControl);
             $optionsContainer.append($timelineContainer, $timelineItemContainer, $controlsContainer);
             $player.append($canvasContainer, $optionsContainer);
 
@@ -154,6 +155,10 @@ namespace IIIFComponents {
                     canvasInstance.play();
                 }
 	
+            });
+
+            $volumeControl.on('change', function() {
+                canvasInstance.setVolume(Number(this.value));
             });
             
             canvasInstance.setCurrentTime(0);

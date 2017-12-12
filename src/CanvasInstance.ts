@@ -141,33 +141,33 @@ namespace IIIFComponents {
 
         private _renderMediaElement(data: any): void {
 
-            let mediaElement;
+            let $mediaElement;
 
             switch(data.type) {
                 case 'Image':
-                    mediaElement = $('<img class="anno" src="' + data.source + '" />');
+                    $mediaElement = $('<img class="anno" src="' + data.source + '" />');
                     break;
                 case 'Video':
-                    mediaElement = $('<video class="anno" src="' + data.source + '" />');
+                    $mediaElement = $('<video class="anno" src="' + data.source + '" />');
                     break;
                 case 'Audio':
-                    mediaElement = $('<audio class="anno" src="' + data.source + '" />');
+                    $mediaElement = $('<audio class="anno" src="' + data.source + '" />');
                     break;
                 case 'TextualBody':
-                    mediaElement = $('<div class="anno">' + data.source + '</div>');
+                    $mediaElement = $('<div class="anno">' + data.source + '</div>');
                     break;
                 default:
                     return;
             }
 
-            mediaElement.css({
+            $mediaElement.css({
                 top: data.top + '%',
                 left: data.left + '%',
                 width: data.width + '%',
                 height: data.height + '%'
             }).hide();
 
-            data.element = mediaElement;
+            data.element = $mediaElement;
 
             if (data.type == 'Video' || data.type == 'Audio') {
                 
@@ -204,28 +204,37 @@ namespace IIIFComponents {
 
             if (this.$playerElement) {
                 const targetElement: JQuery = this.$playerElement.find('.canvasContainer');
-                targetElement.append(mediaElement);
+                targetElement.append($mediaElement);
             }
             
             if (data.type == 'Video' || data.type == 'Audio') {
                 const self = data;
-                mediaElement.on('loadstart', function() {
+                $mediaElement.on('loadstart', function() {
                     //console.log('loadstart');
                     self.checkForStall();
                 });
-                mediaElement.on('waiting', function() {
+                $mediaElement.on('waiting', function() {
                     //console.log('waiting');
                     self.checkForStall();
                 });
-                mediaElement.on('seeking', function() {
+                $mediaElement.on('seeking', function() {
                     //console.log('seeking');
                     //self.checkForStall();
                 });
-                mediaElement.attr('preload', 'auto');
-                (<any>mediaElement.get(0)).load(); // todo: type
+                $mediaElement.attr('preload', 'auto');
+                (<any>$mediaElement.get(0)).load(); // todo: type
             }
 
             this._renderSyncIndicator(data);
+
+        }
+
+        public setVolume(value: number): void {
+
+            for (let i = 0; i < this._mediaElements.length; i++) {
+                const $mediaElement = this._mediaElements[i];
+                $($mediaElement.element).prop("volume", value);
+            }
 
         }
 
