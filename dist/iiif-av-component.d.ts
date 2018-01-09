@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.7 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.8 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -53,6 +53,7 @@ declare namespace IIIFComponents {
         isPlaying: boolean;
         isStalled: boolean;
         logMessage: (message: string) => void;
+        readyCanvasesCount: number;
         stallRequestedBy: any[];
         wasPlaying: boolean;
         constructor(canvas: Manifesto.ICanvas);

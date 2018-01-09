@@ -21,6 +21,7 @@ namespace IIIFComponents {
         public isPlaying: boolean = false;
         public isStalled: boolean = false;
         public logMessage: (message: string) => void;
+        public readyCanvasesCount: number = 0;
         public stallRequestedBy: any[] = []; //todo: type
         public wasPlaying: boolean = false;
 
@@ -208,20 +209,35 @@ namespace IIIFComponents {
             }
             
             if (data.type == 'Video' || data.type == 'Audio') {
+
+                const that = this;
                 const self = data;
+
                 $mediaElement.on('loadstart', function() {
                     //console.log('loadstart');
                     self.checkForStall();
                 });
+
                 $mediaElement.on('waiting', function() {
                     //console.log('waiting');
                     self.checkForStall();
                 });
+
                 $mediaElement.on('seeking', function() {
                     //console.log('seeking');
                     //self.checkForStall();
                 });
+
+                $mediaElement.on('loadedmetadata', function() {
+                    that.readyCanvasesCount++;
+
+                    if (that.readyCanvasesCount === that._mediaElements.length) {
+                        that.fire(AVComponent.Events.CANVASREADY);
+                    }
+                });
+
                 $mediaElement.attr('preload', 'auto');
+                
                 (<any>$mediaElement.get(0)).load(); // todo: type
             }
 

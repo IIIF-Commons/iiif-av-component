@@ -128,6 +128,10 @@
                 logMessage(message);
             });
 
+            avcomponent.on('canvasready', function() {
+                console.log('canvas ready');
+            });
+
             treecomponent = new IIIFComponents.TreeComponent({
                 target: document.querySelector('#tree')
             });
@@ -136,9 +140,9 @@
 
                 $('.canvasNavigationContainer').empty();
 
-                for (var i=0; i<canvases.length; i++) {
+                for (var i = 0; i < canvases.length; i++) {
                     
-                    var canvasLabel = i+1;
+                    var canvasLabel = i + 1;
                     var canvasNavigationButton = $('<button class="canvasNavigationButton" data-canvas-id="'+ canvases[i].id +'">Canvas '+ canvasLabel +'</button>');
                     
                     canvasNavigationButton.click(function() {

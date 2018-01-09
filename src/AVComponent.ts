@@ -167,7 +167,8 @@ namespace IIIFComponents {
 
             const that = this;
 
-            canvasInstance.$playerElement[0].addEventListener('loadedmetadata', function() {
+            canvasInstance.on('canvasready', function() {
+
                 canvasInstance.setCurrentTime(0);
 
                 if (that.options.data.autoPlay) {
