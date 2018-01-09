@@ -178,6 +178,8 @@ namespace IIIFComponents {
     
                 that._logMessage('CREATED CANVAS: '+ canvasInstance.canvasClockDuration +' seconds, '+ canvasInstance.canvasWidth +' x '+ canvasInstance.canvasHeight+' px.');
 
+                that.fire(AVComponent.Events.CANVASREADY);
+
             }, false);
 
         }
@@ -278,6 +280,7 @@ namespace IIIFComponents {
 
 namespace IIIFComponents.AVComponent {
     export class Events {
+        static CANVASREADY: string = 'canvasready';
         static PLAYCANVAS: string = 'play';
         static PAUSECANVAS: string = 'pause';
         static LOG: string = 'log';

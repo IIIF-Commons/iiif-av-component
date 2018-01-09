@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.6 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.7 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -23,6 +23,7 @@ declare namespace IIIFComponents {
 }
 declare namespace IIIFComponents.AVComponent {
     class Events {
+        static CANVASREADY: string;
         static PLAYCANVAS: string;
         static PAUSECANVAS: string;
         static LOG: string;
