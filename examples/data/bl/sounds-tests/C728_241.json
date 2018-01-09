@@ -1,0 +1,310 @@
+{
+    "context": "http://iiif.io/api/presentation/3/context.json",
+    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241.json",
+    "metadata": [
+        {
+            "label": "Identifier",
+            "value": "C728/241"
+        },
+        {
+            "label": "Title",
+            "value": "[Demo]"
+        }
+    ],
+    "sequences": [
+        {
+            "canvases": [
+                {
+                    "content": [
+                        {
+                            "items": [
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100049349428.0x00001a",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=0,243.32",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100049349428.0x00001a",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=243.32,464.08",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100049349428.0x00001a",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=464.08,748.6",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100049349428.0x00001a",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=748.6,1006.84",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "duration": 1006.84,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004",
+                    "label": "",
+                    "type": "Canvas"
+                },
+                {
+                    "content": [
+                        {
+                            "items": [
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100049349428.0x00001c",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=0,230.48",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100049349428.0x00001c",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=230.48,655.52",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100049349428.0x00001c",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=655.52,974",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100049349428.0x00001c",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=974,1209.68",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100049349428.0x00001c",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=1209.68,1591.12",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "duration": 1591.12,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005",
+                    "label": "",
+                    "type": "Canvas"
+                }
+            ],
+            "id": "",
+            "type": "Sequence"
+        }
+    ],
+    "structures": [
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000002",
+            "label": "[Demo]",
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000006",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=0,243.32",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": "Dania"
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000008",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=243.32,464.08",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": "A short life"
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x00000a",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=464.08,748.6",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": "Remembrant"
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x00000c",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=748.6,1006.84",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": "[No title]"
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x00000e",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=0,230.48",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": "Teen town"
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000010",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=230.48,655.52",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": "Toys"
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000012",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=655.52,974",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": "What is there to say"
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000014",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=974,1209.68",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": 203
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000016",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=1209.68,1591.12",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": "Three views of a secret"
+                        }
+                    ],
+                    "type": "Range"
+                }
+            ],
+            "type": "Range"
+        }
+    ],
+    "type": "Manifest"
+}

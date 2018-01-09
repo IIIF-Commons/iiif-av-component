@@ -1,0 +1,122 @@
+{
+    "context": "http://iiif.io/api/presentation/3/context.json",
+    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8.json",
+    "metadata": [
+        {
+            "label": "Identifier",
+            "value": "C308/8"
+        },
+        {
+            "label": "Title",
+            "value": "Brian Hayes programme"
+        }
+    ],
+    "sequences": [
+        {
+            "canvases": [
+                {
+                    "content": [
+                        {
+                            "items": [
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100050889733.0x00000c",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004#t=162.64,3441.8",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "duration": 3279.16,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
+                    "label": "",
+                    "type": "Canvas"
+                },
+                {
+                    "content": [
+                        {
+                            "items": [
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100050889733.0x00000e",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005#t=0,223.32",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "duration": 223.32,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005",
+                    "label": "",
+                    "type": "Canvas"
+                }
+            ],
+            "id": "",
+            "type": "Sequence"
+        }
+    ],
+    "structures": [
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000002",
+            "label": "Brian Hayes programme",
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000006",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004#t=162.64,3441.8",
+                            "type": "Canvas"
+                        },
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004#t=162.64,3441.8",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": "Brian Hayes programme"
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000008",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005#t=0,223.32",
+                            "type": "Canvas"
+                        },
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005#t=0,223.32",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Title",
+                            "value": "[News]; excerpt"
+                        }
+                    ],
+                    "type": "Range"
+                }
+            ],
+            "type": "Range"
+        }
+    ],
+    "type": "Manifest"
+}
