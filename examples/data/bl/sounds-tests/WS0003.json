@@ -21,7 +21,7 @@
                                 {
                                     "body": {
                                         "format": "audio/mp4",
-                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100048002902.0x000009",
+                                        "id": "http://resources.digirati.com/bl/WS0003/vdc_100048002902.0x000009.mp4",
                                         "type": "Audio"
                                     },
                                     "motivation": "Painting",

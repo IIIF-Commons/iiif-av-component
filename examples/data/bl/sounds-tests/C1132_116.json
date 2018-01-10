@@ -21,7 +21,7 @@
                                 {
                                     "body": {
                                         "format": "audio/mp4",
-                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100050735359.0x00000c",
+                                        "id": "http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000c.mp4",
                                         "type": "Audio"
                                     },
                                     "motivation": "Painting",
@@ -45,7 +45,7 @@
                                 {
                                     "body": {
                                         "format": "audio/mp4",
-                                        "id": "https://api.bl.uk/audio/iiif/ark:/81055/vdc_100050735359.0x00000e",
+                                        "id": "http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000e.mp4",
                                         "type": "Audio"
                                     },
                                     "motivation": "Painting",
