@@ -12,6 +12,5 @@ namespace IIIFComponents {
         autoPlay: boolean;
         defaultAspectRatio: number;
         content: IAVComponentContent;
-        rangeId: string | null;
     }
 }

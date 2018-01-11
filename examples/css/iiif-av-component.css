@@ -57,10 +57,18 @@
 .iiif-av-component .timelineItemContainer .timelineItem.active {
   background: #333;
 }
+.iiif-av-component .timelineContainer .durationHighlight {
+  position: absolute;
+  background: chartreuse;
+  height: 20px;
+  width: 100px;
+}
 .iiif-av-component .timelineContainer .ui-slider-range {
   background: #888888;
   box-sizing: border-box;
   border-right: 2px solid #000000;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 .iiif-av-component .timelineContainer .ui-slider-handle {
   top: 0px;

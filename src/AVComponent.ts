@@ -24,7 +24,6 @@ namespace IIIFComponents {
 
         public data(): IAVComponentData {
             return <IAVComponentData> {
-                helper: null,
                 autoPlay: false,
                 defaultAspectRatio: 0.56,
                 content: <IAVComponentContent>{
@@ -81,6 +80,7 @@ namespace IIIFComponents {
             const $canvasContainer: JQuery = $('<div class="canvasContainer"></div>');
             const $optionsContainer: JQuery = $('<div class="optionsContainer"></div>');
             const $timelineContainer: JQuery = $('<div class="timelineContainer"></div>');
+            const $durationHighlight: JQuery = $('<div class="durationHighlight"></div>');
             const $timelineItemContainer: JQuery = $('<div class="timelineItemContainer"></div>');
             const $controlsContainer: JQuery = $('<div class="controlsContainer"></div>');
             const $playButton: JQuery = $('<button class="playButton">' + this.options.data.content.play + '</button>');
@@ -88,6 +88,7 @@ namespace IIIFComponents {
             const $volumeControl: JQuery<HTMLInputElement> = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
 
             $controlsContainer.append($playButton, $timingControls, $volumeControl);
+            $timelineContainer.append($durationHighlight);
             $optionsContainer.append($timelineContainer, $timelineItemContainer, $controlsContainer);
             $player.append($canvasContainer, $optionsContainer);
 
@@ -214,9 +215,11 @@ namespace IIIFComponents {
             if (canvasInstance) {
                 const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
                 
-                if (temporal && temporal[1]) {
+                if (temporal && temporal.length > 1) {
                     const rangeTiming: string[] = temporal[1].split(',');
-                    canvasInstance.setCurrentTime(rangeTiming[0]);
+                    const duration: AVComponentObjects.Duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
+                    canvasInstance.highlightDuration(duration);
+                    canvasInstance.setCurrentTime(duration.start);
                     canvasInstance.play();
                 }
             }

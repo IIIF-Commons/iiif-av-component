@@ -11,7 +11,7 @@ namespace IIIFComponents {
         public highPriorityInterval: number;
         public lowPriorityInterval: number;
         private _mediaElements: any[]; // todo: type as HTMLMediaElement?
-        public $playerElement: JQuery | null = null;
+        public $playerElement: JQuery;
         public canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
         public canvasClockStartDate: number = 0;
         public canvasClockTime: number = 0;
@@ -245,6 +245,28 @@ namespace IIIFComponents {
 
         }
 
+        public highlightDuration(duration: AVComponentObjects.Duration): void {
+            const $durationHighlight: JQuery = this.$playerElement.find('.durationHighlight');
+
+            // get the total length in seconds.
+            const totalLength: number = this.canvasClockDuration;
+
+            // get the length of the timeline container
+            const timelineLength: number = <number>this._getTimelineContainer().width();
+
+            // get the ratio of seconds to length
+            const ratio: number = timelineLength / totalLength;
+            const start: number = duration.start * ratio;
+            const end: number = duration.end * ratio;
+            const width: number = end - start;
+
+            // set the start position and width
+            $durationHighlight.css({
+                left: start,
+                width: width
+            })
+        }
+
         public setVolume(value: number): void {
 
             for (let i = 0; i < this._mediaElements.length; i++) {
@@ -259,34 +281,34 @@ namespace IIIFComponents {
             const leftPercent: number = this._convertToPercentage(mediaElementData.start, this.canvasClockDuration);
             const widthPercent: number = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this.canvasClockDuration);
 
-            const timelineItem: JQuery = $('<div class="timelineItem" title="'+ mediaElementData.source +'" data-start="'+ mediaElementData.start +'" data-end="'+ mediaElementData.end +'"></div>');
+            const $timelineItem: JQuery = $('<div class="timelineItem" title="'+ mediaElementData.source +'" data-start="'+ mediaElementData.start +'" data-end="'+ mediaElementData.end +'"></div>');
 
-            timelineItem.css({
+            $timelineItem.css({
                 left: leftPercent + '%',
                 width: widthPercent + '%'
             });
 
-            const lineWrapper: JQuery = $('<div class="lineWrapper"></div>');
+            const $lineWrapper: JQuery = $('<div class="lineWrapper"></div>');
 
-            timelineItem.appendTo(lineWrapper);
+            $timelineItem.appendTo($lineWrapper);
 
-            mediaElementData.timelineElement = timelineItem;
+            mediaElementData.timelineElement = $timelineItem;
 
             if (this.$playerElement) {
-                const itemContainer: JQuery = this.$playerElement.find('.timelineItemContainer');
-                itemContainer.append(lineWrapper);
+                const $itemContainer: JQuery = this.$playerElement.find('.timelineItemContainer');
+                $itemContainer.append($lineWrapper);
             }
         }
 
-        public setCurrentTime(seconds: string | number): void { // todo: why is this a string or a number? can it just be a number?
+        public setCurrentTime(seconds: number): void { // seconds was originally a string or a number - didn't seem necessary
 		
-            const secondsAsFloat: number = parseFloat(<string>seconds);
+            // const secondsAsFloat: number = parseFloat(seconds.toString());
 
-            if (isNaN(secondsAsFloat)) {
-                return;
-            }
+            // if (isNaN(secondsAsFloat)) {
+            //     return;
+            // }
 
-            this.canvasClockTime = secondsAsFloat;
+            this.canvasClockTime = seconds; //secondsAsFloat;
             this.canvasClockStartDate = Date.now() - (this.canvasClockTime * 1000)
 
             this.logMessage('SET CURRENT TIME to: '+ this.canvasClockTime + ' seconds.');
@@ -356,17 +378,19 @@ namespace IIIFComponents {
             }
         }
 
+        private _getTimelineContainer(): JQuery {
+            return this.$playerElement.find('.timelineContainer');
+        }
+
         public highPriorityUpdater(): void {
 
-            if (!this.$playerElement) return;
+            const $timelineContainer: JQuery = this._getTimelineContainer();
 
-            const $timeLineContainer: JQuery = this.$playerElement.find('.timelineContainer');
-
-            $timeLineContainer.slider({
+            $timelineContainer.slider({
                 value: this.canvasClockTime
             });
 
-            this.$playerElement.find('.canvasTime').text(AVComponentUtils.Utils.formatTime(this.canvasClockTime) );
+            this.$playerElement.find('.canvasTime').text(AVComponentUtils.Utils.formatTime(this.canvasClockTime));
         }
 
         public lowPriorityUpdater(): void {

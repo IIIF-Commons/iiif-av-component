@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.8 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.9 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -43,7 +43,7 @@ declare namespace IIIFComponents {
         highPriorityInterval: number;
         lowPriorityInterval: number;
         private _mediaElements;
-        $playerElement: JQuery | null;
+        $playerElement: JQuery;
         canvasClockDuration: number;
         canvasClockStartDate: number;
         canvasClockTime: number;
@@ -60,12 +60,14 @@ declare namespace IIIFComponents {
         initContents(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
+        highlightDuration(duration: AVComponentObjects.Duration): void;
         setVolume(value: number): void;
         private _renderSyncIndicator(mediaElementData);
-        setCurrentTime(seconds: string | number): void;
+        setCurrentTime(seconds: number): void;
         play(withoutUpdate?: boolean): void;
         pause(withoutUpdate?: boolean): void;
         canvasClockUpdater(): void;
+        private _getTimelineContainer();
         highPriorityUpdater(): void;
         lowPriorityUpdater(): void;
         updateMediaActiveStates(): void;
@@ -76,6 +78,14 @@ declare namespace IIIFComponents {
         private _hideWorkingIndicator();
         on(name: string, callback: Function, ctx: any): void;
         fire(name: string, ...args: any[]): void;
+    }
+}
+
+declare namespace IIIFComponents.AVComponentObjects {
+    class Duration {
+        start: number;
+        end: number;
+        constructor(start: number, end: number);
     }
 }
 

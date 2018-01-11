@@ -133,7 +133,7 @@
             });
 
             treecomponent = new IIIFComponents.TreeComponent({
-                target: document.querySelector('#tree');
+                target: document.querySelector('#tree')
             });
 
             function initCanvasNavigation(canvases) {
@@ -245,7 +245,7 @@
 
                 if (canvas) {
                     
-                    avcomponent.playCanvas(canvasId);
+                    avcomponent.play(canvasId);
 
                     logMessage('SELECT RANGE: '+ node.label);
                 } else {
