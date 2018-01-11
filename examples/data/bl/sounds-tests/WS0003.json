@@ -1,0 +1,81 @@
+{
+    "context": "http://iiif.io/api/presentation/3/context.json",
+    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/WS0003.json",
+    "metadata": [
+        {
+            "label": "Identifier",
+            "value": "WS0003"
+        },
+        {
+            "label": "Title",
+            "value": "Aburria aburri r1"
+        }
+    ],
+    "sequences": [
+        {
+            "canvases": [
+                {
+                    "content": [
+                        {
+                            "items": [
+                                {
+                                    "body": {
+                                        "format": "audio/mp4",
+                                        "id": "http://resources.digirati.com/bl/WS0003/vdc_100048002902.0x000009.mp4",
+                                        "type": "Audio"
+                                    },
+                                    "motivation": "Painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004#t=0,20.84",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "duration": 20.84,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004",
+                    "label": "",
+                    "type": "Canvas"
+                }
+            ],
+            "id": "",
+            "type": "Sequence"
+        }
+    ],
+    "structures": [
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000002",
+            "label": "Aburria aburri r1",
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000005",
+                    "label": "Recording",
+                    "members": [
+                        {
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004#t=0,20.84",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": "Identifier",
+                            "value": "WS0003"
+                        },
+                        {
+                            "label": "Title",
+                            "value": "Aburria aburri : Wattled Guan - Cracidae"
+                        },
+                        {
+                            "label": "Place",
+                            "value": "Peru"
+                        }
+                    ],
+                    "type": "Range"
+                }
+            ],
+            "type": "Range"
+        }
+    ],
+    "type": "Manifest"
+}
