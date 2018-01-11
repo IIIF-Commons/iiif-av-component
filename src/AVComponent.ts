@@ -177,7 +177,7 @@ namespace IIIFComponents {
     
                 $timingControls.find('.canvasDuration').text(AVComponentUtils.Utils.formatTime(canvasInstance.canvasClockDuration));
     
-                that._logMessage('CREATED CANVAS: '+ canvasInstance.canvasClockDuration +' seconds, '+ canvasInstance.canvasWidth +' x '+ canvasInstance.canvasHeight+' px.');
+                that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
 
                 that.fire(AVComponent.Events.CANVASREADY);
 
