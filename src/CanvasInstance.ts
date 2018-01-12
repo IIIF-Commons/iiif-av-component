@@ -17,6 +17,7 @@ namespace IIIFComponents {
         public canvasClockTime: number = 0;
         public canvasHeight: number = 0;
         public canvasWidth: number = 0;
+        public currentDuration: AVComponentObjects.Duration | null = null;
         public data: Manifesto.ICanvas | null = null;
         public isPlaying: boolean = false;
         public isStalled: boolean = false;
@@ -245,8 +246,17 @@ namespace IIIFComponents {
 
         }
 
-        public highlightDuration(duration: AVComponentObjects.Duration): void {
-            const $durationHighlight: JQuery = this.$playerElement.find('.durationHighlight');
+        private _getDurationHighlight(): JQuery {
+            return this.$playerElement.find('.durationHighlight');
+        }
+
+        public highlightDuration(): void {
+
+            if (!this.currentDuration) {
+                return;
+            }
+
+            const $durationHighlight: JQuery = this._getDurationHighlight();
 
             // get the total length in seconds.
             const totalLength: number = this.canvasClockDuration;
@@ -256,8 +266,8 @@ namespace IIIFComponents {
 
             // get the ratio of seconds to length
             const ratio: number = timelineLength / totalLength;
-            const start: number = duration.start * ratio;
-            const end: number = duration.end * ratio;
+            const start: number = this.currentDuration.start * ratio;
+            const end: number = this.currentDuration.end * ratio;
             const width: number = end - start;
 
             // set the start position and width

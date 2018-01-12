@@ -120,6 +120,7 @@
                     "label": "At the Counter",
                     "members": [
                         {
+                            "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/5",
                             "type": "Range",
                             "label": "Getting Tray",
                             "members": [
@@ -130,6 +131,7 @@
                             ]
                         },
                         {
+                            "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/6",
                             "type": "Range",
                             "label": "Choosing Food",
                             "members": [
@@ -140,6 +142,7 @@
                             ]
                         },
                         {
+                            "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/7",
                             "type": "Range",
                             "label": "There will be Cake",
                             "members": [
@@ -152,11 +155,12 @@
                     ]
                 },
                 {
-                    "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/5",
+                    "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/8",
                     "type": "Range",
                     "label": "At the Table",
                     "members": [
                         {
+                            "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/9",
                             "type": "Range",
                             "label": "Sitting Quietly",
                             "members": [
@@ -167,6 +171,7 @@
                             ]
                         },
                         {
+                            "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/10",
                             "type": "Range",
                             "label": "Eating Neatly",
                             "members": [
@@ -179,11 +184,12 @@
                     ]
                 },
                 {
-                    "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/6",
+                    "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/11",
                     "type": "Range",
                     "label": "Leaving the Lunchroom",
                     "members": [
                         {
+                            "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/12",
                             "type": "Range",
                             "label": "Cleaning Up",
                             "members": [
@@ -194,6 +200,7 @@
                             ]
                         },
                         {
+                            "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/13",
                             "type": "Range",
                             "label": "Putting Things Away",
                             "members": [

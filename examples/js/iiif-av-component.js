@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.9 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.10 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 /// <reference types="exjs" /> 
@@ -178,7 +178,8 @@ var IIIFComponents;
                 if (temporal && temporal.length > 1) {
                     var rangeTiming = temporal[1].split(',');
                     var duration = new IIIFComponents.AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
-                    canvasInstance.highlightDuration(duration);
+                    canvasInstance.currentDuration = duration;
+                    canvasInstance.highlightDuration();
                     canvasInstance.setCurrentTime(duration.start);
                     canvasInstance.play();
                 }
@@ -206,6 +207,7 @@ var IIIFComponents;
             // loop through all canvases resizing their elements
             for (var i = 0; i < this.canvasInstances.length; i++) {
                 var canvasInstance = this.canvasInstances[i];
+                canvasInstance.highlightDuration();
                 if (canvasInstance.$playerElement) {
                     var $canvasContainer = canvasInstance.$playerElement.find('.canvasContainer');
                     var $timelineContainer = canvasInstance.$playerElement.find('.timelineContainer');
@@ -261,6 +263,7 @@ var IIIFComponents;
             this.canvasClockTime = 0;
             this.canvasHeight = 0;
             this.canvasWidth = 0;
+            this.currentDuration = null;
             this.data = null;
             this.isPlaying = false;
             this.isStalled = false;
@@ -436,16 +439,22 @@ var IIIFComponents;
             }
             this._renderSyncIndicator(data);
         };
-        CanvasInstance.prototype.highlightDuration = function (duration) {
-            var $durationHighlight = this.$playerElement.find('.durationHighlight');
+        CanvasInstance.prototype._getDurationHighlight = function () {
+            return this.$playerElement.find('.durationHighlight');
+        };
+        CanvasInstance.prototype.highlightDuration = function () {
+            if (!this.currentDuration) {
+                return;
+            }
+            var $durationHighlight = this._getDurationHighlight();
             // get the total length in seconds.
             var totalLength = this.canvasClockDuration;
             // get the length of the timeline container
             var timelineLength = this._getTimelineContainer().width();
             // get the ratio of seconds to length
             var ratio = timelineLength / totalLength;
-            var start = duration.start * ratio;
-            var end = duration.end * ratio;
+            var start = this.currentDuration.start * ratio;
+            var end = this.currentDuration.end * ratio;
             var width = end - start;
             // set the start position and width
             $durationHighlight.css({

@@ -218,7 +218,8 @@ namespace IIIFComponents {
                 if (temporal && temporal.length > 1) {
                     const rangeTiming: string[] = temporal[1].split(',');
                     const duration: AVComponentObjects.Duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
-                    canvasInstance.highlightDuration(duration);
+                    canvasInstance.currentDuration = duration;
+                    canvasInstance.highlightDuration();
                     canvasInstance.setCurrentTime(duration.start);
                     canvasInstance.play();
                 }
@@ -257,6 +258,8 @@ namespace IIIFComponents {
             for (let i = 0; i < this.canvasInstances.length; i++) {
 
                 const canvasInstance: CanvasInstance = this.canvasInstances[i];
+
+                canvasInstance.highlightDuration();
 
                 if (canvasInstance.$playerElement) {
                     const $canvasContainer = canvasInstance.$playerElement.find('.canvasContainer');

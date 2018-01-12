@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.9 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.10 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -49,6 +49,7 @@ declare namespace IIIFComponents {
         canvasClockTime: number;
         canvasHeight: number;
         canvasWidth: number;
+        currentDuration: AVComponentObjects.Duration | null;
         data: Manifesto.ICanvas | null;
         isPlaying: boolean;
         isStalled: boolean;
@@ -60,7 +61,8 @@ declare namespace IIIFComponents {
         initContents(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
-        highlightDuration(duration: AVComponentObjects.Duration): void;
+        private _getDurationHighlight();
+        highlightDuration(): void;
         setVolume(value: number): void;
         private _renderSyncIndicator(mediaElementData);
         setCurrentTime(seconds: number): void;
