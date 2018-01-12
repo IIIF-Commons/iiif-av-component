@@ -67,7 +67,8 @@ namespace IIIFComponents {
 
 			for (let i = 0; i < canvases.length; i++) {
 				this._initCanvas(canvases[i]);
-			}
+            }
+
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {

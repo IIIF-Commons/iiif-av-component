@@ -37,34 +37,38 @@ namespace IIIFComponents {
 
             this._mediaElements = [];
 
-            const mediaItems = (<any>this.data).__jsonld.content[0].items; //todo: use canvas.getContent()
+            const items = (<any>this.data).__jsonld.content[0].items; //todo: use canvas.getContent()
 
-            for (let i = 0; i < mediaItems.length; i++) {
+            if (items.length === 1) {
+                this._getTimelineItemContainer().hide();
+            }
 
-                const mediaItem = mediaItems[i];
+            for (let i = 0; i < items.length; i++) {
+
+                const item = items[i];
                 
                 /*
-                if (mediaItem.motivation != 'painting') {
+                if (item.motivation != 'painting') {
                     return null;
                 }
                 */
 
                 let mediaSource;
 
-                if (mediaItem.body.type == 'TextualBody') {
-                    mediaSource = mediaItem.body.value;
-                } else if (Array.isArray(mediaItem.body) && mediaItem.body[0].type == 'Choice') {
+                if (item.body.type == 'TextualBody') {
+                    mediaSource = item.body.value;
+                } else if (Array.isArray(item.body) && item.body[0].type == 'Choice') {
                     // Choose first "Choice" item as body
-                    const tmpItem = mediaItem;
-                    mediaItem.body = tmpItem.body[0].items[0];
+                    const tmpItem = item;
+                    item.body = tmpItem.body[0].items[0];
 
-                    mediaSource = mediaItem.body.id.split('#')[0];
+                    mediaSource = item.body.id.split('#')[0];
                 } else {
-                    mediaSource = mediaItem.body.id.split('#')[0];
+                    mediaSource = item.body.id.split('#')[0];
                 }
                 
                 /*
-                var targetFragment = (mediaItem.target.indexOf('#') != -1) ? mediaItem.target.split('#t=')[1] : '0, '+ canvasClockDuration,
+                var targetFragment = (item.target.indexOf('#') != -1) ? item.target.split('#t=')[1] : '0, '+ canvasClockDuration,
                     fragmentTimings = targetFragment.split(','),
                     startTime = parseFloat(fragmentTimings[0]),
                     endTime = parseFloat(fragmentTimings[1]);
@@ -77,8 +81,8 @@ namespace IIIFComponents {
                     mediaHeight = fragmentPosition[3];
                 */
 
-                const spatial = /xywh=([^&]+)/g.exec(mediaItem.target);
-                const temporal = /t=([^&]+)/g.exec(mediaItem.target);
+                const spatial = /xywh=([^&]+)/g.exec(item.target);
+                const temporal = /t=([^&]+)/g.exec(item.target);
                 
                 let xywh;
                 if (spatial && spatial[1]) {
@@ -106,7 +110,7 @@ namespace IIIFComponents {
                     percentageWidth = this._convertToPercentage(mediaWidth, this.canvasWidth),
                     percentageHeight = this._convertToPercentage(mediaHeight, this.canvasHeight);
 
-                const temporalOffsets = /t=([^&]+)/g.exec(mediaItem.body.id);
+                const temporalOffsets = /t=([^&]+)/g.exec(item.body.id);
 
                 let ot;
                 if(temporalOffsets && temporalOffsets[1]) {
@@ -119,7 +123,7 @@ namespace IIIFComponents {
                     offsetEnd = (ot[1]) ? parseInt(<string>ot[1]) : ot[1];
                 
                 const itemData: any = {
-                    'type': mediaItem.body.type,
+                    'type': item.body.type,
                     'source': mediaSource,
                     'start': startTime, 
                     'end': endTime, 
@@ -305,7 +309,7 @@ namespace IIIFComponents {
             mediaElementData.timelineElement = $timelineItem;
 
             if (this.$playerElement) {
-                const $itemContainer: JQuery = this.$playerElement.find('.timelineItemContainer');
+                const $itemContainer: JQuery = this._getTimelineItemContainer();
                 $itemContainer.append($lineWrapper);
             }
         }
@@ -390,6 +394,10 @@ namespace IIIFComponents {
 
         private _getTimelineContainer(): JQuery {
             return this.$playerElement.find('.timelineContainer');
+        }
+
+        private _getTimelineItemContainer(): JQuery {
+            return this.$playerElement.find('.timelineItemContainer');
         }
 
         public highPriorityUpdater(): void {
