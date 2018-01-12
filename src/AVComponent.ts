@@ -259,8 +259,6 @@ namespace IIIFComponents {
 
                 const canvasInstance: CanvasInstance = this.canvasInstances[i];
 
-                canvasInstance.highlightDuration();
-
                 if (canvasInstance.$playerElement) {
                     const $canvasContainer = canvasInstance.$playerElement.find('.canvasContainer');
                     const $timelineContainer = canvasInstance.$playerElement.find('.timelineContainer');
@@ -276,6 +274,8 @@ namespace IIIFComponents {
                         const $options: JQuery = canvasInstance.$playerElement.find('.optionsContainer');
                         $canvasContainer.height(<number>this._$element.height() - <number>$options.height());
                     }
+
+                    canvasInstance.highlightDuration();
                     
                 }
 
