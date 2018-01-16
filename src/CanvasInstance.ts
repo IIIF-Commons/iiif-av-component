@@ -16,28 +16,28 @@ namespace IIIFComponents {
         private _$timelineItemContainer: JQuery;
         private _$timingControls: JQuery;
         private _$volumeControl: JQuery<HTMLInputElement>;
+        private _canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
         private _canvasClockFrequency: number = 25;
+        private _canvasClockInterval: number;
+        private _canvasClockStartDate: number = 0;        
+        private _canvasClockTime: number = 0;
         private _canvasHeight: number = 0;
         private _canvasWidth: number = 0;
         private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
         private _data: IAVComponentData;
         private _e: any;
+        private _highPriorityInterval: number;
+        private _isPlaying: boolean = false;
+        private _isStalled: boolean = false;
+        private _lowPriorityInterval: number;
+        private _readyCanvasesCount: number = 0;
+        private _stallRequestedBy: any[] = []; //todo: type
+        private _wasPlaying: boolean = false;
 
         public $playerElement: JQuery;
         public canvas: Manifesto.ICanvas;
-        public canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
-        public canvasClockInterval: number;
-        public canvasClockStartDate: number = 0;
-        public canvasClockTime: number = 0;
         public currentDuration: AVComponentObjects.Duration | null = null;
-        public highPriorityInterval: number;
-        public isPlaying: boolean = false;
-        public isStalled: boolean = false;
         public logMessage: (message: string) => void;
-        public lowPriorityInterval: number;
-        public readyCanvasesCount: number = 0;
-        public stallRequestedBy: any[] = []; //todo: type
-        public wasPlaying: boolean = false;
 
         constructor(canvas: Manifesto.ICanvas, data: IAVComponentData) {
             this.canvas = canvas;
@@ -64,7 +64,7 @@ namespace IIIFComponents {
             this._$optionsContainer.append(this._$timelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
 
-            this.canvasClockDuration = <number>this.canvas.getDuration();
+            this._canvasClockDuration = <number>this.canvas.getDuration();
 
             const canvasWidth: number = this.canvas.getWidth();
             const canvasHeight: number = this.canvas.getHeight();
@@ -84,7 +84,7 @@ namespace IIIFComponents {
             const that = this;
 
             this._$playButton.on('click', () => {
-                if (this.isPlaying) {
+                if (this._isPlaying) {
                     this.pause();
                 } else {
                     this.play();
@@ -104,7 +104,7 @@ namespace IIIFComponents {
                 step: 0.01,
                 orientation: "horizontal",
                 range: "min",
-                max: that.canvasClockDuration,
+                max: that._canvasClockDuration,
                 animate: false,			
                 create: function(evt: any, ui: any) {
                     // on create
@@ -139,13 +139,13 @@ namespace IIIFComponents {
 
                 let mediaSource;
 
-                if (item.body.type == 'TextualBody') {
-                    mediaSource = item.body.value;
-                } else if (Array.isArray(item.body) && item.body[0].type == 'Choice') {
+                if (Array.isArray(item.body) && item.body[0].type.toLowerCase() === 'choice') {
                     // Choose first "Choice" item as body
                     const tmpItem = item;
                     item.body = tmpItem.body[0].items[0];
                     mediaSource = item.body.id.split('#')[0];
+                } else if (item.body.type.toLowerCase() === 'textualbody') {
+                    mediaSource = item.body.value;
                 } else {
                     mediaSource = item.body.id.split('#')[0];
                 }
@@ -180,7 +180,7 @@ namespace IIIFComponents {
                 if(temporal && temporal[1]) {
                     t = temporal[1].split(',');
                 } else {
-                    t = [0, this.canvasClockDuration];
+                    t = [0, this._canvasClockDuration];
                 }
 
                 const positionLeft = parseInt(<string>xywh[0]),
@@ -226,13 +226,21 @@ namespace IIIFComponents {
             }
         }
 
-        public limitToRange(limit: boolean): void {
+        public update(data: IAVComponentData): void {
 
-            if (limit) {
+            this._data = data;
+
+            if (this._data.limitToRange) {
 
             } else {
 
             }
+        }
+
+        public destroy(): void {
+            window.clearInterval(this._highPriorityInterval);
+            window.clearInterval(this._lowPriorityInterval);
+            window.clearInterval(this._canvasClockInterval);
         }
 
         private _convertToPercentage(pixelValue: number, maxValue: number): number {
@@ -244,17 +252,17 @@ namespace IIIFComponents {
 
             let $mediaElement;
 
-            switch(data.type) {
-                case 'Image':
+            switch(data.type.toLowerCase()) {
+                case 'image':
                     $mediaElement = $('<img class="anno" src="' + data.source + '" />');
                     break;
-                case 'Video':
+                case 'video':
                     $mediaElement = $('<video class="anno" src="' + data.source + '" />');
                     break;
-                case 'Audio':
+                case 'audio':
                     $mediaElement = $('<audio class="anno" src="' + data.source + '" />');
                     break;
-                case 'TextualBody':
+                case 'textualbody':
                     $mediaElement = $('<div class="anno">' + data.source + '</div>');
                     break;
                 default:
@@ -270,7 +278,7 @@ namespace IIIFComponents {
 
             data.element = $mediaElement;
 
-            if (data.type == 'Video' || data.type == 'Audio') {
+            if (data.type.toLowerCase() === 'video' || data.type.toLowerCase() === 'audio') {
                 
                 data.timeout = null;
 
@@ -281,11 +289,11 @@ namespace IIIFComponents {
                     const self = this;
                     
                     if (this.active) {
-                        that.checkMediaSynchronization();
+                        that._checkMediaSynchronization();
                         if (this.element.get(0).readyState > 0 && !this.outOfSync) {
-                            that.playbackStalled(false, self);
+                            that._playbackStalled(false, self);
                         } else {
-                            that.playbackStalled(true, self);
+                            that._playbackStalled(true, self);
                             if (this.timeout) {
                                 window.clearTimeout(this.timeout);
                             }
@@ -295,7 +303,7 @@ namespace IIIFComponents {
                         }
 
                     } else {
-                        that.playbackStalled(false, self);
+                        that._playbackStalled(false, self);
                     }
 
                 }
@@ -307,7 +315,7 @@ namespace IIIFComponents {
                 this._$canvasContainer.append($mediaElement);
             }
             
-            if (data.type == 'Video' || data.type == 'Audio') {
+            if (data.type.toLowerCase() === 'video' || data.type.toLowerCase() === 'audio') {
 
                 const that = this;
                 const self = data;
@@ -328,16 +336,16 @@ namespace IIIFComponents {
                 });
 
                 $mediaElement.on('loadedmetadata', function() {
-                    that.readyCanvasesCount++;
+                    that._readyCanvasesCount++;
 
-                    if (that.readyCanvasesCount === that._contentAnnotations.length) {
+                    if (that._readyCanvasesCount === that._contentAnnotations.length) {
                         that.setCurrentTime(0);
 
                         if (that._data.autoPlay) {
                             that.play();
                         }
             
-                        that._$canvasDuration.text(AVComponentUtils.Utils.formatTime(that.canvasClockDuration));
+                        that._$canvasDuration.text(AVComponentUtils.Utils.formatTime(that._canvasClockDuration));
                         
                         that.fire(AVComponent.Events.CANVASREADY);
                     }
@@ -359,7 +367,7 @@ namespace IIIFComponents {
             }
 
             // get the total length in seconds.
-            const totalLength: number = this.canvasClockDuration;
+            const totalLength: number = this._canvasClockDuration;
 
             // get the length of the timeline container
             const timelineLength: number = <number>this._$timelineContainer.width();
@@ -388,8 +396,8 @@ namespace IIIFComponents {
 
         private _renderSyncIndicator(mediaElementData: any) {
 
-            const leftPercent: number = this._convertToPercentage(mediaElementData.start, this.canvasClockDuration);
-            const widthPercent: number = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this.canvasClockDuration);
+            const leftPercent: number = this._convertToPercentage(mediaElementData.start, this._canvasClockDuration);
+            const widthPercent: number = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this._canvasClockDuration);
 
             const $timelineItem: JQuery = $('<div class="timelineItem" title="'+ mediaElementData.source +'" data-start="'+ mediaElementData.start +'" data-end="'+ mediaElementData.end +'"></div>');
 
@@ -417,44 +425,44 @@ namespace IIIFComponents {
             //     return;
             // }
 
-            this.canvasClockTime = seconds; //secondsAsFloat;
-            this.canvasClockStartDate = Date.now() - (this.canvasClockTime * 1000)
+            this._canvasClockTime = seconds; //secondsAsFloat;
+            this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000)
 
-            this.logMessage('SET CURRENT TIME to: '+ this.canvasClockTime + ' seconds.');
+            this.logMessage('SET CURRENT TIME to: '+ this._canvasClockTime + ' seconds.');
 
-            this.canvasClockUpdater();
-            this.highPriorityUpdater();
-            this.lowPriorityUpdater();
-            this.synchronizeMedia();            
+            this._canvasClockUpdater();
+            this._highPriorityUpdater();
+            this._lowPriorityUpdater();
+            this._synchronizeMedia();
         }
 
         public play(withoutUpdate?: boolean): void {
-            if (this.isPlaying) return;
+            if (this._isPlaying) return;
 
-            if (this.canvasClockTime === this.canvasClockDuration) {
-                this.canvasClockTime = 0;
+            if (this._canvasClockTime === this._canvasClockDuration) {
+                this._canvasClockTime = 0;
             }
 
-            this.canvasClockStartDate = Date.now() - (this.canvasClockTime * 1000);
+            this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
 
             const self = this;
 
-            this.highPriorityInterval = window.setInterval(function() {
-                self.highPriorityUpdater();
+            this._highPriorityInterval = window.setInterval(function() {
+                self._highPriorityUpdater();
             }, this._highPriorityFrequency);
 
-            this.lowPriorityInterval = window.setInterval(function() {
-                self.lowPriorityUpdater();
+            this._lowPriorityInterval = window.setInterval(function() {
+                self._lowPriorityUpdater();
             }, this._lowPriorityFrequency);
 
-            this.canvasClockInterval = window.setInterval(function() {
-                self.canvasClockUpdater();
+            this._canvasClockInterval = window.setInterval(function() {
+                self._canvasClockUpdater();
             }, this._canvasClockFrequency);
 
-            this.isPlaying = true;
+            this._isPlaying = true;
 
             if (!withoutUpdate) {
-                this.synchronizeMedia();
+                this._synchronizeMedia();
             }
 
             this._$playButton.removeClass('play');
@@ -466,16 +474,17 @@ namespace IIIFComponents {
         }
 
         public pause(withoutUpdate?: boolean): void {
-            window.clearInterval(this.highPriorityInterval);
-            window.clearInterval(this.lowPriorityInterval);
-            window.clearInterval(this.canvasClockInterval);
 
-            this.isPlaying = false;
+            window.clearInterval(this._highPriorityInterval);
+            window.clearInterval(this._lowPriorityInterval);
+            window.clearInterval(this._canvasClockInterval);
+
+            this._isPlaying = false;
 
             if (!withoutUpdate) {
-                this.highPriorityUpdater();
-                this.lowPriorityUpdater();
-                this.synchronizeMedia();
+                this._highPriorityUpdater();
+                this._lowPriorityUpdater();
+                this._synchronizeMedia();
             }
 
             this._$playButton.removeClass('pause');
@@ -486,63 +495,63 @@ namespace IIIFComponents {
             this.logMessage('PAUSE canvas');
         }
 
-        public canvasClockUpdater(): void {
-            this.canvasClockTime = (Date.now() - this.canvasClockStartDate) / 1000;
+        private _canvasClockUpdater(): void {
+            this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
 
-            if (this.canvasClockTime >= this.canvasClockDuration) {
-                this.canvasClockTime = this.canvasClockDuration;
+            if (this._canvasClockTime >= this._canvasClockDuration) {
+                this._canvasClockTime = this._canvasClockDuration;
                 this.pause();
             }
         }
 
-        public highPriorityUpdater(): void {
+        private _highPriorityUpdater(): void {
 
             this._$timelineContainer.slider({
-                value: this.canvasClockTime
+                value: this._canvasClockTime
             });
 
-            this._$canvasTime.text(AVComponentUtils.Utils.formatTime(this.canvasClockTime));
+            this._$canvasTime.text(AVComponentUtils.Utils.formatTime(this._canvasClockTime));
         }
 
-        public lowPriorityUpdater(): void {
-            this.updateMediaActiveStates();
+        private _lowPriorityUpdater(): void {
+            this._updateMediaActiveStates();
         }
 
-        public updateMediaActiveStates(): void {
+        private _updateMediaActiveStates(): void {
 
-            let mediaElement;
+            let contentAnnotation;
 
             for (let i = 0; i < this._contentAnnotations.length; i++) {
 
-                mediaElement = this._contentAnnotations[i];
+                contentAnnotation = this._contentAnnotations[i];
 
-                if (mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime) {
+                if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
 
-                    this.checkMediaSynchronization();
+                    this._checkMediaSynchronization();
 
-                    if (!mediaElement.active) {
-                        this.synchronizeMedia();
-                        mediaElement.active = true;
-                        mediaElement.element.show();
-                        mediaElement.timelineElement.addClass('active');
+                    if (!contentAnnotation.active) {
+                        this._synchronizeMedia();
+                        contentAnnotation.active = true;
+                        contentAnnotation.element.show();
+                        contentAnnotation.timelineElement.addClass('active');
                     }
 
-                    if (mediaElement.type == 'Video' || mediaElement.type == 'Audio') {
+                    if (contentAnnotation.type == 'Video' || contentAnnotation.type == 'Audio') {
 
-                        if (mediaElement.element[0].currentTime > mediaElement.element[0].duration - mediaElement.endOffset) {
-                            mediaElement.element[0].pause();
+                        if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
+                            contentAnnotation.element[0].pause();
                         }
 
                     }
 
                 } else {
 
-                    if (mediaElement.active) {
-                        mediaElement.active = false;
-                        mediaElement.element.hide();
-                        mediaElement.timelineElement.removeClass('active');
-                        if (mediaElement.type == 'Video' || mediaElement.type == 'Audio') {
-                            mediaElement.element[0].pause();
+                    if (contentAnnotation.active) {
+                        contentAnnotation.active = false;
+                        contentAnnotation.element.hide();
+                        contentAnnotation.timelineElement.removeClass('active');
+                        if (contentAnnotation.type == 'Video' || contentAnnotation.type == 'Audio') {
+                            contentAnnotation.element[0].pause();
                         }
                     }
 
@@ -550,116 +559,116 @@ namespace IIIFComponents {
 
             }
 
-            //this.logMessage('UPDATE MEDIA ACTIVE STATES at: '+ this.canvasClockTime + ' seconds.');
+            //this.logMessage('UPDATE MEDIA ACTIVE STATES at: '+ this._canvasClockTime + ' seconds.');
 
         }
 
-        public synchronizeMedia(): void {
+        private _synchronizeMedia(): void {
 
-            let mediaElement;
+            let contentAnnotation;
 
             for (let i = 0; i < this._contentAnnotations.length; i++) {
 
-                mediaElement = this._contentAnnotations[i];
+                contentAnnotation = this._contentAnnotations[i];
                 
-                if (mediaElement.type == 'Video' || mediaElement.type == 'Audio') {
+                if (contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') {
 
-                    mediaElement.element[0].currentTime = this.canvasClockTime - mediaElement.start + mediaElement.startOffset;
+                    contentAnnotation.element[0].currentTime = this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset;
 
-                    if (mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime) {
-                        if (this.isPlaying) {
-                            if (mediaElement.element[0].paused) {
-                                var promise = mediaElement.element[0].play();
+                    if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
+                        if (this._isPlaying) {
+                            if (contentAnnotation.element[0].paused) {
+                                var promise = contentAnnotation.element[0].play();
                                 if (promise) {
                                     promise.catch(function(){});
                                 }
                             }
                         } else {
-                            mediaElement.element[0].pause();
+                            contentAnnotation.element[0].pause();
                         }
                     } else {
-                        mediaElement.element[0].pause();
+                        contentAnnotation.element[0].pause();
                     }
 
-                    if (mediaElement.element[0].currentTime > mediaElement.element[0].duration - mediaElement.endOffset) {
-                        mediaElement.element[0].pause();
+                    if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
+                        contentAnnotation.element[0].pause();
                     }
                 }
             }
 
-            this.logMessage('SYNC MEDIA at: '+ this.canvasClockTime + ' seconds.');
+            this.logMessage('SYNC MEDIA at: '+ this._canvasClockTime + ' seconds.');
             
         }
 
-        public checkMediaSynchronization(): void {
+        private _checkMediaSynchronization(): void {
 	
-            let mediaElement;
+            let contentAnnotation;
 
             for (let i = 0, l = this._contentAnnotations.length; i < l; i++) {
                 
-                mediaElement = this._contentAnnotations[i];
+                contentAnnotation = this._contentAnnotations[i];
 
-                if ((mediaElement.type == 'Video' || mediaElement.type == 'Audio') && 
-                    (mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime) ) {
+                if ((contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') && 
+                    (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) ) {
 
-                    const correctTime: number = (this.canvasClockTime - mediaElement.start + mediaElement.startOffset);
-                    const factualTime: number = mediaElement.element[0].currentTime;
+                    const correctTime: number = (this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
+                    const factualTime: number = contentAnnotation.element[0].currentTime;
 
                     // off by 0.2 seconds
                     if (Math.abs(factualTime - correctTime) > 0.4) {
                         
-                        mediaElement.outOfSync = true;
-                        //this.playbackStalled(true, mediaElement);
+                        contentAnnotation.outOfSync = true;
+                        //this.playbackStalled(true, contentAnnotation);
                         
                         const lag: number = Math.abs(factualTime - correctTime);
                         this.logMessage('DETECTED synchronization lag: '+ Math.abs(lag) );
-                        mediaElement.element[0].currentTime = correctTime;
+                        contentAnnotation.element[0].currentTime = correctTime;
                         //this.synchronizeMedia();
 
                     } else {
-                        mediaElement.outOfSync = false;
-                        //this.playbackStalled(false, mediaElement);
+                        contentAnnotation.outOfSync = false;
+                        //this.playbackStalled(false, contentAnnotation);
                     }
                 }
             }
         }
 
-        public playbackStalled(aBoolean: boolean, syncMediaRequestingStall: any): void {
+        private _playbackStalled(aBoolean: boolean, syncMediaRequestingStall: any): void {
 
             if (aBoolean) {
 
-                if (this.stallRequestedBy.indexOf(syncMediaRequestingStall) < 0) {
-                    this.stallRequestedBy.push(syncMediaRequestingStall);
+                if (this._stallRequestedBy.indexOf(syncMediaRequestingStall) < 0) {
+                    this._stallRequestedBy.push(syncMediaRequestingStall);
                 }
 
-                if (!this.isStalled) {
+                if (!this._isStalled) {
 
                     if (this.$playerElement) {
                         this._showWorkingIndicator(this._$canvasContainer);
                     }
 
-                    this.wasPlaying = this.isPlaying;
+                    this._wasPlaying = this._isPlaying;
                     this.pause(true);
-                    this.isStalled = aBoolean;
+                    this._isStalled = aBoolean;
                 }
 
             } else {
 
-                const idx: number = this.stallRequestedBy.indexOf(syncMediaRequestingStall);
+                const idx: number = this._stallRequestedBy.indexOf(syncMediaRequestingStall);
                 
                 if (idx >= 0) {
-                    this.stallRequestedBy.splice(idx, 1);
+                    this._stallRequestedBy.splice(idx, 1);
                 }
 
-                if (this.stallRequestedBy.length === 0) {
+                if (this._stallRequestedBy.length === 0) {
 
                     this._hideWorkingIndicator();
 
-                    if (this.isStalled && this.wasPlaying) {
+                    if (this._isStalled && this._wasPlaying) {
                         this.play(true);
                     }
 
-                    this.isStalled = aBoolean;
+                    this._isStalled = aBoolean;
                 }
             }
         }

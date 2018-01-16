@@ -76,11 +76,9 @@ var IIIFComponents;
             return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
         };
         AVComponent.prototype._reset = function () {
-            // todo: create canvasInstance.destroy() method
             for (var i = 0; i < this.canvasInstances.length; i++) {
-                window.clearInterval(this.canvasInstances[i].highPriorityInterval);
-                window.clearInterval(this.canvasInstances[i].lowPriorityInterval);
-                window.clearInterval(this.canvasInstances[i].canvasClockInterval);
+                var canvasInstance = this.canvasInstances[i];
+                canvasInstance.destroy();
             }
             this.canvasInstances = [];
             this._$element.empty();
@@ -92,7 +90,7 @@ var IIIFComponents;
         AVComponent.prototype._update = function () {
             for (var i = 0; i < this.canvasInstances.length; i++) {
                 var canvasInstance = this.canvasInstances[i];
-                canvasInstance.limitToRange(this._data.limitToRange);
+                canvasInstance.update(this._data);
             }
         };
         AVComponent.prototype._getCanvases = function () {
@@ -200,18 +198,18 @@ var IIIFComponents;
         function CanvasInstance(canvas, data) {
             this._highPriorityFrequency = 25;
             this._lowPriorityFrequency = 100;
+            this._canvasClockDuration = 0; // todo: should these 0 values be undefined by default?
             this._canvasClockFrequency = 25;
+            this._canvasClockStartDate = 0;
+            this._canvasClockTime = 0;
             this._canvasHeight = 0;
             this._canvasWidth = 0;
-            this.canvasClockDuration = 0; // todo: should these 0 values be undefined by default?
-            this.canvasClockStartDate = 0;
-            this.canvasClockTime = 0;
+            this._isPlaying = false;
+            this._isStalled = false;
+            this._readyCanvasesCount = 0;
+            this._stallRequestedBy = []; //todo: type
+            this._wasPlaying = false;
             this.currentDuration = null;
-            this.isPlaying = false;
-            this.isStalled = false;
-            this.readyCanvasesCount = 0;
-            this.stallRequestedBy = []; //todo: type
-            this.wasPlaying = false;
             this.canvas = canvas;
             this._data = data;
             this.$playerElement = $('<div class="player"></div>');
@@ -233,7 +231,7 @@ var IIIFComponents;
             this._$timelineContainer.append(this._$durationHighlight);
             this._$optionsContainer.append(this._$timelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
-            this.canvasClockDuration = this.canvas.getDuration();
+            this._canvasClockDuration = this.canvas.getDuration();
             var canvasWidth = this.canvas.getWidth();
             var canvasHeight = this.canvas.getHeight();
             if (!canvasWidth) {
@@ -250,7 +248,7 @@ var IIIFComponents;
             }
             var that = this;
             this._$playButton.on('click', function () {
-                if (_this.isPlaying) {
+                if (_this._isPlaying) {
                     _this.pause();
                 }
                 else {
@@ -268,7 +266,7 @@ var IIIFComponents;
                 step: 0.01,
                 orientation: "horizontal",
                 range: "min",
-                max: that.canvasClockDuration,
+                max: that._canvasClockDuration,
                 animate: false,
                 create: function (evt, ui) {
                     // on create
@@ -294,14 +292,14 @@ var IIIFComponents;
                 }
                 */
                 var mediaSource = void 0;
-                if (item.body.type == 'TextualBody') {
-                    mediaSource = item.body.value;
-                }
-                else if (Array.isArray(item.body) && item.body[0].type == 'Choice') {
+                if (Array.isArray(item.body) && item.body[0].type.toLowerCase() === 'choice') {
                     // Choose first "Choice" item as body
                     var tmpItem = item;
                     item.body = tmpItem.body[0].items[0];
                     mediaSource = item.body.id.split('#')[0];
+                }
+                else if (item.body.type.toLowerCase() === 'textualbody') {
+                    mediaSource = item.body.value;
                 }
                 else {
                     mediaSource = item.body.id.split('#')[0];
@@ -333,7 +331,7 @@ var IIIFComponents;
                     t = temporal[1].split(',');
                 }
                 else {
-                    t = [0, this.canvasClockDuration];
+                    t = [0, this._canvasClockDuration];
                 }
                 var positionLeft = parseInt(xywh[0]), positionTop = parseInt(xywh[1]), mediaWidth = parseInt(xywh[2]), mediaHeight = parseInt(xywh[3]), startTime = parseInt(t[0]), endTime = parseInt(t[1]);
                 var percentageTop = this._convertToPercentage(positionTop, this._canvasHeight), percentageLeft = this._convertToPercentage(positionLeft, this._canvasWidth), percentageWidth = this._convertToPercentage(mediaWidth, this._canvasWidth), percentageHeight = this._convertToPercentage(mediaHeight, this._canvasHeight);
@@ -362,11 +360,17 @@ var IIIFComponents;
                 this._renderMediaElement(itemData);
             }
         };
-        CanvasInstance.prototype.limitToRange = function (limit) {
-            if (limit) {
+        CanvasInstance.prototype.update = function (data) {
+            this._data = data;
+            if (this._data.limitToRange) {
             }
             else {
             }
+        };
+        CanvasInstance.prototype.destroy = function () {
+            window.clearInterval(this._highPriorityInterval);
+            window.clearInterval(this._lowPriorityInterval);
+            window.clearInterval(this._canvasClockInterval);
         };
         CanvasInstance.prototype._convertToPercentage = function (pixelValue, maxValue) {
             var percentage = (pixelValue / maxValue) * 100;
@@ -374,17 +378,17 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._renderMediaElement = function (data) {
             var $mediaElement;
-            switch (data.type) {
-                case 'Image':
+            switch (data.type.toLowerCase()) {
+                case 'image':
                     $mediaElement = $('<img class="anno" src="' + data.source + '" />');
                     break;
-                case 'Video':
+                case 'video':
                     $mediaElement = $('<video class="anno" src="' + data.source + '" />');
                     break;
-                case 'Audio':
+                case 'audio':
                     $mediaElement = $('<audio class="anno" src="' + data.source + '" />');
                     break;
-                case 'TextualBody':
+                case 'textualbody':
                     $mediaElement = $('<div class="anno">' + data.source + '</div>');
                     break;
                 default:
@@ -397,18 +401,18 @@ var IIIFComponents;
                 height: data.height + '%'
             }).hide();
             data.element = $mediaElement;
-            if (data.type == 'Video' || data.type == 'Audio') {
+            if (data.type.toLowerCase() === 'video' || data.type.toLowerCase() === 'audio') {
                 data.timeout = null;
                 var that_1 = this;
                 data.checkForStall = function () {
                     var self = this;
                     if (this.active) {
-                        that_1.checkMediaSynchronization();
+                        that_1._checkMediaSynchronization();
                         if (this.element.get(0).readyState > 0 && !this.outOfSync) {
-                            that_1.playbackStalled(false, self);
+                            that_1._playbackStalled(false, self);
                         }
                         else {
-                            that_1.playbackStalled(true, self);
+                            that_1._playbackStalled(true, self);
                             if (this.timeout) {
                                 window.clearTimeout(this.timeout);
                             }
@@ -418,7 +422,7 @@ var IIIFComponents;
                         }
                     }
                     else {
-                        that_1.playbackStalled(false, self);
+                        that_1._playbackStalled(false, self);
                     }
                 };
             }
@@ -426,7 +430,7 @@ var IIIFComponents;
             if (this.$playerElement) {
                 this._$canvasContainer.append($mediaElement);
             }
-            if (data.type == 'Video' || data.type == 'Audio') {
+            if (data.type.toLowerCase() === 'video' || data.type.toLowerCase() === 'audio') {
                 var that_2 = this;
                 var self_1 = data;
                 $mediaElement.on('loadstart', function () {
@@ -442,13 +446,13 @@ var IIIFComponents;
                     //self.checkForStall();
                 });
                 $mediaElement.on('loadedmetadata', function () {
-                    that_2.readyCanvasesCount++;
-                    if (that_2.readyCanvasesCount === that_2._contentAnnotations.length) {
+                    that_2._readyCanvasesCount++;
+                    if (that_2._readyCanvasesCount === that_2._contentAnnotations.length) {
                         that_2.setCurrentTime(0);
                         if (that_2._data.autoPlay) {
                             that_2.play();
                         }
-                        that_2._$canvasDuration.text(IIIFComponents.AVComponentUtils.Utils.formatTime(that_2.canvasClockDuration));
+                        that_2._$canvasDuration.text(IIIFComponents.AVComponentUtils.Utils.formatTime(that_2._canvasClockDuration));
                         that_2.fire(IIIFComponents.AVComponent.Events.CANVASREADY);
                     }
                 });
@@ -462,7 +466,7 @@ var IIIFComponents;
                 return;
             }
             // get the total length in seconds.
-            var totalLength = this.canvasClockDuration;
+            var totalLength = this._canvasClockDuration;
             // get the length of the timeline container
             var timelineLength = this._$timelineContainer.width();
             // get the ratio of seconds to length
@@ -483,8 +487,8 @@ var IIIFComponents;
             }
         };
         CanvasInstance.prototype._renderSyncIndicator = function (mediaElementData) {
-            var leftPercent = this._convertToPercentage(mediaElementData.start, this.canvasClockDuration);
-            var widthPercent = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this.canvasClockDuration);
+            var leftPercent = this._convertToPercentage(mediaElementData.start, this._canvasClockDuration);
+            var widthPercent = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this._canvasClockDuration);
             var $timelineItem = $('<div class="timelineItem" title="' + mediaElementData.source + '" data-start="' + mediaElementData.start + '" data-end="' + mediaElementData.end + '"></div>');
             $timelineItem.css({
                 left: leftPercent + '%',
@@ -502,34 +506,34 @@ var IIIFComponents;
             // if (isNaN(secondsAsFloat)) {
             //     return;
             // }
-            this.canvasClockTime = seconds; //secondsAsFloat;
-            this.canvasClockStartDate = Date.now() - (this.canvasClockTime * 1000);
-            this.logMessage('SET CURRENT TIME to: ' + this.canvasClockTime + ' seconds.');
-            this.canvasClockUpdater();
-            this.highPriorityUpdater();
-            this.lowPriorityUpdater();
-            this.synchronizeMedia();
+            this._canvasClockTime = seconds; //secondsAsFloat;
+            this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
+            this.logMessage('SET CURRENT TIME to: ' + this._canvasClockTime + ' seconds.');
+            this._canvasClockUpdater();
+            this._highPriorityUpdater();
+            this._lowPriorityUpdater();
+            this._synchronizeMedia();
         };
         CanvasInstance.prototype.play = function (withoutUpdate) {
-            if (this.isPlaying)
+            if (this._isPlaying)
                 return;
-            if (this.canvasClockTime === this.canvasClockDuration) {
-                this.canvasClockTime = 0;
+            if (this._canvasClockTime === this._canvasClockDuration) {
+                this._canvasClockTime = 0;
             }
-            this.canvasClockStartDate = Date.now() - (this.canvasClockTime * 1000);
+            this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
             var self = this;
-            this.highPriorityInterval = window.setInterval(function () {
-                self.highPriorityUpdater();
+            this._highPriorityInterval = window.setInterval(function () {
+                self._highPriorityUpdater();
             }, this._highPriorityFrequency);
-            this.lowPriorityInterval = window.setInterval(function () {
-                self.lowPriorityUpdater();
+            this._lowPriorityInterval = window.setInterval(function () {
+                self._lowPriorityUpdater();
             }, this._lowPriorityFrequency);
-            this.canvasClockInterval = window.setInterval(function () {
-                self.canvasClockUpdater();
+            this._canvasClockInterval = window.setInterval(function () {
+                self._canvasClockUpdater();
             }, this._canvasClockFrequency);
-            this.isPlaying = true;
+            this._isPlaying = true;
             if (!withoutUpdate) {
-                this.synchronizeMedia();
+                this._synchronizeMedia();
             }
             this._$playButton.removeClass('play');
             this._$playButton.addClass('pause');
@@ -538,14 +542,14 @@ var IIIFComponents;
             this.logMessage('PLAY canvas');
         };
         CanvasInstance.prototype.pause = function (withoutUpdate) {
-            window.clearInterval(this.highPriorityInterval);
-            window.clearInterval(this.lowPriorityInterval);
-            window.clearInterval(this.canvasClockInterval);
-            this.isPlaying = false;
+            window.clearInterval(this._highPriorityInterval);
+            window.clearInterval(this._lowPriorityInterval);
+            window.clearInterval(this._canvasClockInterval);
+            this._isPlaying = false;
             if (!withoutUpdate) {
-                this.highPriorityUpdater();
-                this.lowPriorityUpdater();
-                this.synchronizeMedia();
+                this._highPriorityUpdater();
+                this._lowPriorityUpdater();
+                this._synchronizeMedia();
             }
             this._$playButton.removeClass('pause');
             this._$playButton.addClass('play');
@@ -553,131 +557,131 @@ var IIIFComponents;
             this.fire(IIIFComponents.AVComponent.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
         };
-        CanvasInstance.prototype.canvasClockUpdater = function () {
-            this.canvasClockTime = (Date.now() - this.canvasClockStartDate) / 1000;
-            if (this.canvasClockTime >= this.canvasClockDuration) {
-                this.canvasClockTime = this.canvasClockDuration;
+        CanvasInstance.prototype._canvasClockUpdater = function () {
+            this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
+            if (this._canvasClockTime >= this._canvasClockDuration) {
+                this._canvasClockTime = this._canvasClockDuration;
                 this.pause();
             }
         };
-        CanvasInstance.prototype.highPriorityUpdater = function () {
+        CanvasInstance.prototype._highPriorityUpdater = function () {
             this._$timelineContainer.slider({
-                value: this.canvasClockTime
+                value: this._canvasClockTime
             });
-            this._$canvasTime.text(IIIFComponents.AVComponentUtils.Utils.formatTime(this.canvasClockTime));
+            this._$canvasTime.text(IIIFComponents.AVComponentUtils.Utils.formatTime(this._canvasClockTime));
         };
-        CanvasInstance.prototype.lowPriorityUpdater = function () {
-            this.updateMediaActiveStates();
+        CanvasInstance.prototype._lowPriorityUpdater = function () {
+            this._updateMediaActiveStates();
         };
-        CanvasInstance.prototype.updateMediaActiveStates = function () {
-            var mediaElement;
+        CanvasInstance.prototype._updateMediaActiveStates = function () {
+            var contentAnnotation;
             for (var i = 0; i < this._contentAnnotations.length; i++) {
-                mediaElement = this._contentAnnotations[i];
-                if (mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime) {
-                    this.checkMediaSynchronization();
-                    if (!mediaElement.active) {
-                        this.synchronizeMedia();
-                        mediaElement.active = true;
-                        mediaElement.element.show();
-                        mediaElement.timelineElement.addClass('active');
+                contentAnnotation = this._contentAnnotations[i];
+                if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
+                    this._checkMediaSynchronization();
+                    if (!contentAnnotation.active) {
+                        this._synchronizeMedia();
+                        contentAnnotation.active = true;
+                        contentAnnotation.element.show();
+                        contentAnnotation.timelineElement.addClass('active');
                     }
-                    if (mediaElement.type == 'Video' || mediaElement.type == 'Audio') {
-                        if (mediaElement.element[0].currentTime > mediaElement.element[0].duration - mediaElement.endOffset) {
-                            mediaElement.element[0].pause();
+                    if (contentAnnotation.type == 'Video' || contentAnnotation.type == 'Audio') {
+                        if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
+                            contentAnnotation.element[0].pause();
                         }
                     }
                 }
                 else {
-                    if (mediaElement.active) {
-                        mediaElement.active = false;
-                        mediaElement.element.hide();
-                        mediaElement.timelineElement.removeClass('active');
-                        if (mediaElement.type == 'Video' || mediaElement.type == 'Audio') {
-                            mediaElement.element[0].pause();
+                    if (contentAnnotation.active) {
+                        contentAnnotation.active = false;
+                        contentAnnotation.element.hide();
+                        contentAnnotation.timelineElement.removeClass('active');
+                        if (contentAnnotation.type == 'Video' || contentAnnotation.type == 'Audio') {
+                            contentAnnotation.element[0].pause();
                         }
                     }
                 }
             }
-            //this.logMessage('UPDATE MEDIA ACTIVE STATES at: '+ this.canvasClockTime + ' seconds.');
+            //this.logMessage('UPDATE MEDIA ACTIVE STATES at: '+ this._canvasClockTime + ' seconds.');
         };
-        CanvasInstance.prototype.synchronizeMedia = function () {
-            var mediaElement;
+        CanvasInstance.prototype._synchronizeMedia = function () {
+            var contentAnnotation;
             for (var i = 0; i < this._contentAnnotations.length; i++) {
-                mediaElement = this._contentAnnotations[i];
-                if (mediaElement.type == 'Video' || mediaElement.type == 'Audio') {
-                    mediaElement.element[0].currentTime = this.canvasClockTime - mediaElement.start + mediaElement.startOffset;
-                    if (mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime) {
-                        if (this.isPlaying) {
-                            if (mediaElement.element[0].paused) {
-                                var promise = mediaElement.element[0].play();
+                contentAnnotation = this._contentAnnotations[i];
+                if (contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') {
+                    contentAnnotation.element[0].currentTime = this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset;
+                    if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
+                        if (this._isPlaying) {
+                            if (contentAnnotation.element[0].paused) {
+                                var promise = contentAnnotation.element[0].play();
                                 if (promise) {
                                     promise["catch"](function () { });
                                 }
                             }
                         }
                         else {
-                            mediaElement.element[0].pause();
+                            contentAnnotation.element[0].pause();
                         }
                     }
                     else {
-                        mediaElement.element[0].pause();
+                        contentAnnotation.element[0].pause();
                     }
-                    if (mediaElement.element[0].currentTime > mediaElement.element[0].duration - mediaElement.endOffset) {
-                        mediaElement.element[0].pause();
+                    if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
+                        contentAnnotation.element[0].pause();
                     }
                 }
             }
-            this.logMessage('SYNC MEDIA at: ' + this.canvasClockTime + ' seconds.');
+            this.logMessage('SYNC MEDIA at: ' + this._canvasClockTime + ' seconds.');
         };
-        CanvasInstance.prototype.checkMediaSynchronization = function () {
-            var mediaElement;
+        CanvasInstance.prototype._checkMediaSynchronization = function () {
+            var contentAnnotation;
             for (var i = 0, l = this._contentAnnotations.length; i < l; i++) {
-                mediaElement = this._contentAnnotations[i];
-                if ((mediaElement.type == 'Video' || mediaElement.type == 'Audio') &&
-                    (mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime)) {
-                    var correctTime = (this.canvasClockTime - mediaElement.start + mediaElement.startOffset);
-                    var factualTime = mediaElement.element[0].currentTime;
+                contentAnnotation = this._contentAnnotations[i];
+                if ((contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') &&
+                    (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime)) {
+                    var correctTime = (this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
+                    var factualTime = contentAnnotation.element[0].currentTime;
                     // off by 0.2 seconds
                     if (Math.abs(factualTime - correctTime) > 0.4) {
-                        mediaElement.outOfSync = true;
-                        //this.playbackStalled(true, mediaElement);
+                        contentAnnotation.outOfSync = true;
+                        //this.playbackStalled(true, contentAnnotation);
                         var lag = Math.abs(factualTime - correctTime);
                         this.logMessage('DETECTED synchronization lag: ' + Math.abs(lag));
-                        mediaElement.element[0].currentTime = correctTime;
+                        contentAnnotation.element[0].currentTime = correctTime;
                         //this.synchronizeMedia();
                     }
                     else {
-                        mediaElement.outOfSync = false;
-                        //this.playbackStalled(false, mediaElement);
+                        contentAnnotation.outOfSync = false;
+                        //this.playbackStalled(false, contentAnnotation);
                     }
                 }
             }
         };
-        CanvasInstance.prototype.playbackStalled = function (aBoolean, syncMediaRequestingStall) {
+        CanvasInstance.prototype._playbackStalled = function (aBoolean, syncMediaRequestingStall) {
             if (aBoolean) {
-                if (this.stallRequestedBy.indexOf(syncMediaRequestingStall) < 0) {
-                    this.stallRequestedBy.push(syncMediaRequestingStall);
+                if (this._stallRequestedBy.indexOf(syncMediaRequestingStall) < 0) {
+                    this._stallRequestedBy.push(syncMediaRequestingStall);
                 }
-                if (!this.isStalled) {
+                if (!this._isStalled) {
                     if (this.$playerElement) {
                         this._showWorkingIndicator(this._$canvasContainer);
                     }
-                    this.wasPlaying = this.isPlaying;
+                    this._wasPlaying = this._isPlaying;
                     this.pause(true);
-                    this.isStalled = aBoolean;
+                    this._isStalled = aBoolean;
                 }
             }
             else {
-                var idx = this.stallRequestedBy.indexOf(syncMediaRequestingStall);
+                var idx = this._stallRequestedBy.indexOf(syncMediaRequestingStall);
                 if (idx >= 0) {
-                    this.stallRequestedBy.splice(idx, 1);
+                    this._stallRequestedBy.splice(idx, 1);
                 }
-                if (this.stallRequestedBy.length === 0) {
+                if (this._stallRequestedBy.length === 0) {
                     this._hideWorkingIndicator();
-                    if (this.isStalled && this.wasPlaying) {
+                    if (this._isStalled && this._wasPlaying) {
                         this.play(true);
                     }
-                    this.isStalled = aBoolean;
+                    this._isStalled = aBoolean;
                 }
             }
         };

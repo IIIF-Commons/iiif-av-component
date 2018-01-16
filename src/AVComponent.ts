@@ -76,12 +76,9 @@ namespace IIIFComponents {
 
         private _reset(): void {
 
-            // todo: create canvasInstance.destroy() method
-
             for (let i = 0; i < this.canvasInstances.length; i++) {
-                window.clearInterval(this.canvasInstances[i].highPriorityInterval);
-                window.clearInterval(this.canvasInstances[i].lowPriorityInterval);
-                window.clearInterval(this.canvasInstances[i].canvasClockInterval);
+                const canvasInstance: CanvasInstance = this.canvasInstances[i];
+                canvasInstance.destroy();
             }
 
             this.canvasInstances = [];
@@ -99,7 +96,7 @@ namespace IIIFComponents {
 
             for (let i = 0; i < this.canvasInstances.length; i++) {
                 const canvasInstance: CanvasInstance = this.canvasInstances[i];
-                canvasInstance.limitToRange(this._data.limitToRange);
+                canvasInstance.update(this._data);
             }
 
         }
