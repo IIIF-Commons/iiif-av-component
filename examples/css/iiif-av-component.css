@@ -35,6 +35,11 @@
   width: 0px;
   border: none;
 }
+.iiif-av-component .rangeTimelineContainer {
+  background: chartreuse;
+  height: 20px;
+  width: 100%;
+}
 .iiif-av-component .timelineItemContainer {
   position: relative;
   width: 100%;

@@ -219,6 +219,7 @@ var IIIFComponents;
             this._$canvasContainer = $('<div class="canvasContainer"></div>');
             this._$optionsContainer = $('<div class="optionsContainer"></div>');
             this._$timelineContainer = $('<div class="timelineContainer"></div>');
+            this._$rangeTimelineContainer = $('<div class="rangeTimelineContainer"></div>');
             this._$durationHighlight = $('<div class="durationHighlight"></div>');
             this._$timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             this._$controlsContainer = $('<div class="controlsContainer"></div>');
@@ -229,7 +230,7 @@ var IIIFComponents;
             this._$canvasDuration = this._$timingControls.find('.canvasDuration');
             this._$controlsContainer.append(this._$playButton, this._$timingControls, this._$volumeControl);
             this._$timelineContainer.append(this._$durationHighlight);
-            this._$optionsContainer.append(this._$timelineContainer, this._$timelineItemContainer, this._$controlsContainer);
+            this._$optionsContainer.append(this._$timelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
             this._canvasClockDuration = this.canvas.getDuration();
             var canvasWidth = this.canvas.getWidth();
@@ -363,8 +364,12 @@ var IIIFComponents;
         CanvasInstance.prototype.update = function (data) {
             this._data = data;
             if (this._data.limitToRange) {
+                this._$timelineContainer.hide();
+                this._$rangeTimelineContainer.show();
             }
             else {
+                this._$timelineContainer.show();
+                this._$rangeTimelineContainer.hide();
             }
         };
         CanvasInstance.prototype.destroy = function () {
