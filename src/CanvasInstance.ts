@@ -29,7 +29,31 @@ namespace IIIFComponents {
         constructor(canvas: Manifesto.ICanvas) {
             this.data = canvas;
             this.canvasClockDuration = <number>canvas.getDuration();
-        } 
+        }
+
+        private _getCanvasContainer(): JQuery {
+            return this.$playerElement.find('.canvasContainer');
+        }
+        
+        private _getRangeTimelineContainer(): JQuery {
+            return this.$playerElement.find('.rangeTimelineContainer');
+        }
+
+        private _getTimelineContainer(): JQuery {
+            return this.$playerElement.find('.timelineContainer');
+        }
+
+        private _getTimelineItemContainer(): JQuery {
+            return this.$playerElement.find('.timelineItemContainer');
+        }
+
+        private _getCanvasTime(): JQuery {
+            return this.$playerElement.find('.canvasTime')
+        }
+
+        private _getDurationHighlight(): JQuery {
+            return this.$playerElement.find('.durationHighlight');
+        }
 
         public initContents() {
 
@@ -61,7 +85,6 @@ namespace IIIFComponents {
                     // Choose first "Choice" item as body
                     const tmpItem = item;
                     item.body = tmpItem.body[0].items[0];
-
                     mediaSource = item.body.id.split('#')[0];
                 } else {
                     mediaSource = item.body.id.split('#')[0];
@@ -85,6 +108,7 @@ namespace IIIFComponents {
                 const temporal = /t=([^&]+)/g.exec(item.target);
                 
                 let xywh;
+
                 if (spatial && spatial[1]) {
                     xywh = spatial[1].split(',');
                 } else {
@@ -92,6 +116,7 @@ namespace IIIFComponents {
                 }
 
                 let t;
+
                 if(temporal && temporal[1]) {
                     t = temporal[1].split(',');
                 } else {
@@ -113,6 +138,7 @@ namespace IIIFComponents {
                 const temporalOffsets = /t=([^&]+)/g.exec(item.body.id);
 
                 let ot;
+
                 if(temporalOffsets && temporalOffsets[1]) {
                     ot = temporalOffsets[1].split(',');
                 } else {
@@ -137,6 +163,15 @@ namespace IIIFComponents {
                 }
 
                 this._renderMediaElement(itemData);
+            }
+        }
+
+        public limitToRange(limit: boolean): void {
+
+            if (limit) {
+
+            } else {
+
             }
         }
 
@@ -209,8 +244,7 @@ namespace IIIFComponents {
             this._mediaElements.push(data);
 
             if (this.$playerElement) {
-                const targetElement: JQuery = this.$playerElement.find('.canvasContainer');
-                targetElement.append($mediaElement);
+                this._getCanvasContainer().append($mediaElement);
             }
             
             if (data.type == 'Video' || data.type == 'Audio') {
@@ -248,10 +282,6 @@ namespace IIIFComponents {
 
             this._renderSyncIndicator(data);
 
-        }
-
-        private _getDurationHighlight(): JQuery {
-            return this.$playerElement.find('.durationHighlight');
         }
 
         public highlightDuration(): void {
@@ -392,14 +422,6 @@ namespace IIIFComponents {
             }
         }
 
-        private _getTimelineContainer(): JQuery {
-            return this.$playerElement.find('.timelineContainer');
-        }
-
-        private _getTimelineItemContainer(): JQuery {
-            return this.$playerElement.find('.timelineItemContainer');
-        }
-
         public highPriorityUpdater(): void {
 
             const $timelineContainer: JQuery = this._getTimelineContainer();
@@ -408,7 +430,7 @@ namespace IIIFComponents {
                 value: this.canvasClockTime
             });
 
-            this.$playerElement.find('.canvasTime').text(AVComponentUtils.Utils.formatTime(this.canvasClockTime));
+            this._getCanvasTime().text(AVComponentUtils.Utils.formatTime(this.canvasClockTime));
         }
 
         public lowPriorityUpdater(): void {
@@ -542,7 +564,7 @@ namespace IIIFComponents {
                 if (!this.isStalled) {
 
                     if (this.$playerElement) {
-                        this._showWorkingIndicator(this.$playerElement.find('.canvasContainer'));
+                        this._showWorkingIndicator(this._getCanvasContainer());
                     }
 
                     this.wasPlaying = this.isPlaying;

@@ -19,6 +19,7 @@ var IIIFComponents;
         __extends(AVComponent, _super);
         function AVComponent(options) {
             var _this = _super.call(this, options) || this;
+            _this._data = _this.data();
             _this.canvasInstances = [];
             _this._init();
             _this._resize();
@@ -35,6 +36,7 @@ var IIIFComponents;
             return {
                 autoPlay: false,
                 defaultAspectRatio: 0.56,
+                limitToRange: false,
                 content: {
                     play: "Play",
                     pause: "Pause",
@@ -44,13 +46,34 @@ var IIIFComponents;
             };
         };
         AVComponent.prototype.set = function (data) {
-            this.options.data = data;
-            // reset all global properties and terminate all running processes
-            this._reset();
-            // render ui
-            this._render();
+            // changing any of these data properties forces a reload.
+            if (this._propertiesChanged(data, ['helper'])) {
+                $.extend(this._data, data);
+                // reset all global properties and terminate all running processes
+                // create canvases
+                this._reset();
+            }
+            else {
+                // no need to reload, just update.
+                $.extend(this._data, data);
+            }
+            // update
+            this._update();
             // resize everything
             this._resize();
+        };
+        AVComponent.prototype._propertiesChanged = function (data, properties) {
+            var propChanged = false;
+            for (var i = 0; i < properties.length; i++) {
+                propChanged = this._propertyChanged(data, properties[i]);
+                if (propChanged) {
+                    break;
+                }
+            }
+            return propChanged;
+        };
+        AVComponent.prototype._propertyChanged = function (data, propertyName) {
+            return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
         };
         AVComponent.prototype._reset = function () {
             for (var i = 0; i < this.canvasInstances.length; i++) {
@@ -59,16 +82,23 @@ var IIIFComponents;
                 window.clearInterval(this.canvasInstances[i].canvasClockInterval);
             }
             this.canvasInstances = [];
-        };
-        AVComponent.prototype._render = function () {
             this._$element.empty();
             var canvases = this._getCanvases();
             for (var i = 0; i < canvases.length; i++) {
                 this._initCanvas(canvases[i]);
             }
         };
+        AVComponent.prototype._update = function () {
+            for (var i = 0; i < this.canvasInstances.length; i++) {
+                var canvasInstance = this.canvasInstances[i];
+                canvasInstance.limitToRange(this._data.limitToRange);
+            }
+        };
         AVComponent.prototype._getCanvases = function () {
-            return this.options.data.helper.getCanvases();
+            if (this._data.helper) {
+                return this._data.helper.getCanvases();
+            }
+            return [];
         };
         AVComponent.prototype._initCanvas = function (canvas) {
             var $player = $('<div class="player"></div>');
@@ -78,8 +108,8 @@ var IIIFComponents;
             var $durationHighlight = $('<div class="durationHighlight"></div>');
             var $timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             var $controlsContainer = $('<div class="controlsContainer"></div>');
-            var $playButton = $('<button class="playButton">' + this.options.data.content.play + '</button>');
-            var $timingControls = $('<span>' + this.options.data.content.currentTime + ': <span class="canvasTime"></span> / ' + this.options.data.content.duration + ': <span class="canvasDuration"></span></span>');
+            var $playButton = $('<button class="playButton">' + this._data.content.play + '</button>');
+            var $timingControls = $('<span>' + this._data.content.currentTime + ': <span class="canvasTime"></span> / ' + this._data.content.duration + ': <span class="canvasDuration"></span></span>');
             var $volumeControl = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">');
             $controlsContainer.append($playButton, $timingControls, $volumeControl);
             $timelineContainer.append($durationHighlight);
@@ -90,13 +120,13 @@ var IIIFComponents;
             var canvasWidth = canvas.getWidth();
             var canvasHeight = canvas.getHeight();
             if (!canvasWidth) {
-                canvasInstance.canvasWidth = this._$element.width(); // this.options.data.defaultCanvasWidth;
+                canvasInstance.canvasWidth = this._$element.width(); // this._data.defaultCanvasWidth;
             }
             else {
                 canvasInstance.canvasWidth = canvasWidth;
             }
             if (!canvasHeight) {
-                canvasInstance.canvasHeight = canvasInstance.canvasWidth * this.options.data.defaultAspectRatio; //this.options.data.defaultCanvasHeight;
+                canvasInstance.canvasHeight = canvasInstance.canvasWidth * this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
             }
             else {
                 canvasInstance.canvasHeight = canvasHeight;
@@ -106,12 +136,12 @@ var IIIFComponents;
             canvasInstance.on(AVComponent.Events.PLAYCANVAS, function () {
                 $playButton.removeClass('play');
                 $playButton.addClass('pause');
-                $playButton.text(this.options.data.content.pause);
+                $playButton.text(this._data.content.pause);
             }, this);
             canvasInstance.on(AVComponent.Events.PAUSECANVAS, function () {
                 $playButton.removeClass('pause');
                 $playButton.addClass('play');
-                $playButton.text(this.options.data.content.play);
+                $playButton.text(this._data.content.play);
             }, this);
             $timelineContainer.slider({
                 value: 0,
@@ -273,6 +303,24 @@ var IIIFComponents;
             this.data = canvas;
             this.canvasClockDuration = canvas.getDuration();
         }
+        CanvasInstance.prototype._getCanvasContainer = function () {
+            return this.$playerElement.find('.canvasContainer');
+        };
+        CanvasInstance.prototype._getRangeTimelineContainer = function () {
+            return this.$playerElement.find('.rangeTimelineContainer');
+        };
+        CanvasInstance.prototype._getTimelineContainer = function () {
+            return this.$playerElement.find('.timelineContainer');
+        };
+        CanvasInstance.prototype._getTimelineItemContainer = function () {
+            return this.$playerElement.find('.timelineItemContainer');
+        };
+        CanvasInstance.prototype._getCanvasTime = function () {
+            return this.$playerElement.find('.canvasTime');
+        };
+        CanvasInstance.prototype._getDurationHighlight = function () {
+            return this.$playerElement.find('.durationHighlight');
+        };
         CanvasInstance.prototype.initContents = function () {
             if (!this.data)
                 return;
@@ -357,6 +405,12 @@ var IIIFComponents;
                 this._renderMediaElement(itemData);
             }
         };
+        CanvasInstance.prototype.limitToRange = function (limit) {
+            if (limit) {
+            }
+            else {
+            }
+        };
         CanvasInstance.prototype._convertToPercentage = function (pixelValue, maxValue) {
             var percentage = (pixelValue / maxValue) * 100;
             return percentage;
@@ -413,8 +467,7 @@ var IIIFComponents;
             }
             this._mediaElements.push(data);
             if (this.$playerElement) {
-                var targetElement = this.$playerElement.find('.canvasContainer');
-                targetElement.append($mediaElement);
+                this._getCanvasContainer().append($mediaElement);
             }
             if (data.type == 'Video' || data.type == 'Audio') {
                 var that_2 = this;
@@ -441,9 +494,6 @@ var IIIFComponents;
                 $mediaElement.get(0).load(); // todo: type
             }
             this._renderSyncIndicator(data);
-        };
-        CanvasInstance.prototype._getDurationHighlight = function () {
-            return this.$playerElement.find('.durationHighlight');
         };
         CanvasInstance.prototype.highlightDuration = function () {
             if (!this.currentDuration) {
@@ -544,18 +594,12 @@ var IIIFComponents;
                 this.pause();
             }
         };
-        CanvasInstance.prototype._getTimelineContainer = function () {
-            return this.$playerElement.find('.timelineContainer');
-        };
-        CanvasInstance.prototype._getTimelineItemContainer = function () {
-            return this.$playerElement.find('.timelineItemContainer');
-        };
         CanvasInstance.prototype.highPriorityUpdater = function () {
             var $timelineContainer = this._getTimelineContainer();
             $timelineContainer.slider({
                 value: this.canvasClockTime
             });
-            this.$playerElement.find('.canvasTime').text(IIIFComponents.AVComponentUtils.Utils.formatTime(this.canvasClockTime));
+            this._getCanvasTime().text(IIIFComponents.AVComponentUtils.Utils.formatTime(this.canvasClockTime));
         };
         CanvasInstance.prototype.lowPriorityUpdater = function () {
             this.updateMediaActiveStates();
@@ -651,7 +695,7 @@ var IIIFComponents;
                 }
                 if (!this.isStalled) {
                     if (this.$playerElement) {
-                        this._showWorkingIndicator(this.$playerElement.find('.canvasContainer'));
+                        this._showWorkingIndicator(this._getCanvasContainer());
                     }
                     this.wasPlaying = this.isPlaying;
                     this.pause(true);

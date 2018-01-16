@@ -3,14 +3,17 @@
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
     class AVComponent extends _Components.BaseComponent {
+        private _data;
         options: _Components.IBaseComponentOptions;
         canvasInstances: CanvasInstance[];
         constructor(options: _Components.IBaseComponentOptions);
         protected _init(): boolean;
         data(): IAVComponentData;
         set(data: IAVComponentData): void;
+        private _propertiesChanged(data, properties);
+        private _propertyChanged(data, propertyName);
         private _reset();
-        private _render();
+        private _update();
         private _getCanvases();
         private _initCanvas(canvas);
         getCanvasInstanceById(canvasId: string): CanvasInstance | null;
@@ -58,10 +61,16 @@ declare namespace IIIFComponents {
         stallRequestedBy: any[];
         wasPlaying: boolean;
         constructor(canvas: Manifesto.ICanvas);
+        private _getCanvasContainer();
+        private _getRangeTimelineContainer();
+        private _getTimelineContainer();
+        private _getTimelineItemContainer();
+        private _getCanvasTime();
+        private _getDurationHighlight();
         initContents(): void;
+        limitToRange(limit: boolean): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
-        private _getDurationHighlight();
         highlightDuration(): void;
         setVolume(value: number): void;
         private _renderSyncIndicator(mediaElementData);
@@ -69,8 +78,6 @@ declare namespace IIIFComponents {
         play(withoutUpdate?: boolean): void;
         pause(withoutUpdate?: boolean): void;
         canvasClockUpdater(): void;
-        private _getTimelineContainer();
-        private _getTimelineItemContainer();
         highPriorityUpdater(): void;
         lowPriorityUpdater(): void;
         updateMediaActiveStates(): void;
@@ -110,6 +117,8 @@ declare namespace IIIFComponents {
         autoPlay: boolean;
         defaultAspectRatio: number;
         content: IAVComponentContent;
+        limitToRange: boolean;
+        [key: string]: any;
     }
 }
 

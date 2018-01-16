@@ -12,5 +12,7 @@ namespace IIIFComponents {
         autoPlay: boolean;
         defaultAspectRatio: number;
         content: IAVComponentContent;
+        limitToRange: boolean;
+        [key: string]: any;
     }
 }

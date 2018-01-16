@@ -2,6 +2,7 @@ namespace IIIFComponents {
 
     export class AVComponent extends _Components.BaseComponent {
 
+        private _data: IAVComponentData = this.data();
         public options: _Components.IBaseComponentOptions;
         public canvasInstances: CanvasInstance[] = [];
 
@@ -26,6 +27,7 @@ namespace IIIFComponents {
             return <IAVComponentData> {
                 autoPlay: false,
                 defaultAspectRatio: 0.56,
+                limitToRange: false,
                 content: <IAVComponentContent>{
                     play: "Play",
                     pause: "Pause",
@@ -37,19 +39,43 @@ namespace IIIFComponents {
 
         public set(data: IAVComponentData): void {
 
-            this.options.data = data;
+            // changing any of these data properties forces a reload.
+            if (this._propertiesChanged(data, ['helper'])) {
+                $.extend(this._data, data);
+                // reset all global properties and terminate all running processes
+                // create canvases
+                this._reset();
+            } else {
+                // no need to reload, just update.
+                $.extend(this._data, data);
+            }
 
-            // reset all global properties and terminate all running processes
-            this._reset();
-
-            // render ui
-            this._render();
+            // update
+            this._update();
             
             // resize everything
             this._resize();
         }
 
+        private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
+            let propChanged: boolean = false;
+            
+            for (var i = 0; i < properties.length; i++) {
+                propChanged = this._propertyChanged(data, properties[i]);
+                if (propChanged) {
+                    break;
+                }
+            }
+    
+            return propChanged;
+        }
+
+        private _propertyChanged(data: IAVComponentData, propertyName: string): boolean {
+            return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
+        }
+
         private _reset(): void {
+
             for (let i = 0; i < this.canvasInstances.length; i++) {
                 window.clearInterval(this.canvasInstances[i].highPriorityInterval);
                 window.clearInterval(this.canvasInstances[i].lowPriorityInterval);
@@ -57,9 +83,6 @@ namespace IIIFComponents {
             }
 
             this.canvasInstances = [];
-        }
-
-        private _render(): void {
 
             this._$element.empty();
 
@@ -68,11 +91,23 @@ namespace IIIFComponents {
 			for (let i = 0; i < canvases.length; i++) {
 				this._initCanvas(canvases[i]);
             }
+        }
+
+        private _update(): void {
+
+            for (let i = 0; i < this.canvasInstances.length; i++) {
+                const canvasInstance: CanvasInstance = this.canvasInstances[i];
+                canvasInstance.limitToRange(this._data.limitToRange);
+            }
 
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {
-            return this.options.data.helper.getCanvases();
+            if (this._data.helper) {
+                return this._data.helper.getCanvases();
+            }
+            
+            return [];
         }
 
         private _initCanvas(canvas: Manifesto.ICanvas): void {
@@ -84,8 +119,8 @@ namespace IIIFComponents {
             const $durationHighlight: JQuery = $('<div class="durationHighlight"></div>');
             const $timelineItemContainer: JQuery = $('<div class="timelineItemContainer"></div>');
             const $controlsContainer: JQuery = $('<div class="controlsContainer"></div>');
-            const $playButton: JQuery = $('<button class="playButton">' + this.options.data.content.play + '</button>');
-            const $timingControls: JQuery = $('<span>' + this.options.data.content.currentTime + ': <span class="canvasTime"></span> / ' + this.options.data.content.duration + ': <span class="canvasDuration"></span></span>');
+            const $playButton: JQuery = $('<button class="playButton">' + this._data.content.play + '</button>');
+            const $timingControls: JQuery = $('<span>' + this._data.content.currentTime + ': <span class="canvasTime"></span> / ' + this._data.content.duration + ': <span class="canvasDuration"></span></span>');
             const $volumeControl: JQuery<HTMLInputElement> = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
 
             $controlsContainer.append($playButton, $timingControls, $volumeControl);
@@ -101,13 +136,13 @@ namespace IIIFComponents {
             const canvasHeight: number = canvas.getHeight();
 
             if (!canvasWidth) {
-                canvasInstance.canvasWidth = <number>this._$element.width(); // this.options.data.defaultCanvasWidth;
+                canvasInstance.canvasWidth = <number>this._$element.width(); // this._data.defaultCanvasWidth;
             } else {
                 canvasInstance.canvasWidth = canvasWidth;
             }
 
             if (!canvasHeight) {
-                canvasInstance.canvasHeight = canvasInstance.canvasWidth * this.options.data.defaultAspectRatio; //this.options.data.defaultCanvasHeight;
+                canvasInstance.canvasHeight = canvasInstance.canvasWidth * this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
             } else {
                 canvasInstance.canvasHeight = canvasHeight;
             }
@@ -118,13 +153,13 @@ namespace IIIFComponents {
             canvasInstance.on(AVComponent.Events.PLAYCANVAS, function() {
                 $playButton.removeClass('play');
                 $playButton.addClass('pause');
-                $playButton.text(this.options.data.content.pause);
+                $playButton.text(this._data.content.pause);
             }, this);
 
             canvasInstance.on(AVComponent.Events.PAUSECANVAS, function() {
                 $playButton.removeClass('pause');
                 $playButton.addClass('play');
-                $playButton.text(this.options.data.content.play);
+                $playButton.text(this._data.content.play);
             }, this);
 
             $timelineContainer.slider({

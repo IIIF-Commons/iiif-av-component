@@ -58,6 +58,10 @@
         loading...
     </div>
 
+    <div id="limitToRangeToggle">
+        <input id="limitToRangeCheckbox" type="checkbox"><label for="limitToRangeCheckbox">Limit to Range</label>
+    </div>
+
     <div id="tree" class="iiif-tree-component"></div>
 
     <button id="toggleLogsButton">Show / Hide Logs</button>
@@ -235,6 +239,12 @@
 
                 });
 
+            });
+
+            $('#limitToRangeCheckbox').change(function() {
+                avcomponent.set({
+                    limitToRange: this.checked
+                });
             });
 
             treecomponent.on('treeNodeSelected', function(node) {
