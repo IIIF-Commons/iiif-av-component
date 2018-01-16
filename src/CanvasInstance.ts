@@ -1,70 +1,130 @@
 namespace IIIFComponents {
 
-    // todo: extend BaseComponent?
     export class CanvasInstance {
         
 	    private _highPriorityFrequency: number = 25;
 	    private _lowPriorityFrequency: number = 100;
+        private _$canvasContainer: JQuery;
+        private _$canvasDuration: JQuery;
+        private _$canvasTime: JQuery;
+        private _$controlsContainer: JQuery;
+        private _$durationHighlight: JQuery;
+        private _$optionsContainer: JQuery;
+        private _$playButton: JQuery;
+        private _$rangeTimelineContainer: JQuery;
+        private _$timelineContainer: JQuery;
+        private _$timelineItemContainer: JQuery;
+        private _$timingControls: JQuery;
+        private _$volumeControl: JQuery<HTMLInputElement>;
         private _canvasClockFrequency: number = 25;
+        private _canvasHeight: number = 0;
+        private _canvasWidth: number = 0;
+        private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
+        private _data: IAVComponentData;
         private _e: any;
-        public canvasClockInterval: number;
-        public highPriorityInterval: number;
-        public lowPriorityInterval: number;
-        private _mediaElements: any[]; // todo: type as HTMLMediaElement?
+
         public $playerElement: JQuery;
+        public canvas: Manifesto.ICanvas;
         public canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
+        public canvasClockInterval: number;
         public canvasClockStartDate: number = 0;
         public canvasClockTime: number = 0;
-        public canvasHeight: number = 0;
-        public canvasWidth: number = 0;
         public currentDuration: AVComponentObjects.Duration | null = null;
-        public data: Manifesto.ICanvas | null = null;
+        public highPriorityInterval: number;
         public isPlaying: boolean = false;
         public isStalled: boolean = false;
         public logMessage: (message: string) => void;
+        public lowPriorityInterval: number;
         public readyCanvasesCount: number = 0;
         public stallRequestedBy: any[] = []; //todo: type
         public wasPlaying: boolean = false;
 
-        constructor(canvas: Manifesto.ICanvas) {
-            this.data = canvas;
-            this.canvasClockDuration = <number>canvas.getDuration();
+        constructor(canvas: Manifesto.ICanvas, data: IAVComponentData) {
+            this.canvas = canvas;
+            this._data = data;
+            this.$playerElement = $('<div class="player"></div>');
         }
 
-        private _getCanvasContainer(): JQuery {
-            return this.$playerElement.find('.canvasContainer');
-        }
-        
-        private _getRangeTimelineContainer(): JQuery {
-            return this.$playerElement.find('.rangeTimelineContainer');
-        }
+        public init() {
 
-        private _getTimelineContainer(): JQuery {
-            return this.$playerElement.find('.timelineContainer');
-        }
+            this._$canvasContainer = $('<div class="canvasContainer"></div>');
+            this._$optionsContainer = $('<div class="optionsContainer"></div>');
+            this._$timelineContainer = $('<div class="timelineContainer"></div>');
+            this._$durationHighlight = $('<div class="durationHighlight"></div>');
+            this._$timelineItemContainer = $('<div class="timelineItemContainer"></div>');
+            this._$controlsContainer = $('<div class="controlsContainer"></div>');
+            this._$playButton = $('<button class="playButton">' + this._data.content.play + '</button>');
+            this._$timingControls = $('<span>' + this._data.content.currentTime + ': <span class="canvasTime"></span> / ' + this._data.content.duration + ': <span class="canvasDuration"></span></span>');
+            this._$volumeControl = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
+            this._$canvasTime = this._$timingControls.find('.canvasTime');
+            this._$canvasDuration = this._$timingControls.find('.canvasDuration');
 
-        private _getTimelineItemContainer(): JQuery {
-            return this.$playerElement.find('.timelineItemContainer');
-        }
+            this._$controlsContainer.append(this._$playButton, this._$timingControls, this._$volumeControl);
+            this._$timelineContainer.append(this._$durationHighlight);
+            this._$optionsContainer.append(this._$timelineContainer, this._$timelineItemContainer, this._$controlsContainer);
+            this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
 
-        private _getCanvasTime(): JQuery {
-            return this.$playerElement.find('.canvasTime')
-        }
+            this.canvasClockDuration = <number>this.canvas.getDuration();
 
-        private _getDurationHighlight(): JQuery {
-            return this.$playerElement.find('.durationHighlight');
-        }
+            const canvasWidth: number = this.canvas.getWidth();
+            const canvasHeight: number = this.canvas.getHeight();
 
-        public initContents() {
+            if (!canvasWidth) {
+                this._canvasWidth = <number>this.$playerElement.parent().width(); // this._data.defaultCanvasWidth;
+            } else {
+                this._canvasWidth = canvasWidth;
+            }
 
-            if (!this.data) return;
+            if (!canvasHeight) {
+                this._canvasHeight = this._canvasWidth * this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
+            } else {
+                this._canvasHeight = canvasHeight;
+            }
 
-            this._mediaElements = [];
+            const that = this;
 
-            const items = (<any>this.data).__jsonld.content[0].items; //todo: use canvas.getContent()
+            this._$playButton.on('click', () => {
+                if (this.isPlaying) {
+                    this.pause();
+                } else {
+                    this.play();
+                }	
+            });
+
+            this._$volumeControl.on('input', function() {
+                that.setVolume(Number(this.value));
+            });
+
+            this._$volumeControl.on('change', function() {
+                that.setVolume(Number(this.value));
+            });
+
+            this._$timelineContainer.slider({
+                value: 0,
+                step: 0.01,
+                orientation: "horizontal",
+                range: "min",
+                max: that.canvasClockDuration,
+                animate: false,			
+                create: function(evt: any, ui: any) {
+                    // on create
+                },
+                slide: function(evt: any, ui: any) {
+                    that.setCurrentTime(ui.value);
+                },
+                stop: function(evt: any, ui: any) {
+                    //this.setCurrentTime(ui.value);
+                }
+            });
+
+            // create annotations
+
+            this._contentAnnotations = [];
+
+            const items = (<any>this.canvas).__jsonld.content[0].items; //todo: use canvas.getContent()
 
             if (items.length === 1) {
-                this._getTimelineItemContainer().hide();
+                this._$timelineItemContainer.hide();
             }
 
             for (let i = 0; i < items.length; i++) {
@@ -112,7 +172,7 @@ namespace IIIFComponents {
                 if (spatial && spatial[1]) {
                     xywh = spatial[1].split(',');
                 } else {
-                    xywh = [0, 0, this.canvasWidth, this.canvasHeight];
+                    xywh = [0, 0, this._canvasWidth, this._canvasHeight];
                 }
 
                 let t;
@@ -130,10 +190,10 @@ namespace IIIFComponents {
                     startTime = parseInt(<string>t[0]),
                     endTime = parseInt(<string>t[1]);
                 
-                const percentageTop = this._convertToPercentage(positionTop, this.canvasHeight),
-                    percentageLeft = this._convertToPercentage(positionLeft, this.canvasWidth),
-                    percentageWidth = this._convertToPercentage(mediaWidth, this.canvasWidth),
-                    percentageHeight = this._convertToPercentage(mediaHeight, this.canvasHeight);
+                const percentageTop = this._convertToPercentage(positionTop, this._canvasHeight),
+                    percentageLeft = this._convertToPercentage(positionLeft, this._canvasWidth),
+                    percentageWidth = this._convertToPercentage(mediaWidth, this._canvasWidth),
+                    percentageHeight = this._convertToPercentage(mediaHeight, this._canvasHeight);
 
                 const temporalOffsets = /t=([^&]+)/g.exec(item.body.id);
 
@@ -241,10 +301,10 @@ namespace IIIFComponents {
                 }
             }
 
-            this._mediaElements.push(data);
+            this._contentAnnotations.push(data);
 
             if (this.$playerElement) {
-                this._getCanvasContainer().append($mediaElement);
+                this._$canvasContainer.append($mediaElement);
             }
             
             if (data.type == 'Video' || data.type == 'Audio') {
@@ -270,7 +330,15 @@ namespace IIIFComponents {
                 $mediaElement.on('loadedmetadata', function() {
                     that.readyCanvasesCount++;
 
-                    if (that.readyCanvasesCount === that._mediaElements.length) {
+                    if (that.readyCanvasesCount === that._contentAnnotations.length) {
+                        that.setCurrentTime(0);
+
+                        if (that._data.autoPlay) {
+                            that.play();
+                        }
+            
+                        that._$canvasDuration.text(AVComponentUtils.Utils.formatTime(that.canvasClockDuration));
+                        
                         that.fire(AVComponent.Events.CANVASREADY);
                     }
                 });
@@ -290,13 +358,11 @@ namespace IIIFComponents {
                 return;
             }
 
-            const $durationHighlight: JQuery = this._getDurationHighlight();
-
             // get the total length in seconds.
             const totalLength: number = this.canvasClockDuration;
 
             // get the length of the timeline container
-            const timelineLength: number = <number>this._getTimelineContainer().width();
+            const timelineLength: number = <number>this._$timelineContainer.width();
 
             // get the ratio of seconds to length
             const ratio: number = timelineLength / totalLength;
@@ -305,7 +371,7 @@ namespace IIIFComponents {
             const width: number = end - start;
 
             // set the start position and width
-            $durationHighlight.css({
+            this._$durationHighlight.css({
                 left: start,
                 width: width
             })
@@ -313,8 +379,8 @@ namespace IIIFComponents {
 
         public setVolume(value: number): void {
 
-            for (let i = 0; i < this._mediaElements.length; i++) {
-                const $mediaElement = this._mediaElements[i];
+            for (let i = 0; i < this._contentAnnotations.length; i++) {
+                const $mediaElement = this._contentAnnotations[i];
                 $($mediaElement.element).prop("volume", value);
             }
 
@@ -339,8 +405,7 @@ namespace IIIFComponents {
             mediaElementData.timelineElement = $timelineItem;
 
             if (this.$playerElement) {
-                const $itemContainer: JQuery = this._getTimelineItemContainer();
-                $itemContainer.append($lineWrapper);
+                this._$timelineItemContainer.append($lineWrapper);
             }
         }
 
@@ -392,6 +457,10 @@ namespace IIIFComponents {
                 this.synchronizeMedia();
             }
 
+            this._$playButton.removeClass('play');
+            this._$playButton.addClass('pause');
+            this._$playButton.text(this._data.content.pause);
+
             this.fire(AVComponent.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
         }
@@ -409,6 +478,10 @@ namespace IIIFComponents {
                 this.synchronizeMedia();
             }
 
+            this._$playButton.removeClass('pause');
+            this._$playButton.addClass('play');
+            this._$playButton.text(this._data.content.play);
+
             this.fire(AVComponent.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
         }
@@ -424,13 +497,11 @@ namespace IIIFComponents {
 
         public highPriorityUpdater(): void {
 
-            const $timelineContainer: JQuery = this._getTimelineContainer();
-
-            $timelineContainer.slider({
+            this._$timelineContainer.slider({
                 value: this.canvasClockTime
             });
 
-            this._getCanvasTime().text(AVComponentUtils.Utils.formatTime(this.canvasClockTime));
+            this._$canvasTime.text(AVComponentUtils.Utils.formatTime(this.canvasClockTime));
         }
 
         public lowPriorityUpdater(): void {
@@ -441,9 +512,9 @@ namespace IIIFComponents {
 
             let mediaElement;
 
-            for (let i = 0; i < this._mediaElements.length; i++) {
+            for (let i = 0; i < this._contentAnnotations.length; i++) {
 
-                mediaElement = this._mediaElements[i];
+                mediaElement = this._contentAnnotations[i];
 
                 if (mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime) {
 
@@ -487,9 +558,9 @@ namespace IIIFComponents {
 
             let mediaElement;
 
-            for (let i = 0; i < this._mediaElements.length; i++) {
+            for (let i = 0; i < this._contentAnnotations.length; i++) {
 
-                mediaElement = this._mediaElements[i];
+                mediaElement = this._contentAnnotations[i];
                 
                 if (mediaElement.type == 'Video' || mediaElement.type == 'Audio') {
 
@@ -524,9 +595,9 @@ namespace IIIFComponents {
 	
             let mediaElement;
 
-            for (let i = 0, l = this._mediaElements.length; i < l; i++) {
+            for (let i = 0, l = this._contentAnnotations.length; i < l; i++) {
                 
-                mediaElement = this._mediaElements[i];
+                mediaElement = this._contentAnnotations[i];
 
                 if ((mediaElement.type == 'Video' || mediaElement.type == 'Audio') && 
                     (mediaElement.start <= this.canvasClockTime && mediaElement.end >= this.canvasClockTime) ) {
@@ -564,7 +635,7 @@ namespace IIIFComponents {
                 if (!this.isStalled) {
 
                     if (this.$playerElement) {
-                        this._showWorkingIndicator(this._getCanvasContainer());
+                        this._showWorkingIndicator(this._$canvasContainer);
                     }
 
                     this.wasPlaying = this.isPlaying;
@@ -604,6 +675,25 @@ namespace IIIFComponents {
         private _hideWorkingIndicator() {
             $('.workingIndicator').remove();
             //console.log('hide working');
+        }
+
+        public resize(): void {
+            if (this.$playerElement) {
+
+                const containerWidth: number | undefined = this._$canvasContainer.width();
+
+                if (containerWidth) {
+                    this._$timelineContainer.width(containerWidth);
+
+                    //const resizeFactorY: number = containerWidth / this.canvasWidth;
+                    //$canvasContainer.height(this.canvasHeight * resizeFactorY);
+
+                    const $options: JQuery = this.$playerElement.find('.optionsContainer');
+                    this._$canvasContainer.height(<number>this.$playerElement.parent().height() - <number>$options.height());
+                }
+
+                this.highlightDuration();
+            }
         }
 
         public on(name: string, callback: Function, ctx: any): void {

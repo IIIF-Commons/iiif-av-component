@@ -76,6 +76,8 @@ namespace IIIFComponents {
 
         private _reset(): void {
 
+            // todo: create canvasInstance.destroy() method
+
             for (let i = 0; i < this.canvasInstances.length; i++) {
                 window.clearInterval(this.canvasInstances[i].highPriorityInterval);
                 window.clearInterval(this.canvasInstances[i].lowPriorityInterval);
@@ -111,115 +113,17 @@ namespace IIIFComponents {
         }
 
         private _initCanvas(canvas: Manifesto.ICanvas): void {
-    
-            const $player: JQuery = $('<div class="player"></div>');
-            const $canvasContainer: JQuery = $('<div class="canvasContainer"></div>');
-            const $optionsContainer: JQuery = $('<div class="optionsContainer"></div>');
-            const $timelineContainer: JQuery = $('<div class="timelineContainer"></div>');
-            const $durationHighlight: JQuery = $('<div class="durationHighlight"></div>');
-            const $timelineItemContainer: JQuery = $('<div class="timelineItemContainer"></div>');
-            const $controlsContainer: JQuery = $('<div class="controlsContainer"></div>');
-            const $playButton: JQuery = $('<button class="playButton">' + this._data.content.play + '</button>');
-            const $timingControls: JQuery = $('<span>' + this._data.content.currentTime + ': <span class="canvasTime"></span> / ' + this._data.content.duration + ': <span class="canvasDuration"></span></span>');
-            const $volumeControl: JQuery<HTMLInputElement> = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
 
-            $controlsContainer.append($playButton, $timingControls, $volumeControl);
-            $timelineContainer.append($durationHighlight);
-            $optionsContainer.append($timelineContainer, $timelineItemContainer, $controlsContainer);
-            $player.append($canvasContainer, $optionsContainer);
-
-            this._$element.append($player);
-
-            const canvasInstance: CanvasInstance = new CanvasInstance(canvas);
-
-            const canvasWidth: number = canvas.getWidth();
-            const canvasHeight: number = canvas.getHeight();
-
-            if (!canvasWidth) {
-                canvasInstance.canvasWidth = <number>this._$element.width(); // this._data.defaultCanvasWidth;
-            } else {
-                canvasInstance.canvasWidth = canvasWidth;
-            }
-
-            if (!canvasHeight) {
-                canvasInstance.canvasHeight = canvasInstance.canvasWidth * this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
-            } else {
-                canvasInstance.canvasHeight = canvasHeight;
-            }
-
-            canvasInstance.$playerElement = $player;
-            canvasInstance.logMessage = this._logMessage.bind(this);
-
-            canvasInstance.on(AVComponent.Events.PLAYCANVAS, function() {
-                $playButton.removeClass('play');
-                $playButton.addClass('pause');
-                $playButton.text(this._data.content.pause);
-            }, this);
-
-            canvasInstance.on(AVComponent.Events.PAUSECANVAS, function() {
-                $playButton.removeClass('pause');
-                $playButton.addClass('play');
-                $playButton.text(this._data.content.play);
-            }, this);
-
-            $timelineContainer.slider({
-                value: 0,
-                step: 0.01,
-                orientation: "horizontal",
-                range: "min",
-                max: canvasInstance.canvasClockDuration,
-                animate: false,			
-                create: function(evt: any, ui: any) {
-                    // on create
-                },
-                slide: function(evt: any, ui: any) {
-                    canvasInstance.setCurrentTime(ui.value);
-                },
-                stop: function(evt: any, ui: any) {
-                    //canvasInstance.setCurrentTime(ui.value);
-                }
-            });
-
+            const canvasInstance: CanvasInstance = new CanvasInstance(canvas, this._data);
+            canvasInstance.logMessage = this._logMessage.bind(this);   
+            this._$element.append(canvasInstance.$playerElement);
+            canvasInstance.init();
             this.canvasInstances.push(canvasInstance);
 
-            canvasInstance.initContents();
-
-            $playButton.on('click', () => {
-
-                if (canvasInstance.isPlaying) {
-                    canvasInstance.pause();
-                } else {
-                    canvasInstance.play();
-                }
-	
-            });
-
-            $volumeControl.on('input', function() {
-                canvasInstance.setVolume(Number(this.value));
-            });
-
-            $volumeControl.on('change', function() {
-                canvasInstance.setVolume(Number(this.value));
-            });
-
-            const that = this;
-
-            canvasInstance.on('canvasready', function() {
-
-                canvasInstance.setCurrentTime(0);
-
-                if (that.options.data.autoPlay) {
-                    canvasInstance.play();
-                }
-    
-                $timingControls.find('.canvasDuration').text(AVComponentUtils.Utils.formatTime(canvasInstance.canvasClockDuration));
-    
-                that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
-
-                that.fire(AVComponent.Events.CANVASREADY);
-
+            canvasInstance.on('canvasready', () => {
+                //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
+                this.fire(AVComponent.Events.CANVASREADY);
             }, false);
-
         }
 
         public getCanvasInstanceById(canvasId: string): CanvasInstance | null {
@@ -230,8 +134,8 @@ namespace IIIFComponents {
     
                 const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
     
-                if (canvasInstance.data && canvasInstance.data.id) {
-                    const canvasInstanceId: string = manifesto.Utils.normaliseUrl(canvasInstance.data.id);
+                if (canvasInstance.canvas && canvasInstance.canvas.id) {
+                    const canvasInstanceId: string = manifesto.Utils.normaliseUrl(canvasInstance.canvas.id);
                     
                     if (canvasInstanceId === canvasId) {
                         return canvasInstance;
@@ -290,31 +194,9 @@ namespace IIIFComponents {
         protected _resize(): void {
 
             // loop through all canvases resizing their elements
-
             for (let i = 0; i < this.canvasInstances.length; i++) {
-
                 const canvasInstance: CanvasInstance = this.canvasInstances[i];
-
-                if (canvasInstance.$playerElement) {
-                    const $canvasContainer = canvasInstance.$playerElement.find('.canvasContainer');
-                    const $timelineContainer = canvasInstance.$playerElement.find('.timelineContainer');
-
-                    const containerWidth: number | undefined = $canvasContainer.width();
-
-                    if (containerWidth) {
-                        $timelineContainer.width(containerWidth);
-
-                        //const resizeFactorY: number = containerWidth / canvasInstance.canvasWidth;
-                        //$canvasContainer.height(canvasInstance.canvasHeight * resizeFactorY);
-
-                        const $options: JQuery = canvasInstance.$playerElement.find('.optionsContainer');
-                        $canvasContainer.height(<number>this._$element.height() - <number>$options.height());
-                    }
-
-                    canvasInstance.highlightDuration();
-                    
-                }
-
+                canvasInstance.resize();
             }
 
         }
