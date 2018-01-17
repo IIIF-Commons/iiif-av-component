@@ -12,7 +12,7 @@ namespace IIIFComponents {
         private _$optionsContainer: JQuery;
         private _$playButton: JQuery;
         private _$rangeTimelineContainer: JQuery;
-        private _$timelineContainer: JQuery;
+        private _$canvasTimelineContainer: JQuery;
         private _$timelineItemContainer: JQuery;
         private _$timingControls: JQuery;
         private _$volumeControl: JQuery<HTMLInputElement>;
@@ -49,8 +49,8 @@ namespace IIIFComponents {
 
             this._$canvasContainer = $('<div class="canvasContainer"></div>');
             this._$optionsContainer = $('<div class="optionsContainer"></div>');
-            this._$timelineContainer = $('<div class="timelineContainer"></div>');
             this._$rangeTimelineContainer = $('<div class="rangeTimelineContainer"></div>');
+            this._$canvasTimelineContainer = $('<div class="canvasTimelineContainer"></div>');
             this._$durationHighlight = $('<div class="durationHighlight"></div>');
             this._$timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             this._$controlsContainer = $('<div class="controlsContainer"></div>');
@@ -61,8 +61,8 @@ namespace IIIFComponents {
             this._$canvasDuration = this._$timingControls.find('.canvasDuration');
 
             this._$controlsContainer.append(this._$playButton, this._$timingControls, this._$volumeControl);
-            this._$timelineContainer.append(this._$durationHighlight);
-            this._$optionsContainer.append(this._$timelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
+            this._$canvasTimelineContainer.append(this._$durationHighlight);
+            this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
 
             this._canvasClockDuration = <number>this.canvas.getDuration();
@@ -100,7 +100,7 @@ namespace IIIFComponents {
                 that.setVolume(Number(this.value));
             });
 
-            this._$timelineContainer.slider({
+            this._$canvasTimelineContainer.slider({
                 value: 0,
                 step: 0.01,
                 orientation: "horizontal",
@@ -178,7 +178,7 @@ namespace IIIFComponents {
 
                 let t;
 
-                if(temporal && temporal[1]) {
+                if (temporal && temporal[1]) {
                     t = temporal[1].split(',');
                 } else {
                     t = [0, this._canvasClockDuration];
@@ -200,7 +200,7 @@ namespace IIIFComponents {
 
                 let ot;
 
-                if(temporalOffsets && temporalOffsets[1]) {
+                if (temporalOffsets && temporalOffsets[1]) {
                     ot = temporalOffsets[1].split(',');
                 } else {
                     ot = [null, null];
@@ -231,13 +231,16 @@ namespace IIIFComponents {
 
             this._data = data;
 
-            if (this._data.limitToRange) {
-                this._$timelineContainer.hide();
+            if (this._isLimitedToRange()) {
+                this._$canvasTimelineContainer.hide();
                 this._$rangeTimelineContainer.show();
             } else {
-                this._$timelineContainer.show();
+                this._$canvasTimelineContainer.show();
                 this._$rangeTimelineContainer.hide();
             }
+
+            this._updateCurrentTimeDisplay();
+            this._updateDurationDisplay();
         }
 
         public destroy(): void {
@@ -348,7 +351,7 @@ namespace IIIFComponents {
                             that.play();
                         }
             
-                        that._$canvasDuration.text(AVComponentUtils.Utils.formatTime(that._canvasClockDuration));
+                        that._updateDurationDisplay();
                         
                         that.fire(AVComponent.Events.CANVASREADY);
                     }
@@ -363,6 +366,24 @@ namespace IIIFComponents {
 
         }
 
+        private _updateCurrentTimeDisplay(): void {
+            if (this._isLimitedToRange() && this.currentDuration) {
+                const rangeClockTime: number = this._canvasClockTime - this.currentDuration.start;
+                console.log(rangeClockTime);
+                this._$canvasTime.text(AVComponentUtils.Utils.formatTime(rangeClockTime));
+            } else {
+                this._$canvasTime.text(AVComponentUtils.Utils.formatTime(this._canvasClockTime));
+            }
+        }
+
+        private _updateDurationDisplay(): void {
+            if (this._isLimitedToRange() && this.currentDuration) {
+                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this.currentDuration.getLength()));
+            } else {
+                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._canvasClockDuration));
+            }
+        }
+
         public highlightDuration(): void {
 
             if (!this.currentDuration) {
@@ -373,7 +394,7 @@ namespace IIIFComponents {
             const totalLength: number = this._canvasClockDuration;
 
             // get the length of the timeline container
-            const timelineLength: number = <number>this._$timelineContainer.width();
+            const timelineLength: number = <number>this._$canvasTimelineContainer.width();
 
             // get the ratio of seconds to length
             const ratio: number = timelineLength / totalLength;
@@ -385,7 +406,30 @@ namespace IIIFComponents {
             this._$durationHighlight.css({
                 left: start,
                 width: width
-            })
+            });
+
+            const that = this;
+
+            this._$rangeTimelineContainer.slider("destroy");
+
+            this._$rangeTimelineContainer.slider({
+                value: this.currentDuration.start,
+                step: 0.01,
+                orientation: "horizontal",
+                range: "min",
+                min: this.currentDuration.start,
+                max: this.currentDuration.end,
+                animate: false,			
+                create: function(evt: any, ui: any) {
+                    // on create
+                },
+                slide: function(evt: any, ui: any) {
+                    that.setCurrentTime(ui.value);
+                },
+                stop: function(evt: any, ui: any) {
+                    //this.setCurrentTime(ui.value);
+                }
+            });
         }
 
         public setVolume(value: number): void {
@@ -441,6 +485,10 @@ namespace IIIFComponents {
 
         public play(withoutUpdate?: boolean): void {
             if (this._isPlaying) return;
+
+            if (this._isLimitedToRange() && this.currentDuration && this._canvasClockTime >= this.currentDuration.end) {
+                this._canvasClockTime = this.currentDuration.start;
+            }
 
             if (this._canvasClockTime === this._canvasClockDuration) {
                 this._canvasClockTime = 0;
@@ -498,22 +546,36 @@ namespace IIIFComponents {
             this.logMessage('PAUSE canvas');
         }
 
+        private _isLimitedToRange(): boolean {
+            return this._data.limitToRange;
+        }
+
         private _canvasClockUpdater(): void {
             this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
+
+            if (this._isLimitedToRange() && this.currentDuration && this._canvasClockTime >= this.currentDuration.end) {
+                this.pause();
+            }
 
             if (this._canvasClockTime >= this._canvasClockDuration) {
                 this._canvasClockTime = this._canvasClockDuration;
                 this.pause();
             }
+
         }
 
         private _highPriorityUpdater(): void {
 
-            this._$timelineContainer.slider({
+            this._$rangeTimelineContainer.slider({
                 value: this._canvasClockTime
             });
 
-            this._$canvasTime.text(AVComponentUtils.Utils.formatTime(this._canvasClockTime));
+            this._$canvasTimelineContainer.slider({
+                value: this._canvasClockTime
+            });
+
+            this._updateCurrentTimeDisplay();
+            this._updateDurationDisplay();
         }
 
         private _lowPriorityUpdater(): void {
@@ -624,7 +686,7 @@ namespace IIIFComponents {
                         //this.playbackStalled(true, contentAnnotation);
                         
                         const lag: number = Math.abs(factualTime - correctTime);
-                        this.logMessage('DETECTED synchronization lag: '+ Math.abs(lag) );
+                        this.logMessage('DETECTED synchronization lag: ' + Math.abs(lag));
                         contentAnnotation.element[0].currentTime = correctTime;
                         //this.synchronizeMedia();
 
@@ -677,7 +739,7 @@ namespace IIIFComponents {
         }
 
         private _showWorkingIndicator($targetElement: JQuery): void {
-            const workingIndicator: JQuery = $('<div class="workingIndicator">Waiting ...</div>');
+            const workingIndicator: JQuery = $('<div class="workingIndicator">Waiting...</div>');
             if ($targetElement.find('.workingIndicator').length == 0) {
                 $targetElement.append(workingIndicator);
             }
@@ -695,7 +757,7 @@ namespace IIIFComponents {
                 const containerWidth: number | undefined = this._$canvasContainer.width();
 
                 if (containerWidth) {
-                    this._$timelineContainer.width(containerWidth);
+                    this._$canvasTimelineContainer.width(containerWidth);
 
                     //const resizeFactorY: number = containerWidth / this.canvasWidth;
                     //$canvasContainer.height(this.canvasHeight * resizeFactorY);

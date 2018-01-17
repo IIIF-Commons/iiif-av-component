@@ -48,7 +48,7 @@ declare namespace IIIFComponents {
         private _$optionsContainer;
         private _$playButton;
         private _$rangeTimelineContainer;
-        private _$timelineContainer;
+        private _$canvasTimelineContainer;
         private _$timelineItemContainer;
         private _$timingControls;
         private _$volumeControl;
@@ -79,12 +79,15 @@ declare namespace IIIFComponents {
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
+        private _updateCurrentTimeDisplay();
+        private _updateDurationDisplay();
         highlightDuration(): void;
         setVolume(value: number): void;
         private _renderSyncIndicator(mediaElementData);
         setCurrentTime(seconds: number): void;
         play(withoutUpdate?: boolean): void;
         pause(withoutUpdate?: boolean): void;
+        private _isLimitedToRange();
         private _canvasClockUpdater();
         private _highPriorityUpdater();
         private _lowPriorityUpdater();
@@ -105,6 +108,7 @@ declare namespace IIIFComponents.AVComponentObjects {
         start: number;
         end: number;
         constructor(start: number, end: number);
+        getLength(): number;
     }
 }
 
