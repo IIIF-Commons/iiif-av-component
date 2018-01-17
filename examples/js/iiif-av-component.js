@@ -471,7 +471,6 @@ var IIIFComponents;
         CanvasInstance.prototype._updateCurrentTimeDisplay = function () {
             if (this._isLimitedToRange() && this.currentDuration) {
                 var rangeClockTime = this._canvasClockTime - this.currentDuration.start;
-                console.log(rangeClockTime);
                 this._$canvasTime.text(IIIFComponents.AVComponentUtils.Utils.formatTime(rangeClockTime));
             }
             else {

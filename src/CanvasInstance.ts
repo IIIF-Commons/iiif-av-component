@@ -369,7 +369,6 @@ namespace IIIFComponents {
         private _updateCurrentTimeDisplay(): void {
             if (this._isLimitedToRange() && this.currentDuration) {
                 const rangeClockTime: number = this._canvasClockTime - this.currentDuration.start;
-                console.log(rangeClockTime);
                 this._$canvasTime.text(AVComponentUtils.Utils.formatTime(rangeClockTime));
             } else {
                 this._$canvasTime.text(AVComponentUtils.Utils.formatTime(this._canvasClockTime));
