@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.13 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.14 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
