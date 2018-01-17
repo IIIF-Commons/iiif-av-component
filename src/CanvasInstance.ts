@@ -227,11 +227,13 @@ namespace IIIFComponents {
             }
         }
 
-        public update(data: IAVComponentData): void {
+        public update(data?: IAVComponentData): void {
 
-            this._data = data;
+            if (data) {
+                this._data = data;
+            }            
 
-            if (this._isLimitedToRange()) {
+            if (this._isLimitedToRange() && this.currentDuration) {
                 this._$canvasTimelineContainer.hide();
                 this._$rangeTimelineContainer.show();
             } else {
@@ -429,6 +431,8 @@ namespace IIIFComponents {
                     //this.setCurrentTime(ui.value);
                 }
             });
+
+            this.update();
         }
 
         public setVolume(value: number): void {

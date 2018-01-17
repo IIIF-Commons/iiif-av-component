@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.14 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.15 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -75,7 +75,7 @@ declare namespace IIIFComponents {
         logMessage: (message: string) => void;
         constructor(canvas: Manifesto.ICanvas, data: IAVComponentData);
         init(): void;
-        update(data: IAVComponentData): void;
+        update(data?: IAVComponentData): void;
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
