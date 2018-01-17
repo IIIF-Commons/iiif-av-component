@@ -54,8 +54,8 @@ namespace IIIFComponents {
             this._$durationHighlight = $('<div class="durationHighlight"></div>');
             this._$timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             this._$controlsContainer = $('<div class="controlsContainer"></div>');
-            this._$playButton = $('<button class="playButton">' + this._data.content.play + '</button>');
-            this._$timingControls = $('<span>' + this._data.content.currentTime + ': <span class="canvasTime"></span> / ' + this._data.content.duration + ': <span class="canvasDuration"></span></span>');
+            this._$playButton = $('<button class="playButton">' + (<IAVComponentContent>this._data.content).play + '</button>');
+            this._$timingControls = $('<span>' + (<IAVComponentContent>this._data.content).currentTime + ': <span class="canvasTime"></span> / ' + (<IAVComponentContent>this._data.content).duration + ': <span class="canvasDuration"></span></span>');
             this._$volumeControl = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
             this._$canvasTime = this._$timingControls.find('.canvasTime');
             this._$canvasDuration = this._$timingControls.find('.canvasDuration');
@@ -77,7 +77,7 @@ namespace IIIFComponents {
             }
 
             if (!canvasHeight) {
-                this._canvasHeight = this._canvasWidth * this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
+                this._canvasHeight = this._canvasWidth * <number>this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
             } else {
                 this._canvasHeight = canvasHeight;
             }
@@ -517,7 +517,7 @@ namespace IIIFComponents {
 
             this._$playButton.removeClass('play');
             this._$playButton.addClass('pause');
-            this._$playButton.text(this._data.content.pause);
+            this._$playButton.text((<IAVComponentContent>this._data.content).pause);
 
             this.fire(AVComponent.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
@@ -539,14 +539,14 @@ namespace IIIFComponents {
 
             this._$playButton.removeClass('pause');
             this._$playButton.addClass('play');
-            this._$playButton.text(this._data.content.play);
+            this._$playButton.text((<IAVComponentContent>this._data.content).play);
 
             this.fire(AVComponent.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
         }
 
         private _isLimitedToRange(): boolean {
-            return this._data.limitToRange;
+            return <boolean>this._data.limitToRange;
         }
 
         private _canvasClockUpdater(): void {

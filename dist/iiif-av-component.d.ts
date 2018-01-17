@@ -126,11 +126,11 @@ declare namespace IIIFComponents {
         duration: string;
     }
     interface IAVComponentData {
-        helper: Manifold.IHelper | null;
-        autoPlay: boolean;
-        defaultAspectRatio: number;
-        content: IAVComponentContent;
-        limitToRange: boolean;
+        helper?: Manifold.IHelper;
+        autoPlay?: boolean;
+        defaultAspectRatio?: number;
+        content?: IAVComponentContent;
+        limitToRange?: boolean;
         [key: string]: any;
     }
 }
