@@ -385,6 +385,7 @@ namespace IIIFComponents {
             }
         }
 
+        // todo: instead of having public methods, add a single 'set' method where you pass a state object
         public highlightDuration(): void {
 
             if (!this.currentDuration) {
