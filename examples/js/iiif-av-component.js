@@ -308,18 +308,21 @@ var IIIFComponents;
             this._$prevButton.on('click', function () {
                 prevClicks++;
                 if (prevClicks === 1) {
+                    // single click
+                    //console.log('single');
+                    _this._previous(false);
                     prevTimeout = setTimeout(function () {
                         prevClicks = 0;
                         prevTimeout = 0;
-                        // this.playFromStart();
-                        // this.play();
                     }, _this._data.doubleClickMS);
                 }
                 else {
+                    // double click
+                    //console.log('double');
+                    _this._previous(true);
                     clearTimeout(prevTimeout);
                     prevClicks = 0;
                     prevTimeout = 0;
-                    _this.fire(IIIFComponents.AVComponent.Events.PREVIOUS);
                 }
             });
             this._$playButton.on('click', function () {
@@ -436,6 +439,30 @@ var IIIFComponents;
                     'active': false
                 };
                 this._renderMediaElement(itemData);
+            }
+        };
+        CanvasInstance.prototype._previous = function (isDouble) {
+            if (this._isLimitedToRange() && this.currentDuration) {
+                // if only showing the range, single click rewinds, double click goes to previous range
+                if (isDouble) {
+                    this.fire(IIIFComponents.AVComponent.Events.PREVIOUS);
+                }
+                else {
+                    this.pause();
+                    this.rewind();
+                    this.play();
+                }
+            }
+            else {
+                // not limited to range. single click goes to previous range, double rewinds.
+                if (isDouble) {
+                    this.pause();
+                    this.rewind();
+                    this.play();
+                }
+                else {
+                    this.fire(IIIFComponents.AVComponent.Events.PREVIOUS);
+                }
             }
         };
         CanvasInstance.prototype.set = function (data) {
@@ -638,6 +665,14 @@ var IIIFComponents;
             this._highPriorityUpdater();
             this._lowPriorityUpdater();
             this._synchronizeMedia();
+        };
+        CanvasInstance.prototype.rewind = function (withoutUpdate) {
+            if (this._isLimitedToRange() && this.currentDuration) {
+                this._canvasClockTime = this.currentDuration.start;
+            }
+            else {
+                this._canvasClockTime = 0;
+            }
         };
         CanvasInstance.prototype.play = function (withoutUpdate) {
             if (this._isPlaying)

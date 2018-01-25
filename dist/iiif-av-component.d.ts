@@ -82,6 +82,7 @@ declare namespace IIIFComponents {
         logMessage: (message: string) => void;
         constructor(canvas: Manifesto.ICanvas, data: IAVComponentData);
         init(): void;
+        private _previous(isDouble);
         set(data?: IAVComponentData): void;
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
@@ -92,6 +93,7 @@ declare namespace IIIFComponents {
         setVolume(value: number): void;
         private _renderSyncIndicator(mediaElementData);
         setCurrentTime(seconds: number): void;
+        rewind(withoutUpdate?: boolean): void;
         play(withoutUpdate?: boolean): void;
         pause(withoutUpdate?: boolean): void;
         private _isLimitedToRange();

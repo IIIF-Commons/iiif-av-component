@@ -96,17 +96,20 @@ namespace IIIFComponents {
                 prevClicks++;
 
                 if (prevClicks === 1) {
+                    // single click
+                    //console.log('single');
+                    this._previous(false);
                     prevTimeout = setTimeout(() => {
                         prevClicks = 0;
                         prevTimeout = 0;
-                        // this.playFromStart();
-                        // this.play();
                     }, this._data.doubleClickMS);
                 } else {
+                    // double click
+                    //console.log('double');
+                    this._previous(true);
                     clearTimeout(prevTimeout);
                     prevClicks = 0;
                     prevTimeout = 0;
-                    this.fire(AVComponent.Events.PREVIOUS);
                 }
             });
 
@@ -254,6 +257,28 @@ namespace IIIFComponents {
                 }
 
                 this._renderMediaElement(itemData);
+            }
+        }
+
+        private _previous(isDouble: boolean): void {
+            if (this._isLimitedToRange() && this.currentDuration) {
+                // if only showing the range, single click rewinds, double click goes to previous range
+                if (isDouble) {
+                    this.fire(AVComponent.Events.PREVIOUS);
+                } else {
+                    this.pause();
+                    this.rewind();
+                    this.play();
+                }
+            } else {
+                // not limited to range. single click goes to previous range, double rewinds.
+                if (isDouble) {
+                    this.pause();
+                    this.rewind();
+                    this.play();
+                } else {
+                    this.fire(AVComponent.Events.PREVIOUS);
+                }
             }
         }
 
@@ -515,6 +540,14 @@ namespace IIIFComponents {
             this._highPriorityUpdater();
             this._lowPriorityUpdater();
             this._synchronizeMedia();
+        }
+
+        public rewind(withoutUpdate?: boolean): void {
+            if (this._isLimitedToRange() && this.currentDuration) {
+                this._canvasClockTime = this.currentDuration.start;
+            } else {
+                this._canvasClockTime = 0;
+            }
         }
 
         public play(withoutUpdate?: boolean): void {
