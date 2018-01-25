@@ -178,9 +178,6 @@ var IIIFComponents;
             if (canvasInstance) {
                 canvasInstance.unhighlightDuration();
                 canvasInstance.rewind();
-                if (this._data && this._data.helper) {
-                    this._data.helper.rangeId = null;
-                }
             }
         };
         AVComponent.prototype.playCanvas = function (canvasId) {
@@ -479,7 +476,6 @@ var IIIFComponents;
                 // if there is no currentDuration, single and double click rewinds.
                 if (this.currentDuration) {
                     if (isDouble) {
-                        this.currentDuration = null;
                         this.unhighlightDuration();
                         this.rewind();
                     }
@@ -620,6 +616,9 @@ var IIIFComponents;
         };
         CanvasInstance.prototype.unhighlightDuration = function () {
             this.currentDuration = null;
+            if (this._data && this._data.helper) {
+                this._data.helper.rangeId = null;
+            }
             this._$durationHighlight.hide();
         };
         CanvasInstance.prototype.highlightDuration = function () {
