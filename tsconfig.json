@@ -12,7 +12,7 @@
         "lib": ["es6", "dom"],
         "types": [
             "manifesto.js",
-            "manifold",
+            "@iiif/manifold",
             "base-component",
             "jquery",
             "jqueryui"

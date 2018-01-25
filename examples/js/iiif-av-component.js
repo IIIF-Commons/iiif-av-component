@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.15 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.16 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 /// <reference types="exjs" /> 
@@ -36,12 +36,15 @@ var IIIFComponents;
             return {
                 autoPlay: false,
                 defaultAspectRatio: 0.56,
+                doubleClickMS: 350,
                 limitToRange: false,
                 content: {
-                    play: "Play",
-                    pause: "Pause",
                     currentTime: "Current Time",
-                    duration: "Duration"
+                    duration: "Duration",
+                    next: "Next",
+                    pause: "Pause",
+                    play: "Play",
+                    previous: "Previous"
                 }
             };
         };
@@ -90,7 +93,7 @@ var IIIFComponents;
         AVComponent.prototype._update = function () {
             for (var i = 0; i < this.canvasInstances.length; i++) {
                 var canvasInstance = this.canvasInstances[i];
-                canvasInstance.update(this._data);
+                canvasInstance.set(this._data);
             }
         };
         AVComponent.prototype._getCanvases = function () {
@@ -106,10 +109,45 @@ var IIIFComponents;
             this._$element.append(canvasInstance.$playerElement);
             canvasInstance.init();
             this.canvasInstances.push(canvasInstance);
-            canvasInstance.on('canvasready', function () {
+            canvasInstance.on(AVComponent.Events.CANVASREADY, function () {
                 //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
                 _this.fire(AVComponent.Events.CANVASREADY);
             }, false);
+            // canvasInstance.on(AVComponent.Events.RESETCANVAS, () => {
+            //     this.playCanvas(canvasInstance.canvas.id);
+            // }, false);
+            canvasInstance.on(AVComponent.Events.PREVIOUS, function () {
+                _this._prevRange();
+            }, false);
+            canvasInstance.on(AVComponent.Events.NEXT, function () {
+                _this._nextRage();
+            }, false);
+        };
+        AVComponent.prototype._prevRange = function () {
+            if (!this._data || !this._data.helper) {
+                return;
+            }
+            var prevRange = this._data.helper.getPreviousRange();
+            if (prevRange) {
+                var canvasIds = prevRange.getCanvasIds();
+                if (canvasIds.length) {
+                    this._data.helper.rangeId = prevRange.id;
+                    this.playCanvas(canvasIds[0]);
+                }
+            }
+        };
+        AVComponent.prototype._nextRage = function () {
+            if (!this._data || !this._data.helper) {
+                return;
+            }
+            var nextRange = this._data.helper.getNextRange();
+            if (nextRange) {
+                var canvasIds = nextRange.getCanvasIds();
+                if (canvasIds.length) {
+                    this._data.helper.rangeId = nextRange.id;
+                    this.playCanvas(canvasIds[0]);
+                }
+            }
         };
         AVComponent.prototype.getCanvasInstanceById = function (canvasId) {
             canvasId = manifesto.Utils.normaliseUrl(canvasId);
@@ -124,7 +162,7 @@ var IIIFComponents;
             }
             return null;
         };
-        AVComponent.prototype.play = function (canvasId) {
+        AVComponent.prototype.playCanvas = function (canvasId) {
             this.showCanvas(canvasId);
             var canvasInstance = this.getCanvasInstanceById(canvasId);
             if (canvasInstance) {
@@ -136,6 +174,19 @@ var IIIFComponents;
                     canvasInstance.highlightDuration();
                     canvasInstance.setCurrentTime(duration.start);
                     canvasInstance.play();
+                }
+            }
+        };
+        AVComponent.prototype.playRange = function (rangeId) {
+            if (!this._data || !this._data.helper) {
+                return;
+            }
+            var range = this._data.helper.getRangeById(rangeId);
+            if (range) {
+                this._data.helper.rangeId = rangeId;
+                if (range.canvases) {
+                    var canvasId = range.canvases[0];
+                    this.playCanvas(canvasId);
                 }
             }
         };
@@ -175,9 +226,11 @@ var IIIFComponents;
             function Events() {
             }
             Events.CANVASREADY = 'canvasready';
-            Events.PLAYCANVAS = 'play';
-            Events.PAUSECANVAS = 'pause';
             Events.LOG = 'log';
+            Events.NEXT = 'next';
+            Events.PAUSECANVAS = 'pause';
+            Events.PLAYCANVAS = 'play';
+            Events.PREVIOUS = 'previous';
             return Events;
         }());
         AVComponent.Events = Events;
@@ -223,12 +276,14 @@ var IIIFComponents;
             this._$durationHighlight = $('<div class="durationHighlight"></div>');
             this._$timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             this._$controlsContainer = $('<div class="controlsContainer"></div>');
+            this._$prevButton = $('<button class="prevButton">' + this._data.content.previous + '</button>');
             this._$playButton = $('<button class="playButton">' + this._data.content.play + '</button>');
+            this._$nextButton = $('<button class="nextButton">' + this._data.content.next + '</button>');
             this._$timingControls = $('<span>' + this._data.content.currentTime + ': <span class="canvasTime"></span> / ' + this._data.content.duration + ': <span class="canvasDuration"></span></span>');
             this._$volumeControl = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">');
             this._$canvasTime = this._$timingControls.find('.canvasTime');
             this._$canvasDuration = this._$timingControls.find('.canvasDuration');
-            this._$controlsContainer.append(this._$playButton, this._$timingControls, this._$volumeControl);
+            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timingControls, this._$volumeControl);
             this._$canvasTimelineContainer.append(this._$durationHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
@@ -248,6 +303,25 @@ var IIIFComponents;
                 this._canvasHeight = canvasHeight;
             }
             var that = this;
+            var prevClicks = 0;
+            var prevTimeout = 0;
+            this._$prevButton.on('click', function () {
+                prevClicks++;
+                if (prevClicks === 1) {
+                    prevTimeout = setTimeout(function () {
+                        prevClicks = 0;
+                        prevTimeout = 0;
+                        // this.playFromStart();
+                        // this.play();
+                    }, _this._data.doubleClickMS);
+                }
+                else {
+                    clearTimeout(prevTimeout);
+                    prevClicks = 0;
+                    prevTimeout = 0;
+                    _this.fire(IIIFComponents.AVComponent.Events.PREVIOUS);
+                }
+            });
             this._$playButton.on('click', function () {
                 if (_this._isPlaying) {
                     _this.pause();
@@ -255,6 +329,9 @@ var IIIFComponents;
                 else {
                     _this.play();
                 }
+            });
+            this._$nextButton.on('click', function () {
+                _this.fire(IIIFComponents.AVComponent.Events.NEXT);
             });
             this._$volumeControl.on('input', function () {
                 that.setVolume(Number(this.value));
@@ -361,7 +438,7 @@ var IIIFComponents;
                 this._renderMediaElement(itemData);
             }
         };
-        CanvasInstance.prototype.update = function (data) {
+        CanvasInstance.prototype.set = function (data) {
             if (data) {
                 this._data = data;
             }
@@ -487,6 +564,7 @@ var IIIFComponents;
                 this._$canvasDuration.text(IIIFComponents.AVComponentUtils.Utils.formatTime(this._canvasClockDuration));
             }
         };
+        // todo: instead of having public methods, add a single 'set' method where you pass a state object
         CanvasInstance.prototype.highlightDuration = function () {
             if (!this.currentDuration) {
                 return;
@@ -525,7 +603,7 @@ var IIIFComponents;
                     //this.setCurrentTime(ui.value);
                 }
             });
-            this.update();
+            this.set();
         };
         CanvasInstance.prototype.setVolume = function (value) {
             for (var i = 0; i < this._contentAnnotations.length; i++) {

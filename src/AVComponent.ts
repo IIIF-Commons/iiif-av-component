@@ -27,12 +27,15 @@ namespace IIIFComponents {
             return <IAVComponentData> {
                 autoPlay: false,
                 defaultAspectRatio: 0.56,
+                doubleClickMS: 350,
                 limitToRange: false,
                 content: <IAVComponentContent>{
-                    play: "Play",
-                    pause: "Pause",
                     currentTime: "Current Time",
-                    duration: "Duration"
+                    duration: "Duration",
+                    next: "Next",
+                    pause: "Pause",
+                    play: "Play",
+                    previous: "Previous"
                 }
             }
         }
@@ -96,7 +99,7 @@ namespace IIIFComponents {
 
             for (let i = 0; i < this.canvasInstances.length; i++) {
                 const canvasInstance: CanvasInstance = this.canvasInstances[i];
-                canvasInstance.update(this._data);
+                canvasInstance.set(this._data);
             }
 
         }
@@ -117,10 +120,56 @@ namespace IIIFComponents {
             canvasInstance.init();
             this.canvasInstances.push(canvasInstance);
 
-            canvasInstance.on('canvasready', () => {
+            canvasInstance.on(AVComponent.Events.CANVASREADY, () => {
                 //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
                 this.fire(AVComponent.Events.CANVASREADY);
             }, false);
+
+            // canvasInstance.on(AVComponent.Events.RESETCANVAS, () => {
+            //     this.playCanvas(canvasInstance.canvas.id);
+            // }, false);
+
+            canvasInstance.on(AVComponent.Events.PREVIOUS, () => {
+                this._prevRange();
+            }, false);
+
+            canvasInstance.on(AVComponent.Events.NEXT, () => {
+                this._nextRage();
+            }, false);
+        }
+
+        private _prevRange(): void {
+            if (!this._data || !this._data.helper) {
+                return;
+            }
+
+            const prevRange: Manifesto.IRange | null = this._data.helper.getPreviousRange();
+
+            if (prevRange) {
+                const canvasIds: string[] = prevRange.getCanvasIds();
+
+                if (canvasIds.length) {
+                    this._data.helper.rangeId = prevRange.id;
+                    this.playCanvas(canvasIds[0]);
+                }  
+            }
+        }
+
+        private _nextRage(): void {
+            if (!this._data || !this._data.helper) {
+                return;
+            }
+
+            const nextRange: Manifesto.IRange | null = this._data.helper.getNextRange();
+
+            if (nextRange) {
+                const canvasIds: string[] = nextRange.getCanvasIds();
+
+                if (canvasIds.length) {
+                    this._data.helper.rangeId = nextRange.id;
+                    this.playCanvas(canvasIds[0]);
+                }                
+            }
         }
 
         public getCanvasInstanceById(canvasId: string): CanvasInstance | null {
@@ -143,7 +192,7 @@ namespace IIIFComponents {
             return null;
         }
 
-        public play(canvasId: string): void {
+        public playCanvas(canvasId: string): void {
 
             this.showCanvas(canvasId);
 
@@ -161,6 +210,25 @@ namespace IIIFComponents {
                     canvasInstance.play();
                 }
             }
+        }
+
+        public playRange(rangeId: string): void {
+
+            if (!this._data || !this._data.helper) {
+                return;
+            }
+
+            const range: Manifesto.IRange | null = this._data.helper.getRangeById(rangeId);
+
+            if (range) {
+                this._data.helper.rangeId = rangeId;
+
+                if (range.canvases) {
+                    const canvasId = range.canvases[0];
+                    this.playCanvas(canvasId);
+                }
+            }
+            
         }
 
         public showCanvas(canvasId: string): void {
@@ -203,9 +271,11 @@ namespace IIIFComponents {
 namespace IIIFComponents.AVComponent {
     export class Events {
         static CANVASREADY: string = 'canvasready';
-        static PLAYCANVAS: string = 'play';
-        static PAUSECANVAS: string = 'pause';
         static LOG: string = 'log';
+        static NEXT: string = 'next';
+        static PAUSECANVAS: string = 'pause';
+        static PLAYCANVAS: string = 'play';
+        static PREVIOUS: string = 'previous';
     }
 }
 

@@ -1,25 +1,27 @@
 namespace IIIFComponents {
 
     export class CanvasInstance {
-        
-	    private _highPriorityFrequency: number = 25;
-	    private _lowPriorityFrequency: number = 100;
+
+        private _highPriorityFrequency: number = 25;
+        private _lowPriorityFrequency: number = 100;
         private _$canvasContainer: JQuery;
         private _$canvasDuration: JQuery;
         private _$canvasTime: JQuery;
+        private _$canvasTimelineContainer: JQuery;
         private _$controlsContainer: JQuery;
         private _$durationHighlight: JQuery;
+        private _$nextButton: JQuery;
         private _$optionsContainer: JQuery;
         private _$playButton: JQuery;
+        private _$prevButton: JQuery;
         private _$rangeTimelineContainer: JQuery;
-        private _$canvasTimelineContainer: JQuery;
         private _$timelineItemContainer: JQuery;
         private _$timingControls: JQuery;
         private _$volumeControl: JQuery<HTMLInputElement>;
         private _canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
         private _canvasClockFrequency: number = 25;
         private _canvasClockInterval: number;
-        private _canvasClockStartDate: number = 0;        
+        private _canvasClockStartDate: number = 0;
         private _canvasClockTime: number = 0;
         private _canvasHeight: number = 0;
         private _canvasWidth: number = 0;
@@ -54,13 +56,15 @@ namespace IIIFComponents {
             this._$durationHighlight = $('<div class="durationHighlight"></div>');
             this._$timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             this._$controlsContainer = $('<div class="controlsContainer"></div>');
+            this._$prevButton = $('<button class="prevButton">' + (<IAVComponentContent>this._data.content).previous + '</button>');
             this._$playButton = $('<button class="playButton">' + (<IAVComponentContent>this._data.content).play + '</button>');
+            this._$nextButton = $('<button class="nextButton">' + (<IAVComponentContent>this._data.content).next + '</button>');
             this._$timingControls = $('<span>' + (<IAVComponentContent>this._data.content).currentTime + ': <span class="canvasTime"></span> / ' + (<IAVComponentContent>this._data.content).duration + ': <span class="canvasDuration"></span></span>');
             this._$volumeControl = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
             this._$canvasTime = this._$timingControls.find('.canvasTime');
             this._$canvasDuration = this._$timingControls.find('.canvasDuration');
 
-            this._$controlsContainer.append(this._$playButton, this._$timingControls, this._$volumeControl);
+            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timingControls, this._$volumeControl);
             this._$canvasTimelineContainer.append(this._$durationHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
@@ -84,19 +88,45 @@ namespace IIIFComponents {
 
             const that = this;
 
+            let prevClicks: number = 0;
+            let prevTimeout: number = 0;
+
+            this._$prevButton.on('click', () => {
+
+                prevClicks++;
+
+                if (prevClicks === 1) {
+                    prevTimeout = setTimeout(() => {
+                        prevClicks = 0;
+                        prevTimeout = 0;
+                        // this.playFromStart();
+                        // this.play();
+                    }, this._data.doubleClickMS);
+                } else {
+                    clearTimeout(prevTimeout);
+                    prevClicks = 0;
+                    prevTimeout = 0;
+                    this.fire(AVComponent.Events.PREVIOUS);
+                }
+            });
+
             this._$playButton.on('click', () => {
                 if (this._isPlaying) {
                     this.pause();
                 } else {
                     this.play();
-                }	
+                }
             });
 
-            this._$volumeControl.on('input', function() {
+            this._$nextButton.on('click', () => {
+                this.fire(AVComponent.Events.NEXT);
+            });
+
+            this._$volumeControl.on('input', function () {
                 that.setVolume(Number(this.value));
             });
 
-            this._$volumeControl.on('change', function() {
+            this._$volumeControl.on('change', function () {
                 that.setVolume(Number(this.value));
             });
 
@@ -106,14 +136,14 @@ namespace IIIFComponents {
                 orientation: "horizontal",
                 range: "min",
                 max: that._canvasClockDuration,
-                animate: false,			
-                create: function(evt: any, ui: any) {
+                animate: false,
+                create: function (evt: any, ui: any) {
                     // on create
                 },
-                slide: function(evt: any, ui: any) {
+                slide: function (evt: any, ui: any) {
                     that.setCurrentTime(ui.value);
                 },
-                stop: function(evt: any, ui: any) {
+                stop: function (evt: any, ui: any) {
                     //this.setCurrentTime(ui.value);
                 }
             });
@@ -131,7 +161,7 @@ namespace IIIFComponents {
             for (let i = 0; i < items.length; i++) {
 
                 const item = items[i];
-                
+
                 /*
                 if (item.motivation != 'painting') {
                     return null;
@@ -150,7 +180,7 @@ namespace IIIFComponents {
                 } else {
                     mediaSource = item.body.id.split('#')[0];
                 }
-                
+
                 /*
                 var targetFragment = (item.target.indexOf('#') != -1) ? item.target.split('#t=')[1] : '0, '+ canvasClockDuration,
                     fragmentTimings = targetFragment.split(','),
@@ -167,7 +197,7 @@ namespace IIIFComponents {
 
                 const spatial = /xywh=([^&]+)/g.exec(item.target);
                 const temporal = /t=([^&]+)/g.exec(item.target);
-                
+
                 let xywh;
 
                 if (spatial && spatial[1]) {
@@ -190,7 +220,7 @@ namespace IIIFComponents {
                     mediaHeight = parseInt(<string>xywh[3]),
                     startTime = parseInt(<string>t[0]),
                     endTime = parseInt(<string>t[1]);
-                
+
                 const percentageTop = this._convertToPercentage(positionTop, this._canvasHeight),
                     percentageLeft = this._convertToPercentage(positionLeft, this._canvasWidth),
                     percentageWidth = this._convertToPercentage(mediaWidth, this._canvasWidth),
@@ -208,16 +238,16 @@ namespace IIIFComponents {
 
                 const offsetStart = (ot[0]) ? parseInt(<string>ot[0]) : ot[0],
                     offsetEnd = (ot[1]) ? parseInt(<string>ot[1]) : ot[1];
-                
+
                 const itemData: any = {
                     'type': item.body.type,
                     'source': mediaSource,
-                    'start': startTime, 
-                    'end': endTime, 
-                    'top': percentageTop, 
-                    'left': percentageLeft, 
-                    'width': percentageWidth, 
-                    'height': percentageHeight, 
+                    'start': startTime,
+                    'end': endTime,
+                    'top': percentageTop,
+                    'left': percentageLeft,
+                    'width': percentageWidth,
+                    'height': percentageHeight,
                     'startOffset': offsetStart,
                     'endOffset': offsetEnd,
                     'active': false
@@ -227,11 +257,11 @@ namespace IIIFComponents {
             }
         }
 
-        public update(data?: IAVComponentData): void {
+        public set(data?: IAVComponentData): void {
 
             if (data) {
                 this._data = data;
-            }            
+            }
 
             if (this._isLimitedToRange() && this.currentDuration) {
                 this._$canvasTimelineContainer.hide();
@@ -260,7 +290,7 @@ namespace IIIFComponents {
 
             let $mediaElement;
 
-            switch(data.type.toLowerCase()) {
+            switch (data.type.toLowerCase()) {
                 case 'image':
                     $mediaElement = $('<img class="anno" src="' + data.source + '" />');
                     break;
@@ -287,15 +317,15 @@ namespace IIIFComponents {
             data.element = $mediaElement;
 
             if (data.type.toLowerCase() === 'video' || data.type.toLowerCase() === 'audio') {
-                
+
                 data.timeout = null;
 
                 const that = this;
 
-                data.checkForStall = function() {
+                data.checkForStall = function () {
 
                     const self = this;
-                    
+
                     if (this.active) {
                         that._checkMediaSynchronization();
                         if (this.element.get(0).readyState > 0 && !this.outOfSync) {
@@ -305,7 +335,7 @@ namespace IIIFComponents {
                             if (this.timeout) {
                                 window.clearTimeout(this.timeout);
                             }
-                            this.timeout = window.setTimeout(function() {
+                            this.timeout = window.setTimeout(function () {
                                 self.checkForStall();
                             }, 1000);
                         }
@@ -322,28 +352,28 @@ namespace IIIFComponents {
             if (this.$playerElement) {
                 this._$canvasContainer.append($mediaElement);
             }
-            
+
             if (data.type.toLowerCase() === 'video' || data.type.toLowerCase() === 'audio') {
 
                 const that = this;
                 const self = data;
 
-                $mediaElement.on('loadstart', function() {
+                $mediaElement.on('loadstart', function () {
                     //console.log('loadstart');
                     self.checkForStall();
                 });
 
-                $mediaElement.on('waiting', function() {
+                $mediaElement.on('waiting', function () {
                     //console.log('waiting');
                     self.checkForStall();
                 });
 
-                $mediaElement.on('seeking', function() {
+                $mediaElement.on('seeking', function () {
                     //console.log('seeking');
                     //self.checkForStall();
                 });
 
-                $mediaElement.on('loadedmetadata', function() {
+                $mediaElement.on('loadedmetadata', function () {
                     that._readyCanvasesCount++;
 
                     if (that._readyCanvasesCount === that._contentAnnotations.length) {
@@ -352,15 +382,15 @@ namespace IIIFComponents {
                         if (that._data.autoPlay) {
                             that.play();
                         }
-            
+
                         that._updateDurationDisplay();
-                        
+
                         that.fire(AVComponent.Events.CANVASREADY);
                     }
                 });
 
                 $mediaElement.attr('preload', 'auto');
-                
+
                 (<any>$mediaElement.get(0)).load(); // todo: type
             }
 
@@ -421,19 +451,19 @@ namespace IIIFComponents {
                 range: "min",
                 min: this.currentDuration.start,
                 max: this.currentDuration.end,
-                animate: false,			
-                create: function(evt: any, ui: any) {
+                animate: false,
+                create: function (evt: any, ui: any) {
                     // on create
                 },
-                slide: function(evt: any, ui: any) {
+                slide: function (evt: any, ui: any) {
                     that.setCurrentTime(ui.value);
                 },
-                stop: function(evt: any, ui: any) {
+                stop: function (evt: any, ui: any) {
                     //this.setCurrentTime(ui.value);
                 }
             });
 
-            this.update();
+            this.set();
         }
 
         public setVolume(value: number): void {
@@ -450,7 +480,7 @@ namespace IIIFComponents {
             const leftPercent: number = this._convertToPercentage(mediaElementData.start, this._canvasClockDuration);
             const widthPercent: number = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this._canvasClockDuration);
 
-            const $timelineItem: JQuery = $('<div class="timelineItem" title="'+ mediaElementData.source +'" data-start="'+ mediaElementData.start +'" data-end="'+ mediaElementData.end +'"></div>');
+            const $timelineItem: JQuery = $('<div class="timelineItem" title="' + mediaElementData.source + '" data-start="' + mediaElementData.start + '" data-end="' + mediaElementData.end + '"></div>');
 
             $timelineItem.css({
                 left: leftPercent + '%',
@@ -469,7 +499,7 @@ namespace IIIFComponents {
         }
 
         public setCurrentTime(seconds: number): void { // seconds was originally a string or a number - didn't seem necessary
-		
+
             // const secondsAsFloat: number = parseFloat(seconds.toString());
 
             // if (isNaN(secondsAsFloat)) {
@@ -479,7 +509,7 @@ namespace IIIFComponents {
             this._canvasClockTime = seconds; //secondsAsFloat;
             this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000)
 
-            this.logMessage('SET CURRENT TIME to: '+ this._canvasClockTime + ' seconds.');
+            this.logMessage('SET CURRENT TIME to: ' + this._canvasClockTime + ' seconds.');
 
             this._canvasClockUpdater();
             this._highPriorityUpdater();
@@ -502,15 +532,15 @@ namespace IIIFComponents {
 
             const self = this;
 
-            this._highPriorityInterval = window.setInterval(function() {
+            this._highPriorityInterval = window.setInterval(function () {
                 self._highPriorityUpdater();
             }, this._highPriorityFrequency);
 
-            this._lowPriorityInterval = window.setInterval(function() {
+            this._lowPriorityInterval = window.setInterval(function () {
                 self._lowPriorityUpdater();
             }, this._lowPriorityFrequency);
 
-            this._canvasClockInterval = window.setInterval(function() {
+            this._canvasClockInterval = window.setInterval(function () {
                 self._canvasClockUpdater();
             }, this._canvasClockFrequency);
 
@@ -639,7 +669,7 @@ namespace IIIFComponents {
             for (let i = 0; i < this._contentAnnotations.length; i++) {
 
                 contentAnnotation = this._contentAnnotations[i];
-                
+
                 if (contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') {
 
                     contentAnnotation.element[0].currentTime = this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset;
@@ -649,7 +679,7 @@ namespace IIIFComponents {
                             if (contentAnnotation.element[0].paused) {
                                 var promise = contentAnnotation.element[0].play();
                                 if (promise) {
-                                    promise.catch(function(){});
+                                    promise.catch(function () { });
                                 }
                             }
                         } else {
@@ -665,30 +695,30 @@ namespace IIIFComponents {
                 }
             }
 
-            this.logMessage('SYNC MEDIA at: '+ this._canvasClockTime + ' seconds.');
-            
+            this.logMessage('SYNC MEDIA at: ' + this._canvasClockTime + ' seconds.');
+
         }
 
         private _checkMediaSynchronization(): void {
-	
+
             let contentAnnotation;
 
             for (let i = 0, l = this._contentAnnotations.length; i < l; i++) {
-                
+
                 contentAnnotation = this._contentAnnotations[i];
 
-                if ((contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') && 
-                    (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) ) {
+                if ((contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') &&
+                    (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime)) {
 
                     const correctTime: number = (this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
                     const factualTime: number = contentAnnotation.element[0].currentTime;
 
                     // off by 0.2 seconds
                     if (Math.abs(factualTime - correctTime) > 0.4) {
-                        
+
                         contentAnnotation.outOfSync = true;
                         //this.playbackStalled(true, contentAnnotation);
-                        
+
                         const lag: number = Math.abs(factualTime - correctTime);
                         this.logMessage('DETECTED synchronization lag: ' + Math.abs(lag));
                         contentAnnotation.element[0].currentTime = correctTime;
@@ -724,7 +754,7 @@ namespace IIIFComponents {
             } else {
 
                 const idx: number = this._stallRequestedBy.indexOf(syncMediaRequestingStall);
-                
+
                 if (idx >= 0) {
                     this._stallRequestedBy.splice(idx, 1);
                 }

@@ -20,5 +20,6 @@ namespace IIIFComponents.AVComponentUtils {
 
             return hourValue + minutes + ':' + seconds;
         }
+
     }
 }

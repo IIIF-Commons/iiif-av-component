@@ -22,7 +22,7 @@
     "gulp-tasks": "iiif-commons/gulp-tasks#v1.0.7",
     "jquery-ui": "^1.12.1",
     "manifesto.js": "2.2.2",
-    "manifold": "iiif-commons/manifold#v1.2.13"
+    "@iiif/manifold": "iiif-commons/manifold#prevnextrange"
   },
   "dependencies": {
     "@types/jquery": "^3.2.16",

@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.15 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.16 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -16,8 +16,11 @@ declare namespace IIIFComponents {
         private _update();
         private _getCanvases();
         private _initCanvas(canvas);
+        private _prevRange();
+        private _nextRage();
         getCanvasInstanceById(canvasId: string): CanvasInstance | null;
-        play(canvasId: string): void;
+        playCanvas(canvasId: string): void;
+        playRange(rangeId: string): void;
         showCanvas(canvasId: string): void;
         private _logMessage(message);
         resize(): void;
@@ -27,9 +30,11 @@ declare namespace IIIFComponents {
 declare namespace IIIFComponents.AVComponent {
     class Events {
         static CANVASREADY: string;
-        static PLAYCANVAS: string;
-        static PAUSECANVAS: string;
         static LOG: string;
+        static NEXT: string;
+        static PAUSECANVAS: string;
+        static PLAYCANVAS: string;
+        static PREVIOUS: string;
     }
 }
 
@@ -43,12 +48,14 @@ declare namespace IIIFComponents {
         private _$canvasContainer;
         private _$canvasDuration;
         private _$canvasTime;
+        private _$canvasTimelineContainer;
         private _$controlsContainer;
         private _$durationHighlight;
+        private _$nextButton;
         private _$optionsContainer;
         private _$playButton;
+        private _$prevButton;
         private _$rangeTimelineContainer;
-        private _$canvasTimelineContainer;
         private _$timelineItemContainer;
         private _$timingControls;
         private _$volumeControl;
@@ -75,7 +82,7 @@ declare namespace IIIFComponents {
         logMessage: (message: string) => void;
         constructor(canvas: Manifesto.ICanvas, data: IAVComponentData);
         init(): void;
-        update(data?: IAVComponentData): void;
+        set(data?: IAVComponentData): void;
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
@@ -117,21 +124,24 @@ declare namespace IIIFComponents {
     }
 }
 
-/// <reference types="manifold" />
+/// <reference types="@iiif/manifold" />
 declare namespace IIIFComponents {
     interface IAVComponentContent {
-        play: string;
-        pause: string;
         currentTime: string;
         duration: string;
+        next: string;
+        pause: string;
+        play: string;
+        previous: string;
     }
     interface IAVComponentData {
-        helper?: Manifold.IHelper;
-        autoPlay?: boolean;
-        defaultAspectRatio?: number;
-        content?: IAVComponentContent;
-        limitToRange?: boolean;
         [key: string]: any;
+        autoPlay?: boolean;
+        content?: IAVComponentContent;
+        defaultAspectRatio?: number;
+        doubleClickMS: number;
+        helper?: Manifold.IHelper;
+        limitToRange?: boolean;
     }
 }
 

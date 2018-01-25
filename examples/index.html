@@ -17,10 +17,10 @@
     <script src="js/iiif-av-component.js"></script>
     <script src="https://rawgit.com/iiif-commons/iiif-tree-component/master/dist/iiif-tree-component.js"></script>
 
-    <!-- <script src="https://rawgit.com/iiif-commons/manifesto/dev/dist/client/manifesto.bundle.js"></script>
-    <script src="https://rawgit.com/iiif-commons/manifold/dev/dist/manifold.js"></script> -->
+    <script src="https://rawgit.com/iiif-commons/manifesto/master/dist/client/manifesto.bundle.js"></script>
+    <script src="https://rawgit.com/iiif-commons/manifold/prevnextrange/dist/manifold.js"></script>
 
-    <script src="js/manifold.bundle.js"></script>
+    <!-- <script src="js/manifold.bundle.js"></script> -->
 
     <style>
         .playerContainer {
@@ -101,10 +101,12 @@
                     autoPlay: false,
                     defaultAspectRatio: 0.56,
                     content: {
-                        play: "Play",
-                        pause: "Pause",
+                        currentTime: "Current Time",
                         duration: "Duration",
-                        currentTime: "Current Time"
+                        next: "Next",
+                        pause: "Pause",
+                        play: "Play",
+                        previous: "Previous"
                     }
                 });
 
@@ -249,18 +251,7 @@
 
             treecomponent.on('treeNodeSelected', function(node) {
                 console.log('selected: ' + node.label);
-
-                var canvasId = node.data.canvases[0];
-                var canvas = helper.getCanvasById(canvasId);
-
-                if (canvas) {
-                    
-                    avcomponent.play(canvasId);
-
-                    logMessage('SELECT RANGE: '+ node.label);
-                } else {
-                    logMessage('ERROR: Could not find canvas for range '+ node.label);
-                }
+                avcomponent.playRange(node.data.id);
             });
 
         });
