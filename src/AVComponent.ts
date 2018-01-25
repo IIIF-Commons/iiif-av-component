@@ -2,6 +2,7 @@ namespace IIIFComponents {
 
     export class AVComponent extends _Components.BaseComponent {
 
+        private _currentCanvas: string | null = null;
         private _data: IAVComponentData = this.data();
         public options: _Components.IBaseComponentOptions;
         public canvasInstances: CanvasInstance[] = [];
@@ -152,6 +153,9 @@ namespace IIIFComponents {
                     this._data.helper.rangeId = prevRange.id;
                     this.playCanvas(canvasIds[0]);
                 }  
+            } else {
+                // no previous range. rewind instead.
+                this._rewind();
             }
         }
 
@@ -192,6 +196,27 @@ namespace IIIFComponents {
             return null;
         }
 
+        private _getCurrentCanvas(): CanvasInstance | null {
+            if (this._currentCanvas) {
+                return this.getCanvasInstanceById(this._currentCanvas);
+            }
+
+            return null;
+        }
+        
+        private _rewind(): void {
+            const canvasInstance: CanvasInstance | null = this._getCurrentCanvas();
+
+            if (canvasInstance) {
+                canvasInstance.unhighlightDuration();
+                canvasInstance.rewind();
+
+                if (this._data && this._data.helper) {
+                    this._data.helper.rangeId = null;
+                }
+            }
+        }
+
         public playCanvas(canvasId: string): void {
 
             this.showCanvas(canvasId);
@@ -199,6 +224,9 @@ namespace IIIFComponents {
             const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
             
             if (canvasInstance) {
+
+                this._currentCanvas = canvasId;
+
                 const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
                 
                 if (temporal && temporal.length > 1) {

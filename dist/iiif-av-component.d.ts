@@ -3,6 +3,7 @@
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
     class AVComponent extends _Components.BaseComponent {
+        private _currentCanvas;
         private _data;
         options: _Components.IBaseComponentOptions;
         canvasInstances: CanvasInstance[];
@@ -19,6 +20,8 @@ declare namespace IIIFComponents {
         private _prevRange();
         private _nextRage();
         getCanvasInstanceById(canvasId: string): CanvasInstance | null;
+        private _getCurrentCanvas();
+        private _rewind();
         playCanvas(canvasId: string): void;
         playRange(rangeId: string): void;
         showCanvas(canvasId: string): void;
@@ -89,6 +92,7 @@ declare namespace IIIFComponents {
         private _renderMediaElement(data);
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
+        unhighlightDuration(): void;
         highlightDuration(): void;
         setVolume(value: number): void;
         private _renderSyncIndicator(mediaElementData);

@@ -19,6 +19,7 @@ var IIIFComponents;
         __extends(AVComponent, _super);
         function AVComponent(options) {
             var _this = _super.call(this, options) || this;
+            _this._currentCanvas = null;
             _this._data = _this.data();
             _this.canvasInstances = [];
             _this._init();
@@ -135,6 +136,10 @@ var IIIFComponents;
                     this.playCanvas(canvasIds[0]);
                 }
             }
+            else {
+                // no previous range. rewind instead.
+                this._rewind();
+            }
         };
         AVComponent.prototype._nextRage = function () {
             if (!this._data || !this._data.helper) {
@@ -162,10 +167,27 @@ var IIIFComponents;
             }
             return null;
         };
+        AVComponent.prototype._getCurrentCanvas = function () {
+            if (this._currentCanvas) {
+                return this.getCanvasInstanceById(this._currentCanvas);
+            }
+            return null;
+        };
+        AVComponent.prototype._rewind = function () {
+            var canvasInstance = this._getCurrentCanvas();
+            if (canvasInstance) {
+                canvasInstance.unhighlightDuration();
+                canvasInstance.rewind();
+                if (this._data && this._data.helper) {
+                    this._data.helper.rangeId = null;
+                }
+            }
+        };
         AVComponent.prototype.playCanvas = function (canvasId) {
             this.showCanvas(canvasId);
             var canvasInstance = this.getCanvasInstanceById(canvasId);
             if (canvasInstance) {
+                this._currentCanvas = canvasId;
                 var temporal = /t=([^&]+)/g.exec(canvasId);
                 if (temporal && temporal.length > 1) {
                     var rangeTiming = temporal[1].split(',');
@@ -448,20 +470,25 @@ var IIIFComponents;
                     this.fire(IIIFComponents.AVComponent.Events.PREVIOUS);
                 }
                 else {
-                    this.pause();
                     this.rewind();
-                    this.play();
                 }
             }
             else {
-                // not limited to range. single click goes to previous range, double rewinds.
-                if (isDouble) {
-                    this.pause();
-                    this.rewind();
-                    this.play();
+                // not limited to range. 
+                // if there is a currentDuration, single click goes to previous range, double click rewinds.
+                // if there is no currentDuration, single and double click rewinds.
+                if (this.currentDuration) {
+                    if (isDouble) {
+                        this.currentDuration = null;
+                        this.unhighlightDuration();
+                        this.rewind();
+                    }
+                    else {
+                        this.fire(IIIFComponents.AVComponent.Events.PREVIOUS);
+                    }
                 }
                 else {
-                    this.fire(IIIFComponents.AVComponent.Events.PREVIOUS);
+                    this.rewind();
                 }
             }
         };
@@ -591,7 +618,10 @@ var IIIFComponents;
                 this._$canvasDuration.text(IIIFComponents.AVComponentUtils.Utils.formatTime(this._canvasClockDuration));
             }
         };
-        // todo: instead of having public methods, add a single 'set' method where you pass a state object
+        CanvasInstance.prototype.unhighlightDuration = function () {
+            this.currentDuration = null;
+            this._$durationHighlight.hide();
+        };
         CanvasInstance.prototype.highlightDuration = function () {
             if (!this.currentDuration) {
                 return;
@@ -605,6 +635,7 @@ var IIIFComponents;
             var start = this.currentDuration.start * ratio;
             var end = this.currentDuration.end * ratio;
             var width = end - start;
+            this._$durationHighlight.show();
             // set the start position and width
             this._$durationHighlight.css({
                 left: start,
@@ -630,6 +661,7 @@ var IIIFComponents;
                     //this.setCurrentTime(ui.value);
                 }
             });
+            // todo: should the above take place in set() ?
             this.set();
         };
         CanvasInstance.prototype.setVolume = function (value) {
@@ -667,12 +699,14 @@ var IIIFComponents;
             this._synchronizeMedia();
         };
         CanvasInstance.prototype.rewind = function (withoutUpdate) {
+            this.pause();
             if (this._isLimitedToRange() && this.currentDuration) {
                 this._canvasClockTime = this.currentDuration.start;
             }
             else {
                 this._canvasClockTime = 0;
             }
+            this.play();
         };
         CanvasInstance.prototype.play = function (withoutUpdate) {
             if (this._isPlaying)

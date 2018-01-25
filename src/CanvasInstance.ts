@@ -266,18 +266,22 @@ namespace IIIFComponents {
                 if (isDouble) {
                     this.fire(AVComponent.Events.PREVIOUS);
                 } else {
-                    this.pause();
                     this.rewind();
-                    this.play();
                 }
             } else {
-                // not limited to range. single click goes to previous range, double rewinds.
-                if (isDouble) {
-                    this.pause();
-                    this.rewind();
-                    this.play();
+                // not limited to range. 
+                // if there is a currentDuration, single click goes to previous range, double click rewinds.
+                // if there is no currentDuration, single and double click rewinds.
+                if (this.currentDuration) {
+                    if (isDouble) {
+                        this.currentDuration = null;
+                        this.unhighlightDuration();
+                        this.rewind();
+                    } else {
+                        this.fire(AVComponent.Events.PREVIOUS);
+                    }
                 } else {
-                    this.fire(AVComponent.Events.PREVIOUS);
+                    this.rewind();
                 }
             }
         }
@@ -440,7 +444,11 @@ namespace IIIFComponents {
             }
         }
 
-        // todo: instead of having public methods, add a single 'set' method where you pass a state object
+        public unhighlightDuration(): void {
+            this.currentDuration = null;
+            this._$durationHighlight.hide();
+        }
+
         public highlightDuration(): void {
 
             if (!this.currentDuration) {
@@ -458,6 +466,8 @@ namespace IIIFComponents {
             const start: number = this.currentDuration.start * ratio;
             const end: number = this.currentDuration.end * ratio;
             const width: number = end - start;
+
+            this._$durationHighlight.show();
 
             // set the start position and width
             this._$durationHighlight.css({
@@ -488,6 +498,7 @@ namespace IIIFComponents {
                 }
             });
 
+            // todo: should the above take place in set() ?
             this.set();
         }
 
@@ -543,11 +554,16 @@ namespace IIIFComponents {
         }
 
         public rewind(withoutUpdate?: boolean): void {
+
+            this.pause();
+
             if (this._isLimitedToRange() && this.currentDuration) {
                 this._canvasClockTime = this.currentDuration.start;
             } else {
                 this._canvasClockTime = 0;
             }
+
+            this.play();
         }
 
         public play(withoutUpdate?: boolean): void {
