@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.17 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.18 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -145,7 +145,7 @@ declare namespace IIIFComponents {
         autoPlay?: boolean;
         content?: IAVComponentContent;
         defaultAspectRatio?: number;
-        doubleClickMS: number;
+        doubleClickMS?: number;
         helper?: Manifold.IHelper;
         limitToRange?: boolean;
     }

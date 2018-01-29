@@ -14,7 +14,7 @@ namespace IIIFComponents {
         autoPlay?: boolean;
         content?: IAVComponentContent;
         defaultAspectRatio?: number;
-        doubleClickMS: number;
+        doubleClickMS?: number;
         helper?: Manifold.IHelper;
         limitToRange?: boolean;
     }
