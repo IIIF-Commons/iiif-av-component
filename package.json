@@ -1,6 +1,6 @@
 {
   "name": "iiif-av-component",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "",
   "main": "index.js",
   "types": "./dist/iiif-av-component.d.ts",
