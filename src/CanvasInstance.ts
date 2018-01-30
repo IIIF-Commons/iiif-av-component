@@ -122,7 +122,7 @@ namespace IIIFComponents {
             });
 
             this._$nextButton.on('click', () => {
-                this.fire(AVComponent.Events.NEXT);
+                this.fire(AVComponent.Events.NEXT_RANGE);
             });
 
             this._$volumeControl.on('input', function () {
@@ -264,7 +264,7 @@ namespace IIIFComponents {
             if (this._isLimitedToRange() && this.currentDuration) {
                 // if only showing the range, single click rewinds, double click goes to previous range
                 if (isDouble) {
-                    this.fire(AVComponent.Events.PREVIOUS);
+                    this.fire(AVComponent.Events.PREVIOUS_RANGE);
                 } else {
                     this.rewind();
                 }
@@ -277,7 +277,7 @@ namespace IIIFComponents {
                         this.unhighlightDuration();
                         this.rewind();
                     } else {
-                        this.fire(AVComponent.Events.PREVIOUS);
+                        this.fire(AVComponent.Events.PREVIOUS_RANGE);
                     }
                 } else {
                     this.rewind();

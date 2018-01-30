@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.18 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.19 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 /// <reference types="exjs" /> 
@@ -117,10 +117,10 @@ var IIIFComponents;
             // canvasInstance.on(AVComponent.Events.RESETCANVAS, () => {
             //     this.playCanvas(canvasInstance.canvas.id);
             // }, false);
-            canvasInstance.on(AVComponent.Events.PREVIOUS, function () {
+            canvasInstance.on(AVComponent.Events.PREVIOUS_RANGE, function () {
                 _this._prevRange();
             }, false);
-            canvasInstance.on(AVComponent.Events.NEXT, function () {
+            canvasInstance.on(AVComponent.Events.NEXT_RANGE, function () {
                 _this._nextRage();
             }, false);
         };
@@ -134,6 +134,7 @@ var IIIFComponents;
                 if (canvasIds.length) {
                     this._data.helper.rangeId = prevRange.id;
                     this.playCanvas(canvasIds[0]);
+                    this.fire(AVComponent.Events.PREVIOUS_RANGE);
                 }
             }
             else {
@@ -151,6 +152,7 @@ var IIIFComponents;
                 if (canvasIds.length) {
                     this._data.helper.rangeId = nextRange.id;
                     this.playCanvas(canvasIds[0]);
+                    this.fire(AVComponent.Events.NEXT_RANGE);
                 }
             }
         };
@@ -246,10 +248,10 @@ var IIIFComponents;
             }
             Events.CANVASREADY = 'canvasready';
             Events.LOG = 'log';
-            Events.NEXT = 'next';
+            Events.NEXT_RANGE = 'nextrange';
             Events.PAUSECANVAS = 'pause';
             Events.PLAYCANVAS = 'play';
-            Events.PREVIOUS = 'previous';
+            Events.PREVIOUS_RANGE = 'previousrange';
             return Events;
         }());
         AVComponent.Events = Events;
@@ -353,7 +355,7 @@ var IIIFComponents;
                 }
             });
             this._$nextButton.on('click', function () {
-                _this.fire(IIIFComponents.AVComponent.Events.NEXT);
+                _this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
             });
             this._$volumeControl.on('input', function () {
                 that.setVolume(Number(this.value));
@@ -464,7 +466,7 @@ var IIIFComponents;
             if (this._isLimitedToRange() && this.currentDuration) {
                 // if only showing the range, single click rewinds, double click goes to previous range
                 if (isDouble) {
-                    this.fire(IIIFComponents.AVComponent.Events.PREVIOUS);
+                    this.fire(IIIFComponents.AVComponent.Events.PREVIOUS_RANGE);
                 }
                 else {
                     this.rewind();
@@ -480,7 +482,7 @@ var IIIFComponents;
                         this.rewind();
                     }
                     else {
-                        this.fire(IIIFComponents.AVComponent.Events.PREVIOUS);
+                        this.fire(IIIFComponents.AVComponent.Events.PREVIOUS_RANGE);
                     }
                 }
                 else {

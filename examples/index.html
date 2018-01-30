@@ -17,8 +17,11 @@
     <script src="js/iiif-av-component.js"></script>
     <script src="https://rawgit.com/iiif-commons/iiif-tree-component/master/dist/iiif-tree-component.js"></script>
 
-    <script src="https://rawgit.com/iiif-commons/manifesto/master/dist/client/manifesto.bundle.js"></script>
-    <script src="https://rawgit.com/iiif-commons/manifold/prevnextrange/dist/manifold.js"></script>
+    <script src="https://unpkg.com/manifesto.js/dist/client/manifesto.bundle.js"></script>
+    <script src="https://unpkg.com/@iiif/manifold/dist/manifold.js"></script>
+
+    <!-- <script src="https://rawgit.com/iiif-commons/manifesto/master/dist/client/manifesto.bundle.js"></script>
+    <script src="https://rawgit.com/iiif-commons/manifold/prevnextrange/dist/manifold.js"></script> -->
 
     <!-- <script src="js/manifold.bundle.js"></script> -->
 
@@ -136,6 +139,14 @@
 
             avcomponent.on('canvasready', function() {
                 console.log('canvas ready');
+            });
+
+            avcomponent.on('previousrange', function() {
+                console.log('previous range');
+            });
+
+            avcomponent.on('nextrange', function() {
+                console.log('next range');
             });
 
             treecomponent = new IIIFComponents.TreeComponent({

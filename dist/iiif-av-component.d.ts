@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.18 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.19 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -34,10 +34,10 @@ declare namespace IIIFComponents.AVComponent {
     class Events {
         static CANVASREADY: string;
         static LOG: string;
-        static NEXT: string;
+        static NEXT_RANGE: string;
         static PAUSECANVAS: string;
         static PLAYCANVAS: string;
-        static PREVIOUS: string;
+        static PREVIOUS_RANGE: string;
     }
 }
 

@@ -130,11 +130,11 @@ namespace IIIFComponents {
             //     this.playCanvas(canvasInstance.canvas.id);
             // }, false);
 
-            canvasInstance.on(AVComponent.Events.PREVIOUS, () => {
+            canvasInstance.on(AVComponent.Events.PREVIOUS_RANGE, () => {
                 this._prevRange();
             }, false);
 
-            canvasInstance.on(AVComponent.Events.NEXT, () => {
+            canvasInstance.on(AVComponent.Events.NEXT_RANGE, () => {
                 this._nextRage();
             }, false);
         }
@@ -152,7 +152,9 @@ namespace IIIFComponents {
                 if (canvasIds.length) {
                     this._data.helper.rangeId = prevRange.id;
                     this.playCanvas(canvasIds[0]);
-                }  
+                    this.fire(AVComponent.Events.PREVIOUS_RANGE);
+                }
+
             } else {
                 // no previous range. rewind instead.
                 this._rewind();
@@ -172,6 +174,7 @@ namespace IIIFComponents {
                 if (canvasIds.length) {
                     this._data.helper.rangeId = nextRange.id;
                     this.playCanvas(canvasIds[0]);
+                    this.fire(AVComponent.Events.NEXT_RANGE);
                 }                
             }
         }
@@ -296,10 +299,10 @@ namespace IIIFComponents.AVComponent {
     export class Events {
         static CANVASREADY: string = 'canvasready';
         static LOG: string = 'log';
-        static NEXT: string = 'next';
+        static NEXT_RANGE: string = 'nextrange';
         static PAUSECANVAS: string = 'pause';
         static PLAYCANVAS: string = 'play';
-        static PREVIOUS: string = 'previous';
+        static PREVIOUS_RANGE: string = 'previousrange';
     }
 }
 
