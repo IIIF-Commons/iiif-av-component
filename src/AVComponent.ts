@@ -156,7 +156,7 @@ namespace IIIFComponents {
                 }
 
             } else {
-                // no previous range. rewind instead.
+                // no previous range. rewind.
                 this._rewind();
             }
         }
@@ -208,6 +208,11 @@ namespace IIIFComponents {
         }
         
         private _rewind(): void {
+
+            if (this._data.limitToRange) {
+                return;
+            }
+            
             const canvasInstance: CanvasInstance | null = this._getCurrentCanvas();
 
             if (canvasInstance) {
