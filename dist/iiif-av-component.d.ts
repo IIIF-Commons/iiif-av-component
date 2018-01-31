@@ -100,7 +100,7 @@ declare namespace IIIFComponents {
         init(): void;
         getCanvasId(): string | null;
         private _previous(isDouble);
-        set(data?: IAVComponentData): void;
+        set(data: IAVCanvasInstanceData): void;
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);

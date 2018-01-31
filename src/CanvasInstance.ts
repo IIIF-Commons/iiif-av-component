@@ -290,7 +290,7 @@ namespace IIIFComponents {
             }
         }
 
-        public set(data?: IAVComponentData): void {
+        public set(data: IAVCanvasInstanceData): void {
 
             if (data) {
                 this.options.data = Object.assign({}, this.options.data, data);
@@ -507,8 +507,8 @@ namespace IIIFComponents {
                 }
             });
 
-            // todo: should the above take place in set() ?
-            this.set();
+            // todo: the above should take place in set() instead of forcing a set
+            this.set({} as IAVCanvasInstanceData);
         }
 
         public setVolume(value: number): void {

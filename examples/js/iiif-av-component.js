@@ -743,8 +743,8 @@ var IIIFComponents;
                     //this.setCurrentTime(ui.value);
                 }
             });
-            // todo: should the above take place in set() ?
-            this.set();
+            // todo: the above should take place in set() instead of forcing a set
+            this.set({});
         };
         CanvasInstance.prototype.setVolume = function (value) {
             for (var i = 0; i < this._contentAnnotations.length; i++) {

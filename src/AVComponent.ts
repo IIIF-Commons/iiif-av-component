@@ -100,7 +100,7 @@ namespace IIIFComponents {
 
             for (let i = 0; i < this.canvasInstances.length; i++) {
                 const canvasInstance: CanvasInstance = this.canvasInstances[i];
-                canvasInstance.set(this._data);
+                canvasInstance.set(<IAVCanvasInstanceData>this._data);
             }
 
         }
