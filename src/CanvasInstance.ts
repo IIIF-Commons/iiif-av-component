@@ -508,6 +508,7 @@ namespace IIIFComponents {
             });
 
             // todo: the above should take place in set() instead of forcing a set
+            // extend IAVCanvasInstanceData to include currentDuration
             this.set({} as IAVCanvasInstanceData);
         }
 
