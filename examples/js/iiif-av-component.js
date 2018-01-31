@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.21 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.22 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 /// <reference types="exjs" /> 
@@ -411,9 +411,9 @@ var IIIFComponents;
             this._$prevButton = $('<button class="btn"><i class="av-icon-previous" aria-hidden="true"></i></button>');
             this._$playButton = $('<button class="btn"><i class="av-icon-play play" aria-hidden="true"></i></button>');
             this._$nextButton = $('<button class="btn"><i class="av-icon-next" aria-hidden="true"></i></button>');
-            this._$timingControls = $('<span>' + this.options.data.content.currentTime + ': <span class="canvas-time"></span> / ' + this.options.data.content.duration + ': <span class="canvas-duration"></span></span>');
-            this._$canvasTime = this._$timingControls.find('.canvas-time');
-            this._$canvasDuration = this._$timingControls.find('.canvas-duration');
+            this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
+            this._$canvasTime = this._$timeDisplay.find('.canvas-time');
+            this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
             var $volume = $('<div class="volume"></div>');
             this._volume = new IIIFComponents.AVVolumeControl({
                 target: $volume[0]
@@ -421,7 +421,7 @@ var IIIFComponents;
             this._volume.on(IIIFComponents.AVVolumeControl.Events.VOLUME_CHANGED, function (value) {
                 _this.setVolume(value);
             }, false);
-            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timingControls, $volume);
+            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
             this._$canvasTimelineContainer.append(this._$durationHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
@@ -905,7 +905,7 @@ var IIIFComponents;
                         contentAnnotation.element.show();
                         contentAnnotation.timelineElement.addClass('active');
                     }
-                    if (contentAnnotation.type == 'Video' || contentAnnotation.type == 'Audio') {
+                    if (contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') {
                         if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
                             contentAnnotation.element[0].pause();
                         }
@@ -916,7 +916,7 @@ var IIIFComponents;
                         contentAnnotation.active = false;
                         contentAnnotation.element.hide();
                         contentAnnotation.timelineElement.removeClass('active');
-                        if (contentAnnotation.type == 'Video' || contentAnnotation.type == 'Audio') {
+                        if (contentAnnotation.toLowerCase() === 'video' || contentAnnotation.toLowerCase() === 'audio') {
                             contentAnnotation.element[0].pause();
                         }
                     }

@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.21 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.22 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -78,7 +78,7 @@ declare namespace IIIFComponents {
         private _$prevButton;
         private _$rangeTimelineContainer;
         private _$timelineItemContainer;
-        private _$timingControls;
+        private _$timeDisplay;
         private _canvasClockDuration;
         private _canvasClockFrequency;
         private _canvasClockInterval;

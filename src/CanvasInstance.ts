@@ -16,7 +16,7 @@ namespace IIIFComponents {
         private _$prevButton: JQuery;
         private _$rangeTimelineContainer: JQuery;
         private _$timelineItemContainer: JQuery;
-        private _$timingControls: JQuery;
+        private _$timeDisplay: JQuery;
         private _canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
         private _canvasClockFrequency: number = 25;
         private _canvasClockInterval: number;
@@ -55,9 +55,9 @@ namespace IIIFComponents {
             this._$prevButton = $('<button class="btn"><i class="av-icon-previous" aria-hidden="true"></i></button>');
             this._$playButton = $('<button class="btn"><i class="av-icon-play play" aria-hidden="true"></i></button>');
             this._$nextButton = $('<button class="btn"><i class="av-icon-next" aria-hidden="true"></i></button>');
-            this._$timingControls = $('<span>' + (<IAVComponentContent>this.options.data.content).currentTime + ': <span class="canvas-time"></span> / ' + (<IAVComponentContent>this.options.data.content).duration + ': <span class="canvas-duration"></span></span>');
-            this._$canvasTime = this._$timingControls.find('.canvas-time');
-            this._$canvasDuration = this._$timingControls.find('.canvas-duration');
+            this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
+            this._$canvasTime = this._$timeDisplay.find('.canvas-time');
+            this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
             
             const $volume: JQuery = $('<div class="volume"></div>');
             this._volume = new AVVolumeControl({
@@ -68,7 +68,7 @@ namespace IIIFComponents {
                 this.setVolume(value);
             }, false);
 
-            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timingControls, $volume);
+            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
             this._$canvasTimelineContainer.append(this._$durationHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
@@ -684,7 +684,7 @@ namespace IIIFComponents {
                         contentAnnotation.timelineElement.addClass('active');
                     }
 
-                    if (contentAnnotation.type == 'Video' || contentAnnotation.type == 'Audio') {
+                    if (contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') {
 
                         if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
                             contentAnnotation.element[0].pause();
@@ -698,7 +698,7 @@ namespace IIIFComponents {
                         contentAnnotation.active = false;
                         contentAnnotation.element.hide();
                         contentAnnotation.timelineElement.removeClass('active');
-                        if (contentAnnotation.type == 'Video' || contentAnnotation.type == 'Audio') {
+                        if (contentAnnotation.toLowerCase() === 'video' || contentAnnotation.toLowerCase() === 'audio') {
                             contentAnnotation.element[0].pause();
                         }
                     }
