@@ -41,6 +41,22 @@ declare namespace IIIFComponents.AVComponent {
     }
 }
 
+/// <reference types="base-component" />
+declare namespace IIIFComponents {
+    class AVVolumeControl extends _Components.BaseComponent {
+        private _$volumeSlider;
+        private _$volumeMute;
+        constructor(options: _Components.IBaseComponentOptions);
+        protected _init(): boolean;
+        protected _resize(): void;
+    }
+}
+declare namespace IIIFComponents.AVVolumeControl {
+    class Events {
+        static VOLUME_CHANGED: string;
+    }
+}
+
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
 /// <reference types="manifesto.js" />
@@ -61,7 +77,6 @@ declare namespace IIIFComponents {
         private _$rangeTimelineContainer;
         private _$timelineItemContainer;
         private _$timingControls;
-        private _$volumeControl;
         private _canvasClockDuration;
         private _canvasClockFrequency;
         private _canvasClockInterval;
@@ -79,6 +94,7 @@ declare namespace IIIFComponents {
         private _readyCanvasesCount;
         private _stallRequestedBy;
         private _wasPlaying;
+        private _volume;
         $playerElement: JQuery;
         canvas: Manifesto.ICanvas;
         currentDuration: AVComponentObjects.Duration | null;

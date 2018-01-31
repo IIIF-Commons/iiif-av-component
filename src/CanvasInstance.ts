@@ -17,7 +17,6 @@ namespace IIIFComponents {
         private _$rangeTimelineContainer: JQuery;
         private _$timelineItemContainer: JQuery;
         private _$timingControls: JQuery;
-        private _$volumeControl: JQuery<HTMLInputElement>;
         private _canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
         private _canvasClockFrequency: number = 25;
         private _canvasClockInterval: number;
@@ -35,6 +34,7 @@ namespace IIIFComponents {
         private _readyCanvasesCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
         private _wasPlaying: boolean = false;
+        private _volume: AVVolumeControl;
 
         public $playerElement: JQuery;
         public canvas: Manifesto.ICanvas;
@@ -60,11 +60,19 @@ namespace IIIFComponents {
             this._$playButton = $('<button class="playButton">' + (<IAVComponentContent>this._data.content).play + '</button>');
             this._$nextButton = $('<button class="nextButton">' + (<IAVComponentContent>this._data.content).next + '</button>');
             this._$timingControls = $('<span>' + (<IAVComponentContent>this._data.content).currentTime + ': <span class="canvasTime"></span> / ' + (<IAVComponentContent>this._data.content).duration + ': <span class="canvasDuration"></span></span>');
-            this._$volumeControl = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
             this._$canvasTime = this._$timingControls.find('.canvasTime');
             this._$canvasDuration = this._$timingControls.find('.canvasDuration');
+            
+            const $volume: JQuery = $('<div></div>');
+            this._volume = new AVVolumeControl({
+                target: $volume[0]
+            });
 
-            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timingControls, this._$volumeControl);
+            this._volume.on(AVVolumeControl.Events.VOLUME_CHANGED, (value: number) => {
+                this.setVolume(value);
+            }, false);
+
+            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timingControls, $volume);
             this._$canvasTimelineContainer.append(this._$durationHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
@@ -123,14 +131,6 @@ namespace IIIFComponents {
 
             this._$nextButton.on('click', () => {
                 this.fire(AVComponent.Events.NEXT_RANGE);
-            });
-
-            this._$volumeControl.on('input', function () {
-                that.setVolume(Number(this.value));
-            });
-
-            this._$volumeControl.on('change', function () {
-                that.setVolume(Number(this.value));
             });
 
             this._$canvasTimelineContainer.slider({

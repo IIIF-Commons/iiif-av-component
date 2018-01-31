@@ -269,6 +269,62 @@ var IIIFComponents;
     }
 })(global);
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var IIIFComponents;
+(function (IIIFComponents) {
+    var AVVolumeControl = /** @class */ (function (_super) {
+        __extends(AVVolumeControl, _super);
+        function AVVolumeControl(options) {
+            var _this = _super.call(this, options) || this;
+            _this._init();
+            _this._resize();
+            return _this;
+        }
+        AVVolumeControl.prototype._init = function () {
+            var success = _super.prototype._init.call(this);
+            if (!success) {
+                console.error("Component failed to initialise");
+            }
+            this._$volumeMute = $('<button class="volume-mute"><i class="av-icon-mute inactive" aria-hidden="true"></i></button>');
+            this._$volumeSlider = $('<input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">');
+            this._$element.append(this._$volumeMute, this._$volumeSlider);
+            var that = this;
+            this._$volumeSlider.on('input', function () {
+                that.fire(AVVolumeControl.Events.VOLUME_CHANGED, Number(this.value));
+            });
+            this._$volumeSlider.on('change', function () {
+                that.fire(AVVolumeControl.Events.VOLUME_CHANGED, Number(this.value));
+            });
+            return success;
+        };
+        AVVolumeControl.prototype._resize = function () {
+        };
+        return AVVolumeControl;
+    }(_Components.BaseComponent));
+    IIIFComponents.AVVolumeControl = AVVolumeControl;
+})(IIIFComponents || (IIIFComponents = {}));
+(function (IIIFComponents) {
+    var AVVolumeControl;
+    (function (AVVolumeControl) {
+        var Events = /** @class */ (function () {
+            function Events() {
+            }
+            Events.VOLUME_CHANGED = 'volumechanged';
+            return Events;
+        }());
+        AVVolumeControl.Events = Events;
+    })(AVVolumeControl = IIIFComponents.AVVolumeControl || (IIIFComponents.AVVolumeControl = {}));
+})(IIIFComponents || (IIIFComponents = {}));
+
 var IIIFComponents;
 (function (IIIFComponents) {
     var CanvasInstance = /** @class */ (function () {
@@ -304,10 +360,16 @@ var IIIFComponents;
             this._$playButton = $('<button class="playButton">' + this._data.content.play + '</button>');
             this._$nextButton = $('<button class="nextButton">' + this._data.content.next + '</button>');
             this._$timingControls = $('<span>' + this._data.content.currentTime + ': <span class="canvasTime"></span> / ' + this._data.content.duration + ': <span class="canvasDuration"></span></span>');
-            this._$volumeControl = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">');
             this._$canvasTime = this._$timingControls.find('.canvasTime');
             this._$canvasDuration = this._$timingControls.find('.canvasDuration');
-            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timingControls, this._$volumeControl);
+            var $volume = $('<div></div>');
+            this._volume = new IIIFComponents.AVVolumeControl({
+                target: $volume[0]
+            });
+            this._volume.on(IIIFComponents.AVVolumeControl.Events.VOLUME_CHANGED, function (value) {
+                _this.setVolume(value);
+            }, false);
+            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timingControls, $volume);
             this._$canvasTimelineContainer.append(this._$durationHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
@@ -359,12 +421,6 @@ var IIIFComponents;
             });
             this._$nextButton.on('click', function () {
                 _this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
-            });
-            this._$volumeControl.on('input', function () {
-                that.setVolume(Number(this.value));
-            });
-            this._$volumeControl.on('change', function () {
-                that.setVolume(Number(this.value));
             });
             this._$canvasTimelineContainer.slider({
                 value: 0,
