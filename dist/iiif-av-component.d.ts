@@ -57,11 +57,11 @@ declare namespace IIIFComponents.AVVolumeControl {
     }
 }
 
+/// <reference types="base-component" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
-/// <reference types="manifesto.js" />
 declare namespace IIIFComponents {
-    class CanvasInstance {
+    class CanvasInstance extends _Components.BaseComponent {
         private _highPriorityFrequency;
         private _lowPriorityFrequency;
         private _$canvasContainer;
@@ -85,8 +85,6 @@ declare namespace IIIFComponents {
         private _canvasHeight;
         private _canvasWidth;
         private _contentAnnotations;
-        private _data;
-        private _e;
         private _highPriorityInterval;
         private _isPlaying;
         private _isStalled;
@@ -96,11 +94,11 @@ declare namespace IIIFComponents {
         private _wasPlaying;
         private _volume;
         $playerElement: JQuery;
-        canvas: Manifesto.ICanvas;
         currentDuration: AVComponentObjects.Duration | null;
         logMessage: (message: string) => void;
-        constructor(canvas: Manifesto.ICanvas, data: IAVComponentData);
+        constructor(options: _Components.IBaseComponentOptions);
         init(): void;
+        getCanvasId(): string | null;
         private _previous(isDouble);
         set(data?: IAVComponentData): void;
         destroy(): void;
@@ -127,8 +125,6 @@ declare namespace IIIFComponents {
         private _showWorkingIndicator($targetElement);
         private _hideWorkingIndicator();
         resize(): void;
-        on(name: string, callback: Function, ctx: any): void;
-        fire(name: string, ...args: any[]): void;
     }
 }
 
@@ -138,6 +134,13 @@ declare namespace IIIFComponents.AVComponentObjects {
         end: number;
         constructor(start: number, end: number);
         getLength(): number;
+    }
+}
+
+/// <reference types="manifesto.js" />
+declare namespace IIIFComponents {
+    interface IAVCanvasInstanceData extends IAVComponentData {
+        canvas: Manifesto.ICanvas;
     }
 }
 

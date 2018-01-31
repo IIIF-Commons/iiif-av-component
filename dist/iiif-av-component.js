@@ -105,7 +105,10 @@ var IIIFComponents;
         };
         AVComponent.prototype._initCanvas = function (canvas) {
             var _this = this;
-            var canvasInstance = new IIIFComponents.CanvasInstance(canvas, this._data);
+            var canvasInstance = new IIIFComponents.CanvasInstance({
+                target: document.createElement('div'),
+                data: Object.assign({}, { canvas: canvas }, this._data)
+            });
             canvasInstance.logMessage = this._logMessage.bind(this);
             this._$element.append(canvasInstance.$playerElement);
             canvasInstance.init();
@@ -160,8 +163,9 @@ var IIIFComponents;
             canvasId = manifesto.Utils.normaliseUrl(canvasId);
             for (var i = 0; i < this.canvasInstances.length; i++) {
                 var canvasInstance = this.canvasInstances[i];
-                if (canvasInstance.canvas && canvasInstance.canvas.id) {
-                    var canvasInstanceId = manifesto.Utils.normaliseUrl(canvasInstance.canvas.id);
+                var id = canvasInstance.getCanvasId();
+                if (id) {
+                    var canvasInstanceId = manifesto.Utils.normaliseUrl(id);
                     if (canvasInstanceId === canvasId) {
                         return canvasInstance;
                     }
@@ -325,28 +329,43 @@ var IIIFComponents;
     })(AVVolumeControl = IIIFComponents.AVVolumeControl || (IIIFComponents.AVVolumeControl = {}));
 })(IIIFComponents || (IIIFComponents = {}));
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var IIIFComponents;
 (function (IIIFComponents) {
-    var CanvasInstance = /** @class */ (function () {
-        function CanvasInstance(canvas, data) {
-            this._highPriorityFrequency = 25;
-            this._lowPriorityFrequency = 100;
-            this._canvasClockDuration = 0; // todo: should these 0 values be undefined by default?
-            this._canvasClockFrequency = 25;
-            this._canvasClockStartDate = 0;
-            this._canvasClockTime = 0;
-            this._canvasHeight = 0;
-            this._canvasWidth = 0;
-            this._isPlaying = false;
-            this._isStalled = false;
-            this._readyCanvasesCount = 0;
-            this._stallRequestedBy = []; //todo: type
-            this._wasPlaying = false;
-            this.currentDuration = null;
-            this.canvas = canvas;
-            this._data = data;
-            this.$playerElement = $('<div class="player"></div>');
+    var CanvasInstance = /** @class */ (function (_super) {
+        __extends(CanvasInstance, _super);
+        function CanvasInstance(options) {
+            var _this = _super.call(this, options) || this;
+            _this._highPriorityFrequency = 25;
+            _this._lowPriorityFrequency = 100;
+            _this._canvasClockDuration = 0; // todo: should these 0 values be undefined by default?
+            _this._canvasClockFrequency = 25;
+            _this._canvasClockStartDate = 0;
+            _this._canvasClockTime = 0;
+            _this._canvasHeight = 0;
+            _this._canvasWidth = 0;
+            _this._isPlaying = false;
+            _this._isStalled = false;
+            _this._readyCanvasesCount = 0;
+            _this._stallRequestedBy = []; //todo: type
+            _this._wasPlaying = false;
+            _this.currentDuration = null;
+            _this.$playerElement = $('<div class="player"></div>');
+            return _this;
         }
+        // protected _init(): void {
+        //     this.canvas = canvas;
+        //     this.options.data = data;
+        // }
         CanvasInstance.prototype.init = function () {
             var _this = this;
             this._$canvasContainer = $('<div class="canvasContainer"></div>');
@@ -356,10 +375,10 @@ var IIIFComponents;
             this._$durationHighlight = $('<div class="durationHighlight"></div>');
             this._$timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             this._$controlsContainer = $('<div class="controlsContainer"></div>');
-            this._$prevButton = $('<button class="prevButton">' + this._data.content.previous + '</button>');
-            this._$playButton = $('<button class="playButton">' + this._data.content.play + '</button>');
-            this._$nextButton = $('<button class="nextButton">' + this._data.content.next + '</button>');
-            this._$timingControls = $('<span>' + this._data.content.currentTime + ': <span class="canvasTime"></span> / ' + this._data.content.duration + ': <span class="canvasDuration"></span></span>');
+            this._$prevButton = $('<button class="prevButton">' + this.options.data.content.previous + '</button>');
+            this._$playButton = $('<button class="playButton">' + this.options.data.content.play + '</button>');
+            this._$nextButton = $('<button class="nextButton">' + this.options.data.content.next + '</button>');
+            this._$timingControls = $('<span>' + this.options.data.content.currentTime + ': <span class="canvasTime"></span> / ' + this.options.data.content.duration + ': <span class="canvasDuration"></span></span>');
             this._$canvasTime = this._$timingControls.find('.canvasTime');
             this._$canvasDuration = this._$timingControls.find('.canvasDuration');
             var $volume = $('<div></div>');
@@ -373,17 +392,17 @@ var IIIFComponents;
             this._$canvasTimelineContainer.append(this._$durationHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
-            this._canvasClockDuration = this.canvas.getDuration();
-            var canvasWidth = this.canvas.getWidth();
-            var canvasHeight = this.canvas.getHeight();
+            this._canvasClockDuration = this.options.data.canvas.getDuration();
+            var canvasWidth = this.options.data.canvas.getWidth();
+            var canvasHeight = this.options.data.canvas.getHeight();
             if (!canvasWidth) {
-                this._canvasWidth = this.$playerElement.parent().width(); // this._data.defaultCanvasWidth;
+                this._canvasWidth = this.$playerElement.parent().width(); // this.options.data.defaultCanvasWidth;
             }
             else {
                 this._canvasWidth = canvasWidth;
             }
             if (!canvasHeight) {
-                this._canvasHeight = this._canvasWidth * this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
+                this._canvasHeight = this._canvasWidth * this.options.data.defaultAspectRatio; //this.options.data.defaultCanvasHeight;
             }
             else {
                 this._canvasHeight = canvasHeight;
@@ -400,7 +419,7 @@ var IIIFComponents;
                     prevTimeout = setTimeout(function () {
                         prevClicks = 0;
                         prevTimeout = 0;
-                    }, _this._data.doubleClickMS);
+                    }, _this.options.data.doubleClickMS);
                 }
                 else {
                     // double click
@@ -441,7 +460,7 @@ var IIIFComponents;
             });
             // create annotations
             this._contentAnnotations = [];
-            var items = this.canvas.__jsonld.content[0].items; //todo: use canvas.getContent()
+            var items = this.options.data.canvas.__jsonld.content[0].items; //todo: use canvas.getContent()
             if (items.length === 1) {
                 this._$timelineItemContainer.hide();
             }
@@ -521,6 +540,9 @@ var IIIFComponents;
                 this._renderMediaElement(itemData);
             }
         };
+        CanvasInstance.prototype.getCanvasId = function () {
+            return this.options.data.canvas.id;
+        };
         CanvasInstance.prototype._previous = function (isDouble) {
             if (this._isLimitedToRange() && this.currentDuration) {
                 // if only showing the range, single click rewinds, double click goes to previous range
@@ -551,7 +573,7 @@ var IIIFComponents;
         };
         CanvasInstance.prototype.set = function (data) {
             if (data) {
-                this._data = data;
+                this.options.data = Object.assign({}, this.options.data, data);
             }
             if (this._isLimitedToRange() && this.currentDuration) {
                 this._$canvasTimelineContainer.hide();
@@ -646,7 +668,7 @@ var IIIFComponents;
                     that_2._readyCanvasesCount++;
                     if (that_2._readyCanvasesCount === that_2._contentAnnotations.length) {
                         that_2.setCurrentTime(0);
-                        if (that_2._data.autoPlay) {
+                        if (that_2.options.data.autoPlay) {
                             that_2.play();
                         }
                         that_2._updateDurationDisplay();
@@ -677,8 +699,8 @@ var IIIFComponents;
         };
         CanvasInstance.prototype.unhighlightDuration = function () {
             this.currentDuration = null;
-            if (this._data && this._data.helper) {
-                this._data.helper.rangeId = null;
+            if (this.options.data && this.options.data.helper) {
+                this.options.data.helper.rangeId = null;
             }
             this._$durationHighlight.hide();
         };
@@ -794,7 +816,7 @@ var IIIFComponents;
             }
             this._$playButton.removeClass('play');
             this._$playButton.addClass('pause');
-            this._$playButton.text(this._data.content.pause);
+            this._$playButton.text(this.options.data.content.pause);
             this.fire(IIIFComponents.AVComponent.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
         };
@@ -810,12 +832,12 @@ var IIIFComponents;
             }
             this._$playButton.removeClass('pause');
             this._$playButton.addClass('play');
-            this._$playButton.text(this._data.content.play);
+            this._$playButton.text(this.options.data.content.play);
             this.fire(IIIFComponents.AVComponent.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
         };
         CanvasInstance.prototype._isLimitedToRange = function () {
-            return this._data.limitToRange;
+            return this.options.data.limitToRange;
         };
         CanvasInstance.prototype._canvasClockUpdater = function () {
             this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
@@ -976,28 +998,8 @@ var IIIFComponents;
                 this.highlightDuration();
             }
         };
-        CanvasInstance.prototype.on = function (name, callback, ctx) {
-            var e = this._e || (this._e = {});
-            (e[name] || (e[name] = [])).push({
-                fn: callback,
-                ctx: ctx
-            });
-        };
-        CanvasInstance.prototype.fire = function (name) {
-            var args = [];
-            for (var _i = 1; _i < arguments.length; _i++) {
-                args[_i - 1] = arguments[_i];
-            }
-            var data = [].slice.call(arguments, 1);
-            var evtArr = ((this._e || (this._e = {}))[name] || []).slice();
-            var i = 0;
-            var len = evtArr.length;
-            for (i; i < len; i++) {
-                evtArr[i].fn.apply(evtArr[i].ctx, data);
-            }
-        };
         return CanvasInstance;
-    }());
+    }(_Components.BaseComponent));
     IIIFComponents.CanvasInstance = CanvasInstance;
 })(IIIFComponents || (IIIFComponents = {}));
 
@@ -1018,6 +1020,7 @@ var IIIFComponents;
         AVComponentObjects.Duration = Duration;
     })(AVComponentObjects = IIIFComponents.AVComponentObjects || (IIIFComponents.AVComponentObjects = {}));
 })(IIIFComponents || (IIIFComponents = {}));
+
 
 
 

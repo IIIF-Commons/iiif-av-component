@@ -115,7 +115,11 @@ namespace IIIFComponents {
 
         private _initCanvas(canvas: Manifesto.ICanvas): void {
 
-            const canvasInstance: CanvasInstance = new CanvasInstance(canvas, this._data);
+            const canvasInstance: CanvasInstance = new CanvasInstance({
+                target: document.createElement('div'),
+                data: Object.assign({}, { canvas: canvas }, this._data)
+            });
+
             canvasInstance.logMessage = this._logMessage.bind(this);   
             this._$element.append(canvasInstance.$playerElement);
             canvasInstance.init();
@@ -186,14 +190,17 @@ namespace IIIFComponents {
             for (let i = 0; i < this.canvasInstances.length; i++) {
     
                 const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
-    
-                if (canvasInstance.canvas && canvasInstance.canvas.id) {
-                    const canvasInstanceId: string = manifesto.Utils.normaliseUrl(canvasInstance.canvas.id);
-                    
+                
+                const id: string | null = canvasInstance.getCanvasId();
+
+                if (id) {
+                    const canvasInstanceId: string = manifesto.Utils.normaliseUrl(id);
+
                     if (canvasInstanceId === canvasId) {
                         return canvasInstance;
                     }
                 }
+                
             }
     
             return null;

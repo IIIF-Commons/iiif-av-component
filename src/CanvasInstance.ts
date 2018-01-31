@@ -1,6 +1,6 @@
 namespace IIIFComponents {
 
-    export class CanvasInstance {
+    export class CanvasInstance extends _Components.BaseComponent {
 
         private _highPriorityFrequency: number = 25;
         private _lowPriorityFrequency: number = 100;
@@ -25,8 +25,6 @@ namespace IIIFComponents {
         private _canvasHeight: number = 0;
         private _canvasWidth: number = 0;
         private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
-        private _data: IAVComponentData;
-        private _e: any;
         private _highPriorityInterval: number;
         private _isPlaying: boolean = false;
         private _isStalled: boolean = false;
@@ -37,15 +35,18 @@ namespace IIIFComponents {
         private _volume: AVVolumeControl;
 
         public $playerElement: JQuery;
-        public canvas: Manifesto.ICanvas;
         public currentDuration: AVComponentObjects.Duration | null = null;
         public logMessage: (message: string) => void;
 
-        constructor(canvas: Manifesto.ICanvas, data: IAVComponentData) {
-            this.canvas = canvas;
-            this._data = data;
+        constructor(options: _Components.IBaseComponentOptions) {
+            super(options);
             this.$playerElement = $('<div class="player"></div>');
         }
+
+        // protected _init(): void {
+        //     this.canvas = canvas;
+        //     this.options.data = data;
+        // }
 
         public init() {
 
@@ -56,10 +57,10 @@ namespace IIIFComponents {
             this._$durationHighlight = $('<div class="durationHighlight"></div>');
             this._$timelineItemContainer = $('<div class="timelineItemContainer"></div>');
             this._$controlsContainer = $('<div class="controlsContainer"></div>');
-            this._$prevButton = $('<button class="prevButton">' + (<IAVComponentContent>this._data.content).previous + '</button>');
-            this._$playButton = $('<button class="playButton">' + (<IAVComponentContent>this._data.content).play + '</button>');
-            this._$nextButton = $('<button class="nextButton">' + (<IAVComponentContent>this._data.content).next + '</button>');
-            this._$timingControls = $('<span>' + (<IAVComponentContent>this._data.content).currentTime + ': <span class="canvasTime"></span> / ' + (<IAVComponentContent>this._data.content).duration + ': <span class="canvasDuration"></span></span>');
+            this._$prevButton = $('<button class="prevButton">' + (<IAVComponentContent>this.options.data.content).previous + '</button>');
+            this._$playButton = $('<button class="playButton">' + (<IAVComponentContent>this.options.data.content).play + '</button>');
+            this._$nextButton = $('<button class="nextButton">' + (<IAVComponentContent>this.options.data.content).next + '</button>');
+            this._$timingControls = $('<span>' + (<IAVComponentContent>this.options.data.content).currentTime + ': <span class="canvasTime"></span> / ' + (<IAVComponentContent>this.options.data.content).duration + ': <span class="canvasDuration"></span></span>');
             this._$canvasTime = this._$timingControls.find('.canvasTime');
             this._$canvasDuration = this._$timingControls.find('.canvasDuration');
             
@@ -77,19 +78,19 @@ namespace IIIFComponents {
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
 
-            this._canvasClockDuration = <number>this.canvas.getDuration();
+            this._canvasClockDuration = <number>this.options.data.canvas.getDuration();
 
-            const canvasWidth: number = this.canvas.getWidth();
-            const canvasHeight: number = this.canvas.getHeight();
+            const canvasWidth: number = this.options.data.canvas.getWidth();
+            const canvasHeight: number = this.options.data.canvas.getHeight();
 
             if (!canvasWidth) {
-                this._canvasWidth = <number>this.$playerElement.parent().width(); // this._data.defaultCanvasWidth;
+                this._canvasWidth = <number>this.$playerElement.parent().width(); // this.options.data.defaultCanvasWidth;
             } else {
                 this._canvasWidth = canvasWidth;
             }
 
             if (!canvasHeight) {
-                this._canvasHeight = this._canvasWidth * <number>this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
+                this._canvasHeight = this._canvasWidth * <number>this.options.data.defaultAspectRatio; //this.options.data.defaultCanvasHeight;
             } else {
                 this._canvasHeight = canvasHeight;
             }
@@ -110,7 +111,7 @@ namespace IIIFComponents {
                     prevTimeout = setTimeout(() => {
                         prevClicks = 0;
                         prevTimeout = 0;
-                    }, this._data.doubleClickMS);
+                    }, this.options.data.doubleClickMS);
                 } else {
                     // double click
                     //console.log('double');
@@ -155,7 +156,7 @@ namespace IIIFComponents {
 
             this._contentAnnotations = [];
 
-            const items = (<any>this.canvas).__jsonld.content[0].items; //todo: use canvas.getContent()
+            const items = (<any>this.options.data.canvas).__jsonld.content[0].items; //todo: use canvas.getContent()
 
             if (items.length === 1) {
                 this._$timelineItemContainer.hide();
@@ -260,6 +261,10 @@ namespace IIIFComponents {
             }
         }
 
+        public getCanvasId(): string | null {
+            return this.options.data.canvas.id;
+        }
+
         private _previous(isDouble: boolean): void {
             if (this._isLimitedToRange() && this.currentDuration) {
                 // if only showing the range, single click rewinds, double click goes to previous range
@@ -288,7 +293,7 @@ namespace IIIFComponents {
         public set(data?: IAVComponentData): void {
 
             if (data) {
-                this._data = data;
+                this.options.data = Object.assign({}, this.options.data, data);
             }
 
             if (this._isLimitedToRange() && this.currentDuration) {
@@ -407,7 +412,7 @@ namespace IIIFComponents {
                     if (that._readyCanvasesCount === that._contentAnnotations.length) {
                         that.setCurrentTime(0);
 
-                        if (that._data.autoPlay) {
+                        if (that.options.data.autoPlay) {
                             that.play();
                         }
 
@@ -446,8 +451,8 @@ namespace IIIFComponents {
         public unhighlightDuration(): void {
             this.currentDuration = null;
             
-            if (this._data && this._data.helper) {
-                this._data.helper.rangeId = null;
+            if (this.options.data && this.options.data.helper) {
+                this.options.data.helper.rangeId = null;
             }
             
             this._$durationHighlight.hide();
@@ -507,12 +512,10 @@ namespace IIIFComponents {
         }
 
         public setVolume(value: number): void {
-
             for (let i = 0; i < this._contentAnnotations.length; i++) {
                 const $mediaElement = this._contentAnnotations[i];
                 $($mediaElement.element).prop("volume", value);
             }
-
         }
 
         private _renderSyncIndicator(mediaElementData: any) {
@@ -605,7 +608,7 @@ namespace IIIFComponents {
 
             this._$playButton.removeClass('play');
             this._$playButton.addClass('pause');
-            this._$playButton.text((<IAVComponentContent>this._data.content).pause);
+            this._$playButton.text((<IAVComponentContent>this.options.data.content).pause);
 
             this.fire(AVComponent.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
@@ -627,14 +630,14 @@ namespace IIIFComponents {
 
             this._$playButton.removeClass('pause');
             this._$playButton.addClass('play');
-            this._$playButton.text((<IAVComponentContent>this._data.content).play);
+            this._$playButton.text((<IAVComponentContent>this.options.data.content).play);
 
             this.fire(AVComponent.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
         }
 
         private _isLimitedToRange(): boolean {
-            return <boolean>this._data.limitToRange;
+            return <boolean>this.options.data.limitToRange;
         }
 
         private _canvasClockUpdater(): void {
@@ -857,24 +860,5 @@ namespace IIIFComponents {
             }
         }
 
-        public on(name: string, callback: Function, ctx: any): void {
-            var e = this._e || (this._e = {});
-
-            (e[name] || (e[name] = [])).push({
-                fn: callback,
-                ctx: ctx
-            });
-        }
-
-        public fire(name: string, ...args: any[]): void {
-            var data = [].slice.call(arguments, 1);
-            var evtArr = ((this._e || (this._e = {}))[name] || []).slice();
-            var i = 0;
-            var len = evtArr.length;
-
-            for (i; i < len; i++) {
-                evtArr[i].fn.apply(evtArr[i].ctx, data);
-            }
-        }
     }
 }
