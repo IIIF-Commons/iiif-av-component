@@ -408,13 +408,13 @@ var IIIFComponents;
             this._$durationHighlight = $('<div class="duration-highlight"></div>');
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
             this._$controlsContainer = $('<div class="controls-container"></div>');
-            this._$prevButton = $('<button class="prev-button">' + this.options.data.content.previous + '</button>');
-            this._$playButton = $('<button class="play-button">' + this.options.data.content.play + '</button>');
-            this._$nextButton = $('<button class="next-button">' + this.options.data.content.next + '</button>');
+            this._$prevButton = $('<button class="btn"><i class="av-icon-previous" aria-hidden="true"></i></button>');
+            this._$playButton = $('<button class="btn"><i class="av-icon-play play" aria-hidden="true"></i></button>');
+            this._$nextButton = $('<button class="btn"><i class="av-icon-next" aria-hidden="true"></i></button>');
             this._$timingControls = $('<span>' + this.options.data.content.currentTime + ': <span class="canvas-time"></span> / ' + this.options.data.content.duration + ': <span class="canvas-duration"></span></span>');
             this._$canvasTime = this._$timingControls.find('.canvas-time');
             this._$canvasDuration = this._$timingControls.find('.canvas-duration');
-            var $volume = $('<div></div>');
+            var $volume = $('<div class="volume"></div>');
             this._volume = new IIIFComponents.AVVolumeControl({
                 target: $volume[0]
             });
@@ -849,9 +849,7 @@ var IIIFComponents;
             if (!withoutUpdate) {
                 this._synchronizeMedia();
             }
-            this._$playButton.removeClass('play');
-            this._$playButton.addClass('pause');
-            this._$playButton.text(this.options.data.content.pause);
+            this._$playButton.find('i').switchClass('play', 'pause');
             this.fire(IIIFComponents.AVComponent.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
         };
@@ -865,9 +863,7 @@ var IIIFComponents;
                 this._lowPriorityUpdater();
                 this._synchronizeMedia();
             }
-            this._$playButton.removeClass('pause');
-            this._$playButton.addClass('play');
-            this._$playButton.text(this.options.data.content.play);
+            this._$playButton.find('i').switchClass('pause', 'play');
             this.fire(IIIFComponents.AVComponent.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
         };

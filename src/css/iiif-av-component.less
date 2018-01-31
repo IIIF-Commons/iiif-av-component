@@ -112,11 +112,19 @@
     }
 
     .controls-container {
-        margin-top: 16px;
+        margin-top: 10px;
     }
 
     .controls-container .pause-button {
         margin-right: 14px;
+    }
+
+    .controls-container .volume {
+        display: inline-block;
+
+        .volume-slider {
+            width: 100px;
+        }
     }
 
     .btn {
@@ -142,6 +150,26 @@
         &.off {
             background-image: data-uri('img/volume-off.png');
         }
+    }
+
+    .av-icon-previous {
+        background-image: data-uri('img/previous.png');
+    }
+
+    .av-icon-play {
+
+        &.play {
+            background-image: data-uri('img/play.png');
+        }
+
+        &.pause {
+            background-image: data-uri('img/pause.png');
+        }
+        
+    }
+
+    .av-icon-next {
+        background-image: data-uri('img/next.png');
     }
 
 }

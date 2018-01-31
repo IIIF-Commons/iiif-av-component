@@ -52,14 +52,14 @@ namespace IIIFComponents {
             this._$durationHighlight = $('<div class="duration-highlight"></div>');
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
             this._$controlsContainer = $('<div class="controls-container"></div>');
-            this._$prevButton = $('<button class="prev-button">' + (<IAVComponentContent>this.options.data.content).previous + '</button>');
-            this._$playButton = $('<button class="play-button">' + (<IAVComponentContent>this.options.data.content).play + '</button>');
-            this._$nextButton = $('<button class="next-button">' + (<IAVComponentContent>this.options.data.content).next + '</button>');
+            this._$prevButton = $('<button class="btn"><i class="av-icon-previous" aria-hidden="true"></i></button>');
+            this._$playButton = $('<button class="btn"><i class="av-icon-play play" aria-hidden="true"></i></button>');
+            this._$nextButton = $('<button class="btn"><i class="av-icon-next" aria-hidden="true"></i></button>');
             this._$timingControls = $('<span>' + (<IAVComponentContent>this.options.data.content).currentTime + ': <span class="canvas-time"></span> / ' + (<IAVComponentContent>this.options.data.content).duration + ': <span class="canvas-duration"></span></span>');
             this._$canvasTime = this._$timingControls.find('.canvas-time');
             this._$canvasDuration = this._$timingControls.find('.canvas-duration');
             
-            const $volume: JQuery = $('<div></div>');
+            const $volume: JQuery = $('<div class="volume"></div>');
             this._volume = new AVVolumeControl({
                 target: $volume[0]
             });
@@ -603,9 +603,7 @@ namespace IIIFComponents {
                 this._synchronizeMedia();
             }
 
-            this._$playButton.removeClass('play');
-            this._$playButton.addClass('pause');
-            this._$playButton.text((<IAVComponentContent>this.options.data.content).pause);
+            this._$playButton.find('i').switchClass('play', 'pause');
 
             this.fire(AVComponent.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
@@ -625,9 +623,7 @@ namespace IIIFComponents {
                 this._synchronizeMedia();
             }
 
-            this._$playButton.removeClass('pause');
-            this._$playButton.addClass('play');
-            this._$playButton.text((<IAVComponentContent>this.options.data.content).play);
+            this._$playButton.find('i').switchClass('pause', 'play');
 
             this.fire(AVComponent.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
