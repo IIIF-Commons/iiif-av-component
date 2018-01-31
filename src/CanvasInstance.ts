@@ -43,11 +43,6 @@ namespace IIIFComponents {
             this.$playerElement = $('<div class="player"></div>');
         }
 
-        // protected _init(): void {
-        //     this.canvas = canvas;
-        //     this.options.data = data;
-        // }
-
         public init() {
 
             this._$canvasContainer = $('<div class="canvas-container"></div>');
@@ -509,6 +504,7 @@ namespace IIIFComponents {
 
             // todo: the above should take place in set() instead of forcing a set
             // extend IAVCanvasInstanceData to include currentDuration
+            // same for unhighlightDuration
             this.set({} as IAVCanvasInstanceData);
         }
 

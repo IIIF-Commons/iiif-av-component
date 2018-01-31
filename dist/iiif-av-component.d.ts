@@ -46,8 +46,10 @@ declare namespace IIIFComponents {
     class AVVolumeControl extends _Components.BaseComponent {
         private _$volumeSlider;
         private _$volumeMute;
+        private _state;
         constructor(options: _Components.IBaseComponentOptions);
         protected _init(): boolean;
+        private _render();
         protected _resize(): void;
     }
 }

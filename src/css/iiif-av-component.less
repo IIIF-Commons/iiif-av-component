@@ -119,8 +119,29 @@
         margin-right: 14px;
     }
 
+    .btn {
+        background: 0 0;
+        border: 0;
+
+        i {
+            background-repeat: no-repeat;
+            display: inline-block;
+            height: 30px;
+            vertical-align: middle;
+            width: 30px;
+            cursor: pointer;
+        }
+    }
+
     .av-icon-mute {
 
+        &.on {
+            background-image: data-uri('img/volume-on.png');
+        }
+
+        &.off {
+            background-image: data-uri('img/volume-off.png');
+        }
     }
 
 }
