@@ -368,19 +368,19 @@ var IIIFComponents;
         // }
         CanvasInstance.prototype.init = function () {
             var _this = this;
-            this._$canvasContainer = $('<div class="canvasContainer"></div>');
-            this._$optionsContainer = $('<div class="optionsContainer"></div>');
-            this._$rangeTimelineContainer = $('<div class="rangeTimelineContainer"></div>');
-            this._$canvasTimelineContainer = $('<div class="canvasTimelineContainer"></div>');
-            this._$durationHighlight = $('<div class="durationHighlight"></div>');
-            this._$timelineItemContainer = $('<div class="timelineItemContainer"></div>');
-            this._$controlsContainer = $('<div class="controlsContainer"></div>');
-            this._$prevButton = $('<button class="prevButton">' + this.options.data.content.previous + '</button>');
-            this._$playButton = $('<button class="playButton">' + this.options.data.content.play + '</button>');
-            this._$nextButton = $('<button class="nextButton">' + this.options.data.content.next + '</button>');
-            this._$timingControls = $('<span>' + this.options.data.content.currentTime + ': <span class="canvasTime"></span> / ' + this.options.data.content.duration + ': <span class="canvasDuration"></span></span>');
-            this._$canvasTime = this._$timingControls.find('.canvasTime');
-            this._$canvasDuration = this._$timingControls.find('.canvasDuration');
+            this._$canvasContainer = $('<div class="canvas-container"></div>');
+            this._$optionsContainer = $('<div class="options-container"></div>');
+            this._$rangeTimelineContainer = $('<div class="range-timeline-container"></div>');
+            this._$canvasTimelineContainer = $('<div class="canvas-timeline-container"></div>');
+            this._$durationHighlight = $('<div class="duration-highlight"></div>');
+            this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
+            this._$controlsContainer = $('<div class="controls-container"></div>');
+            this._$prevButton = $('<button class="prev-button">' + this.options.data.content.previous + '</button>');
+            this._$playButton = $('<button class="play-button">' + this.options.data.content.play + '</button>');
+            this._$nextButton = $('<button class="next-button">' + this.options.data.content.next + '</button>');
+            this._$timingControls = $('<span>' + this.options.data.content.currentTime + ': <span class="canvas-time"></span> / ' + this.options.data.content.duration + ': <span class="canvas-duration"></span></span>');
+            this._$canvasTime = this._$timingControls.find('.canvas-time');
+            this._$canvasDuration = this._$timingControls.find('.canvas-duration');
             var $volume = $('<div></div>');
             this._volume = new IIIFComponents.AVVolumeControl({
                 target: $volume[0]
@@ -744,6 +744,7 @@ var IIIFComponents;
                 }
             });
             // todo: the above should take place in set() instead of forcing a set
+            // extend IAVCanvasInstanceData to include currentDuration
             this.set({});
         };
         CanvasInstance.prototype.setVolume = function (value) {
@@ -755,12 +756,12 @@ var IIIFComponents;
         CanvasInstance.prototype._renderSyncIndicator = function (mediaElementData) {
             var leftPercent = this._convertToPercentage(mediaElementData.start, this._canvasClockDuration);
             var widthPercent = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this._canvasClockDuration);
-            var $timelineItem = $('<div class="timelineItem" title="' + mediaElementData.source + '" data-start="' + mediaElementData.start + '" data-end="' + mediaElementData.end + '"></div>');
+            var $timelineItem = $('<div class="timeline-item" title="' + mediaElementData.source + '" data-start="' + mediaElementData.start + '" data-end="' + mediaElementData.end + '"></div>');
             $timelineItem.css({
                 left: leftPercent + '%',
                 width: widthPercent + '%'
             });
-            var $lineWrapper = $('<div class="lineWrapper"></div>');
+            var $lineWrapper = $('<div class="line-wrapper"></div>');
             $timelineItem.appendTo($lineWrapper);
             mediaElementData.timelineElement = $timelineItem;
             if (this.$playerElement) {
@@ -975,8 +976,8 @@ var IIIFComponents;
             }
         };
         CanvasInstance.prototype._showWorkingIndicator = function ($targetElement) {
-            var workingIndicator = $('<div class="workingIndicator">Waiting...</div>');
-            if ($targetElement.find('.workingIndicator').length == 0) {
+            var workingIndicator = $('<div class="working-indicator">Waiting...</div>');
+            if ($targetElement.find('.working-indicator').length == 0) {
                 $targetElement.append(workingIndicator);
             }
             //console.log('show working');
@@ -992,7 +993,7 @@ var IIIFComponents;
                     this._$canvasTimelineContainer.width(containerWidth);
                     //const resizeFactorY: number = containerWidth / this.canvasWidth;
                     //$canvasContainer.height(this.canvasHeight * resizeFactorY);
-                    var $options = this.$playerElement.find('.optionsContainer');
+                    var $options = this.$playerElement.find('.options-container');
                     this._$canvasContainer.height(this.$playerElement.parent().height() - $options.height());
                 }
                 this.highlightDuration();

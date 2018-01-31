@@ -2,12 +2,12 @@
   position: relative;
   overflow: hidden;
 }
-.iiif-av-component .canvasContainer {
+.iiif-av-component .canvas-container {
   position: relative;
   background: #000000;
   width: 100%;
 }
-.iiif-av-component .canvasContainer .workingIndicator {
+.iiif-av-component .canvas-container .working-indicator {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -21,7 +21,7 @@
   box-sizing: border-box;
   font-size: 20px;
 }
-.iiif-av-component .canvasContainer .anno {
+.iiif-av-component .canvas-container .anno {
   position: absolute;
   /*border: 1px solid rgba(0,255,0,.4);*/
   background: transparent;
@@ -29,23 +29,23 @@
   font-weight: bold;
   color: #fff;
 }
-.iiif-av-component .rangeTimelineContainer {
+.iiif-av-component .range-timeline-container {
   background: chartreuse;
   height: 20px;
   border: none;
 }
-.iiif-av-component .canvasTimelineContainer {
+.iiif-av-component .canvas-timeline-container {
   background: #AFAFAF;
   height: 20px;
   width: 0px;
   border: none;
 }
-.iiif-av-component .canvasTimelineContainer .durationHighlight {
+.iiif-av-component .canvas-timeline-container .duration-highlight {
   position: absolute;
   background: chartreuse;
   height: 20px;
 }
-.iiif-av-component .timelineItemContainer {
+.iiif-av-component .timeline-item-container {
   position: relative;
   width: 100%;
   min-height: 6px;
@@ -53,10 +53,10 @@
   top: 0px;
   padding-bottom: 3px;
 }
-.iiif-av-component .timelineItemContainer .lineWrapper {
+.iiif-av-component .timeline-item-container .line-wrapper {
   margin-top: 2px;
 }
-.iiif-av-component .timelineItemContainer .timelineItem {
+.iiif-av-component .timeline-item-container .timeline-item {
   position: relative;
   height: 6px;
   box-sizing: border-box;
@@ -64,7 +64,7 @@
   border-left: 1px solid #efefef;
   background: #777;
 }
-.iiif-av-component .timelineItemContainer .timelineItem.active {
+.iiif-av-component .timeline-item-container .timeline-item.active {
   background: #333;
 }
 .iiif-av-component .ui-slider-range {
@@ -95,9 +95,9 @@
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
 }
-.iiif-av-component .controlsContainer {
+.iiif-av-component .controls-container {
   margin-top: 16px;
 }
-.iiif-av-component .controlsContainer .pauseButton {
+.iiif-av-component .controls-container .pause-button {
   margin-right: 14px;
 }
