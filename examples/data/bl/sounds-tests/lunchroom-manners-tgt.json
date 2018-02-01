@@ -70,6 +70,10 @@
             "label": "Getting Ready for Lunch",
             "members": [
                 {
+                    "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/canvas/1#t=0,178",
+                    "type": "Canvas"
+                },
+                {
                     "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/range/2",
                     "type": "Range",
                     "label": "Washing Hands",
