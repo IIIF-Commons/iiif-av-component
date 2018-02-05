@@ -36,6 +36,7 @@ var IIIFComponents;
         AVComponent.prototype.data = function () {
             return {
                 autoPlay: false,
+                constrainNavigationToRange: false,
                 defaultAspectRatio: 0.56,
                 doubleClickMS: 350,
                 limitToRange: false,
@@ -474,7 +475,7 @@ var IIIFComponents;
                 }
             });
             this._$nextButton.on('click', function () {
-                _this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
+                _this._next();
             });
             this._$canvasTimelineContainer.slider({
                 value: 0,
@@ -580,9 +581,14 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._previous = function (isDouble) {
             if (this._isLimitedToRange() && this.currentDuration) {
-                // if only showing the range, single click rewinds, double click goes to previous range
+                // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
                 if (isDouble) {
-                    this.fire(IIIFComponents.AVComponent.Events.PREVIOUS_RANGE);
+                    if (this._isNavigationConstrainedToRange()) {
+                        this.rewind();
+                    }
+                    else {
+                        this.fire(IIIFComponents.AVComponent.Events.PREVIOUS_RANGE);
+                    }
                 }
                 else {
                     this.rewind();
@@ -604,6 +610,19 @@ var IIIFComponents;
                 else {
                     this.rewind();
                 }
+            }
+        };
+        CanvasInstance.prototype._next = function () {
+            if (this._isLimitedToRange() && this.currentDuration) {
+                if (this._isNavigationConstrainedToRange()) {
+                    this.fastforward();
+                }
+                else {
+                    this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
+                }
+            }
+            else {
+                this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
             }
         };
         CanvasInstance.prototype.set = function (data) {
@@ -827,6 +846,15 @@ var IIIFComponents;
             }
             this.play();
         };
+        CanvasInstance.prototype.fastforward = function () {
+            if (this._isLimitedToRange() && this.currentDuration) {
+                this._canvasClockTime = this.currentDuration.end;
+            }
+            else {
+                this._canvasClockTime = this._canvasClockDuration;
+            }
+            this.pause();
+        };
         CanvasInstance.prototype.play = function (withoutUpdate) {
             if (this._isPlaying)
                 return;
@@ -868,6 +896,9 @@ var IIIFComponents;
             this._$playButton.find('i').switchClass('pause', 'play');
             this.fire(IIIFComponents.AVComponent.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
+        };
+        CanvasInstance.prototype._isNavigationConstrainedToRange = function () {
+            return this.options.data.constrainNavigationToRange;
         };
         CanvasInstance.prototype._isLimitedToRange = function () {
             return this.options.data.limitToRange;

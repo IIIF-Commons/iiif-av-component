@@ -136,7 +136,7 @@ namespace IIIFComponents {
             });
 
             this._$nextButton.on('click', () => {
-                this.fire(AVComponent.Events.NEXT_RANGE);
+                this._next();
             });
 
             this._$canvasTimelineContainer.slider({
@@ -272,9 +272,13 @@ namespace IIIFComponents {
 
         private _previous(isDouble: boolean): void {
             if (this._isLimitedToRange() && this.currentDuration) {
-                // if only showing the range, single click rewinds, double click goes to previous range
+                // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
                 if (isDouble) {
-                    this.fire(AVComponent.Events.PREVIOUS_RANGE);
+                    if (this._isNavigationConstrainedToRange()) {
+                        this.rewind();
+                    } else {
+                        this.fire(AVComponent.Events.PREVIOUS_RANGE);
+                    }
                 } else {
                     this.rewind();
                 }
@@ -292,6 +296,18 @@ namespace IIIFComponents {
                 } else {
                     this.rewind();
                 }
+            }
+        }
+
+        private _next(): void {
+            if (this._isLimitedToRange() && this.currentDuration) {
+                if (this._isNavigationConstrainedToRange()) {
+                    this.fastforward();
+                } else {
+                    this.fire(AVComponent.Events.NEXT_RANGE);
+                }
+            } else {
+                this.fire(AVComponent.Events.NEXT_RANGE);
             }
         }
 
@@ -580,6 +596,17 @@ namespace IIIFComponents {
             this.play();
         }
 
+        public fastforward(): void {
+
+            if (this._isLimitedToRange() && this.currentDuration) {
+                this._canvasClockTime = this.currentDuration.end;
+            } else {
+                this._canvasClockTime = this._canvasClockDuration;
+            }
+
+            this.pause();
+        }
+
         public play(withoutUpdate?: boolean): void {
             if (this._isPlaying) return;
 
@@ -637,6 +664,10 @@ namespace IIIFComponents {
 
             this.fire(AVComponent.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
+        }
+
+        private _isNavigationConstrainedToRange(): boolean {
+            return <boolean>this.options.data.constrainNavigationToRange;
         }
 
         private _isLimitedToRange(): boolean {

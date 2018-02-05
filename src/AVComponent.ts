@@ -27,6 +27,7 @@ namespace IIIFComponents {
         public data(): IAVComponentData {
             return <IAVComponentData> {
                 autoPlay: false,
+                constrainNavigationToRange: false,
                 defaultAspectRatio: 0.56,
                 doubleClickMS: 350,
                 limitToRange: false,

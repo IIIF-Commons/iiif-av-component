@@ -13,6 +13,7 @@ namespace IIIFComponents {
     export interface IAVComponentData {
         [key: string]: any;
         autoPlay?: boolean;
+        constrainNavigationToRange?: boolean;
         content?: IAVComponentContent;
         defaultAspectRatio?: number;
         doubleClickMS?: number;

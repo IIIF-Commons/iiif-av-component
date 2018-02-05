@@ -102,6 +102,7 @@ declare namespace IIIFComponents {
         init(): void;
         getCanvasId(): string | null;
         private _previous(isDouble);
+        private _next();
         set(data: IAVCanvasInstanceData): void;
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
@@ -114,8 +115,10 @@ declare namespace IIIFComponents {
         private _renderSyncIndicator(mediaElementData);
         setCurrentTime(seconds: number): void;
         rewind(withoutUpdate?: boolean): void;
+        fastforward(): void;
         play(withoutUpdate?: boolean): void;
         pause(withoutUpdate?: boolean): void;
+        private _isNavigationConstrainedToRange();
         private _isLimitedToRange();
         private _canvasClockUpdater();
         private _highPriorityUpdater();
@@ -165,6 +168,7 @@ declare namespace IIIFComponents {
     interface IAVComponentData {
         [key: string]: any;
         autoPlay?: boolean;
+        constrainNavigationToRange?: boolean;
         content?: IAVComponentContent;
         defaultAspectRatio?: number;
         doubleClickMS?: number;
