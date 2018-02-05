@@ -24,7 +24,10 @@ namespace IIIFComponents {
                 console.error("Component failed to initialise");
             }
 
-            this._$volumeMute = $('<button class="btn volume-mute"><i class="av-icon-mute on" aria-hidden="true"></i></button>');
+            this._$volumeMute = $(`
+                                <button class="btn volume-mute" title="${this.options.data.content.mute}">
+                                    <i class="av-icon-mute on" aria-hidden="true"></i>${this.options.data.content.mute}
+                                </button>`);
             this._$volumeSlider = $('<input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
 
             this._$element.append(this._$volumeMute, this._$volumeSlider);

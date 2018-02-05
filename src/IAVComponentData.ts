@@ -3,6 +3,7 @@ namespace IIIFComponents {
     export interface IAVComponentContent {
         currentTime: string;
         duration: string;
+        mute: string;
         next: string;
         pause: string;
         play: string;

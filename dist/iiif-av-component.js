@@ -42,6 +42,7 @@ var IIIFComponents;
                 content: {
                     currentTime: "Current Time",
                     duration: "Duration",
+                    mute: "Mute",
                     next: "Next",
                     pause: "Pause",
                     play: "Play",
@@ -303,7 +304,7 @@ var IIIFComponents;
             if (!success) {
                 console.error("Component failed to initialise");
             }
-            this._$volumeMute = $('<button class="btn volume-mute"><i class="av-icon-mute on" aria-hidden="true"></i></button>');
+            this._$volumeMute = $("\n                                <button class=\"btn volume-mute\" title=\"" + this.options.data.content.mute + "\">\n                                    <i class=\"av-icon-mute on\" aria-hidden=\"true\"></i>" + this.options.data.content.mute + "\n                                </button>");
             this._$volumeSlider = $('<input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">');
             this._$element.append(this._$volumeMute, this._$volumeSlider);
             var that = this;
@@ -408,15 +409,16 @@ var IIIFComponents;
             this._$durationHighlight = $('<div class="duration-highlight"></div>');
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
             this._$controlsContainer = $('<div class="controls-container"></div>');
-            this._$prevButton = $('<button class="btn"><i class="av-icon-previous" aria-hidden="true"></i></button>');
-            this._$playButton = $('<button class="btn"><i class="av-icon-play play" aria-hidden="true"></i></button>');
-            this._$nextButton = $('<button class="btn"><i class="av-icon-next" aria-hidden="true"></i></button>');
+            this._$prevButton = $("\n                                <button class=\"btn\" title=\"" + this.options.data.content.previous + "\">\n                                    <i class=\"av-icon-previous\" aria-hidden=\"true\"></i>" + this.options.data.content.previous + "\n                                </button>");
+            this._$playButton = $("\n                                <button class=\"btn\" title=\"" + this.options.data.content.play + "\">\n                                    <i class=\"av-icon-play play\" aria-hidden=\"true\"></i>" + this.options.data.content.play + "\n                                </button>");
+            this._$nextButton = $("\n                                <button class=\"btn\" title=\"" + this.options.data.content.next + "\">\n                                    <i class=\"av-icon-next\" aria-hidden=\"true\"></i>" + this.options.data.content.next + "\n                                </button>");
             this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
             this._$canvasTime = this._$timeDisplay.find('.canvas-time');
             this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
             var $volume = $('<div class="volume"></div>');
             this._volume = new IIIFComponents.AVVolumeControl({
-                target: $volume[0]
+                target: $volume[0],
+                data: Object.assign({}, this.options.data)
             });
             this._volume.on(IIIFComponents.AVVolumeControl.Events.VOLUME_CHANGED, function (value) {
                 _this.setVolume(value);

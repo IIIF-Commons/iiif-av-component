@@ -33,6 +33,7 @@ namespace IIIFComponents {
                 content: <IAVComponentContent>{
                     currentTime: "Current Time",
                     duration: "Duration",
+                    mute: "Mute",
                     next: "Next",
                     pause: "Pause",
                     play: "Play",

@@ -156,6 +156,7 @@ declare namespace IIIFComponents {
     interface IAVComponentContent {
         currentTime: string;
         duration: string;
+        mute: string;
         next: string;
         pause: string;
         play: string;

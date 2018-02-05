@@ -52,16 +52,26 @@ namespace IIIFComponents {
             this._$durationHighlight = $('<div class="duration-highlight"></div>');
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
             this._$controlsContainer = $('<div class="controls-container"></div>');
-            this._$prevButton = $('<button class="btn"><i class="av-icon-previous" aria-hidden="true"></i></button>');
-            this._$playButton = $('<button class="btn"><i class="av-icon-play play" aria-hidden="true"></i></button>');
-            this._$nextButton = $('<button class="btn"><i class="av-icon-next" aria-hidden="true"></i></button>');
+            this._$prevButton = $(`
+                                <button class="btn" title="${this.options.data.content.previous}">
+                                    <i class="av-icon-previous" aria-hidden="true"></i>${this.options.data.content.previous}
+                                </button>`);
+            this._$playButton = $(`
+                                <button class="btn" title="${this.options.data.content.play}">
+                                    <i class="av-icon-play play" aria-hidden="true"></i>${this.options.data.content.play}
+                                </button>`);
+            this._$nextButton = $(`
+                                <button class="btn" title="${this.options.data.content.next}">
+                                    <i class="av-icon-next" aria-hidden="true"></i>${this.options.data.content.next}
+                                </button>`);
             this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
             this._$canvasTime = this._$timeDisplay.find('.canvas-time');
             this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
             
             const $volume: JQuery = $('<div class="volume"></div>');
             this._volume = new AVVolumeControl({
-                target: $volume[0]
+                target: $volume[0],
+                data: Object.assign({}, this.options.data)
             });
 
             this._volume.on(AVVolumeControl.Events.VOLUME_CHANGED, (value: number) => {
