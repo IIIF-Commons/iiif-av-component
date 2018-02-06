@@ -1,5 +1,5 @@
 {
-    "context": "http://iiif.io/api/presentation/3/context.json",
+    "@context": "http://iiif.io/api/presentation/3/context.json",
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8_expt.json",
     "metadata": [
         {
@@ -17,6 +17,8 @@
                 {
                     "content": [
                         {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004_annos",
+                            "type": "AnnotationPage",
                             "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004_t_162_64_3441_8",
@@ -25,23 +27,24 @@
                                         "id": "http://resources.digirati.com/bl/C308_8/vdc_100050889733.0x00000c.mp4",
                                         "type": "Audio"
                                     },
-                                    "motivation": "Painting",
+                                    "motivation": "painting",
                                     "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004#t=162.64,3441.8",
                                     "timeMode": "trim",
                                     "type": "Annotation"
                                 }
-                            ],
-                            "type": "AnnotationPage"
+                            ]
                         }
                     ],
                     "duration": 3279.16,
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
-                    "label": "",
+                    "label": "Canvas 1",
                     "type": "Canvas"
                 },
                 {
                     "content": [
                         {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005_annos",
+                            "type": "AnnotationPage",
                             "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005_t_0_223_32",
@@ -50,22 +53,21 @@
                                         "id": "http://resources.digirati.com/bl/C308_8/vdc_100050889733.0x00000e.mp4",
                                         "type": "Audio"
                                     },
-                                    "motivation": "Painting",
+                                    "motivation": "painting",
                                     "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005#t=0,223.32",
                                     "timeMode": "trim",
                                     "type": "Annotation"
                                 }
-                            ],
-                            "type": "AnnotationPage"
+                            ]
                         }
                     ],
                     "duration": 223.32,
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005",
-                    "label": "",
+                    "label": "Canvas 2",
                     "type": "Canvas"
                 }
             ],
-            "id": "",
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733_sequence",
             "type": "Sequence"
         }
     ],
@@ -79,7 +81,7 @@
                     "label": "Recording",
                     "members": [
                         {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004#t=162.64,3441.8",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004#t=162.64,3441.8",
                             "type": "Canvas"
                         }
                     ],
@@ -96,7 +98,7 @@
                     "label": "Recording",
                     "members": [
                         {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005#t=0,223.32",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005#t=0,223.32",
                             "type": "Canvas"
                         }
                     ],
