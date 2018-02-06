@@ -5,144 +5,16 @@
         ]
     },
     "context": "http://iiif.io/api/presentation/3/context.json",
-    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98.json",
-    "items": [
-        {
-            "canvases": [
-                {
-                    "content": [
-                        {
-                            "items": [
-                                {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=560,741.28",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                },
-                                {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1700.36,1914.84",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                },
-                                {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,2504.64",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                },
-                                {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2504.64,2661.56",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                },
-                                {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2661.56,3723.4",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 4119.16,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "items": [
-                                {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=0,1585.16",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                },
-                                {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=1585.16,2501.8",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                },
-                                {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2501.8,2620.44",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                },
-                                {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2620.44,3723.4",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 3723.4,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
-                    "type": "Canvas"
-                }
-            ],
-            "id": "",
-            "type": "Sequence"
-        }
-    ],
-    "logo": [
-        {
-            "id": "https://www.bl.uk/images/bl_logo_100.gif",
-            "type": "Image"
-        }
-    ],
+    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/manifest.json",
+    "label": {
+        "en": [
+            "C1685/98 Loose ends 17/7/99"
+        ]
+    },
+    "logo": {
+        "id": "https://www.bl.uk/images/bl_logo_100.gif",
+        "type": "Image"
+    },
     "metadata": [
         {
             "label": {
@@ -169,101 +41,233 @@
             }
         }
     ],
+    "sequences": [
+        {
+            "canvases": [
+                {
+                    "duration": 4119.16,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno",
+                            "items": [
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno/node-id-000004",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=560,741.28",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno/node-id-000006",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1700.36,1914.84",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno/node-id-000002",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,2504.64",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno/node-id-000008",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2504.64,2661.56",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno/node-id-000010",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2661.56,3723.4",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "label": "Tape 1 Side 1",
+                    "type": "Canvas"
+                },
+                {
+                    "duration": 3723.4,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno",
+                            "items": [
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno/node-id-000012",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=0,1585.16",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno/node-id-000014",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=1585.16,2501.8",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno/node-id-000016",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2501.8,2620.44",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno/node-id-000018",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2620.44,3723.4",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "label": "Tape 1 Side 2",
+                    "type": "Canvas"
+                }
+            ],
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000001",
+            "type": "Sequence"
+        }
+    ],
     "structures": [
         {
-            "attribution": {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000006",
+            "label": {
                 "en": [
-                    "<span>Rights unassigned - staff access only</span>"
+                    "Loose ends"
                 ]
             },
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002",
-            "label": "",
             "members": [
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000006",
-                    "label": "Recording",
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007",
+                    "label": {
+                        "en": [
+                            "There's a touch"
+                        ]
+                    },
                     "members": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007",
-                            "label": "Recording",
-                            "members": [
-                                {
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=560,741.28",
-                                    "type": "Canvas"
-                                },
-                                {
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=560,741.28",
-                                    "type": "Canvas"
-                                }
-                            ],
-                            "metadata": [
-                                {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C1685/98"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "There's a touch"
-                                        ]
-                                    }
-                                }
-                            ],
-                            "type": "Range"
-                        },
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000008",
-                            "label": "Recording",
-                            "members": [
-                                {
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1700.36,1914.84",
-                                    "type": "Canvas"
-                                },
-                                {
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1700.36,1914.84",
-                                    "type": "Canvas"
-                                }
-                            ],
-                            "metadata": [
-                                {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C1685/98"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Song of dreams"
-                                        ]
-                                    }
-                                }
-                            ],
-                            "type": "Range"
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=560,741.28",
+                            "type": "Canvas"
                         }
                     ],
                     "metadata": [
@@ -287,19 +291,7 @@
                             },
                             "value": {
                                 "en": [
-                                    "Loose ends"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Royal Albert Hall, London"
+                                    "There's a touch"
                                 ]
                             }
                         }
@@ -307,15 +299,15 @@
                     "type": "Range"
                 },
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x00000c",
-                    "label": "Recording",
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000008",
+                    "label": {
+                        "en": [
+                            "Song of dreams"
+                        ]
+                    },
                     "members": [
                         {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2504.64,2661.56",
-                            "type": "Canvas"
-                        },
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2504.64,2661.56",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1700.36,1914.84",
                             "type": "Canvas"
                         }
                     ],
@@ -340,7 +332,7 @@
                             },
                             "value": {
                                 "en": [
-                                    "[News May 2001]"
+                                    "Song of dreams"
                                 ]
                             }
                         }
@@ -348,176 +340,255 @@
                     "type": "Range"
                 },
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x00000e",
-                    "label": "Recording",
-                    "members": [
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2661.56,3723.4",
-                            "type": "Canvas"
-                        },
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2661.56,3723.4",
-                            "type": "Canvas"
-                        },
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=0,1585.16",
-                            "type": "Canvas"
-                        },
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=0,1585.16",
-                            "type": "Canvas"
-                        }
-                    ],
-                    "metadata": [
-                        {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1685/98"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Saturday review"
-                                ]
-                            }
-                        }
-                    ],
-                    "type": "Range"
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,2504.64",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C1685/98"
+                        ]
+                    }
                 },
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000011",
-                    "label": "Recording",
-                    "members": [
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=1585.16,2501.8",
-                            "type": "Canvas"
-                        },
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=1585.16,2501.8",
-                            "type": "Canvas"
-                        }
-                    ],
-                    "metadata": [
-                        {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1685/98"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "My dear Jim - Letters to a friend [2]"
-                                ]
-                            }
-                        }
-                    ],
-                    "type": "Range"
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Loose ends"
+                        ]
+                    }
                 },
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000013",
-                    "label": "Recording",
-                    "members": [
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2501.8,2620.44",
-                            "type": "Canvas"
-                        },
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2501.8,2620.44",
-                            "type": "Canvas"
-                        }
-                    ],
-                    "metadata": [
-                        {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1685/98"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[News May 2001]"
-                                ]
-                            }
-                        }
-                    ],
-                    "type": "Range"
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Royal Albert Hall, London"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x00000c",
+            "label": {
+                "en": [
+                    "[News May 2001]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2504.64,2661.56",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C1685/98"
+                        ]
+                    }
                 },
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000015",
-                    "label": "Recording",
-                    "members": [
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2620.44,3723.4",
-                            "type": "Canvas"
-                        },
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2620.44,3723.4",
-                            "type": "Canvas"
-                        }
-                    ],
-                    "metadata": [
-                        {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1685/98"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "The archive hour: Humph at 80"
-                                ]
-                            }
-                        }
-                    ],
-                    "type": "Range"
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "[News May 2001]"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x00000e",
+            "label": {
+                "en": [
+                    "Saturday review"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2661.56,3723.4",
+                    "type": "Canvas"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=0,1585.16",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C1685/98"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Saturday review"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000011",
+            "label": {
+                "en": [
+                    "My dear Jim - Letters to a friend [2]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=1585.16,2501.8",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C1685/98"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "My dear Jim - Letters to a friend [2]"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000013",
+            "label": {
+                "en": [
+                    "[News May 2001]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2501.8,2620.44",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C1685/98"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "[News May 2001]"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000015",
+            "label": {
+                "en": [
+                    "The archive hour: Humph at 80"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2620.44,3723.4",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C1685/98"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "The archive hour: Humph at 80"
+                        ]
+                    }
                 }
             ],
             "type": "Range"
