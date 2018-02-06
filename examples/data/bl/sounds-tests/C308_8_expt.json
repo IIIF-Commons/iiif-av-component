@@ -109,6 +109,14 @@
                         }
                     ],
                     "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
+                    "type": "Canvas"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005",
+                    "type": "Canvas"
                 }
             ],
             "type": "Range"
