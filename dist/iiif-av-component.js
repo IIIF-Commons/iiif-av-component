@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.22 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.23 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 /// <reference types="exjs" /> 
@@ -128,6 +128,9 @@ var IIIFComponents;
             canvasInstance.on(AVComponent.Events.NEXT_RANGE, function () {
                 _this._nextRage();
             }, false);
+            canvasInstance.on(AVComponent.Events.NO_RANGE, function () {
+                _this.fire(AVComponent.Events.NO_RANGE);
+            }, false);
         };
         AVComponent.prototype._prevRange = function () {
             if (!this._data || !this._data.helper) {
@@ -189,9 +192,6 @@ var IIIFComponents;
             if (canvasInstance) {
                 canvasInstance.unhighlightDuration();
                 canvasInstance.rewind();
-                if (this._data && this._data.helper) {
-                    this._data.helper.rangeId = null;
-                }
             }
         };
         AVComponent.prototype.playCanvas = function (canvasId) {
@@ -261,6 +261,7 @@ var IIIFComponents;
             Events.CANVASREADY = 'canvasready';
             Events.LOG = 'log';
             Events.NEXT_RANGE = 'nextrange';
+            Events.NO_RANGE = 'norange';
             Events.PAUSECANVAS = 'pause';
             Events.PLAYCANVAS = 'play';
             Events.PREVIOUS_RANGE = 'previousrange';
@@ -846,6 +847,10 @@ var IIIFComponents;
             }
             else {
                 this._canvasClockTime = 0;
+            }
+            if (!this._isLimitedToRange()) {
+                this.options.data.helper.rangeId = null;
+                this.fire(IIIFComponents.AVComponent.Events.NO_RANGE);
             }
             this.play();
         };

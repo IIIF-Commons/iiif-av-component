@@ -593,6 +593,11 @@ namespace IIIFComponents {
                 this._canvasClockTime = 0;
             }
 
+            if (!this._isLimitedToRange()) {
+                this.options.data.helper.rangeId = null;
+                this.fire(AVComponent.Events.NO_RANGE);
+            }
+
             this.play();
         }
 

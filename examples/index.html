@@ -151,6 +151,10 @@
                 console.log('next range');
             });
 
+            avcomponent.on('norange', function() {
+                console.log('no range');
+            });
+
             treecomponent = new IIIFComponents.TreeComponent({
                 target: document.querySelector('#tree')
             });

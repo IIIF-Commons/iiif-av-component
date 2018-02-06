@@ -143,6 +143,10 @@ namespace IIIFComponents {
             canvasInstance.on(AVComponent.Events.NEXT_RANGE, () => {
                 this._nextRage();
             }, false);
+
+            canvasInstance.on(AVComponent.Events.NO_RANGE, () => {
+                this.fire(AVComponent.Events.NO_RANGE);
+            }, false);
         }
 
         private _prevRange(): void {
@@ -226,12 +230,7 @@ namespace IIIFComponents {
 
             if (canvasInstance) {
                 canvasInstance.unhighlightDuration();
-                canvasInstance.rewind();
-
-                if (this._data && this._data.helper) {
-                    this._data.helper.rangeId = null;
-                }
-                
+                canvasInstance.rewind();                
             }
         }
 
@@ -319,6 +318,7 @@ namespace IIIFComponents.AVComponent {
         static CANVASREADY: string = 'canvasready';
         static LOG: string = 'log';
         static NEXT_RANGE: string = 'nextrange';
+        static NO_RANGE: string = 'norange';
         static PAUSECANVAS: string = 'pause';
         static PLAYCANVAS: string = 'play';
         static PREVIOUS_RANGE: string = 'previousrange';
