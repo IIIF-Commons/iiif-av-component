@@ -189,6 +189,9 @@ var IIIFComponents;
             if (canvasInstance) {
                 canvasInstance.unhighlightDuration();
                 canvasInstance.rewind();
+                if (this._data && this._data.helper) {
+                    this._data.helper.rangeId = null;
+                }
             }
         };
         AVComponent.prototype.playCanvas = function (canvasId) {
