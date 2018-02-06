@@ -1,6 +1,6 @@
 {
     "@context": "http://iiif.io/api/presentation/3/context.json",
-    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8.json",
+    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8_expt.json",
     "metadata": [
         {
             "label": "Identifier",
