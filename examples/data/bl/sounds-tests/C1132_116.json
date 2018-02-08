@@ -1,30 +1,62 @@
 {
-    "context": "http://iiif.io/api/presentation/3/context.json",
+    "@context": "http://iiif.io/api/presentation/3/context.json",
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1132_116.json",
+    "label": {
+        "en": [
+            "C1132/116 Cliff Richard (Heathcliff)"
+        ]
+    },
     "metadata": [
         {
-            "label": "Identifier",
-            "value": "C1132/116"
+            "label": {
+                "en": [
+                    "Identifier"
+                ]
+            },
+            "value": {
+                "en": [
+                    "C1132/116"
+                ]
+            }
         },
         {
-            "label": "Title",
-            "value": "Cliff Richard interview (Heathcliff)"
+            "label": {
+                "en": [
+                    "Title"
+                ]
+            },
+            "value": {
+                "en": [
+                    "Cliff Richard (Heathcliff)"
+                ]
+            }
         }
     ],
     "sequences": [
         {
             "canvases": [
                 {
-                    "content": [
+                    "duration": 3964.08,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004",
+                    "items": [
                         {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004/anno",
                             "items": [
                                 {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000c.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000c.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004/anno/node-id-000002",
+                                    "motivation": "painting",
                                     "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004#t=0,3964.08",
                                     "timeMode": "trim",
                                     "type": "Annotation"
@@ -33,22 +65,31 @@
                             "type": "AnnotationPage"
                         }
                     ],
-                    "duration": 3964.08,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004",
-                    "label": "",
+                    "label": "Tape 1 Side 1",
                     "type": "Canvas"
                 },
                 {
-                    "content": [
+                    "duration": 1490.48,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006",
+                    "items": [
                         {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006/anno",
                             "items": [
                                 {
-                                    "body": {
-                                        "format": "audio/mp4",
-                                        "id": "http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000e.mp4",
-                                        "type": "Audio"
-                                    },
-                                    "motivation": "Painting",
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000e.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006/anno/node-id-000004",
+                                    "motivation": "painting",
                                     "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006#t=0,1490.48",
                                     "timeMode": "trim",
                                     "type": "Annotation"
@@ -57,45 +98,81 @@
                             "type": "AnnotationPage"
                         }
                     ],
-                    "duration": 1490.48,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006",
-                    "label": "",
+                    "label": "Tape 2 Side 1",
                     "type": "Canvas"
                 }
             ],
-            "id": "",
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000001",
             "type": "Sequence"
         }
     ],
     "structures": [
         {
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000002",
-            "label": "Cliff Richard interview (Heathcliff)",
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000007",
+            "label": {
+                "en": [
+                    "Cliff Richard interview (Heathcliff)"
+                ]
+            },
             "members": [
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000007",
-                    "label": "Recording",
-                    "members": [
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004#t=0,3964.08",
-                            "type": "Canvas"
-                        },
-                        {
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006#t=0,1490.48",
-                            "type": "Canvas"
-                        }
-                    ],
-                    "metadata": [
-                        {
-                            "label": "Identifier",
-                            "value": "C1132/129"
-                        },
-                        {
-                            "label": "Title",
-                            "value": "Cliff Richard interview (Heathcliff)"
-                        }
-                    ],
-                    "type": "Range"
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004#t=0,3964.08",
+                    "type": "Canvas"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006#t=0,1490.48",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C1132/116"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Cliff Richard interview (Heathcliff)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Richard, Cliff, 1940- (speaker, male; interviewee)",
+                            "unidentified speaker, male (interviewer)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "not before 1995"
+                        ]
+                    }
                 }
             ],
             "type": "Range"

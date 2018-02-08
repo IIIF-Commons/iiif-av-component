@@ -1,0 +1,1826 @@
+{
+    "@context": "http://iiif.io/api/presentation/3/context.json",
+    "attribution": {
+        "en": [
+            "<span>Rights unassigned - staff access only</span>"
+        ]
+    },
+    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C733_48.json",
+    "label": {
+        "en": [
+            "C733/48 C733/49 C733/50 [Recordings in Soqotri / 'Survey' recordings in English]"
+        ]
+    },
+    "logo": {
+        "id": "https://www.bl.uk/images/bl_logo_100.gif",
+        "type": "Image"
+    },
+    "metadata": [
+        {
+            "label": {
+                "en": [
+                    "Identifier"
+                ]
+            },
+            "value": {
+                "en": [
+                    "C733/48"
+                ]
+            }
+        },
+        {
+            "label": {
+                "en": [
+                    "Title"
+                ]
+            },
+            "value": {
+                "en": [
+                    "[Recordings in Soqotri / 'Survey' recordings in English]"
+                ]
+            }
+        }
+    ],
+    "sequences": [
+        {
+            "canvases": [
+                {
+                    "duration": 4047.12,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004",
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004/anno",
+                            "items": [
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000033.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004/anno/node-id-000004",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004#t=0,2023.56",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000033.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004/anno/node-id-000002",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004#t=0,2023.56",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "label": "Tape 1 Side 1",
+                    "type": "Canvas"
+                },
+                {
+                    "duration": 3520.08,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005",
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005/anno",
+                            "items": [
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000035.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005/anno/node-id-000008",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005#t=0,1760.04",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000035.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005/anno/node-id-000006",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005#t=0,1760.04",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "label": "Tape 1 Side 2",
+                    "type": "Canvas"
+                },
+                {
+                    "duration": 2239,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007",
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno",
+                            "items": [
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000037.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno/node-id-000012",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=0.36,484.8",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000037.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno/node-id-000010",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=0,484.8",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000037.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno/node-id-000014",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=487.56,526.36",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000037.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno/node-id-000016",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=526.64,1026.48",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000037.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno/node-id-000020",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=1027,1392.56",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000037.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno/node-id-000018",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=1027,1392.56",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "label": "Tape 2 Side 1",
+                    "type": "Canvas"
+                },
+                {
+                    "duration": 2223.84,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008",
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno",
+                            "items": [
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000039.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno/node-id-000024",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=0,259.8",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000039.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno/node-id-000026",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=260,276.24",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000039.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno/node-id-000028",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=277.44,821.36",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000039.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno/node-id-000022",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=0,821.36",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000039.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno/node-id-000030",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=821.76,992.32",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000039.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno/node-id-000032",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=992.96,1404.92",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "label": "Tape 2 Side 2",
+                    "type": "Canvas"
+                },
+                {
+                    "duration": 1405.2,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a",
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a/anno",
+                            "items": [
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003b.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a/anno/node-id-000034",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=0,736",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003b.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a/anno/node-id-000036",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=736.72,1158.84",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003b.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a/anno/node-id-000038",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=1159.12,1346.4",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                },
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003b.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a/anno/node-id-000040",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=1346.52,1406.32",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "label": "Tape 3 Side 1",
+                    "type": "Canvas"
+                },
+                {
+                    "duration": 1398.84,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b",
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b/anno",
+                            "items": [
+                                {
+                                    "body": [
+                                        {
+                                            "items": [
+                                                {
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003d.mp4",
+                                                    "type": "Audio"
+                                                }
+                                            ],
+                                            "type": "Choice"
+                                        }
+                                    ],
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b/anno/node-id-000042",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b#t=0,1398.84",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
+                                }
+                            ],
+                            "type": "AnnotationPage"
+                        }
+                    ],
+                    "label": "Tape 3 Side 2",
+                    "type": "Canvas"
+                }
+            ],
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000001",
+            "type": "Sequence"
+        }
+    ],
+    "structures": [
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000c",
+            "label": {
+                "en": [
+                    "[A'raf Biladik]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004#t=0,2023.56",
+                    "type": "Canvas"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005#t=0,1760.04",
+                    "type": "Canvas"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=0,484.8",
+                    "type": "Canvas"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000d",
+                    "label": {
+                        "en": [
+                            "[A'raf Biladik, Soqotri]"
+                        ]
+                    },
+                    "members": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004#t=0,2023.56",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": {
+                                "en": [
+                                    "Identifier"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "C733/48"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Title"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "[A'raf Biladik, Soqotri]"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Place"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Aden Governorate, Soqotra?"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Contributor"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Wazir Al-Nubi, Ibrahim (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Date"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "1965-12-24"
+                                ]
+                            }
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000e",
+                    "label": {
+                        "en": [
+                            "[A'raf Biladik, Mehri]"
+                        ]
+                    },
+                    "members": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005#t=0,1760.04",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": {
+                                "en": [
+                                    "Identifier"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "C733/48"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Title"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "[A'raf Biladik, Mehri]"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Place"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Eastern Yemen/Western Oman?"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Contributor"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "unidentified (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Date"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "1965-12-24"
+                                ]
+                            }
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000f",
+                    "label": {
+                        "en": [
+                            "[A'raf Biladik, Soqotri, page 4]"
+                        ]
+                    },
+                    "members": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=0.36,484.8",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": {
+                                "en": [
+                                    "Identifier"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "C733/49"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Title"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "[A'raf Biladik, Soqotri, page 4]"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Place"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Aden Governorate, Soqotra?"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Contributor"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Bin Ali, Thani (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Date"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "1965-12-24"
+                                ]
+                            }
+                        }
+                    ],
+                    "type": "Range"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C733/48"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "[A'raf Biladik]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Aden Governorate, Soqotra? Eastern Yemen/Western Oman?"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Wazir Al-Nubi, Ibrahim (speaker, male)",
+                            "unidentified (speaker, male)",
+                            "Bin Ali, Thani (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "1965-12-24"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000016",
+            "label": {
+                "en": [
+                    "[Translation of Arabic to Soqotri]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=487.56,526.36",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C733/49"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "[Translation of Arabic to Soqotri]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Aden Governorate, Soqotra?"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Suleiman (speaker, male)",
+                            "Hadrami Bedouin League member (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "1965-12-24?"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000018",
+            "label": {
+                "en": [
+                    "[Medical interview in Arabic and Soqotri]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=526.64,1026.48",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C733/49"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "[Medical interview in Arabic and Soqotri]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Aden Governorate, Soqotra?"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "unidentified (speaker, male; interviewee)",
+                            "Corporal Goldberg (speaker, male; interviewer)",
+                            "unidentified (speaker, male; interviewee)",
+                            "unidentified (speaker, child)",
+                            "Suleiman (speaker, male; translator)",
+                            "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "1965-12-24"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00001a",
+            "label": {
+                "en": [
+                    "[Arabic to Soqotri translations]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=1027,1392.56",
+                    "type": "Canvas"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=0,821.36",
+                    "type": "Canvas"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00001b",
+                    "label": {
+                        "en": [
+                            "[Single-word translation of Arabic to Soqotri]"
+                        ]
+                    },
+                    "members": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=1027,1392.56",
+                            "type": "Canvas"
+                        },
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=0,259.8",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": {
+                                "en": [
+                                    "Identifier"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "C733/49"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Title"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "[Single-word translation of Arabic to Soqotri]"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Place"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Aden Governorate, Soqotra?"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Contributor"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Suleiman (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Date"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "1965-12-24?"
+                                ]
+                            }
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00001c",
+                    "label": {
+                        "en": [
+                            "[Pronunciation of lateral s]"
+                        ]
+                    },
+                    "members": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=260,276.24",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": {
+                                "en": [
+                                    "Identifier"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "C733/49"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Title"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "[Pronunciation of lateral s]"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Place"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Aden Governorate, Soqotra?"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Contributor"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Suleiman (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Date"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "1965-12-24?"
+                                ]
+                            }
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00001d",
+                    "label": {
+                        "en": [
+                            "[Medical phrases]"
+                        ]
+                    },
+                    "members": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=277.44,821.36",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": {
+                                "en": [
+                                    "Identifier"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "C733/49"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Title"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "[Medical phrases]"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Place"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Aden Governorate, Soqotra?"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Contributor"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Suleiman (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                                    "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Date"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "1965-12-24?"
+                                ]
+                            }
+                        }
+                    ],
+                    "type": "Range"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C733/49"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "[Arabic to Soqotri translations]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Aden Governorate, Soqotra?"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Suleiman (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "1965-12-24?"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000024",
+            "label": {
+                "en": [
+                    "Arabic/Soqotri [Mu'allaqat of the Imru Al-Qays]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=821.76,992.32",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C733/49"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Arabic/Soqotri [Mu'allaqat of the Imru Al-Qays]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Aden Governorate, Soqotra?"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Unidentified (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "1965-12-24"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000026",
+            "label": {
+                "en": [
+                    "Arabic/Soqotri [Page 121]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=992.96,1404.92",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C733/49"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Arabic/Soqotri [Page 121]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Aden Governorate, Soqotra?"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "unidentified (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "1965-12-24"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000028",
+            "label": {
+                "en": [
+                    "[Phrases from Arabic to Soqotri]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=0,736",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C733/50"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "[Phrases from Arabic to Soqotri]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Abd Al-Kuri, Soqotra Archipelago, Aden Governorate?"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "unidentified (speaker, male)",
+                            "unidentified (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "1965-12?"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00002a",
+            "label": {
+                "en": [
+                    "[Soqotri songs]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=736.72,1158.84",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C733/50"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "[Soqotri songs]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Abd Al-Kuri, Soqotra Archipelago, Aden Governorate?"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "unidentified (speakers, male)",
+                            "unidentified (singers, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "1965-12?"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00002c",
+            "label": {
+                "en": [
+                    "[Arabic/Mahri translation]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=1159.12,1346.4",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C733/50"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "[Arabic/Mahri translation]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Eastern Yemen/Western Oman?"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "unidentified (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "1965-12?"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00002e",
+            "label": {
+                "en": [
+                    "['Survey' recordings]"
+                ]
+            },
+            "members": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=1346.52,1406.32",
+                    "type": "Canvas"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b#t=0,1398.84",
+                    "type": "Canvas"
+                }
+            ],
+            "metadata": [
+                {
+                    "label": {
+                        "en": [
+                            "Identifier"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "C733/50"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Title"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "['Survey' recordings]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Place"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Abd Al-Kuri, Soqotra Archipelago, Aden Governorate?"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
+                            "Johnstone, Thomas Muir, 1924-1983 (sound recordist)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "not before 1966-01-16"
+                        ]
+                    }
+                }
+            ],
+            "type": "Range"
+        }
+    ],
+    "type": "Manifest"
+}

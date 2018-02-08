@@ -1,11 +1,11 @@
 {
+    "@context": "http://iiif.io/api/presentation/3/context.json",
     "attribution": {
         "en": [
             "<span>Rights unassigned - staff access only</span>"
         ]
     },
-    "context": "http://iiif.io/api/presentation/3/context.json",
-    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/manifest.json",
+    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98.json",
     "label": {
         "en": [
             "C1685/98 Loose ends 17/7/99"
@@ -47,7 +47,7 @@
                 {
                     "duration": 4119.16,
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
-                    "content": [
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno",
                             "items": [
@@ -156,7 +156,7 @@
                 {
                     "duration": 3723.4,
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
-                    "content": [
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno",
                             "items": [
@@ -258,6 +258,10 @@
             },
             "members": [
                 {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,2504.64",
+                    "type": "Canvas"
+                },
+                {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007",
                     "label": {
                         "en": [
@@ -292,6 +296,30 @@
                             "value": {
                                 "en": [
                                     "There's a touch"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Contributor"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "The Proclaimers"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Date"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "not after 1999-07-17"
                                 ]
                             }
                         }
@@ -335,13 +363,34 @@
                                     "Song of dreams"
                                 ]
                             }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Contributor"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Taylor, Becky (singer, female)",
+                                    "unidentified orchestra"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Date"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "not after 1999-07-17"
+                                ]
+                            }
                         }
                     ],
                     "type": "Range"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,2504.64",
-                    "type": "Canvas"
                 }
             ],
             "metadata": [
@@ -378,6 +427,37 @@
                     "value": {
                         "en": [
                             "Royal Albert Hall, London"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Sherrin, Ned, 1931-2007 (speaker, male; presenter / interviewer)",
+                            "Glover, Julian, 1935- (speaker, male; interviewee)",
+                            "Windsor, Barbara, 1937- (speaker, female; interviewee)",
+                            "The Proclaimers (speakers, male; interviewees / performers)",
+                            "Frisby, Dominic (speaker, male)",
+                            "Jupitus, Phil (speaker, male / interviewee)",
+                            "Taylor, Becky (speaker, female; interviewee / singer)",
+                            "Brown, Errol (speaker, male; interviewee)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "not after 1999-07-17"
                         ]
                     }
                 }
@@ -419,6 +499,30 @@
                     "value": {
                         "en": [
                             "[News May 2001]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "unidentified speaker, female (newsreader)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "not after 2001-05-19"
                         ]
                     }
                 }
@@ -466,6 +570,33 @@
                             "Saturday review"
                         ]
                     }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Sutcliffe, Thomas, 1956- (speaker, male; presenter)",
+                            "Roberts, Michèle, 1949- (speaker, female)",
+                            "White, Jim, speaker (speaker, male)",
+                            "Whittam Smith, Andreas, 1937- (speaker, male)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "not after 2001-05-19"
+                        ]
+                    }
                 }
             ],
             "type": "Range"
@@ -505,6 +636,30 @@
                     "value": {
                         "en": [
                             "My dear Jim - Letters to a friend [2]"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Rietti, Robert, 1923-2015 (speaker, male)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "not after 2001-05-19"
                         ]
                     }
                 }
@@ -548,6 +703,30 @@
                             "[News May 2001]"
                         ]
                     }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "unidentified speaker, female (newsreader)"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "not after 1999-05-19"
+                        ]
+                    }
                 }
             ],
             "type": "Range"
@@ -587,6 +766,31 @@
                     "value": {
                         "en": [
                             "The archive hour: Humph at 80"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Contributor"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "Lyttelton, Humphrey, 1921-2008 (speaker, male; presenter)",
+                            "unidentified speakers"
+                        ]
+                    }
+                },
+                {
+                    "label": {
+                        "en": [
+                            "Date"
+                        ]
+                    },
+                    "value": {
+                        "en": [
+                            "not after 2001-05-19"
                         ]
                     }
                 }
