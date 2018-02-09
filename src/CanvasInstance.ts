@@ -161,7 +161,7 @@ namespace IIIFComponents {
 
             this._contentAnnotations = [];
 
-            const items = (<any>this.options.data.canvas).__jsonld.content[0].items; //todo: use canvas.getContent()
+            const items: Manifesto.IAnnotation[] = this.options.data.canvas.getContent();// (<any>this.options.data.canvas).__jsonld.content[0].items; //todo: use canvas.getContent()
 
             if (items.length === 1) {
                 this._$timelineItemContainer.hide();
@@ -169,7 +169,7 @@ namespace IIIFComponents {
 
             for (let i = 0; i < items.length; i++) {
 
-                const item = items[i];
+                const item: Manifesto.IAnnotation = items[i];
 
                 /*
                 if (item.motivation != 'painting') {
@@ -177,17 +177,28 @@ namespace IIIFComponents {
                 }
                 */
 
-                let mediaSource;
+                let mediaSource: any;
+                const bodies: Manifesto.IAnnotationBody[] = item.getBody();
 
-                if (Array.isArray(item.body) && item.body[0].type.toLowerCase() === 'choice') {
-                    // Choose first "Choice" item as body
-                    const tmpItem = item;
-                    item.body = tmpItem.body[0].items[0];
-                    mediaSource = item.body.id.split('#')[0];
-                } else if (item.body.type.toLowerCase() === 'textualbody') {
-                    mediaSource = item.body.value;
+                if (!bodies.length) {
+                    console.warn('item has no body');
+                    return;
+                }
+
+                const body: Manifesto.IAnnotationBody = bodies[0];
+                const type: Manifesto.ResourceType | null = body.getType();
+
+                // if (type && type.toString() === 'choice') {
+                //     // Choose first "Choice" item as body
+                //     const tmpItem = item;
+                //     item.body = tmpItem.body[0].items[0];
+                //     mediaSource = item.body.id.split('#')[0];
+                // } else 
+                
+                if (type && type.toString() === 'textualbody') {
+                    //mediaSource = (<any>body).value;
                 } else {
-                    mediaSource = item.body.id.split('#')[0];
+                    mediaSource = body.id.split('#')[0];
                 }
 
                 /*
@@ -204,8 +215,15 @@ namespace IIIFComponents {
                     mediaHeight = fragmentPosition[3];
                 */
 
-                const spatial = /xywh=([^&]+)/g.exec(item.target);
-                const temporal = /t=([^&]+)/g.exec(item.target);
+                const target: string | null = item.getTarget();
+
+                if (!target) {
+                    console.warn('item has no target');
+                    return;
+                }
+
+                const spatial: RegExpExecArray | null = /xywh=([^&]+)/g.exec(target);
+                const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(target);
 
                 let xywh;
 
@@ -235,7 +253,7 @@ namespace IIIFComponents {
                     percentageWidth = this._convertToPercentage(mediaWidth, this._canvasWidth),
                     percentageHeight = this._convertToPercentage(mediaHeight, this._canvasHeight);
 
-                const temporalOffsets = /t=([^&]+)/g.exec(item.body.id);
+                const temporalOffsets: RegExpExecArray | null = /t=([^&]+)/g.exec(body.id);
 
                 let ot;
 
@@ -249,7 +267,7 @@ namespace IIIFComponents {
                     offsetEnd = (ot[1]) ? parseInt(<string>ot[1]) : ot[1];
 
                 const itemData: any = {
-                    'type': item.body.type,
+                    'type': type,
                     'source': mediaSource,
                     'start': startTime,
                     'end': endTime,
@@ -343,8 +361,9 @@ namespace IIIFComponents {
         private _renderMediaElement(data: any): void {
 
             let $mediaElement;
+            let type: string = data.type.toString().toLowerCase();
 
-            switch (data.type.toLowerCase()) {
+            switch (type) {
                 case 'image':
                     $mediaElement = $('<img class="anno" src="' + data.source + '" />');
                     break;
@@ -370,7 +389,7 @@ namespace IIIFComponents {
 
             data.element = $mediaElement;
 
-            if (data.type.toLowerCase() === 'video' || data.type.toLowerCase() === 'audio') {
+            if (type === 'video' || type === 'audio') {
 
                 data.timeout = null;
 
@@ -407,7 +426,7 @@ namespace IIIFComponents {
                 this._$canvasContainer.append($mediaElement);
             }
 
-            if (data.type.toLowerCase() === 'video' || data.type.toLowerCase() === 'audio') {
+            if (type === 'video' || type === 'audio') {
 
                 const that = this;
                 const self = data;
@@ -718,6 +737,7 @@ namespace IIIFComponents {
             for (let i = 0; i < this._contentAnnotations.length; i++) {
 
                 contentAnnotation = this._contentAnnotations[i];
+                const type: string = contentAnnotation.type.toString().toLowerCase();
 
                 if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
 
@@ -730,7 +750,7 @@ namespace IIIFComponents {
                         contentAnnotation.timelineElement.addClass('active');
                     }
 
-                    if (contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') {
+                    if (type === 'video' || type === 'audio') {
 
                         if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
                             contentAnnotation.element[0].pause();
@@ -744,7 +764,7 @@ namespace IIIFComponents {
                         contentAnnotation.active = false;
                         contentAnnotation.element.hide();
                         contentAnnotation.timelineElement.removeClass('active');
-                        if (contentAnnotation.toLowerCase() === 'video' || contentAnnotation.toLowerCase() === 'audio') {
+                        if (type === 'video' || type === 'audio') {
                             contentAnnotation.element[0].pause();
                         }
                     }
@@ -764,8 +784,9 @@ namespace IIIFComponents {
             for (let i = 0; i < this._contentAnnotations.length; i++) {
 
                 contentAnnotation = this._contentAnnotations[i];
+                const type: string = contentAnnotation.type.toString().toLowerCase();
 
-                if (contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') {
+                if (type === 'video' || type === 'audio') {
 
                     contentAnnotation.element[0].currentTime = this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset;
 
@@ -802,7 +823,9 @@ namespace IIIFComponents {
 
                 contentAnnotation = this._contentAnnotations[i];
 
-                if ((contentAnnotation.type.toLowerCase() === 'video' || contentAnnotation.type.toLowerCase() === 'audio') &&
+                const type: string = contentAnnotation.type.toString().toLowerCase();
+
+                if ((type === 'video' || type === 'audio') &&
                     (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime)) {
 
                     const correctTime: number = (this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
