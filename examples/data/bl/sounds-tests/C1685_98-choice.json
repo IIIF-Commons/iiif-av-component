@@ -138,6 +138,11 @@
     "structures": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/top",
+            "label": {
+                "en": [
+                    "Loose ends 17/7/99"
+                ]
+            },
             "members": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
