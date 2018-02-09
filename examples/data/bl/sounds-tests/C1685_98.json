@@ -45,9 +45,7 @@
         {
             "canvases": [
                 {
-                    "duration": 4119.16,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
-                    "items": [
+                    "content": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno",
                             "items": [
@@ -74,13 +72,13 @@
                             "type": "AnnotationPage"
                         }
                     ],
+                    "duration": 4119.16,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
                     "label": "Tape 1 Side 1",
                     "type": "Canvas"
                 },
                 {
-                    "duration": 3723.4,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
-                    "items": [
+                    "content": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno",
                             "items": [
@@ -107,6 +105,8 @@
                             "type": "AnnotationPage"
                         }
                     ],
+                    "duration": 3723.4,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
                     "label": "Tape 1 Side 2",
                     "type": "Canvas"
                 }
