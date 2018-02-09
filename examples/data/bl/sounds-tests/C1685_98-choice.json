@@ -5,7 +5,7 @@
             "<span>Rights unassigned - staff access only</span>"
         ]
     },
-    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98.json",
+    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98-choice.json",
     "label": {
         "en": [
             "C1685/98 Loose ends 17/7/99"
@@ -54,6 +54,16 @@
                                         {
                                             "items": [
                                                 {
+                                                    "format": "application/dash+xml",
+                                                    "id": "https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x000019/manifest.mpd",
+                                                    "type": "Audio"
+                                                },
+                                                {
+                                                    "format": "vnd.apple.mpegURL",
+                                                    "id": "https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x000019/index.m3u8",
+                                                    "type": "Audio"
+                                                },
+                                                {
                                                     "format": "audio/mp4",
                                                     "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
                                                     "type": "Audio"
@@ -86,6 +96,16 @@
                                     "body": [
                                         {
                                             "items": [
+                                                {
+                                                    "format": "application/dash+xml",
+                                                    "id": "https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x00001b/manifest.mpd",
+                                                    "type": "Audio"
+                                                },
+                                                {
+                                                    "format": "vnd.apple.mpegURL",
+                                                    "id": "https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x00001b/index.m3u8",
+                                                    "type": "Audio"
+                                                },
                                                 {
                                                     "format": "audio/mp4",
                                                     "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
