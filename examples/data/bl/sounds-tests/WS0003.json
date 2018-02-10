@@ -1,101 +1,171 @@
 {
-    "@context":"http://iiif.io/api/presentation/3/context.json",
+    "@context": "http://iiif.io/api/presentation/3/context.json",
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/WS0003.json",
-    "type":"Manifest",
-    "label":{"en":["WS0003 Aburria aburri r1"]},
+    "label": {
+        "en": [
+            "WS0003 Aburria aburri r1"
+        ]
+    },
     "metadata": [
         {
-            "label":{"en":["Identifier"]},
-            "value":{"en":["WS0003"]}
+            "label": {
+                "en": [
+                    "Identifier"
+                ]
+            },
+            "value": {
+                "en": [
+                    "WS0003"
+                ]
+            }
         },
         {
-            "label":{"en":["Title"]},
-            "value":{"en":["Aburria aburri r1"]}
+            "label": {
+                "en": [
+                    "Title"
+                ]
+            },
+            "value": {
+                "en": [
+                    "Aburria aburri r1"
+                ]
+            }
         }
     ],
     "sequences": [
         {
-            "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000001",
-            "type":"Sequence",
-            "canvases" : [
+            "canvases": [
                 {
-                    "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004",
-                    "type":"Canvas",
-                    "label":"Tape 1 Side 1",
-                    "duration": 20.84,
                     "content": [
                         {
-                            "type": "AnnotationPage",
-                            "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004/anno",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004/anno",
                             "items": [
                                 {
-                                    "type":"Annotation",
-                                    "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004/anno/",
-                                    "motivation":"painting",
-                                    "timeMode":"trim",
                                     "body": [
                                         {
-                                            "type":"Choice",
                                             "items": [
                                                 {
-                                                    "id":"http://resources.digirati.com/bl/WS0003/vdc_100048002902.0x000009.mp4",
-                                                    "type":"Audio",
-                                                    "format":"audio/mp4"
+                                                    "format": "audio/mp4",
+                                                    "id": "http://resources.digirati.com/bl/WS0003/vdc_100048002902.0x000009.mp4",
+                                                    "type": "Audio"
                                                 }
-                                            ]
+                                            ],
+                                            "type": "Choice"
                                         }
                                     ],
-                                    "target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004"
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004/anno/",
+                                    "motivation": "painting",
+                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004",
+                                    "timeMode": "trim",
+                                    "type": "Annotation"
                                 }
-                            ]
+                            ],
+                            "type": "AnnotationPage"
                         }
-                    ]
+                    ],
+                    "duration": 20.84,
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004",
+                    "label": "Tape 1 Side 1",
+                    "type": "Canvas"
                 }
-            ]
+            ],
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000001",
+            "type": "Sequence"
         }
     ],
     "structures": [
         {
-            "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000002/top",
-            "label":{"en":["Aburria aburri r1"]},
-            "type":"Range",
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000002/top",
+            "label": {
+                "en": [
+                    "Aburria aburri r1"
+                ]
+            },
             "members": [
-                    {
-                        "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004",
-                        "type":"Canvas"
-                    },
-                    {
-                        "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000005",
-                        "type":"Range",
-                        "label":{"en":[""]},
-                        "metadata": [
-                            {
-                                "label":{"en":["Identifier"]},
-                                "value":{"en":["WS0003"]}
-                            },
-                            {
-                                "label":{"en":["Place"]},
-                                "value":{"en":["Peru"]}
-                            },
-                            {
-                                "label":{"en":["Contributor"]},
-                                "value":{"en":["Krabbe, Niels (sound recordist)"]}
-                            },
-                            {
-                                "label":{"en":["Date"]},
-                                "value":{"en":["1983-09-09"]}
-                            }
-                        ],
-                        
-                        "members": [
-                            
-                            {
-                                "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004#t=0,20.84",
-                                "type":"Canvas"
-                            }
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004",
+                    "type": "Canvas"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000005",
+                    "label": {
+                        "en": [
+                            "Aburria aburri : Wattled Guan - Cracidae"
                         ]
-                    }
-            ]
+                    },
+                    "members": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004#t=0,20.84",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": {
+                                "en": [
+                                    "Identifier"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "WS0003"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Title"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Aburria aburri : Wattled Guan - Cracidae"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Place"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Peru"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Contributor"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "Krabbe, Niels (sound recordist)"
+                                ]
+                            }
+                        },
+                        {
+                            "label": {
+                                "en": [
+                                    "Date"
+                                ]
+                            },
+                            "value": {
+                                "en": [
+                                    "1983-09-09"
+                                ]
+                            }
+                        }
+                    ],
+                    "type": "Range"
+                }
+            ],
+            "type": "Range"
         }
-    ]
+    ],
+    "type": "Manifest"
 }
