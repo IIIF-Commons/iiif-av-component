@@ -9,6 +9,8 @@ namespace IIIFComponents {
         private _$canvasTime: JQuery;
         private _$canvasTimelineContainer: JQuery;
         private _$controlsContainer: JQuery;
+        private _$hoverPreview: JQuery;
+        private _$hoverHighlight: JQuery;
         private _$durationHighlight: JQuery;
         private _$nextButton: JQuery;
         private _$optionsContainer: JQuery;
@@ -49,6 +51,8 @@ namespace IIIFComponents {
             this._$optionsContainer = $('<div class="options-container"></div>');
             this._$rangeTimelineContainer = $('<div class="range-timeline-container"></div>');
             this._$canvasTimelineContainer = $('<div class="canvas-timeline-container"></div>');
+            this._$hoverPreview = $('<div class="hover-preview"></div>');
+            this._$hoverHighlight = $('<div class="hover-highlight"></div>');
             this._$durationHighlight = $('<div class="duration-highlight"></div>');
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
             this._$controlsContainer = $('<div class="controls-container"></div>');
@@ -79,10 +83,11 @@ namespace IIIFComponents {
             }, false);
 
             this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
-            this._$canvasTimelineContainer.append(this._$durationHighlight);
+            this._$canvasTimelineContainer.append(this._$hoverPreview, this._$hoverHighlight, this._$durationHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
 
+            this._$hoverPreview.hide();
             this._canvasClockDuration = <number>this.options.data.canvas.getDuration();
 
             const canvasWidth: number = this.options.data.canvas.getWidth();
@@ -155,6 +160,41 @@ namespace IIIFComponents {
                 stop: function (evt: any, ui: any) {
                     //this.setCurrentTime(ui.value);
                 }
+            });
+
+            this._$canvasTimelineContainer.mouseout(() => {
+                that._$hoverHighlight.width(0);
+                that._$hoverPreview.hide();
+            });
+
+            this._$canvasTimelineContainer.mousemove(function(e) {
+                const offset = $(this).offset();
+
+                if (offset) {
+                    const x = e.pageX - offset.left;
+                    that._$hoverHighlight.width(x);
+
+                    const fullWidth: number = <number>that._$canvasTimelineContainer.width();
+                    const ratio: number = x / fullWidth;
+                    const seconds: number = Math.min(that._canvasClockDuration * ratio);
+                    that._$hoverPreview.html(AVComponentUtils.Utils.formatTime(seconds));
+                    const hoverPreviewWidth: number = <number>that._$hoverPreview.width();
+
+                    let left: number = x - hoverPreviewWidth * 0.5;
+
+                    if (left < 0) {
+                        left = 0;
+                    }
+
+                    if (left + hoverPreviewWidth > fullWidth) {
+                        left = fullWidth - <number>that._$hoverPreview.width();
+                    }
+
+                    that._$hoverPreview.css({
+                        left: left,
+                        top: '-30px'
+                    }).show();
+                }                
             });
 
             // create annotations

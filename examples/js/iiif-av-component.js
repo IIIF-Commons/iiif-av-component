@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.24 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.25 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 /// <reference types="exjs" /> 
@@ -411,6 +411,8 @@ var IIIFComponents;
             this._$optionsContainer = $('<div class="options-container"></div>');
             this._$rangeTimelineContainer = $('<div class="range-timeline-container"></div>');
             this._$canvasTimelineContainer = $('<div class="canvas-timeline-container"></div>');
+            this._$hoverPreview = $('<div class="hover-preview"></div>');
+            this._$hoverHighlight = $('<div class="hover-highlight"></div>');
             this._$durationHighlight = $('<div class="duration-highlight"></div>');
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
             this._$controlsContainer = $('<div class="controls-container"></div>');
@@ -429,9 +431,10 @@ var IIIFComponents;
                 _this.setVolume(value);
             }, false);
             this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
-            this._$canvasTimelineContainer.append(this._$durationHighlight);
+            this._$canvasTimelineContainer.append(this._$hoverPreview, this._$hoverHighlight, this._$durationHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
+            this._$hoverPreview.hide();
             this._canvasClockDuration = this.options.data.canvas.getDuration();
             var canvasWidth = this.options.data.canvas.getWidth();
             var canvasHeight = this.options.data.canvas.getHeight();
@@ -496,6 +499,33 @@ var IIIFComponents;
                 },
                 stop: function (evt, ui) {
                     //this.setCurrentTime(ui.value);
+                }
+            });
+            this._$canvasTimelineContainer.mouseout(function () {
+                that._$hoverHighlight.width(0);
+                that._$hoverPreview.hide();
+            });
+            this._$canvasTimelineContainer.mousemove(function (e) {
+                var offset = $(this).offset();
+                if (offset) {
+                    var x = e.pageX - offset.left;
+                    that._$hoverHighlight.width(x);
+                    var fullWidth = that._$canvasTimelineContainer.width();
+                    var ratio = x / fullWidth;
+                    var seconds = Math.min(that._canvasClockDuration * ratio);
+                    that._$hoverPreview.html(IIIFComponents.AVComponentUtils.Utils.formatTime(seconds));
+                    var hoverPreviewWidth = that._$hoverPreview.width();
+                    var left = x - hoverPreviewWidth * 0.5;
+                    if (left < 0) {
+                        left = 0;
+                    }
+                    if (left + hoverPreviewWidth > fullWidth) {
+                        left = fullWidth - that._$hoverPreview.width();
+                    }
+                    that._$hoverPreview.css({
+                        left: left,
+                        top: '-30px'
+                    }).show();
                 }
             });
             // create annotations

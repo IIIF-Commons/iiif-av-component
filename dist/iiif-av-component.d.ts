@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.24 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.25 https://github.com/iiif-commons/iiif-av-component#readme
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -72,6 +72,8 @@ declare namespace IIIFComponents {
         private _$canvasTime;
         private _$canvasTimelineContainer;
         private _$controlsContainer;
+        private _$hoverPreview;
+        private _$hoverHighlight;
         private _$durationHighlight;
         private _$nextButton;
         private _$optionsContainer;
