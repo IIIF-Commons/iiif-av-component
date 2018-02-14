@@ -65,16 +65,15 @@ declare namespace IIIFComponents.AVVolumeControl {
 /// <reference types="jqueryui" />
 declare namespace IIIFComponents {
     class CanvasInstance extends _Components.BaseComponent {
-        private _highPriorityFrequency;
-        private _lowPriorityFrequency;
         private _$canvasContainer;
         private _$canvasDuration;
         private _$canvasTime;
         private _$canvasTimelineContainer;
         private _$controlsContainer;
         private _$durationHighlight;
-        private _$hoverHighlight;
-        private _$hoverPreview;
+        private _$canvasHoverHighlight;
+        private _$canvasHoverPreview;
+        private _$hoverPreviewTemplate;
         private _$nextButton;
         private _$optionsContainer;
         private _$playButton;
@@ -92,14 +91,16 @@ declare namespace IIIFComponents {
         private _canvasHeight;
         private _canvasWidth;
         private _contentAnnotations;
+        private _highPriorityFrequency;
         private _highPriorityInterval;
         private _isPlaying;
         private _isStalled;
+        private _lowPriorityFrequency;
         private _lowPriorityInterval;
         private _readyCanvasesCount;
         private _stallRequestedBy;
-        private _wasPlaying;
         private _volume;
+        private _wasPlaying;
         $playerElement: JQuery;
         currentDuration: AVComponentObjects.Duration | null;
         logMessage: (message: string) => void;

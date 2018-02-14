@@ -388,16 +388,16 @@ var IIIFComponents;
         __extends(CanvasInstance, _super);
         function CanvasInstance(options) {
             var _this = _super.call(this, options) || this;
-            _this._highPriorityFrequency = 25;
-            _this._lowPriorityFrequency = 100;
             _this._canvasClockDuration = 0; // todo: should these 0 values be undefined by default?
             _this._canvasClockFrequency = 25;
             _this._canvasClockStartDate = 0;
             _this._canvasClockTime = 0;
             _this._canvasHeight = 0;
             _this._canvasWidth = 0;
+            _this._highPriorityFrequency = 25;
             _this._isPlaying = false;
             _this._isStalled = false;
+            _this._lowPriorityFrequency = 100;
             _this._readyCanvasesCount = 0;
             _this._stallRequestedBy = []; //todo: type
             _this._wasPlaying = false;
@@ -407,13 +407,14 @@ var IIIFComponents;
         }
         CanvasInstance.prototype.init = function () {
             var _this = this;
+            this._$hoverPreviewTemplate = $('<div class="hover-preview"><div class="label"></div><div class="pointer"><span class="arrow"></span></div></div>');
             this._$canvasContainer = $('<div class="canvas-container"></div>');
             this._$optionsContainer = $('<div class="options-container"></div>');
             this._$rangeTimelineContainer = $('<div class="range-timeline-container"></div>');
             this._$canvasTimelineContainer = $('<div class="canvas-timeline-container"></div>');
-            this._$hoverPreview = $('<div class="hover-preview"></div>');
-            this._$hoverHighlight = $('<div class="hover-highlight"></div>');
-            this._$rangeHoverPreview = $('<div class="hover-preview"></div>');
+            this._$canvasHoverPreview = this._$hoverPreviewTemplate.clone();
+            this._$canvasHoverHighlight = $('<div class="hover-highlight"></div>');
+            this._$rangeHoverPreview = this._$hoverPreviewTemplate.clone();
             this._$rangeHoverHighlight = $('<div class="hover-highlight"></div>');
             this._$durationHighlight = $('<div class="duration-highlight"></div>');
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
@@ -433,11 +434,11 @@ var IIIFComponents;
                 _this.setVolume(value);
             }, false);
             this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
-            this._$canvasTimelineContainer.append(this._$hoverPreview, this._$hoverHighlight, this._$durationHighlight);
+            this._$canvasTimelineContainer.append(this._$canvasHoverPreview, this._$canvasHoverHighlight, this._$durationHighlight);
             this._$rangeTimelineContainer.append(this._$rangeHoverPreview, this._$rangeHoverHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
-            this._$hoverPreview.hide();
+            this._$canvasHoverPreview.hide();
             this._$rangeHoverPreview.hide();
             this._canvasClockDuration = this.options.data.canvas.getDuration();
             var canvasWidth = this.options.data.canvas.getWidth();
@@ -506,8 +507,8 @@ var IIIFComponents;
                 }
             });
             this._$canvasTimelineContainer.mouseout(function () {
-                that._$hoverHighlight.width(0);
-                that._$hoverPreview.hide();
+                that._$canvasHoverHighlight.width(0);
+                that._$canvasHoverPreview.hide();
             });
             this._$rangeTimelineContainer.mouseout(function () {
                 that._$rangeHoverHighlight.width(0);
@@ -619,26 +620,33 @@ var IIIFComponents;
         CanvasInstance.prototype._updateHoverPreview = function (e, $container, duration) {
             var offset = $container.offset();
             var x = e.pageX - offset.left;
+            var $hoverArrow = $container.find('.arrow');
             var $hoverHighlight = $container.find('.hover-highlight');
             var $hoverPreview = $container.find('.hover-preview');
             $hoverHighlight.width(x);
             var fullWidth = $container.width();
             var ratio = x / fullWidth;
             var seconds = Math.min(duration * ratio);
-            $hoverPreview.html(IIIFComponents.AVComponentUtils.Utils.formatTime(seconds));
+            $hoverPreview.find('.label').text(IIIFComponents.AVComponentUtils.Utils.formatTime(seconds));
             var hoverPreviewWidth = $hoverPreview.outerWidth();
             var hoverPreviewHeight = $hoverPreview.outerHeight();
             var left = x - hoverPreviewWidth * 0.5;
+            var arrowLeft = hoverPreviewWidth * 0.5 - 6;
             if (left < 0) {
                 left = 0;
+                arrowLeft = x - 6;
             }
             if (left + hoverPreviewWidth > fullWidth) {
                 left = fullWidth - hoverPreviewWidth;
+                arrowLeft = (hoverPreviewWidth - (fullWidth - x)) - 6;
             }
             $hoverPreview.css({
                 left: left,
                 top: hoverPreviewHeight * -1 + 'px'
             }).show();
+            $hoverArrow.css({
+                left: arrowLeft
+            });
         };
         CanvasInstance.prototype._previous = function (isDouble) {
             if (this._isLimitedToRange() && this.currentDuration) {

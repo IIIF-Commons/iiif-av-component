@@ -2,16 +2,15 @@ namespace IIIFComponents {
 
     export class CanvasInstance extends _Components.BaseComponent {
 
-        private _highPriorityFrequency: number = 25;
-        private _lowPriorityFrequency: number = 100;
         private _$canvasContainer: JQuery;
         private _$canvasDuration: JQuery;
         private _$canvasTime: JQuery;
         private _$canvasTimelineContainer: JQuery;
         private _$controlsContainer: JQuery;
         private _$durationHighlight: JQuery;
-        private _$hoverHighlight: JQuery;
-        private _$hoverPreview: JQuery;
+        private _$canvasHoverHighlight: JQuery;
+        private _$canvasHoverPreview: JQuery;
+        private _$hoverPreviewTemplate: JQuery;
         private _$nextButton: JQuery;
         private _$optionsContainer: JQuery;
         private _$playButton: JQuery;
@@ -29,14 +28,16 @@ namespace IIIFComponents {
         private _canvasHeight: number = 0;
         private _canvasWidth: number = 0;
         private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
+        private _highPriorityFrequency: number = 25;
         private _highPriorityInterval: number;
         private _isPlaying: boolean = false;
         private _isStalled: boolean = false;
+        private _lowPriorityFrequency: number = 100;
         private _lowPriorityInterval: number;
         private _readyCanvasesCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
-        private _wasPlaying: boolean = false;
         private _volume: AVVolumeControl;
+        private _wasPlaying: boolean = false;
 
         public $playerElement: JQuery;
         public currentDuration: AVComponentObjects.Duration | null = null;
@@ -49,13 +50,14 @@ namespace IIIFComponents {
 
         public init() {
 
+            this._$hoverPreviewTemplate = $('<div class="hover-preview"><div class="label"></div><div class="pointer"><span class="arrow"></span></div></div>');
             this._$canvasContainer = $('<div class="canvas-container"></div>');
             this._$optionsContainer = $('<div class="options-container"></div>');
             this._$rangeTimelineContainer = $('<div class="range-timeline-container"></div>');
             this._$canvasTimelineContainer = $('<div class="canvas-timeline-container"></div>');
-            this._$hoverPreview = $('<div class="hover-preview"></div>');
-            this._$hoverHighlight = $('<div class="hover-highlight"></div>');
-            this._$rangeHoverPreview = $('<div class="hover-preview"></div>');
+            this._$canvasHoverPreview = this._$hoverPreviewTemplate.clone();
+            this._$canvasHoverHighlight = $('<div class="hover-highlight"></div>');
+            this._$rangeHoverPreview = this._$hoverPreviewTemplate.clone();
             this._$rangeHoverHighlight = $('<div class="hover-highlight"></div>');
             this._$durationHighlight = $('<div class="duration-highlight"></div>');
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
@@ -87,12 +89,12 @@ namespace IIIFComponents {
             }, false);
 
             this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
-            this._$canvasTimelineContainer.append(this._$hoverPreview, this._$hoverHighlight, this._$durationHighlight);
+            this._$canvasTimelineContainer.append(this._$canvasHoverPreview, this._$canvasHoverHighlight, this._$durationHighlight);
             this._$rangeTimelineContainer.append(this._$rangeHoverPreview, this._$rangeHoverHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
 
-            this._$hoverPreview.hide();
+            this._$canvasHoverPreview.hide();
             this._$rangeHoverPreview.hide();
 
             this._canvasClockDuration = <number>this.options.data.canvas.getDuration();
@@ -170,8 +172,8 @@ namespace IIIFComponents {
             });
 
             this._$canvasTimelineContainer.mouseout(() => {
-                that._$hoverHighlight.width(0);
-                that._$hoverPreview.hide();
+                that._$canvasHoverHighlight.width(0);
+                that._$canvasHoverPreview.hide();
             });
 
             this._$rangeTimelineContainer.mouseout(() => {
@@ -323,6 +325,7 @@ namespace IIIFComponents {
 
             const x = e.pageX - offset.left;
 
+            const $hoverArrow: JQuery = $container.find('.arrow');
             const $hoverHighlight: JQuery = $container.find('.hover-highlight');
             const $hoverPreview: JQuery = $container.find('.hover-preview');
 
@@ -331,24 +334,33 @@ namespace IIIFComponents {
             const fullWidth: number = <number>$container.width();
             const ratio: number = x / fullWidth;
             const seconds: number = Math.min(duration * ratio);
-            $hoverPreview.html(AVComponentUtils.Utils.formatTime(seconds));
+            $hoverPreview.find('.label').text(AVComponentUtils.Utils.formatTime(seconds));
             const hoverPreviewWidth: number = <number>$hoverPreview.outerWidth();
             const hoverPreviewHeight: number = <number>$hoverPreview.outerHeight();
 
             let left: number = x - hoverPreviewWidth * 0.5;
+            let arrowLeft: number = hoverPreviewWidth * 0.5 - 6;
 
             if (left < 0) {
                 left = 0;
+                arrowLeft = x - 6;
             }
 
             if (left + hoverPreviewWidth > fullWidth) {
                 left = fullWidth - hoverPreviewWidth;
+                arrowLeft = (hoverPreviewWidth - (fullWidth - x)) - 6;
             }
 
             $hoverPreview.css({
                 left: left,
                 top: hoverPreviewHeight * -1 + 'px'
             }).show();
+
+            
+
+            $hoverArrow.css({
+                left: arrowLeft
+            });
         }
 
         private _previous(isDouble: boolean): void {
