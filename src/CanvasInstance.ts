@@ -9,16 +9,18 @@ namespace IIIFComponents {
         private _$canvasTime: JQuery;
         private _$canvasTimelineContainer: JQuery;
         private _$controlsContainer: JQuery;
-        private _$hoverPreview: JQuery;
-        private _$hoverHighlight: JQuery;
         private _$durationHighlight: JQuery;
+        private _$hoverHighlight: JQuery;
+        private _$hoverPreview: JQuery;
         private _$nextButton: JQuery;
         private _$optionsContainer: JQuery;
         private _$playButton: JQuery;
         private _$prevButton: JQuery;
+        private _$rangeHoverHighlight: JQuery;
+        private _$rangeHoverPreview: JQuery;
         private _$rangeTimelineContainer: JQuery;
-        private _$timelineItemContainer: JQuery;
         private _$timeDisplay: JQuery;
+        private _$timelineItemContainer: JQuery;
         private _canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
         private _canvasClockFrequency: number = 25;
         private _canvasClockInterval: number;
@@ -53,6 +55,8 @@ namespace IIIFComponents {
             this._$canvasTimelineContainer = $('<div class="canvas-timeline-container"></div>');
             this._$hoverPreview = $('<div class="hover-preview"></div>');
             this._$hoverHighlight = $('<div class="hover-highlight"></div>');
+            this._$rangeHoverPreview = $('<div class="hover-preview"></div>');
+            this._$rangeHoverHighlight = $('<div class="hover-highlight"></div>');
             this._$durationHighlight = $('<div class="duration-highlight"></div>');
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
             this._$controlsContainer = $('<div class="controls-container"></div>');
@@ -84,10 +88,13 @@ namespace IIIFComponents {
 
             this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
             this._$canvasTimelineContainer.append(this._$hoverPreview, this._$hoverHighlight, this._$durationHighlight);
+            this._$rangeTimelineContainer.append(this._$rangeHoverPreview, this._$rangeHoverHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
 
             this._$hoverPreview.hide();
+            this._$rangeHoverPreview.hide();
+
             this._canvasClockDuration = <number>this.options.data.canvas.getDuration();
 
             const canvasWidth: number = this.options.data.canvas.getWidth();
@@ -167,34 +174,17 @@ namespace IIIFComponents {
                 that._$hoverPreview.hide();
             });
 
-            this._$canvasTimelineContainer.mousemove(function(e) {
-                const offset = $(this).offset();
+            this._$rangeTimelineContainer.mouseout(() => {
+                that._$rangeHoverHighlight.width(0);
+                that._$rangeHoverPreview.hide();
+            });
 
-                if (offset) {
-                    const x = e.pageX - offset.left;
-                    that._$hoverHighlight.width(x);
+            this._$canvasTimelineContainer.on("mousemove", (e) => {
+                this._updateHoverPreview(e, this._$canvasTimelineContainer, this._canvasClockDuration);
+            });
 
-                    const fullWidth: number = <number>that._$canvasTimelineContainer.width();
-                    const ratio: number = x / fullWidth;
-                    const seconds: number = Math.min(that._canvasClockDuration * ratio);
-                    that._$hoverPreview.html(AVComponentUtils.Utils.formatTime(seconds));
-                    const hoverPreviewWidth: number = <number>that._$hoverPreview.width();
-
-                    let left: number = x - hoverPreviewWidth * 0.5;
-
-                    if (left < 0) {
-                        left = 0;
-                    }
-
-                    if (left + hoverPreviewWidth > fullWidth) {
-                        left = fullWidth - <number>that._$hoverPreview.width();
-                    }
-
-                    that._$hoverPreview.css({
-                        left: left,
-                        top: '-30px'
-                    }).show();
-                }                
+            this._$rangeTimelineContainer.on("mousemove", (e) => {
+                this._updateHoverPreview(e, this._$rangeTimelineContainer, this.currentDuration ? this.currentDuration.getLength() : 0);
             });
 
             // create annotations
@@ -326,6 +316,39 @@ namespace IIIFComponents {
 
         public getCanvasId(): string | null {
             return this.options.data.canvas.id;
+        }
+
+        private _updateHoverPreview(e: any, $container: JQuery, duration: number): void {
+            const offset = <any>$container.offset();
+
+            const x = e.pageX - offset.left;
+
+            const $hoverHighlight: JQuery = $container.find('.hover-highlight');
+            const $hoverPreview: JQuery = $container.find('.hover-preview');
+
+            $hoverHighlight.width(x);
+
+            const fullWidth: number = <number>$container.width();
+            const ratio: number = x / fullWidth;
+            const seconds: number = Math.min(duration * ratio);
+            $hoverPreview.html(AVComponentUtils.Utils.formatTime(seconds));
+            const hoverPreviewWidth: number = <number>$hoverPreview.outerWidth();
+            const hoverPreviewHeight: number = <number>$hoverPreview.outerHeight();
+
+            let left: number = x - hoverPreviewWidth * 0.5;
+
+            if (left < 0) {
+                left = 0;
+            }
+
+            if (left + hoverPreviewWidth > fullWidth) {
+                left = fullWidth - hoverPreviewWidth;
+            }
+
+            $hoverPreview.css({
+                left: left,
+                top: hoverPreviewHeight * -1 + 'px'
+            }).show();
         }
 
         private _previous(isDouble: boolean): void {

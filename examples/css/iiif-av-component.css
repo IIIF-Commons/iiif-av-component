@@ -42,12 +42,24 @@
 }
 .iiif-av-component .canvas-timeline-container .hover-preview {
   position: absolute;
-  background: grey;
-  height: 20px;
-  width: 40px;
+  background: rgba(0, 0, 0, 0.75);
+  height: 18px;
+  padding: 5px;
   color: #fff;
 }
 .iiif-av-component .canvas-timeline-container .hover-highlight {
+  position: absolute;
+  background: #e2e2e2;
+  height: 20px;
+}
+.iiif-av-component .range-timeline-container .hover-preview {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.75);
+  height: 18px;
+  padding: 5px;
+  color: #fff;
+}
+.iiif-av-component .range-timeline-container .hover-highlight {
   position: absolute;
   background: #e2e2e2;
   height: 20px;

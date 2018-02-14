@@ -413,6 +413,8 @@ var IIIFComponents;
             this._$canvasTimelineContainer = $('<div class="canvas-timeline-container"></div>');
             this._$hoverPreview = $('<div class="hover-preview"></div>');
             this._$hoverHighlight = $('<div class="hover-highlight"></div>');
+            this._$rangeHoverPreview = $('<div class="hover-preview"></div>');
+            this._$rangeHoverHighlight = $('<div class="hover-highlight"></div>');
             this._$durationHighlight = $('<div class="duration-highlight"></div>');
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
             this._$controlsContainer = $('<div class="controls-container"></div>');
@@ -432,9 +434,11 @@ var IIIFComponents;
             }, false);
             this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
             this._$canvasTimelineContainer.append(this._$hoverPreview, this._$hoverHighlight, this._$durationHighlight);
+            this._$rangeTimelineContainer.append(this._$rangeHoverPreview, this._$rangeHoverHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
             this._$hoverPreview.hide();
+            this._$rangeHoverPreview.hide();
             this._canvasClockDuration = this.options.data.canvas.getDuration();
             var canvasWidth = this.options.data.canvas.getWidth();
             var canvasHeight = this.options.data.canvas.getHeight();
@@ -505,28 +509,15 @@ var IIIFComponents;
                 that._$hoverHighlight.width(0);
                 that._$hoverPreview.hide();
             });
-            this._$canvasTimelineContainer.mousemove(function (e) {
-                var offset = $(this).offset();
-                if (offset) {
-                    var x = e.pageX - offset.left;
-                    that._$hoverHighlight.width(x);
-                    var fullWidth = that._$canvasTimelineContainer.width();
-                    var ratio = x / fullWidth;
-                    var seconds = Math.min(that._canvasClockDuration * ratio);
-                    that._$hoverPreview.html(IIIFComponents.AVComponentUtils.Utils.formatTime(seconds));
-                    var hoverPreviewWidth = that._$hoverPreview.width();
-                    var left = x - hoverPreviewWidth * 0.5;
-                    if (left < 0) {
-                        left = 0;
-                    }
-                    if (left + hoverPreviewWidth > fullWidth) {
-                        left = fullWidth - that._$hoverPreview.width();
-                    }
-                    that._$hoverPreview.css({
-                        left: left,
-                        top: '-30px'
-                    }).show();
-                }
+            this._$rangeTimelineContainer.mouseout(function () {
+                that._$rangeHoverHighlight.width(0);
+                that._$rangeHoverPreview.hide();
+            });
+            this._$canvasTimelineContainer.on("mousemove", function (e) {
+                _this._updateHoverPreview(e, _this._$canvasTimelineContainer, _this._canvasClockDuration);
+            });
+            this._$rangeTimelineContainer.on("mousemove", function (e) {
+                _this._updateHoverPreview(e, _this._$rangeTimelineContainer, _this.currentDuration ? _this.currentDuration.getLength() : 0);
             });
             // create annotations
             this._contentAnnotations = [];
@@ -624,6 +615,30 @@ var IIIFComponents;
         };
         CanvasInstance.prototype.getCanvasId = function () {
             return this.options.data.canvas.id;
+        };
+        CanvasInstance.prototype._updateHoverPreview = function (e, $container, duration) {
+            var offset = $container.offset();
+            var x = e.pageX - offset.left;
+            var $hoverHighlight = $container.find('.hover-highlight');
+            var $hoverPreview = $container.find('.hover-preview');
+            $hoverHighlight.width(x);
+            var fullWidth = $container.width();
+            var ratio = x / fullWidth;
+            var seconds = Math.min(duration * ratio);
+            $hoverPreview.html(IIIFComponents.AVComponentUtils.Utils.formatTime(seconds));
+            var hoverPreviewWidth = $hoverPreview.outerWidth();
+            var hoverPreviewHeight = $hoverPreview.outerHeight();
+            var left = x - hoverPreviewWidth * 0.5;
+            if (left < 0) {
+                left = 0;
+            }
+            if (left + hoverPreviewWidth > fullWidth) {
+                left = fullWidth - hoverPreviewWidth;
+            }
+            $hoverPreview.css({
+                left: left,
+                top: hoverPreviewHeight * -1 + 'px'
+            }).show();
         };
         CanvasInstance.prototype._previous = function (isDouble) {
             if (this._isLimitedToRange() && this.currentDuration) {
