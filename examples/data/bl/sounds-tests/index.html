@@ -4,23 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>BL Sounds Tests</title>
     <style>
         body {
             font-family: sans-serif;
+        }
+        ul.manifests > li {
+            font-weight: bold;
+            margin-bottom: 1em;
+        }
+        ul.range li {
+            font-weight:300;
         }
         </style>
 </head>
 <body>
     <h1>AV test manifests</h1>
+    
+    <ul id="theList" class="manifests"></ul>
 
-    <ul>
-            <li><a href="https://universalviewer.io/examples/uv/uv.html#?manifest=https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8.json"><b>C308_8</b> <i>Brian Hayes programme</i></a></li>
-            <li><a href="https://universalviewer.io/examples/uv/uv.html#?manifest=https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241.json"><b>C728_241</b> <i>[Demo]</i></a></li>
-            <li><a href="https://universalviewer.io/examples/uv/uv.html#?manifest=https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1132_116.json"><b>C1132_116</b> <i>Cliff Richard interview (Heathcliff)</i></a></li>
-            <li><a href="https://universalviewer.io/examples/uv/uv.html#?manifest=https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98.json"><b>C1685_98</b> <i>Loose ends 17/7/99</i></a></li>
-            <li><a href="https://universalviewer.io/examples/uv/uv.html#?manifest=https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/WS0003.json"><b>WS0003</b> <i>Aburria aburri r1</i></a></li>
-    </ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+
+        function makeUrl(manifestId, rangeId){
+            var s = "http://universalviewer.io/examples/template.html#?manifest=" + manifestId;
+            if(rangeId){
+                s += "&rid=" + rangeId;
+            }
+            return s;
+        }
+
+        function getString(langMap){
+            if(typeof langMap === 'string') return langMap; // not valid, but...
+            var anyValue = null;
+            for(lang in langMap){
+                anyValue = langMap[lang][0];
+                break;
+            }
+            return anyValue;
+        }
+
+        function loadRanges(manifestId, listId){
+            $.getJSON(manifestId, function(manifest){
+                processItems(manifestId, manifest.structures, $("#" + listId), "r_");
+            });
+        }
+
+        function processItems(manifestId, items, $element, prefix){
+            var $list = null;
+            for(var i=0; i<items.length; i++){
+                var range = items[i];
+                if(range.type == "Range"){
+                    var label = getString(range.label);
+                    if(label && "hidden" != range.behavior){
+                        if(!$list){
+                            $list = $("<ul class='range'></ul>").appendTo($element);
+                        }
+                        elementId = prefix + "_" + i;
+                        var $listItem = appendListItemLink($list, elementId, makeUrl(manifestId, range.id), getString(range.label))
+                        children = range.items || range.members; // yes, in flux...
+                        if(children){
+                            processItems(manifestId, children, $listItem, elementId);
+                        }     
+                    }
+                }
+            }
+        }
+
+        function appendListItemLink($element, liId, linkUrl, text){
+            var html = '<li id="' + liId + '"><a href="' + linkUrl + '">' + text + '</a></li>';
+            return $(html).appendTo($element);
+        }
+
+        $(function() {
+            $.getJSON( "collection.json", function( collection ) {
+                $.each( collection.items, function( index, manifest ) {
+                    appendListItemLink($('#theList'), "li" + index, makeUrl(manifest.id), getString(manifest.label))
+                    loadRanges(manifest.id, 'li' + index);
+                });
+            });
+        });
+    </script>
+
     
 </body>
 </html>
