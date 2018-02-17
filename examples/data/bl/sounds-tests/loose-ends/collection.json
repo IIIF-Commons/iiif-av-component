@@ -23,6 +23,11 @@
             "label": { "en": [ "C1685/98 Loose ends 17/7/99 Explicit Targets, fixed side 1 duration" ] }
         },
         {
+            "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_simpler_auto_advance.json",
+            "type": "Manifest",
+            "label": { "en": [ "C1685/98 Loose ends 17/7/99 Auto-Advance" ] }
+        },
+        {
             "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_simpler_single_canvas.json",
             "type": "Manifest",
             "label": { "en": [ "C1685/98 Loose ends 17/7/99 Single Canvas" ] }
