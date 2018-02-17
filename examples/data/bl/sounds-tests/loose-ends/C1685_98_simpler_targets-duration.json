@@ -2,11 +2,15 @@
     "@context": "http://iiif.io/api/presentation/3/context.json",
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98.json",
     "type": "Manifest",
-    "label": {  "en": [ "C1685/98 Loose ends 17/7/99"  ] },
+    "label": {  "en": [ "C1685/98 Loose ends 17/7/99 Explicit Targets, fixed side 1 duration"  ] },
     "metadata": [
         {
             "label": { "en": [ "Title" ] },
             "value": { "en": [ "Loose ends 17/7/99" ] }
+        },
+        {
+            "label": { "en": [ "Details" ] },
+            "value": { "en": [ "<p>Here the top level range targets the two canvases with a hash fragment, explicitly. This should be the same as just referring to the canvas without a fragment, but isn't (UV issue).</p><p>The duration of canvas 1 has also been changed to match its content.</p>" ] }
         }
     ],
     "sequences": [
@@ -18,7 +22,7 @@
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
                     "type": "Canvas",
                     "label": { "en": [ "Tape 1 Side 1" ] },
-                    "duration": 4119.16,
+                    "duration": 3723.4,
                     "content": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno",
@@ -90,11 +94,11 @@
             "label": { "en": [ "Loose ends 17/7/99" ] },
             "members": [
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,3723.4",
                     "type": "Canvas"
                 },
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=0,3723.4",
                     "type": "Canvas"
                 },
                 {
