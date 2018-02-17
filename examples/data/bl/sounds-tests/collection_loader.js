@@ -49,10 +49,13 @@ function appendListItemLink($element, liId, linkUrl, text){
 }
 
 function loadCollection(collectionURL, $list){
+    var iiifIcon = "<img src='https://avatars1.githubusercontent.com/u/5812589?s=20&v=4' />";
     $.getJSON( collectionURL, function( collection ) {
         $.each( collection.items, function( index, manifest ) {
-            appendListItemLink($list, "li" + index, makeUrl(manifest.id), getString(manifest.label))
-            loadRanges(manifest.id, 'li' + index);
+            var listItemId = 'li' + index;
+            var $listItem = appendListItemLink($list, listItemId, makeUrl(manifest.id), getString(manifest.label))
+            $listItem.prepend(" <a href='" + manifest.id + "?manifest=" + manifest.id + "'>" + iiifIcon + "</a> ")
+            loadRanges(manifest.id, listItemId);
         });
     });
 }
