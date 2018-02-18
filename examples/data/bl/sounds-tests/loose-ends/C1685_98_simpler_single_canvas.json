@@ -134,7 +134,7 @@
                     "label": { "en": [ "My dear Jim - Letters to a friend [2]" ] },
                     "members": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=5308.56,2501.8",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=5308.56,6225.2",
                             "type": "Canvas"
                         }
                     ]
@@ -145,7 +145,7 @@
                     "label": { "en": [ "[News May 2001]" ] },
                     "members": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2501.8,6343.84",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=6225.2,6343.84",
                             "type": "Canvas"
                         }
                     ]
