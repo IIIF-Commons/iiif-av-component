@@ -75,11 +75,6 @@ var IIIFComponents;
                 this._data.helper.rangeId = this._data.rangeId;
                 if (range.canvases) {
                     var canvasId = range.canvases[0];
-                    if (this._data.canvasId && this._data.canvasId !== canvasId) {
-                        this.set({
-                            canvasId: canvasId
-                        });
-                    }
                     var canvasInstance = this.getCanvasInstanceById(canvasId);
                     if (canvasInstance) {
                         // get the temporal part of the canvas id
@@ -91,6 +86,11 @@ var IIIFComponents;
                                 currentDuration: duration
                             });
                             canvasInstance.play();
+                        }
+                        if (this._data.canvasId && this._data.canvasId !== canvasId) {
+                            this.set({
+                                canvasId: canvasId
+                            });
                         }
                     }
                 }
@@ -780,9 +780,9 @@ var IIIFComponents;
                 });
             }
             else {
-                if (this._data && this._data.helper) {
-                    this._data.helper.rangeId = null;
-                }
+                // if (this._data && this._data.helper) {
+                //     this._data.helper.rangeId = null;
+                // }
                 this._$durationHighlight.hide();
             }
             if (this._data.limitToRange && this._data.currentDuration) {
@@ -955,7 +955,9 @@ var IIIFComponents;
             }
             if (!this._data.limitToRange) {
                 if (this._data && this._data.helper) {
-                    this._data.helper.rangeId = null;
+                    this.set({
+                        rangeId: undefined
+                    });
                     this.fire(IIIFComponents.AVComponent.Events.NO_RANGE);
                 }
             }

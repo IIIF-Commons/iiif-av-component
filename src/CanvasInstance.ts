@@ -493,9 +493,9 @@ namespace IIIFComponents {
                 });
 
             } else {
-                if (this._data && this._data.helper) {
-                    this._data.helper.rangeId = null;
-                }
+                // if (this._data && this._data.helper) {
+                //     this._data.helper.rangeId = null;
+                // }
                 
                 this._$durationHighlight.hide();
             }
@@ -719,7 +719,9 @@ namespace IIIFComponents {
 
             if (!this._data.limitToRange) {
                 if (this._data && this._data.helper) {
-                    this._data.helper.rangeId = null;
+                    this.set({
+                        rangeId: undefined
+                    });
                     this.fire(AVComponent.Events.NO_RANGE);
                 }
             }

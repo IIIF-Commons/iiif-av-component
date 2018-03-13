@@ -74,12 +74,6 @@ namespace IIIFComponents {
 
                 if (range.canvases) {
                     const canvasId = range.canvases[0];
-                    
-                    if (this._data.canvasId && this._data.canvasId !== canvasId) {
-                        this.set({
-                            canvasId: canvasId
-                        });
-                    }
 
                     const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
                     
@@ -95,6 +89,12 @@ namespace IIIFComponents {
                                 currentDuration: duration
                             });
                             canvasInstance.play();
+                        }
+
+                        if (this._data.canvasId && this._data.canvasId !== canvasId) {
+                            this.set({
+                                canvasId: canvasId
+                            });
                         }
                     }
                 }
