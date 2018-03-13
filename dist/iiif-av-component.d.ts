@@ -22,7 +22,6 @@ declare namespace IIIFComponents {
         getCanvasInstanceById(canvasId: string): CanvasInstance | null;
         private _getCurrentCanvas();
         private _rewind();
-        playCanvas(canvasId: string): void;
         playRange(rangeId: string): void;
         showCanvas(canvasId: string): void;
         private _logMessage(message);
@@ -39,6 +38,7 @@ declare namespace IIIFComponents.AVComponent {
         static PAUSECANVAS: string;
         static PLAYCANVAS: string;
         static PREVIOUS_RANGE: string;
+        static RANGE_CHANGED: string;
     }
 }
 
@@ -97,6 +97,7 @@ declare namespace IIIFComponents {
         private _isStalled;
         private _lowPriorityFrequency;
         private _lowPriorityInterval;
+        private _ranges;
         private _readyCanvasesCount;
         private _stallRequestedBy;
         private _volume;
@@ -114,6 +115,7 @@ declare namespace IIIFComponents {
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
+        private _hasRangeChanged();
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
         unhighlightDuration(): void;

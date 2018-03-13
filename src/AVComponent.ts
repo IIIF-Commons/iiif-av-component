@@ -157,16 +157,11 @@ namespace IIIFComponents {
             const prevRange: Manifesto.IRange | null = this._data.helper.getPreviousRange();
 
             if (prevRange) {
-                const canvasIds: string[] = prevRange.getCanvasIds();
-
-                if (canvasIds.length) {
-                    // todo: eventually this should happen automatically using redux in manifold
-                    // instead of helper.getPreviousRange() it should invoke and action like helper.previousRange() which updates the internal state
-                    this._data.helper.rangeId = prevRange.id;
-                    this.playCanvas(canvasIds[0]);
-                    this.fire(AVComponent.Events.PREVIOUS_RANGE);
-                }
-
+                // todo: eventually this should happen automatically using redux in manifold
+                // instead of helper.getPreviousRange() it should invoke and action like helper.previousRange() which updates the internal state
+                this._data.helper.rangeId = prevRange.id;
+                this.playRange(prevRange.id);
+                this.fire(AVComponent.Events.RANGE_CHANGED);
             } else {
                 // no previous range. rewind.
                 this._rewind();
@@ -181,15 +176,11 @@ namespace IIIFComponents {
             const nextRange: Manifesto.IRange | null = this._data.helper.getNextRange();
 
             if (nextRange) {
-                const canvasIds: string[] = nextRange.getCanvasIds();
-
-                if (canvasIds.length) {
-                    // todo: eventually this should happen automatically using redux in manifold
-                    // instead of helper.getNextRange() it should invoke and action like helper.nextRange() which updates the internal state
-                    this._data.helper.rangeId = nextRange.id;
-                    this.playCanvas(canvasIds[0]);
-                    this.fire(AVComponent.Events.NEXT_RANGE);
-                }                
+                // todo: eventually this should happen automatically using redux in manifold
+                // instead of helper.getNextRange() it should invoke and action like helper.nextRange() which updates the internal state
+                this._data.helper.rangeId = nextRange.id;
+                this.playRange(nextRange.id);
+                this.fire(AVComponent.Events.RANGE_CHANGED);              
             }
         }
 
@@ -238,30 +229,6 @@ namespace IIIFComponents {
             }
         }
 
-        public playCanvas(canvasId: string): void {
-
-            this.showCanvas(canvasId);
-
-            const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
-            
-            if (canvasInstance) {
-
-                this._currentCanvas = canvasId;
-
-                // get the temporal part of the canvas id
-                const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
-                
-                if (temporal && temporal.length > 1) {
-                    const rangeTiming: string[] = temporal[1].split(',');
-                    const duration: AVComponentObjects.Duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
-                    canvasInstance.currentDuration = duration;
-                    canvasInstance.highlightDuration();
-                    canvasInstance.setCurrentTime(duration.start);
-                    canvasInstance.play();
-                }
-            }
-        }
-
         public playRange(rangeId: string): void {
 
             if (!this._data || !this._data.helper) {
@@ -270,12 +237,37 @@ namespace IIIFComponents {
 
             const range: Manifesto.IRange | null = this._data.helper.getRangeById(rangeId);
 
-            if (range) {
-                this._data.helper.rangeId = rangeId;
+            if (!range) {
+                console.warn('range not found');
+                return;
+            }
 
-                if (range.canvases) {
-                    const canvasId = range.canvases[0];
-                    this.playCanvas(canvasId);
+            // todo: eventually this should happen automatically using redux in manifold
+            // it should invoke and action like helper.setRange(id) which updates the internal state
+            this._data.helper.rangeId = rangeId;
+
+            if (range.canvases) {
+                const canvasId = range.canvases[0];
+                
+                this.showCanvas(canvasId);
+
+                const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
+                
+                if (canvasInstance) {
+
+                    this._currentCanvas = canvasId;
+
+                    // get the temporal part of the canvas id
+                    const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
+                    
+                    if (temporal && temporal.length > 1) {
+                        const rangeTiming: string[] = temporal[1].split(',');
+                        const duration: AVComponentObjects.Duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
+                        canvasInstance.currentDuration = duration;
+                        canvasInstance.highlightDuration();
+                        canvasInstance.setCurrentTime(duration.start);
+                        canvasInstance.play();
+                    }
                 }
             }
             
@@ -327,6 +319,7 @@ namespace IIIFComponents.AVComponent {
         static PAUSECANVAS: string = 'pause';
         static PLAYCANVAS: string = 'play';
         static PREVIOUS_RANGE: string = 'previousrange';
+        static RANGE_CHANGED: string = 'rangechanged';
     }
 }
 
