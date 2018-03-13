@@ -34,6 +34,7 @@ namespace IIIFComponents {
         private _isStalled: boolean = false;
         private _lowPriorityFrequency: number = 100;
         private _lowPriorityInterval: number;
+        private _ranges: Manifesto.IRange[] = [];
         private _readyCanvasesCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
@@ -98,6 +99,8 @@ namespace IIIFComponents {
             this._$rangeHoverPreview.hide();
 
             this._canvasClockDuration = <number>this.options.data.canvas.getDuration();
+
+            this._ranges = this.options.data.helper.getCanvasRanges(this.options.data.canvas);
 
             const canvasWidth: number = this.options.data.canvas.getWidth();
             const canvasHeight: number = this.options.data.canvas.getHeight();
@@ -546,6 +549,11 @@ namespace IIIFComponents {
 
         }
 
+        private _hasRangeChanged(): void {
+            // generate a NEXT_RANGE event if the currentduration changes
+
+        }
+
         private _updateCurrentTimeDisplay(): void {
             if (this._isLimitedToRange() && this.currentDuration) {
                 const rangeClockTime: number = this._canvasClockTime - this.currentDuration.start;
@@ -784,7 +792,6 @@ namespace IIIFComponents {
                 this._canvasClockTime = this._canvasClockDuration;
                 this.pause();
             }
-
         }
 
         private _highPriorityUpdater(): void {
@@ -803,6 +810,7 @@ namespace IIIFComponents {
 
         private _lowPriorityUpdater(): void {
             this._updateMediaActiveStates();
+            this._hasRangeChanged();
         }
 
         private _updateMediaActiveStates(): void {

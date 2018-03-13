@@ -35,6 +35,8 @@ namespace IIIFComponents {
             const that = this;
 
             this._$volumeMute.on('click', () => {
+
+                // start reducer
                 if (this._state.currentVolume !== 0) {
                     // mute
                     this._state.lastVolume = this._state.currentVolume;
@@ -43,6 +45,7 @@ namespace IIIFComponents {
                     // unmute
                     this._state.currentVolume = this._state.lastVolume;
                 }
+                // end reducer
                 
                 this._render();
 
@@ -50,22 +53,28 @@ namespace IIIFComponents {
             });
 
             this._$volumeSlider.on('input', function () {
+
+                // start reducer
                 that._state.currentVolume = Number(this.value);
 
                 if (that._state.currentVolume === 0) {
                     that._state.lastVolume = 0;
                 }
+                // end reducer
 
                 that._render();
                 that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._state.currentVolume);
             });
 
             this._$volumeSlider.on('change', function () {
+
+                // start reducer
                 that._state.currentVolume = Number(this.value);
 
                 if (that._state.currentVolume === 0) {
                     that._state.lastVolume = 0;
                 }
+                // end reducer
                 
                 that._render();
                 that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._state.currentVolume);

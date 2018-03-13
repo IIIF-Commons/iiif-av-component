@@ -160,6 +160,8 @@ namespace IIIFComponents {
                 const canvasIds: string[] = prevRange.getCanvasIds();
 
                 if (canvasIds.length) {
+                    // todo: eventually this should happen automatically using redux in manifold
+                    // instead of helper.getPreviousRange() it should invoke and action like helper.previousRange() which updates the internal state
                     this._data.helper.rangeId = prevRange.id;
                     this.playCanvas(canvasIds[0]);
                     this.fire(AVComponent.Events.PREVIOUS_RANGE);
@@ -182,6 +184,8 @@ namespace IIIFComponents {
                 const canvasIds: string[] = nextRange.getCanvasIds();
 
                 if (canvasIds.length) {
+                    // todo: eventually this should happen automatically using redux in manifold
+                    // instead of helper.getNextRange() it should invoke and action like helper.nextRange() which updates the internal state
                     this._data.helper.rangeId = nextRange.id;
                     this.playCanvas(canvasIds[0]);
                     this.fire(AVComponent.Events.NEXT_RANGE);
@@ -244,6 +248,7 @@ namespace IIIFComponents {
 
                 this._currentCanvas = canvasId;
 
+                // get the temporal part of the canvas id
                 const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
                 
                 if (temporal && temporal.length > 1) {
