@@ -47,26 +47,27 @@ namespace IIIFComponents {
 
             // changing any of these data properties forces a reload.
             if (this._propertiesChanged(data, ['helper'])) {
-                $.extend(this._data, data);
+                this._data = Object.assign(this._data, data);
                 // reset all global properties and terminate all running processes
                 // create canvases
                 this._reset();
             } else {
                 // no need to reload, just update.
-                $.extend(this._data, data);
+                this._data = Object.assign(this._data, data);
             }
 
-            // update
-            this._update();
+            for (let i = 0; i < this.canvasInstances.length; i++) {
+                const canvasInstance: CanvasInstance = this.canvasInstances[i];
+                canvasInstance.set(<IAVCanvasInstanceData>this._data);
+            }
             
-            // resize everything
             this._resize();
         }
 
         private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
             let propChanged: boolean = false;
             
-            for (var i = 0; i < properties.length; i++) {
+            for (let i = 0; i < properties.length; i++) {
                 propChanged = this._propertyChanged(data, properties[i]);
                 if (propChanged) {
                     break;
@@ -96,15 +97,6 @@ namespace IIIFComponents {
 			for (let i = 0; i < canvases.length; i++) {
 				this._initCanvas(canvases[i]);
             }
-        }
-
-        private _update(): void {
-
-            for (let i = 0; i < this.canvasInstances.length; i++) {
-                const canvasInstance: CanvasInstance = this.canvasInstances[i];
-                canvasInstance.set(<IAVCanvasInstanceData>this._data);
-            }
-
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {
@@ -224,7 +216,9 @@ namespace IIIFComponents {
             const canvasInstance: CanvasInstance | null = this._getCurrentCanvas();
 
             if (canvasInstance) {
-                canvasInstance.unhighlightDuration();
+                canvasInstance.set({
+                    currentDuration: undefined
+                });
                 canvasInstance.rewind();                
             }
         }
@@ -263,9 +257,9 @@ namespace IIIFComponents {
                     if (temporal && temporal.length > 1) {
                         const rangeTiming: string[] = temporal[1].split(',');
                         const duration: AVComponentObjects.Duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
-                        canvasInstance.currentDuration = duration;
-                        canvasInstance.highlightDuration();
-                        canvasInstance.setCurrentTime(duration.start);
+                        canvasInstance.set({
+                            currentDuration: duration
+                        });
                         canvasInstance.play();
                     }
                 }

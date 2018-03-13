@@ -14,7 +14,6 @@ declare namespace IIIFComponents {
         private _propertiesChanged(data, properties);
         private _propertyChanged(data, propertyName);
         private _reset();
-        private _update();
         private _getCanvases();
         private _initCanvas(canvas);
         private _prevRange();
@@ -67,12 +66,12 @@ declare namespace IIIFComponents {
     class CanvasInstance extends _Components.BaseComponent {
         private _$canvasContainer;
         private _$canvasDuration;
+        private _$canvasHoverHighlight;
+        private _$canvasHoverPreview;
         private _$canvasTime;
         private _$canvasTimelineContainer;
         private _$controlsContainer;
         private _$durationHighlight;
-        private _$canvasHoverHighlight;
-        private _$canvasHoverPreview;
         private _$hoverPreviewTemplate;
         private _$nextButton;
         private _$optionsContainer;
@@ -91,19 +90,18 @@ declare namespace IIIFComponents {
         private _canvasHeight;
         private _canvasWidth;
         private _contentAnnotations;
+        private _data;
         private _highPriorityFrequency;
         private _highPriorityInterval;
         private _isPlaying;
         private _isStalled;
         private _lowPriorityFrequency;
         private _lowPriorityInterval;
-        private _ranges;
         private _readyCanvasesCount;
         private _stallRequestedBy;
         private _volume;
         private _wasPlaying;
         $playerElement: JQuery;
-        currentDuration: AVComponentObjects.Duration | null;
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
@@ -112,14 +110,15 @@ declare namespace IIIFComponents {
         private _previous(isDouble);
         private _next();
         set(data: IAVCanvasInstanceData): void;
+        private _propertiesChanged(data, properties);
+        private _propertyChanged(data, propertyName);
+        private _render();
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
         private _hasRangeChanged();
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
-        unhighlightDuration(): void;
-        highlightDuration(): void;
         setVolume(value: number): void;
         private _renderSyncIndicator(mediaElementData);
         setCurrentTime(seconds: number): void;
@@ -128,7 +127,6 @@ declare namespace IIIFComponents {
         play(withoutUpdate?: boolean): void;
         pause(withoutUpdate?: boolean): void;
         private _isNavigationConstrainedToRange();
-        private _isLimitedToRange();
         private _canvasClockUpdater();
         private _highPriorityUpdater();
         private _lowPriorityUpdater();
@@ -154,7 +152,8 @@ declare namespace IIIFComponents.AVComponentObjects {
 /// <reference types="manifesto.js" />
 declare namespace IIIFComponents {
     interface IAVCanvasInstanceData extends IAVComponentData {
-        canvas: Manifesto.ICanvas;
+        canvas?: Manifesto.ICanvas;
+        currentDuration?: AVComponentObjects.Duration;
     }
 }
 

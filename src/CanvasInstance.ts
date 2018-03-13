@@ -4,12 +4,12 @@ namespace IIIFComponents {
 
         private _$canvasContainer: JQuery;
         private _$canvasDuration: JQuery;
+        private _$canvasHoverHighlight: JQuery;
+        private _$canvasHoverPreview: JQuery;
         private _$canvasTime: JQuery;
         private _$canvasTimelineContainer: JQuery;
         private _$controlsContainer: JQuery;
         private _$durationHighlight: JQuery;
-        private _$canvasHoverHighlight: JQuery;
-        private _$canvasHoverPreview: JQuery;
         private _$hoverPreviewTemplate: JQuery;
         private _$nextButton: JQuery;
         private _$optionsContainer: JQuery;
@@ -28,28 +28,33 @@ namespace IIIFComponents {
         private _canvasHeight: number = 0;
         private _canvasWidth: number = 0;
         private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
+        private _data: IAVCanvasInstanceData = this.data();
         private _highPriorityFrequency: number = 25;
         private _highPriorityInterval: number;
         private _isPlaying: boolean = false;
         private _isStalled: boolean = false;
         private _lowPriorityFrequency: number = 100;
         private _lowPriorityInterval: number;
-        private _ranges: Manifesto.IRange[] = [];
         private _readyCanvasesCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
         private _wasPlaying: boolean = false;
 
         public $playerElement: JQuery;
-        public currentDuration: AVComponentObjects.Duration | null = null;
         public logMessage: (message: string) => void;
 
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
+            this._data = this.options.data;
             this.$playerElement = $('<div class="player"></div>');
         }
 
         public init() {
+
+            if (!this._data || !this._data.content || !this._data.canvas) {
+                console.warn('unable to initialise, missing canvas or content');
+                return;
+            }
 
             this._$hoverPreviewTemplate = $('<div class="hover-preview"><div class="label"></div><div class="pointer"><span class="arrow"></span></div></div>');
             this._$canvasContainer = $('<div class="canvas-container"></div>');
@@ -64,16 +69,16 @@ namespace IIIFComponents {
             this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
             this._$controlsContainer = $('<div class="controls-container"></div>');
             this._$prevButton = $(`
-                                <button class="btn" title="${this.options.data.content.previous}">
-                                    <i class="av-icon-previous" aria-hidden="true"></i>${this.options.data.content.previous}
+                                <button class="btn" title="${this._data.content.previous}">
+                                    <i class="av-icon-previous" aria-hidden="true"></i>${this._data.content.previous}
                                 </button>`);
             this._$playButton = $(`
-                                <button class="btn" title="${this.options.data.content.play}">
-                                    <i class="av-icon-play play" aria-hidden="true"></i>${this.options.data.content.play}
+                                <button class="btn" title="${this._data.content.play}">
+                                    <i class="av-icon-play play" aria-hidden="true"></i>${this._data.content.play}
                                 </button>`);
             this._$nextButton = $(`
-                                <button class="btn" title="${this.options.data.content.next}">
-                                    <i class="av-icon-next" aria-hidden="true"></i>${this.options.data.content.next}
+                                <button class="btn" title="${this._data.content.next}">
+                                    <i class="av-icon-next" aria-hidden="true"></i>${this._data.content.next}
                                 </button>`);
             this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
             this._$canvasTime = this._$timeDisplay.find('.canvas-time');
@@ -82,7 +87,7 @@ namespace IIIFComponents {
             const $volume: JQuery = $('<div class="volume"></div>');
             this._volume = new AVVolumeControl({
                 target: $volume[0],
-                data: Object.assign({}, this.options.data)
+                data: Object.assign({}, this._data)
             });
 
             this._volume.on(AVVolumeControl.Events.VOLUME_CHANGED, (value: number) => {
@@ -98,21 +103,19 @@ namespace IIIFComponents {
             this._$canvasHoverPreview.hide();
             this._$rangeHoverPreview.hide();
 
-            this._canvasClockDuration = <number>this.options.data.canvas.getDuration();
+            this._canvasClockDuration = <number>this._data.canvas.getDuration();
 
-            this._ranges = this.options.data.helper.getCanvasRanges(this.options.data.canvas);
-
-            const canvasWidth: number = this.options.data.canvas.getWidth();
-            const canvasHeight: number = this.options.data.canvas.getHeight();
+            const canvasWidth: number = this._data.canvas.getWidth();
+            const canvasHeight: number = this._data.canvas.getHeight();
 
             if (!canvasWidth) {
-                this._canvasWidth = <number>this.$playerElement.parent().width(); // this.options.data.defaultCanvasWidth;
+                this._canvasWidth = <number>this.$playerElement.parent().width(); // this._data.defaultCanvasWidth;
             } else {
                 this._canvasWidth = canvasWidth;
             }
 
             if (!canvasHeight) {
-                this._canvasHeight = this._canvasWidth * <number>this.options.data.defaultAspectRatio; //this.options.data.defaultCanvasHeight;
+                this._canvasHeight = this._canvasWidth * <number>this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
             } else {
                 this._canvasHeight = canvasHeight;
             }
@@ -133,7 +136,7 @@ namespace IIIFComponents {
                     prevTimeout = setTimeout(() => {
                         prevClicks = 0;
                         prevTimeout = 0;
-                    }, this.options.data.doubleClickMS);
+                    }, this._data.doubleClickMS);
                 } else {
                     // double click
                     //console.log('double');
@@ -189,14 +192,14 @@ namespace IIIFComponents {
             });
 
             this._$rangeTimelineContainer.on("mousemove", (e) => {
-                this._updateHoverPreview(e, this._$rangeTimelineContainer, this.currentDuration ? this.currentDuration.getLength() : 0);
+                this._updateHoverPreview(e, this._$rangeTimelineContainer, this._data.currentDuration ? this._data.currentDuration.getLength() : 0);
             });
 
             // create annotations
 
             this._contentAnnotations = [];
 
-            const items: Manifesto.IAnnotation[] = this.options.data.canvas.getContent();// (<any>this.options.data.canvas).__jsonld.content[0].items; //todo: use canvas.getContent()
+            const items: Manifesto.IAnnotation[] = this._data.canvas.getContent();// (<any>this._data.canvas).__jsonld.content[0].items; //todo: use canvas.getContent()
 
             if (items.length === 1) {
                 this._$timelineItemContainer.hide();
@@ -320,7 +323,11 @@ namespace IIIFComponents {
         }
 
         public getCanvasId(): string | null {
-            return this.options.data.canvas.id;
+            if (this._data && this._data.canvas) {
+                return this._data.canvas.id;
+            }
+            
+            return null;
         }
 
         private _updateHoverPreview(e: any, $container: JQuery, duration: number): void {
@@ -367,7 +374,7 @@ namespace IIIFComponents {
         }
 
         private _previous(isDouble: boolean): void {
-            if (this._isLimitedToRange() && this.currentDuration) {
+            if (this._data.limitToRange && this._data.currentDuration) {
                 // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
                 if (isDouble) {
                     if (this._isNavigationConstrainedToRange()) {
@@ -380,11 +387,13 @@ namespace IIIFComponents {
                 }
             } else {
                 // not limited to range. 
-                // if there is a currentDuration, single click goes to previous range, double click rewinds.
+                // if there is a currentDuration, single click goes to previous range, double click clears current duration and rewinds.
                 // if there is no currentDuration, single and double click rewinds.
-                if (this.currentDuration) {
+                if (this._data.currentDuration) {
                     if (isDouble) {
-                        this.unhighlightDuration();
+                        this.set({
+                            currentDuration: undefined
+                        });
                         this.rewind();
                     } else {
                         this.fire(AVComponent.Events.PREVIOUS_RANGE);
@@ -396,7 +405,7 @@ namespace IIIFComponents {
         }
 
         private _next(): void {
-            if (this._isLimitedToRange() && this.currentDuration) {
+            if (this._data.limitToRange && this._data.currentDuration) {
                 if (this._isNavigationConstrainedToRange()) {
                     this.fastforward();
                 } else {
@@ -409,11 +418,89 @@ namespace IIIFComponents {
 
         public set(data: IAVCanvasInstanceData): void {
 
-            if (data) {
-                this.options.data = Object.assign({}, this.options.data, data);
+            if (this._propertiesChanged(data, ['currentDuration'])) {
+                // if the currentDuration has changed, update the time
+                this.setCurrentTime((<AVComponentObjects.Duration>data.currentDuration).start);
             }
 
-            if (this._isLimitedToRange() && this.currentDuration) {
+            this._data = Object.assign(this._data, data);
+
+            this._render();
+        }
+
+        private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
+            let propChanged: boolean = false;
+            
+            for (let i = 0; i < properties.length; i++) {
+                propChanged = this._propertyChanged(data, properties[i]);
+                if (propChanged) {
+                    break;
+                }
+            }
+    
+            return propChanged;
+        }
+
+        private _propertyChanged(data: IAVComponentData, propertyName: string): boolean {
+            return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
+        }
+
+        private _render(): void {
+
+            if (this._data.currentDuration) {
+                
+                // get the total length in seconds.
+                const totalLength: number = this._canvasClockDuration;
+
+                // get the length of the timeline container
+                const timelineLength: number = <number>this._$canvasTimelineContainer.width();
+
+                // get the ratio of seconds to length
+                const ratio: number = timelineLength / totalLength;
+                const start: number = this._data.currentDuration.start * ratio;
+                const end: number = this._data.currentDuration.end * ratio;
+                const width: number = end - start;
+
+                this._$durationHighlight.show();
+
+                // set the start position and width
+                this._$durationHighlight.css({
+                    left: start,
+                    width: width
+                });
+
+                const that = this;
+
+                this._$rangeTimelineContainer.slider("destroy");
+
+                this._$rangeTimelineContainer.slider({
+                    value: this._data.currentDuration.start,
+                    step: 0.01,
+                    orientation: "horizontal",
+                    range: "min",
+                    min: this._data.currentDuration.start,
+                    max: this._data.currentDuration.end,
+                    animate: false,
+                    create: function (evt: any, ui: any) {
+                        // on create
+                    },
+                    slide: function (evt: any, ui: any) {
+                        that.setCurrentTime(ui.value);
+                    },
+                    stop: function (evt: any, ui: any) {
+                        //this.setCurrentTime(ui.value);
+                    }
+                });
+
+            } else {
+                if (this._data && this._data.helper) {
+                    this._data.helper.rangeId = null;
+                }
+                
+                this._$durationHighlight.hide();
+            }
+
+            if (this._data.limitToRange && this._data.currentDuration) {
                 this._$canvasTimelineContainer.hide();
                 this._$rangeTimelineContainer.show();
             } else {
@@ -555,8 +642,8 @@ namespace IIIFComponents {
         }
 
         private _updateCurrentTimeDisplay(): void {
-            if (this._isLimitedToRange() && this.currentDuration) {
-                const rangeClockTime: number = this._canvasClockTime - this.currentDuration.start;
+            if (this._data.limitToRange && this._data.currentDuration) {
+                const rangeClockTime: number = this._canvasClockTime - this._data.currentDuration.start;
                 this._$canvasTime.text(AVComponentUtils.Utils.formatTime(rangeClockTime));
             } else {
                 this._$canvasTime.text(AVComponentUtils.Utils.formatTime(this._canvasClockTime));
@@ -564,76 +651,11 @@ namespace IIIFComponents {
         }
 
         private _updateDurationDisplay(): void {
-            if (this._isLimitedToRange() && this.currentDuration) {
-                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this.currentDuration.getLength()));
+            if (this._data.limitToRange && this._data.currentDuration) {
+                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._data.currentDuration.getLength()));
             } else {
                 this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._canvasClockDuration));
             }
-        }
-
-        public unhighlightDuration(): void {
-            this.currentDuration = null;
-            
-            if (this.options.data && this.options.data.helper) {
-                this.options.data.helper.rangeId = null;
-            }
-            
-            this._$durationHighlight.hide();
-        }
-
-        public highlightDuration(): void {
-
-            if (!this.currentDuration) {
-                return;
-            }
-
-            // get the total length in seconds.
-            const totalLength: number = this._canvasClockDuration;
-
-            // get the length of the timeline container
-            const timelineLength: number = <number>this._$canvasTimelineContainer.width();
-
-            // get the ratio of seconds to length
-            const ratio: number = timelineLength / totalLength;
-            const start: number = this.currentDuration.start * ratio;
-            const end: number = this.currentDuration.end * ratio;
-            const width: number = end - start;
-
-            this._$durationHighlight.show();
-
-            // set the start position and width
-            this._$durationHighlight.css({
-                left: start,
-                width: width
-            });
-
-            const that = this;
-
-            this._$rangeTimelineContainer.slider("destroy");
-
-            this._$rangeTimelineContainer.slider({
-                value: this.currentDuration.start,
-                step: 0.01,
-                orientation: "horizontal",
-                range: "min",
-                min: this.currentDuration.start,
-                max: this.currentDuration.end,
-                animate: false,
-                create: function (evt: any, ui: any) {
-                    // on create
-                },
-                slide: function (evt: any, ui: any) {
-                    that.setCurrentTime(ui.value);
-                },
-                stop: function (evt: any, ui: any) {
-                    //this.setCurrentTime(ui.value);
-                }
-            });
-
-            // todo: the above should take place in set() instead of forcing a set
-            // extend IAVCanvasInstanceData to include currentDuration
-            // same for unhighlightDuration
-            this.set({} as IAVCanvasInstanceData);
         }
 
         public setVolume(value: number): void {
@@ -689,15 +711,17 @@ namespace IIIFComponents {
 
             this.pause();
 
-            if (this._isLimitedToRange() && this.currentDuration) {
-                this._canvasClockTime = this.currentDuration.start;
+            if (this._data.limitToRange && this._data.currentDuration) {
+                this._canvasClockTime = this._data.currentDuration.start;
             } else {
                 this._canvasClockTime = 0;
             }
 
-            if (!this._isLimitedToRange()) {
-                this.options.data.helper.rangeId = null;
-                this.fire(AVComponent.Events.NO_RANGE);
+            if (!this._data.limitToRange) {
+                if (this._data && this._data.helper) {
+                    this._data.helper.rangeId = null;
+                    this.fire(AVComponent.Events.NO_RANGE);
+                }
             }
 
             this.play();
@@ -705,8 +729,8 @@ namespace IIIFComponents {
 
         public fastforward(): void {
 
-            if (this._isLimitedToRange() && this.currentDuration) {
-                this._canvasClockTime = this.currentDuration.end;
+            if (this._data.limitToRange && this._data.currentDuration) {
+                this._canvasClockTime = this._data.currentDuration.end;
             } else {
                 this._canvasClockTime = this._canvasClockDuration;
             }
@@ -717,8 +741,8 @@ namespace IIIFComponents {
         public play(withoutUpdate?: boolean): void {
             if (this._isPlaying) return;
 
-            if (this._isLimitedToRange() && this.currentDuration && this._canvasClockTime >= this.currentDuration.end) {
-                this._canvasClockTime = this.currentDuration.start;
+            if (this._data.limitToRange && this._data.currentDuration && this._canvasClockTime >= this._data.currentDuration.end) {
+                this._canvasClockTime = this._data.currentDuration.start;
             }
 
             if (this._canvasClockTime === this._canvasClockDuration) {
@@ -774,17 +798,13 @@ namespace IIIFComponents {
         }
 
         private _isNavigationConstrainedToRange(): boolean {
-            return <boolean>this.options.data.constrainNavigationToRange;
-        }
-
-        private _isLimitedToRange(): boolean {
-            return <boolean>this.options.data.limitToRange;
+            return <boolean>this._data.constrainNavigationToRange;
         }
 
         private _canvasClockUpdater(): void {
             this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
 
-            if (this._isLimitedToRange() && this.currentDuration && this._canvasClockTime >= this.currentDuration.end) {
+            if (this._data.limitToRange && this._data.currentDuration && this._canvasClockTime >= this._data.currentDuration.end) {
                 this.pause();
             }
 
@@ -1001,7 +1021,7 @@ namespace IIIFComponents {
                     this._$canvasContainer.height(<number>this.$playerElement.parent().height() - <number>$options.height());
                 }
 
-                this.highlightDuration();
+                this._render();
             }
         }
 
