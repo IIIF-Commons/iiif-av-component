@@ -2,7 +2,6 @@ namespace IIIFComponents {
 
     export class AVComponent extends _Components.BaseComponent {
 
-        private _currentCanvas: string | null = null;
         private _data: IAVComponentData = this.data();
         public options: _Components.IBaseComponentOptions;
         public canvasInstances: CanvasInstance[] = [];
@@ -46,47 +45,109 @@ namespace IIIFComponents {
         public set(data: IAVComponentData): void {
 
             // changing any of these data properties forces a reload.
-            if (this._propertiesChanged(data, ['helper'])) {
+            if (this._propertyChanged(data, 'helper')) {
                 this._data = Object.assign(this._data, data);
                 // reset all global properties and terminate all running processes
                 // create canvases
                 this._reset();
-            } else {
-                // no need to reload, just update.
-                this._data = Object.assign(this._data, data);
-            }
-
-            for (let i = 0; i < this.canvasInstances.length; i++) {
-                const canvasInstance: CanvasInstance = this.canvasInstances[i];
-                canvasInstance.set(<IAVCanvasInstanceData>this._data);
+                return;
             }
             
+            if (this._propertyChanged(data, 'rangeId') && data.rangeId) {
+
+                this._data = Object.assign(this._data, data);
+
+                if (!this._data.helper) {
+                    console.warn('must pass a helper object');
+                    return;
+                }
+
+                const range: Manifesto.IRange | null = this._data.helper.getRangeById(<string>this._data.rangeId);
+
+                if (!range) {
+                    console.warn('range not found');
+                    return;
+                }
+
+                // todo: should invoke and action like helper.setRange(id) which updates the internal state using redux
+                this._data.helper.rangeId = <string>this._data.rangeId;
+
+                if (range.canvases) {
+                    const canvasId = range.canvases[0];
+                    
+                    if (this._data.canvasId && this._data.canvasId !== canvasId) {
+                        this.set({
+                            canvasId: canvasId
+                        });
+                    }
+
+                    const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
+                    
+                    if (canvasInstance) {
+
+                        // get the temporal part of the canvas id
+                        const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
+                        
+                        if (temporal && temporal.length > 1) {
+                            const rangeTiming: string[] = temporal[1].split(',');
+                            const duration: AVComponentObjects.Duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
+                            canvasInstance.set({
+                                currentDuration: duration
+                            });
+                            canvasInstance.play();
+                        }
+                    }
+                }
+            } 
+            
+            this._data = Object.assign(this._data, data);
+
+            this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
+                canvasInstance.set(<IAVCanvasInstanceData>this._data);
+            });
+            
+            this._render();
             this._resize();
         }
 
-        private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
-            let propChanged: boolean = false;
+        // private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
+        //     let propChanged: boolean = false;
             
-            for (let i = 0; i < properties.length; i++) {
-                propChanged = this._propertyChanged(data, properties[i]);
-                if (propChanged) {
-                    break;
-                }
-            }
+        //     for (let i = 0; i < properties.length; i++) {
+        //         propChanged = this._propertyChanged(data, properties[i]);
+        //         if (propChanged) {
+        //             break;
+        //         }
+        //     }
     
-            return propChanged;
-        }
+        //     return propChanged;
+        // }
 
         private _propertyChanged(data: IAVComponentData, propertyName: string): boolean {
             return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
         }
 
+        private _render(): void {
+
+            if (!this._data || !this._data.canvasId) return;
+
+            const currentCanvasInstance: CanvasInstance | null = this.getCanvasInstanceById(this._data.canvasId);
+
+            this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                if (canvasInstance !== currentCanvasInstance) {
+                    canvasInstance.pause();
+                    canvasInstance.$playerElement.hide();
+                } else {
+                    canvasInstance.$playerElement.show();
+                }
+            });
+        }
+
         private _reset(): void {
 
-            for (let i = 0; i < this.canvasInstances.length; i++) {
-                const canvasInstance: CanvasInstance = this.canvasInstances[i];
+            this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
                 canvasInstance.destroy();
-            }
+            });
 
             this.canvasInstances = [];
 
@@ -94,9 +155,10 @@ namespace IIIFComponents {
 
             const canvases: Manifesto.ICanvas[] = this._getCanvases();
 
-			for (let i = 0; i < canvases.length; i++) {
-				this._initCanvas(canvases[i]);
-            }
+			canvases.forEach((canvas: Manifesto.ICanvas) => {
+                this._initCanvas(canvas);
+            });
+
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {
@@ -200,8 +262,8 @@ namespace IIIFComponents {
         }
 
         private _getCurrentCanvas(): CanvasInstance | null {
-            if (this._currentCanvas) {
-                return this.getCanvasInstanceById(this._currentCanvas);
+            if (this._data.canvasId) {
+                return this.getCanvasInstanceById(this._data.canvasId);
             }
 
             return null;
@@ -224,64 +286,15 @@ namespace IIIFComponents {
         }
 
         public playRange(rangeId: string): void {
-
-            if (!this._data || !this._data.helper) {
-                return;
-            }
-
-            const range: Manifesto.IRange | null = this._data.helper.getRangeById(rangeId);
-
-            if (!range) {
-                console.warn('range not found');
-                return;
-            }
-
-            // todo: eventually this should happen automatically using redux in manifold
-            // it should invoke and action like helper.setRange(id) which updates the internal state
-            this._data.helper.rangeId = rangeId;
-
-            if (range.canvases) {
-                const canvasId = range.canvases[0];
-                
-                this.showCanvas(canvasId);
-
-                const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
-                
-                if (canvasInstance) {
-
-                    this._currentCanvas = canvasId;
-
-                    // get the temporal part of the canvas id
-                    const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
-                    
-                    if (temporal && temporal.length > 1) {
-                        const rangeTiming: string[] = temporal[1].split(',');
-                        const duration: AVComponentObjects.Duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
-                        canvasInstance.set({
-                            currentDuration: duration
-                        });
-                        canvasInstance.play();
-                    }
-                }
-            }
-            
+            this.set({
+                rangeId: rangeId
+            });
         }
 
         public showCanvas(canvasId: string): void {
-
-            // pause all canvases
-            for (var i = 0; i < this.canvasInstances.length; i++) {
-                this.canvasInstances[i].pause();
-            }
-
-            // hide all players
-            this._$element.find('.player').hide();
-
-            const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
-
-            if (canvasInstance && canvasInstance.$playerElement) {
-                canvasInstance.$playerElement.show();
-            }
+            this.set({
+                canvasId: canvasId
+            });
         }
 
         private _logMessage(message: string): void {
@@ -294,11 +307,9 @@ namespace IIIFComponents {
 
         protected _resize(): void {
 
-            // loop through all canvases resizing their elements
-            for (let i = 0; i < this.canvasInstances.length; i++) {
-                const canvasInstance: CanvasInstance = this.canvasInstances[i];
+            this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
                 canvasInstance.resize();
-            }
+            });
 
         }
     }

@@ -19,7 +19,6 @@ var IIIFComponents;
         __extends(AVComponent, _super);
         function AVComponent(options) {
             var _this = _super.call(this, options) || this;
-            _this._currentCanvas = null;
             _this._data = _this.data();
             _this.canvasInstances = [];
             _this._init();
@@ -52,47 +51,95 @@ var IIIFComponents;
             };
         };
         AVComponent.prototype.set = function (data) {
+            var _this = this;
             // changing any of these data properties forces a reload.
-            if (this._propertiesChanged(data, ['helper'])) {
+            if (this._propertyChanged(data, 'helper')) {
                 this._data = Object.assign(this._data, data);
                 // reset all global properties and terminate all running processes
                 // create canvases
                 this._reset();
+                return;
             }
-            else {
-                // no need to reload, just update.
+            if (this._propertyChanged(data, 'rangeId') && data.rangeId) {
                 this._data = Object.assign(this._data, data);
-            }
-            for (var i = 0; i < this.canvasInstances.length; i++) {
-                var canvasInstance = this.canvasInstances[i];
-                canvasInstance.set(this._data);
-            }
-            this._resize();
-        };
-        AVComponent.prototype._propertiesChanged = function (data, properties) {
-            var propChanged = false;
-            for (var i = 0; i < properties.length; i++) {
-                propChanged = this._propertyChanged(data, properties[i]);
-                if (propChanged) {
-                    break;
+                if (!this._data.helper) {
+                    console.warn('must pass a helper object');
+                    return;
+                }
+                var range = this._data.helper.getRangeById(this._data.rangeId);
+                if (!range) {
+                    console.warn('range not found');
+                    return;
+                }
+                // todo: should invoke and action like helper.setRange(id) which updates the internal state using redux
+                this._data.helper.rangeId = this._data.rangeId;
+                if (range.canvases) {
+                    var canvasId = range.canvases[0];
+                    if (this._data.canvasId && this._data.canvasId !== canvasId) {
+                        this.set({
+                            canvasId: canvasId
+                        });
+                    }
+                    var canvasInstance = this.getCanvasInstanceById(canvasId);
+                    if (canvasInstance) {
+                        // get the temporal part of the canvas id
+                        var temporal = /t=([^&]+)/g.exec(canvasId);
+                        if (temporal && temporal.length > 1) {
+                            var rangeTiming = temporal[1].split(',');
+                            var duration = new IIIFComponents.AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
+                            canvasInstance.set({
+                                currentDuration: duration
+                            });
+                            canvasInstance.play();
+                        }
+                    }
                 }
             }
-            return propChanged;
+            this._data = Object.assign(this._data, data);
+            this.canvasInstances.forEach(function (canvasInstance) {
+                canvasInstance.set(_this._data);
+            });
+            this._render();
+            this._resize();
         };
+        // private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
+        //     let propChanged: boolean = false;
+        //     for (let i = 0; i < properties.length; i++) {
+        //         propChanged = this._propertyChanged(data, properties[i]);
+        //         if (propChanged) {
+        //             break;
+        //         }
+        //     }
+        //     return propChanged;
+        // }
         AVComponent.prototype._propertyChanged = function (data, propertyName) {
             return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
         };
+        AVComponent.prototype._render = function () {
+            if (!this._data || !this._data.canvasId)
+                return;
+            var currentCanvasInstance = this.getCanvasInstanceById(this._data.canvasId);
+            this.canvasInstances.forEach(function (canvasInstance, index) {
+                if (canvasInstance !== currentCanvasInstance) {
+                    canvasInstance.pause();
+                    canvasInstance.$playerElement.hide();
+                }
+                else {
+                    canvasInstance.$playerElement.show();
+                }
+            });
+        };
         AVComponent.prototype._reset = function () {
-            for (var i = 0; i < this.canvasInstances.length; i++) {
-                var canvasInstance = this.canvasInstances[i];
+            var _this = this;
+            this.canvasInstances.forEach(function (canvasInstance, index) {
                 canvasInstance.destroy();
-            }
+            });
             this.canvasInstances = [];
             this._$element.empty();
             var canvases = this._getCanvases();
-            for (var i = 0; i < canvases.length; i++) {
-                this._initCanvas(canvases[i]);
-            }
+            canvases.forEach(function (canvas) {
+                _this._initCanvas(canvas);
+            });
         };
         AVComponent.prototype._getCanvases = function () {
             if (this._data.helper) {
@@ -172,8 +219,8 @@ var IIIFComponents;
             return null;
         };
         AVComponent.prototype._getCurrentCanvas = function () {
-            if (this._currentCanvas) {
-                return this.getCanvasInstanceById(this._currentCanvas);
+            if (this._data.canvasId) {
+                return this.getCanvasInstanceById(this._data.canvasId);
             }
             return null;
         };
@@ -190,47 +237,14 @@ var IIIFComponents;
             }
         };
         AVComponent.prototype.playRange = function (rangeId) {
-            if (!this._data || !this._data.helper) {
-                return;
-            }
-            var range = this._data.helper.getRangeById(rangeId);
-            if (!range) {
-                console.warn('range not found');
-                return;
-            }
-            // todo: eventually this should happen automatically using redux in manifold
-            // it should invoke and action like helper.setRange(id) which updates the internal state
-            this._data.helper.rangeId = rangeId;
-            if (range.canvases) {
-                var canvasId = range.canvases[0];
-                this.showCanvas(canvasId);
-                var canvasInstance = this.getCanvasInstanceById(canvasId);
-                if (canvasInstance) {
-                    this._currentCanvas = canvasId;
-                    // get the temporal part of the canvas id
-                    var temporal = /t=([^&]+)/g.exec(canvasId);
-                    if (temporal && temporal.length > 1) {
-                        var rangeTiming = temporal[1].split(',');
-                        var duration = new IIIFComponents.AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
-                        canvasInstance.set({
-                            currentDuration: duration
-                        });
-                        canvasInstance.play();
-                    }
-                }
-            }
+            this.set({
+                rangeId: rangeId
+            });
         };
         AVComponent.prototype.showCanvas = function (canvasId) {
-            // pause all canvases
-            for (var i = 0; i < this.canvasInstances.length; i++) {
-                this.canvasInstances[i].pause();
-            }
-            // hide all players
-            this._$element.find('.player').hide();
-            var canvasInstance = this.getCanvasInstanceById(canvasId);
-            if (canvasInstance && canvasInstance.$playerElement) {
-                canvasInstance.$playerElement.show();
-            }
+            this.set({
+                canvasId: canvasId
+            });
         };
         AVComponent.prototype._logMessage = function (message) {
             this.fire(AVComponent.Events.LOG, message);
@@ -239,11 +253,9 @@ var IIIFComponents;
             this._resize();
         };
         AVComponent.prototype._resize = function () {
-            // loop through all canvases resizing their elements
-            for (var i = 0; i < this.canvasInstances.length; i++) {
-                var canvasInstance = this.canvasInstances[i];
+            this.canvasInstances.forEach(function (canvasInstance) {
                 canvasInstance.resize();
-            }
+            });
         };
         return AVComponent;
     }(_Components.BaseComponent));
@@ -709,22 +721,23 @@ var IIIFComponents;
             }
         };
         CanvasInstance.prototype.set = function (data) {
-            if (this._propertiesChanged(data, ['currentDuration'])) {
+            if (this._propertyChanged(data, 'currentDuration')) {
+                // if the currentDuration has changed, update the time
                 this.setCurrentTime(data.currentDuration.start);
             }
             this._data = Object.assign(this._data, data);
             this._render();
         };
-        CanvasInstance.prototype._propertiesChanged = function (data, properties) {
-            var propChanged = false;
-            for (var i = 0; i < properties.length; i++) {
-                propChanged = this._propertyChanged(data, properties[i]);
-                if (propChanged) {
-                    break;
-                }
-            }
-            return propChanged;
-        };
+        // private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
+        //     let propChanged: boolean = false;
+        //     for (let i = 0; i < properties.length; i++) {
+        //         propChanged = this._propertyChanged(data, properties[i]);
+        //         if (propChanged) {
+        //             break;
+        //         }
+        //     }
+        //     return propChanged;
+        // }
         CanvasInstance.prototype._propertyChanged = function (data, propertyName) {
             return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
         };

@@ -418,7 +418,7 @@ namespace IIIFComponents {
 
         public set(data: IAVCanvasInstanceData): void {
 
-            if (this._propertiesChanged(data, ['currentDuration'])) {
+            if (this._propertyChanged(data, 'currentDuration')) {
                 // if the currentDuration has changed, update the time
                 this.setCurrentTime((<AVComponentObjects.Duration>data.currentDuration).start);
             }
@@ -428,18 +428,18 @@ namespace IIIFComponents {
             this._render();
         }
 
-        private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
-            let propChanged: boolean = false;
+        // private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
+        //     let propChanged: boolean = false;
             
-            for (let i = 0; i < properties.length; i++) {
-                propChanged = this._propertyChanged(data, properties[i]);
-                if (propChanged) {
-                    break;
-                }
-            }
+        //     for (let i = 0; i < properties.length; i++) {
+        //         propChanged = this._propertyChanged(data, properties[i]);
+        //         if (propChanged) {
+        //             break;
+        //         }
+        //     }
     
-            return propChanged;
-        }
+        //     return propChanged;
+        // }
 
         private _propertyChanged(data: IAVComponentData, propertyName: string): boolean {
             return !!data[propertyName] && this._data[propertyName] !== data[propertyName];

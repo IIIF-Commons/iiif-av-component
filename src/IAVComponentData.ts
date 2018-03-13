@@ -13,11 +13,13 @@ namespace IIIFComponents {
     export interface IAVComponentData {
         [key: string]: any;
         autoPlay?: boolean;
+        canvasId?: string;
         constrainNavigationToRange?: boolean;
         content?: IAVComponentContent;
         defaultAspectRatio?: number;
         doubleClickMS?: number;
         helper?: Manifold.IHelper;
         limitToRange?: boolean;
+        rangeId?: string;
     }
 }

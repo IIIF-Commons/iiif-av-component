@@ -3,7 +3,6 @@
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
     class AVComponent extends _Components.BaseComponent {
-        private _currentCanvas;
         private _data;
         options: _Components.IBaseComponentOptions;
         canvasInstances: CanvasInstance[];
@@ -11,8 +10,8 @@ declare namespace IIIFComponents {
         protected _init(): boolean;
         data(): IAVComponentData;
         set(data: IAVComponentData): void;
-        private _propertiesChanged(data, properties);
         private _propertyChanged(data, propertyName);
+        private _render();
         private _reset();
         private _getCanvases();
         private _initCanvas(canvas);
@@ -110,7 +109,6 @@ declare namespace IIIFComponents {
         private _previous(isDouble);
         private _next();
         set(data: IAVCanvasInstanceData): void;
-        private _propertiesChanged(data, properties);
         private _propertyChanged(data, propertyName);
         private _render();
         destroy(): void;
@@ -176,12 +174,14 @@ declare namespace IIIFComponents {
     interface IAVComponentData {
         [key: string]: any;
         autoPlay?: boolean;
+        canvasId?: string;
         constrainNavigationToRange?: boolean;
         content?: IAVComponentContent;
         defaultAspectRatio?: number;
         doubleClickMS?: number;
         helper?: Manifold.IHelper;
         limitToRange?: boolean;
+        rangeId?: string;
     }
 }
 
