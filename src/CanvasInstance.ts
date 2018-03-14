@@ -83,7 +83,7 @@ namespace IIIFComponents {
             this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
             this._$canvasTime = this._$timeDisplay.find('.canvas-time');
             this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
-            
+
             const $volume: JQuery = $('<div class="volume"></div>');
             this._volume = new AVVolumeControl({
                 target: $volume[0],
@@ -91,7 +91,7 @@ namespace IIIFComponents {
             });
 
             this._volume.on(AVVolumeControl.Events.VOLUME_CHANGED, (value: number) => {
-                this.setVolume(value);
+                this._setVolume(value);
             }, false);
 
             this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
@@ -170,10 +170,10 @@ namespace IIIFComponents {
                     // on create
                 },
                 slide: function (evt: any, ui: any) {
-                    that.setCurrentTime(ui.value);
+                    that._setCurrentTime(ui.value);
                 },
                 stop: function (evt: any, ui: any) {
-                    //this.setCurrentTime(ui.value);
+                    //this._setCurrentTime(ui.value);
                 }
             });
 
@@ -232,7 +232,7 @@ namespace IIIFComponents {
                 //     item.body = tmpItem.body[0].items[0];
                 //     mediaSource = item.body.id.split('#')[0];
                 // } else 
-                
+
                 if (type && type.toString() === 'textualbody') {
                     //mediaSource = (<any>body).value;
                 } else {
@@ -326,7 +326,7 @@ namespace IIIFComponents {
             if (this._data && this._data.canvas) {
                 return this._data.canvas.id;
             }
-            
+
             return null;
         }
 
@@ -365,8 +365,6 @@ namespace IIIFComponents {
                 left: left,
                 top: hoverPreviewHeight * -1 + 'px'
             }).show();
-
-            
 
             $hoverArrow.css({
                 left: arrowLeft
@@ -418,9 +416,13 @@ namespace IIIFComponents {
 
         public set(data: IAVCanvasInstanceData): void {
 
-            if (this._propertyChanged(data, 'currentDuration')) {
+            const oldData: IAVCanvasInstanceData = Object.assign({}, this._data);
+            this._data = Object.assign(this._data, data);
+            const diff: string[] = AVComponentUtils.Utils.diff(oldData, this._data);
+
+            if (diff.includes('currentDuration')) {
                 // if the currentDuration has changed, update the time
-                this.setCurrentTime((<AVComponentObjects.Duration>data.currentDuration).start);
+                this._setCurrentTime((<AVComponentObjects.Duration>data.currentDuration).start);
             }
 
             this._data = Object.assign(this._data, data);
@@ -428,27 +430,10 @@ namespace IIIFComponents {
             this._render();
         }
 
-        // private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
-        //     let propChanged: boolean = false;
-            
-        //     for (let i = 0; i < properties.length; i++) {
-        //         propChanged = this._propertyChanged(data, properties[i]);
-        //         if (propChanged) {
-        //             break;
-        //         }
-        //     }
-    
-        //     return propChanged;
-        // }
-
-        private _propertyChanged(data: IAVComponentData, propertyName: string): boolean {
-            return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
-        }
-
         private _render(): void {
 
             if (this._data.currentDuration) {
-                
+
                 // get the total length in seconds.
                 const totalLength: number = this._canvasClockDuration;
 
@@ -485,10 +470,10 @@ namespace IIIFComponents {
                         // on create
                     },
                     slide: function (evt: any, ui: any) {
-                        that.setCurrentTime(ui.value);
+                        that._setCurrentTime(ui.value);
                     },
                     stop: function (evt: any, ui: any) {
-                        //this.setCurrentTime(ui.value);
+                        //this._setCurrentTime(ui.value);
                     }
                 });
 
@@ -496,7 +481,7 @@ namespace IIIFComponents {
                 // if (this._data && this._data.helper) {
                 //     this._data.helper.rangeId = null;
                 // }
-                
+
                 this._$durationHighlight.hide();
             }
 
@@ -594,28 +579,27 @@ namespace IIIFComponents {
             if (type === 'video' || type === 'audio') {
 
                 const that = this;
-                const self = data;
 
-                $mediaElement.on('loadstart', function () {
+                $mediaElement.on('loadstart', () => {
                     //console.log('loadstart');
-                    self.checkForStall();
+                    data.checkForStall();
                 });
 
-                $mediaElement.on('waiting', function () {
+                $mediaElement.on('waiting', () => {
                     //console.log('waiting');
-                    self.checkForStall();
+                    data.checkForStall();
                 });
 
-                $mediaElement.on('seeking', function () {
+                $mediaElement.on('seeking', () => {
                     //console.log('seeking');
-                    //self.checkForStall();
+                    //data.checkForStall();
                 });
 
                 $mediaElement.on('loadedmetadata', function () {
                     that._readyCanvasesCount++;
 
                     if (that._readyCanvasesCount === that._contentAnnotations.length) {
-                        that.setCurrentTime(0);
+                        that._setCurrentTime(0);
 
                         if (that.options.data.autoPlay) {
                             that.play();
@@ -633,7 +617,6 @@ namespace IIIFComponents {
             }
 
             this._renderSyncIndicator(data);
-
         }
 
         private _hasRangeChanged(): void {
@@ -658,7 +641,7 @@ namespace IIIFComponents {
             }
         }
 
-        public setVolume(value: number): void {
+        private _setVolume(value: number): void {
             for (let i = 0; i < this._contentAnnotations.length; i++) {
                 const $mediaElement = this._contentAnnotations[i];
                 $($mediaElement.element).prop("volume", value);
@@ -688,7 +671,7 @@ namespace IIIFComponents {
             }
         }
 
-        public setCurrentTime(seconds: number): void { // seconds was originally a string or a number - didn't seem necessary
+        private _setCurrentTime(seconds: number): void { // seconds was originally a string or a number - didn't seem necessary
 
             // const secondsAsFloat: number = parseFloat(seconds.toString());
 
@@ -707,6 +690,8 @@ namespace IIIFComponents {
             this._synchronizeMedia();
         }
 
+        // todo: can this be part of the _data state?
+        // this._data.rewind = true?
         public rewind(withoutUpdate?: boolean): void {
 
             this.pause();
@@ -729,6 +714,8 @@ namespace IIIFComponents {
             this.play();
         }
 
+        // todo: can this be part of the _data state?
+        // this._data.fastforward = true?
         public fastforward(): void {
 
             if (this._data.limitToRange && this._data.currentDuration) {
@@ -740,6 +727,8 @@ namespace IIIFComponents {
             this.pause();
         }
 
+        // todo: can this be part of the _data state?
+        // this._data.play = true?
         public play(withoutUpdate?: boolean): void {
             if (this._isPlaying) return;
 
@@ -777,6 +766,8 @@ namespace IIIFComponents {
             this.logMessage('PLAY canvas');
         }
 
+        // todo: can this be part of the _data state?
+        // this._data.play = false?
         public pause(withoutUpdate?: boolean): void {
 
             window.clearInterval(this._highPriorityInterval);
@@ -877,7 +868,6 @@ namespace IIIFComponents {
             }
 
             //this.logMessage('UPDATE MEDIA ACTIVE STATES at: '+ this._canvasClockTime + ' seconds.');
-
         }
 
         private _synchronizeMedia(): void {

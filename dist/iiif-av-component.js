@@ -1,7 +1,6 @@
 // iiif-av-component v0.0.26 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
-/// <reference types="exjs" /> 
 
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -52,16 +51,17 @@ var IIIFComponents;
         };
         AVComponent.prototype.set = function (data) {
             var _this = this;
+            var oldData = Object.assign({}, this._data);
+            this._data = Object.assign(this._data, data);
+            var diff = IIIFComponents.AVComponentUtils.Utils.diff(oldData, this._data);
             // changing any of these data properties forces a reload.
-            if (this._propertyChanged(data, 'helper')) {
-                this._data = Object.assign(this._data, data);
+            if (diff.includes('helper')) {
                 // reset all global properties and terminate all running processes
                 // create canvases
                 this._reset();
                 return;
             }
-            if (this._propertyChanged(data, 'rangeId') && data.rangeId) {
-                this._data = Object.assign(this._data, data);
+            if (diff.includes('rangeId') && data.rangeId) {
                 if (!this._data.helper) {
                     console.warn('must pass a helper object');
                     return;
@@ -75,7 +75,7 @@ var IIIFComponents;
                 this._data.helper.rangeId = this._data.rangeId;
                 if (range.canvases) {
                     var canvasId = range.canvases[0];
-                    var canvasInstance = this.getCanvasInstanceById(canvasId);
+                    var canvasInstance = this._getCanvasInstanceById(canvasId);
                     if (canvasInstance) {
                         // get the temporal part of the canvas id
                         var temporal = /t=([^&]+)/g.exec(canvasId);
@@ -95,30 +95,16 @@ var IIIFComponents;
                     }
                 }
             }
-            this._data = Object.assign(this._data, data);
             this.canvasInstances.forEach(function (canvasInstance) {
                 canvasInstance.set(_this._data);
             });
             this._render();
             this._resize();
         };
-        // private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
-        //     let propChanged: boolean = false;
-        //     for (let i = 0; i < properties.length; i++) {
-        //         propChanged = this._propertyChanged(data, properties[i]);
-        //         if (propChanged) {
-        //             break;
-        //         }
-        //     }
-        //     return propChanged;
-        // }
-        AVComponent.prototype._propertyChanged = function (data, propertyName) {
-            return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
-        };
         AVComponent.prototype._render = function () {
             if (!this._data || !this._data.canvasId)
                 return;
-            var currentCanvasInstance = this.getCanvasInstanceById(this._data.canvasId);
+            var currentCanvasInstance = this._getCanvasInstanceById(this._data.canvasId);
             this.canvasInstances.forEach(function (canvasInstance, index) {
                 if (canvasInstance !== currentCanvasInstance) {
                     canvasInstance.pause();
@@ -204,7 +190,7 @@ var IIIFComponents;
                 this.fire(AVComponent.Events.RANGE_CHANGED);
             }
         };
-        AVComponent.prototype.getCanvasInstanceById = function (canvasId) {
+        AVComponent.prototype._getCanvasInstanceById = function (canvasId) {
             canvasId = manifesto.Utils.normaliseUrl(canvasId);
             for (var i = 0; i < this.canvasInstances.length; i++) {
                 var canvasInstance = this.canvasInstances[i];
@@ -220,7 +206,7 @@ var IIIFComponents;
         };
         AVComponent.prototype._getCurrentCanvas = function () {
             if (this._data.canvasId) {
-                return this.getCanvasInstanceById(this._data.canvasId);
+                return this._getCanvasInstanceById(this._data.canvasId);
             }
             return null;
         };
@@ -449,7 +435,7 @@ var IIIFComponents;
                 data: Object.assign({}, this._data)
             });
             this._volume.on(IIIFComponents.AVVolumeControl.Events.VOLUME_CHANGED, function (value) {
-                _this.setVolume(value);
+                _this._setVolume(value);
             }, false);
             this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
             this._$canvasTimelineContainer.append(this._$canvasHoverPreview, this._$canvasHoverHighlight, this._$durationHighlight);
@@ -518,10 +504,10 @@ var IIIFComponents;
                     // on create
                 },
                 slide: function (evt, ui) {
-                    that.setCurrentTime(ui.value);
+                    that._setCurrentTime(ui.value);
                 },
                 stop: function (evt, ui) {
-                    //this.setCurrentTime(ui.value);
+                    //this._setCurrentTime(ui.value);
                 }
             });
             this._$canvasTimelineContainer.mouseout(function () {
@@ -718,25 +704,15 @@ var IIIFComponents;
             }
         };
         CanvasInstance.prototype.set = function (data) {
-            if (this._propertyChanged(data, 'currentDuration')) {
+            var oldData = Object.assign({}, this._data);
+            this._data = Object.assign(this._data, data);
+            var diff = IIIFComponents.AVComponentUtils.Utils.diff(oldData, this._data);
+            if (diff.includes('currentDuration')) {
                 // if the currentDuration has changed, update the time
-                this.setCurrentTime(data.currentDuration.start);
+                this._setCurrentTime(data.currentDuration.start);
             }
             this._data = Object.assign(this._data, data);
             this._render();
-        };
-        // private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
-        //     let propChanged: boolean = false;
-        //     for (let i = 0; i < properties.length; i++) {
-        //         propChanged = this._propertyChanged(data, properties[i]);
-        //         if (propChanged) {
-        //             break;
-        //         }
-        //     }
-        //     return propChanged;
-        // }
-        CanvasInstance.prototype._propertyChanged = function (data, propertyName) {
-            return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
         };
         CanvasInstance.prototype._render = function () {
             if (this._data.currentDuration) {
@@ -769,10 +745,10 @@ var IIIFComponents;
                         // on create
                     },
                     slide: function (evt, ui) {
-                        that_1.setCurrentTime(ui.value);
+                        that_1._setCurrentTime(ui.value);
                     },
                     stop: function (evt, ui) {
-                        //this.setCurrentTime(ui.value);
+                        //this._setCurrentTime(ui.value);
                     }
                 });
             }
@@ -859,23 +835,22 @@ var IIIFComponents;
             }
             if (type === 'video' || type === 'audio') {
                 var that_3 = this;
-                var self_1 = data;
                 $mediaElement.on('loadstart', function () {
                     //console.log('loadstart');
-                    self_1.checkForStall();
+                    data.checkForStall();
                 });
                 $mediaElement.on('waiting', function () {
                     //console.log('waiting');
-                    self_1.checkForStall();
+                    data.checkForStall();
                 });
                 $mediaElement.on('seeking', function () {
                     //console.log('seeking');
-                    //self.checkForStall();
+                    //data.checkForStall();
                 });
                 $mediaElement.on('loadedmetadata', function () {
                     that_3._readyCanvasesCount++;
                     if (that_3._readyCanvasesCount === that_3._contentAnnotations.length) {
-                        that_3.setCurrentTime(0);
+                        that_3._setCurrentTime(0);
                         if (that_3.options.data.autoPlay) {
                             that_3.play();
                         }
@@ -908,7 +883,7 @@ var IIIFComponents;
                 this._$canvasDuration.text(IIIFComponents.AVComponentUtils.Utils.formatTime(this._canvasClockDuration));
             }
         };
-        CanvasInstance.prototype.setVolume = function (value) {
+        CanvasInstance.prototype._setVolume = function (value) {
             for (var i = 0; i < this._contentAnnotations.length; i++) {
                 var $mediaElement = this._contentAnnotations[i];
                 $($mediaElement.element).prop("volume", value);
@@ -929,7 +904,7 @@ var IIIFComponents;
                 this._$timelineItemContainer.append($lineWrapper);
             }
         };
-        CanvasInstance.prototype.setCurrentTime = function (seconds) {
+        CanvasInstance.prototype._setCurrentTime = function (seconds) {
             // const secondsAsFloat: number = parseFloat(seconds.toString());
             // if (isNaN(secondsAsFloat)) {
             //     return;
@@ -942,6 +917,8 @@ var IIIFComponents;
             this._lowPriorityUpdater();
             this._synchronizeMedia();
         };
+        // todo: can this be part of the _data state?
+        // this._data.rewind = true?
         CanvasInstance.prototype.rewind = function (withoutUpdate) {
             this.pause();
             if (this._data.limitToRange && this._data.currentDuration) {
@@ -960,6 +937,8 @@ var IIIFComponents;
             }
             this.play();
         };
+        // todo: can this be part of the _data state?
+        // this._data.fastforward = true?
         CanvasInstance.prototype.fastforward = function () {
             if (this._data.limitToRange && this._data.currentDuration) {
                 this._canvasClockTime = this._data.currentDuration.end;
@@ -969,6 +948,8 @@ var IIIFComponents;
             }
             this.pause();
         };
+        // todo: can this be part of the _data state?
+        // this._data.play = true?
         CanvasInstance.prototype.play = function (withoutUpdate) {
             var _this = this;
             if (this._isPlaying)
@@ -997,6 +978,8 @@ var IIIFComponents;
             this.fire(IIIFComponents.AVComponent.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
         };
+        // todo: can this be part of the _data state?
+        // this._data.play = false?
         CanvasInstance.prototype.pause = function (withoutUpdate) {
             window.clearInterval(this._highPriorityInterval);
             window.clearInterval(this._lowPriorityInterval);
@@ -1210,6 +1193,18 @@ var IIIFComponents;
         var Utils = /** @class */ (function () {
             function Utils() {
             }
+            Utils._compare = function (a, b) {
+                var changed = [];
+                Object.keys(a).forEach(function (p) {
+                    if (!Object.is(b[p], a[p])) {
+                        changed.push(p);
+                    }
+                });
+                return changed;
+            };
+            Utils.diff = function (a, b) {
+                return Array.from(new Set(Utils._compare(a, b).concat(Utils._compare(b, a))));
+            };
             Utils.formatTime = function (aNumber) {
                 var hours, minutes, seconds, hourValue;
                 seconds = Math.ceil(aNumber);

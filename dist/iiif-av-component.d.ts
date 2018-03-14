@@ -1,4 +1,12 @@
 // iiif-av-component v0.0.26 https://github.com/iiif-commons/iiif-av-component#readme
+interface Array<T> {
+    /**
+     * Determines whether an array includes a certain element, returning true or false as appropriate.
+     * @param searchElement The element to search for.
+     * @param fromIndex The position in this array at which to begin searching for searchElement.
+     */
+    includes(searchElement: T, fromIndex?: number): boolean;
+}
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -10,14 +18,13 @@ declare namespace IIIFComponents {
         protected _init(): boolean;
         data(): IAVComponentData;
         set(data: IAVComponentData): void;
-        private _propertyChanged(data, propertyName);
         private _render();
         private _reset();
         private _getCanvases();
         private _initCanvas(canvas);
         private _prevRange();
         private _nextRage();
-        getCanvasInstanceById(canvasId: string): CanvasInstance | null;
+        private _getCanvasInstanceById(canvasId);
         private _getCurrentCanvas();
         private _rewind();
         playRange(rangeId: string): void;
@@ -108,7 +115,6 @@ declare namespace IIIFComponents {
         private _previous(isDouble);
         private _next();
         set(data: IAVCanvasInstanceData): void;
-        private _propertyChanged(data, propertyName);
         private _render();
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
@@ -116,9 +122,9 @@ declare namespace IIIFComponents {
         private _hasRangeChanged();
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
-        setVolume(value: number): void;
+        private _setVolume(value);
         private _renderSyncIndicator(mediaElementData);
-        setCurrentTime(seconds: number): void;
+        private _setCurrentTime(seconds);
         rewind(withoutUpdate?: boolean): void;
         fastforward(): void;
         play(withoutUpdate?: boolean): void;
@@ -186,6 +192,8 @@ declare namespace IIIFComponents {
 
 declare namespace IIIFComponents.AVComponentUtils {
     class Utils {
+        private static _compare(a, b);
+        static diff(a: any, b: any): string[];
         static formatTime(aNumber: number): string;
     }
 }

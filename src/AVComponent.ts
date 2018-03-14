@@ -44,18 +44,19 @@ namespace IIIFComponents {
 
         public set(data: IAVComponentData): void {
 
+            const oldData: IAVComponentData = Object.assign({}, this._data);
+            this._data = Object.assign(this._data, data);
+            const diff: string[] = AVComponentUtils.Utils.diff(oldData, this._data);
+
             // changing any of these data properties forces a reload.
-            if (this._propertiesChanged(data, ['helper'])) {
-                this._data = Object.assign(this._data, data);
+            if (diff.includes('helper')) {
                 // reset all global properties and terminate all running processes
                 // create canvases
                 this._reset();
                 return;
             }
             
-            if (this._propertyChanged(data, 'rangeId') && data.rangeId) {
-
-                this._data = Object.assign(this._data, data);
+            if (diff.includes('rangeId') && this._data.rangeId) {
 
                 if (!this._data.helper) {
                     console.warn('must pass a helper object');
@@ -69,7 +70,7 @@ namespace IIIFComponents {
                     return;
                 }
 
-                // todo: should invoke and action like helper.setRange(id) which updates the internal state using redux
+                // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
                 this._data.helper.rangeId = <string>this._data.rangeId;
 
                 if (range.canvases) {
@@ -99,8 +100,6 @@ namespace IIIFComponents {
                     }
                 }
             } 
-            
-            this._data = Object.assign(this._data, data);
 
             this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
                 canvasInstance.set(<IAVCanvasInstanceData>this._data);
@@ -108,23 +107,6 @@ namespace IIIFComponents {
             
             this._render();
             this._resize();
-        }
-
-        private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
-            let propChanged: boolean = false;
-            
-            for (let i = 0; i < properties.length; i++) {
-                propChanged = this._propertyChanged(data, properties[i]);
-                if (propChanged) {
-                    break;
-                }
-            }
-    
-            return propChanged;
-        }
-
-        private _propertyChanged(data: IAVComponentData, propertyName: string): boolean {
-            return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
         }
 
         private _render(): void {
