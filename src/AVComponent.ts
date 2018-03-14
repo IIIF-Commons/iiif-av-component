@@ -63,7 +63,9 @@ namespace IIIFComponents {
                     return;
                 }
 
-                const range: Manifesto.IRange | null = this._data.helper.getRangeById(<string>this._data.rangeId);
+                const rangeId: string = this._data.rangeId;
+
+                const range: Manifesto.IRange | null = this._data.helper.getRangeById(rangeId);
 
                 if (!range) {
                     console.warn('range not found');
@@ -71,7 +73,7 @@ namespace IIIFComponents {
                 }
 
                 // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
-                this._data.helper.rangeId = <string>this._data.rangeId;
+                this._data.helper.rangeId = rangeId;
 
                 if (range.canvases) {
                     const canvasId = range.canvases[0];
@@ -80,14 +82,11 @@ namespace IIIFComponents {
                     
                     if (canvasInstance) {
 
-                        // get the temporal part of the canvas id
-                        const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
-                        
-                        if (temporal && temporal.length > 1) {
-                            const rangeTiming: string[] = temporal[1].split(',');
-                            const duration: AVComponentObjects.Duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
+                        const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(canvasId);
+
+                        if (canvasRange.duration) {                           
                             canvasInstance.set({
-                                currentDuration: duration
+                                range: canvasRange
                             });
                             canvasInstance.play();
                         }

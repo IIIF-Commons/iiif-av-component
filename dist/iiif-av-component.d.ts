@@ -144,6 +144,13 @@ declare namespace IIIFComponents {
 }
 
 declare namespace IIIFComponents.AVComponentObjects {
+    class CanvasRange {
+        duration: Duration | null;
+        constructor(canvasId: string);
+    }
+}
+
+declare namespace IIIFComponents.AVComponentObjects {
     class Duration {
         start: number;
         end: number;
@@ -156,7 +163,7 @@ declare namespace IIIFComponents.AVComponentObjects {
 declare namespace IIIFComponents {
     interface IAVCanvasInstanceData extends IAVComponentData {
         canvas?: Manifesto.ICanvas;
-        currentDuration?: AVComponentObjects.Duration;
+        range?: AVComponentObjects.CanvasRange;
     }
 }
 

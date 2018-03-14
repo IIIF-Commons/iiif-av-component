@@ -61,29 +61,27 @@ var IIIFComponents;
                 this._reset();
                 return;
             }
-            if (diff.includes('rangeId') && data.rangeId) {
+            if (diff.includes('rangeId') && this._data.rangeId) {
                 if (!this._data.helper) {
                     console.warn('must pass a helper object');
                     return;
                 }
-                var range = this._data.helper.getRangeById(this._data.rangeId);
+                var rangeId = this._data.rangeId;
+                var range = this._data.helper.getRangeById(rangeId);
                 if (!range) {
                     console.warn('range not found');
                     return;
                 }
-                // todo: should invoke and action like helper.setRange(id) which updates the internal state using redux
-                this._data.helper.rangeId = this._data.rangeId;
+                // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
+                this._data.helper.rangeId = rangeId;
                 if (range.canvases) {
                     var canvasId = range.canvases[0];
                     var canvasInstance = this._getCanvasInstanceById(canvasId);
                     if (canvasInstance) {
-                        // get the temporal part of the canvas id
-                        var temporal = /t=([^&]+)/g.exec(canvasId);
-                        if (temporal && temporal.length > 1) {
-                            var rangeTiming = temporal[1].split(',');
-                            var duration = new IIIFComponents.AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
+                        var canvasRange = new IIIFComponents.AVComponentObjects.CanvasRange(canvasId);
+                        if (canvasRange.duration) {
                             canvasInstance.set({
-                                currentDuration: duration
+                                range: canvasRange
                             });
                             canvasInstance.play();
                         }
@@ -522,7 +520,9 @@ var IIIFComponents;
                 _this._updateHoverPreview(e, _this._$canvasTimelineContainer, _this._canvasClockDuration);
             });
             this._$rangeTimelineContainer.on("mousemove", function (e) {
-                _this._updateHoverPreview(e, _this._$rangeTimelineContainer, _this._data.currentDuration ? _this._data.currentDuration.getLength() : 0);
+                if (_this._data.range) {
+                    _this._updateHoverPreview(e, _this._$rangeTimelineContainer, _this._data.range.duration ? _this._data.range.duration.getLength() : 0);
+                }
             });
             // create annotations
             this._contentAnnotations = [];
@@ -656,7 +656,7 @@ var IIIFComponents;
             });
         };
         CanvasInstance.prototype._previous = function (isDouble) {
-            if (this._data.limitToRange && this._data.currentDuration) {
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
                 // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
                 if (isDouble) {
                     if (this._isNavigationConstrainedToRange()) {
@@ -674,10 +674,10 @@ var IIIFComponents;
                 // not limited to range. 
                 // if there is a currentDuration, single click goes to previous range, double click clears current duration and rewinds.
                 // if there is no currentDuration, single and double click rewinds.
-                if (this._data.currentDuration) {
+                if (this._data.range && this._data.range.duration) {
                     if (isDouble) {
                         this.set({
-                            currentDuration: undefined
+                            range: undefined
                         });
                         this.rewind();
                     }
@@ -691,7 +691,7 @@ var IIIFComponents;
             }
         };
         CanvasInstance.prototype._next = function () {
-            if (this._data.limitToRange && this._data.currentDuration) {
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
                 if (this._isNavigationConstrainedToRange()) {
                     this.fastforward();
                 }
@@ -707,23 +707,22 @@ var IIIFComponents;
             var oldData = Object.assign({}, this._data);
             this._data = Object.assign(this._data, data);
             var diff = IIIFComponents.AVComponentUtils.Utils.diff(oldData, this._data);
-            if (diff.includes('currentDuration')) {
-                // if the currentDuration has changed, update the time
-                this._setCurrentTime(data.currentDuration.start);
+            if (diff.includes('range') && this._data.range && this._data.range.duration) {
+                // if the range has changed, update the time
+                this._setCurrentTime(this._data.range.duration.start);
             }
-            this._data = Object.assign(this._data, data);
             this._render();
         };
         CanvasInstance.prototype._render = function () {
-            if (this._data.currentDuration) {
+            if (this._data.range && this._data.range.duration) {
                 // get the total length in seconds.
                 var totalLength = this._canvasClockDuration;
                 // get the length of the timeline container
                 var timelineLength = this._$canvasTimelineContainer.width();
                 // get the ratio of seconds to length
                 var ratio = timelineLength / totalLength;
-                var start = this._data.currentDuration.start * ratio;
-                var end = this._data.currentDuration.end * ratio;
+                var start = this._data.range.duration.start * ratio;
+                var end = this._data.range.duration.end * ratio;
                 var width = end - start;
                 this._$durationHighlight.show();
                 // set the start position and width
@@ -734,12 +733,12 @@ var IIIFComponents;
                 var that_1 = this;
                 this._$rangeTimelineContainer.slider("destroy");
                 this._$rangeTimelineContainer.slider({
-                    value: this._data.currentDuration.start,
+                    value: this._data.range.duration.start,
                     step: 0.01,
                     orientation: "horizontal",
                     range: "min",
-                    min: this._data.currentDuration.start,
-                    max: this._data.currentDuration.end,
+                    min: this._data.range.duration.start,
+                    max: this._data.range.duration.end,
                     animate: false,
                     create: function (evt, ui) {
                         // on create
@@ -758,7 +757,7 @@ var IIIFComponents;
                 // }
                 this._$durationHighlight.hide();
             }
-            if (this._data.limitToRange && this._data.currentDuration) {
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
                 this._$canvasTimelineContainer.hide();
                 this._$rangeTimelineContainer.show();
             }
@@ -867,8 +866,8 @@ var IIIFComponents;
             // generate a NEXT_RANGE event if the currentduration changes
         };
         CanvasInstance.prototype._updateCurrentTimeDisplay = function () {
-            if (this._data.limitToRange && this._data.currentDuration) {
-                var rangeClockTime = this._canvasClockTime - this._data.currentDuration.start;
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+                var rangeClockTime = this._canvasClockTime - this._data.range.duration.start;
                 this._$canvasTime.text(IIIFComponents.AVComponentUtils.Utils.formatTime(rangeClockTime));
             }
             else {
@@ -876,8 +875,8 @@ var IIIFComponents;
             }
         };
         CanvasInstance.prototype._updateDurationDisplay = function () {
-            if (this._data.limitToRange && this._data.currentDuration) {
-                this._$canvasDuration.text(IIIFComponents.AVComponentUtils.Utils.formatTime(this._data.currentDuration.getLength()));
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+                this._$canvasDuration.text(IIIFComponents.AVComponentUtils.Utils.formatTime(this._data.range.duration.getLength()));
             }
             else {
                 this._$canvasDuration.text(IIIFComponents.AVComponentUtils.Utils.formatTime(this._canvasClockDuration));
@@ -921,8 +920,8 @@ var IIIFComponents;
         // this._data.rewind = true?
         CanvasInstance.prototype.rewind = function (withoutUpdate) {
             this.pause();
-            if (this._data.limitToRange && this._data.currentDuration) {
-                this._canvasClockTime = this._data.currentDuration.start;
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+                this._canvasClockTime = this._data.range.duration.start;
             }
             else {
                 this._canvasClockTime = 0;
@@ -940,8 +939,8 @@ var IIIFComponents;
         // todo: can this be part of the _data state?
         // this._data.fastforward = true?
         CanvasInstance.prototype.fastforward = function () {
-            if (this._data.limitToRange && this._data.currentDuration) {
-                this._canvasClockTime = this._data.currentDuration.end;
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+                this._canvasClockTime = this._data.range.duration.end;
             }
             else {
                 this._canvasClockTime = this._canvasClockDuration;
@@ -954,8 +953,8 @@ var IIIFComponents;
             var _this = this;
             if (this._isPlaying)
                 return;
-            if (this._data.limitToRange && this._data.currentDuration && this._canvasClockTime >= this._data.currentDuration.end) {
-                this._canvasClockTime = this._data.currentDuration.start;
+            if (this._data.limitToRange && this._data.range && this._data.range.duration && this._canvasClockTime >= this._data.range.duration.end) {
+                this._canvasClockTime = this._data.range.duration.start;
             }
             if (this._canvasClockTime === this._canvasClockDuration) {
                 this._canvasClockTime = 0;
@@ -999,7 +998,7 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._canvasClockUpdater = function () {
             this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
-            if (this._data.limitToRange && this._data.currentDuration && this._canvasClockTime >= this._data.currentDuration.end) {
+            if (this._data.limitToRange && this._data.range && this._data.range.duration && this._canvasClockTime >= this._data.range.duration.end) {
                 this.pause();
             }
             if (this._canvasClockTime >= this._canvasClockDuration) {
@@ -1163,6 +1162,26 @@ var IIIFComponents;
         return CanvasInstance;
     }(_Components.BaseComponent));
     IIIFComponents.CanvasInstance = CanvasInstance;
+})(IIIFComponents || (IIIFComponents = {}));
+
+var IIIFComponents;
+(function (IIIFComponents) {
+    var AVComponentObjects;
+    (function (AVComponentObjects) {
+        var CanvasRange = /** @class */ (function () {
+            function CanvasRange(canvasId) {
+                this.duration = null;
+                // get the temporal part of the canvas id
+                var temporal = /t=([^&]+)/g.exec(canvasId);
+                if (temporal && temporal.length > 1) {
+                    var rangeTiming = temporal[1].split(',');
+                    this.duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
+                }
+            }
+            return CanvasRange;
+        }());
+        AVComponentObjects.CanvasRange = CanvasRange;
+    })(AVComponentObjects = IIIFComponents.AVComponentObjects || (IIIFComponents.AVComponentObjects = {}));
 })(IIIFComponents || (IIIFComponents = {}));
 
 var IIIFComponents;

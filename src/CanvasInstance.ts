@@ -192,7 +192,9 @@ namespace IIIFComponents {
             });
 
             this._$rangeTimelineContainer.on("mousemove", (e) => {
-                this._updateHoverPreview(e, this._$rangeTimelineContainer, this._data.currentDuration ? this._data.currentDuration.getLength() : 0);
+                if (this._data.range) {
+                    this._updateHoverPreview(e, this._$rangeTimelineContainer, this._data.range.duration ? this._data.range.duration.getLength() : 0);
+                }
             });
 
             // create annotations
@@ -372,7 +374,7 @@ namespace IIIFComponents {
         }
 
         private _previous(isDouble: boolean): void {
-            if (this._data.limitToRange && this._data.currentDuration) {
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
                 // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
                 if (isDouble) {
                     if (this._isNavigationConstrainedToRange()) {
@@ -387,10 +389,10 @@ namespace IIIFComponents {
                 // not limited to range. 
                 // if there is a currentDuration, single click goes to previous range, double click clears current duration and rewinds.
                 // if there is no currentDuration, single and double click rewinds.
-                if (this._data.currentDuration) {
+                if (this._data.range && this._data.range.duration) {
                     if (isDouble) {
                         this.set({
-                            currentDuration: undefined
+                            range: undefined
                         });
                         this.rewind();
                     } else {
@@ -403,7 +405,7 @@ namespace IIIFComponents {
         }
 
         private _next(): void {
-            if (this._data.limitToRange && this._data.currentDuration) {
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
                 if (this._isNavigationConstrainedToRange()) {
                     this.fastforward();
                 } else {
@@ -420,19 +422,17 @@ namespace IIIFComponents {
             this._data = Object.assign(this._data, data);
             const diff: string[] = AVComponentUtils.Utils.diff(oldData, this._data);
 
-            if (diff.includes('currentDuration')) {
-                // if the currentDuration has changed, update the time
-                this._setCurrentTime((<AVComponentObjects.Duration>data.currentDuration).start);
+            if (diff.includes('range') && this._data.range && this._data.range.duration) {
+                // if the range has changed, update the time
+                this._setCurrentTime(this._data.range.duration.start);
             }
-
-            this._data = Object.assign(this._data, data);
 
             this._render();
         }
 
         private _render(): void {
 
-            if (this._data.currentDuration) {
+            if (this._data.range && this._data.range.duration) {
 
                 // get the total length in seconds.
                 const totalLength: number = this._canvasClockDuration;
@@ -442,8 +442,8 @@ namespace IIIFComponents {
 
                 // get the ratio of seconds to length
                 const ratio: number = timelineLength / totalLength;
-                const start: number = this._data.currentDuration.start * ratio;
-                const end: number = this._data.currentDuration.end * ratio;
+                const start: number = this._data.range.duration.start * ratio;
+                const end: number = this._data.range.duration.end * ratio;
                 const width: number = end - start;
 
                 this._$durationHighlight.show();
@@ -459,12 +459,12 @@ namespace IIIFComponents {
                 this._$rangeTimelineContainer.slider("destroy");
 
                 this._$rangeTimelineContainer.slider({
-                    value: this._data.currentDuration.start,
+                    value: this._data.range.duration.start,
                     step: 0.01,
                     orientation: "horizontal",
                     range: "min",
-                    min: this._data.currentDuration.start,
-                    max: this._data.currentDuration.end,
+                    min: this._data.range.duration.start,
+                    max: this._data.range.duration.end,
                     animate: false,
                     create: function (evt: any, ui: any) {
                         // on create
@@ -485,7 +485,7 @@ namespace IIIFComponents {
                 this._$durationHighlight.hide();
             }
 
-            if (this._data.limitToRange && this._data.currentDuration) {
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
                 this._$canvasTimelineContainer.hide();
                 this._$rangeTimelineContainer.show();
             } else {
@@ -625,8 +625,8 @@ namespace IIIFComponents {
         }
 
         private _updateCurrentTimeDisplay(): void {
-            if (this._data.limitToRange && this._data.currentDuration) {
-                const rangeClockTime: number = this._canvasClockTime - this._data.currentDuration.start;
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+                const rangeClockTime: number = this._canvasClockTime - this._data.range.duration.start;
                 this._$canvasTime.text(AVComponentUtils.Utils.formatTime(rangeClockTime));
             } else {
                 this._$canvasTime.text(AVComponentUtils.Utils.formatTime(this._canvasClockTime));
@@ -634,8 +634,8 @@ namespace IIIFComponents {
         }
 
         private _updateDurationDisplay(): void {
-            if (this._data.limitToRange && this._data.currentDuration) {
-                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._data.currentDuration.getLength()));
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._data.range.duration.getLength()));
             } else {
                 this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._canvasClockDuration));
             }
@@ -696,8 +696,8 @@ namespace IIIFComponents {
 
             this.pause();
 
-            if (this._data.limitToRange && this._data.currentDuration) {
-                this._canvasClockTime = this._data.currentDuration.start;
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+                this._canvasClockTime = this._data.range.duration.start;
             } else {
                 this._canvasClockTime = 0;
             }
@@ -718,8 +718,8 @@ namespace IIIFComponents {
         // this._data.fastforward = true?
         public fastforward(): void {
 
-            if (this._data.limitToRange && this._data.currentDuration) {
-                this._canvasClockTime = this._data.currentDuration.end;
+            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+                this._canvasClockTime = this._data.range.duration.end;
             } else {
                 this._canvasClockTime = this._canvasClockDuration;
             }
@@ -732,8 +732,8 @@ namespace IIIFComponents {
         public play(withoutUpdate?: boolean): void {
             if (this._isPlaying) return;
 
-            if (this._data.limitToRange && this._data.currentDuration && this._canvasClockTime >= this._data.currentDuration.end) {
-                this._canvasClockTime = this._data.currentDuration.start;
+            if (this._data.limitToRange && this._data.range && this._data.range.duration && this._canvasClockTime >= this._data.range.duration.end) {
+                this._canvasClockTime = this._data.range.duration.start;
             }
 
             if (this._canvasClockTime === this._canvasClockDuration) {
@@ -795,7 +795,7 @@ namespace IIIFComponents {
         private _canvasClockUpdater(): void {
             this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
 
-            if (this._data.limitToRange && this._data.currentDuration && this._canvasClockTime >= this._data.currentDuration.end) {
+            if (this._data.limitToRange && this._data.range && this._data.range.duration && this._canvasClockTime >= this._data.range.duration.end) {
                 this.pause();
             }
 
