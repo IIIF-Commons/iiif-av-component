@@ -250,9 +250,6 @@ var IIIFComponents;
             this.fire(AVComponent.Events.LOG, message);
         };
         AVComponent.prototype.resize = function () {
-            this._resize();
-        };
-        AVComponent.prototype._resize = function () {
             this.canvasInstances.forEach(function (canvasInstance) {
                 canvasInstance.resize();
             });
@@ -973,6 +970,7 @@ var IIIFComponents;
             this.pause();
         };
         CanvasInstance.prototype.play = function (withoutUpdate) {
+            var _this = this;
             if (this._isPlaying)
                 return;
             if (this._data.limitToRange && this._data.currentDuration && this._canvasClockTime >= this._data.currentDuration.end) {
@@ -982,15 +980,14 @@ var IIIFComponents;
                 this._canvasClockTime = 0;
             }
             this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
-            var self = this;
             this._highPriorityInterval = window.setInterval(function () {
-                self._highPriorityUpdater();
+                _this._highPriorityUpdater();
             }, this._highPriorityFrequency);
             this._lowPriorityInterval = window.setInterval(function () {
-                self._lowPriorityUpdater();
+                _this._lowPriorityUpdater();
             }, this._lowPriorityFrequency);
             this._canvasClockInterval = window.setInterval(function () {
-                self._canvasClockUpdater();
+                _this._canvasClockUpdater();
             }, this._canvasClockFrequency);
             this._isPlaying = true;
             if (!withoutUpdate) {

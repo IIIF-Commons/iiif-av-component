@@ -24,7 +24,6 @@ declare namespace IIIFComponents {
         showCanvas(canvasId: string): void;
         private _logMessage(message);
         resize(): void;
-        protected _resize(): void;
     }
 }
 declare namespace IIIFComponents.AVComponent {

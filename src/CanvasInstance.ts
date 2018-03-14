@@ -753,18 +753,16 @@ namespace IIIFComponents {
 
             this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
 
-            const self = this;
-
-            this._highPriorityInterval = window.setInterval(function () {
-                self._highPriorityUpdater();
+            this._highPriorityInterval = window.setInterval(() => {
+                this._highPriorityUpdater();
             }, this._highPriorityFrequency);
 
-            this._lowPriorityInterval = window.setInterval(function () {
-                self._lowPriorityUpdater();
+            this._lowPriorityInterval = window.setInterval(() => {
+                this._lowPriorityUpdater();
             }, this._lowPriorityFrequency);
 
-            this._canvasClockInterval = window.setInterval(function () {
-                self._canvasClockUpdater();
+            this._canvasClockInterval = window.setInterval(() => {
+                this._canvasClockUpdater();
             }, this._canvasClockFrequency);
 
             this._isPlaying = true;

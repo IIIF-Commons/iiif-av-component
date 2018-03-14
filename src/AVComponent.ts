@@ -45,7 +45,7 @@ namespace IIIFComponents {
         public set(data: IAVComponentData): void {
 
             // changing any of these data properties forces a reload.
-            if (this._propertyChanged(data, 'helper')) {
+            if (this._propertiesChanged(data, ['helper'])) {
                 this._data = Object.assign(this._data, data);
                 // reset all global properties and terminate all running processes
                 // create canvases
@@ -110,18 +110,18 @@ namespace IIIFComponents {
             this._resize();
         }
 
-        // private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
-        //     let propChanged: boolean = false;
+        private _propertiesChanged(data: IAVComponentData, properties: string[]): boolean {
+            let propChanged: boolean = false;
             
-        //     for (let i = 0; i < properties.length; i++) {
-        //         propChanged = this._propertyChanged(data, properties[i]);
-        //         if (propChanged) {
-        //             break;
-        //         }
-        //     }
+            for (let i = 0; i < properties.length; i++) {
+                propChanged = this._propertyChanged(data, properties[i]);
+                if (propChanged) {
+                    break;
+                }
+            }
     
-        //     return propChanged;
-        // }
+            return propChanged;
+        }
 
         private _propertyChanged(data: IAVComponentData, propertyName: string): boolean {
             return !!data[propertyName] && this._data[propertyName] !== data[propertyName];
@@ -302,15 +302,9 @@ namespace IIIFComponents {
         }
 
         public resize(): void {
-            this._resize();
-        }
-
-        protected _resize(): void {
-
             this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
                 canvasInstance.resize();
             });
-
         }
     }
 }
