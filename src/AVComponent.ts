@@ -75,7 +75,7 @@ namespace IIIFComponents {
                 if (range.canvases) {
                     const canvasId = range.canvases[0];
 
-                    const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
+                    const canvasInstance: CanvasInstance | null = this._getCanvasInstanceById(canvasId);
                     
                     if (canvasInstance) {
 
@@ -131,7 +131,7 @@ namespace IIIFComponents {
 
             if (!this._data || !this._data.canvasId) return;
 
-            const currentCanvasInstance: CanvasInstance | null = this.getCanvasInstanceById(this._data.canvasId);
+            const currentCanvasInstance: CanvasInstance | null = this._getCanvasInstanceById(this._data.canvasId);
 
             this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
                 if (canvasInstance !== currentCanvasInstance) {
@@ -238,7 +238,7 @@ namespace IIIFComponents {
             }
         }
 
-        public getCanvasInstanceById(canvasId: string): CanvasInstance | null {
+        private _getCanvasInstanceById(canvasId: string): CanvasInstance | null {
             
             canvasId = manifesto.Utils.normaliseUrl(canvasId);
     
@@ -263,7 +263,7 @@ namespace IIIFComponents {
 
         private _getCurrentCanvas(): CanvasInstance | null {
             if (this._data.canvasId) {
-                return this.getCanvasInstanceById(this._data.canvasId);
+                return this._getCanvasInstanceById(this._data.canvasId);
             }
 
             return null;
