@@ -33,8 +33,9 @@ namespace IIIFComponents {
         private _highPriorityInterval: number;
         private _isPlaying: boolean = false;
         private _isStalled: boolean = false;
-        private _lowPriorityFrequency: number = 100;
+        private _lowPriorityFrequency: number = 250;
         private _lowPriorityInterval: number;
+        private _ranges: AVComponentObjects.CanvasRange[] = [];
         private _readyCanvasesCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
@@ -103,6 +104,14 @@ namespace IIIFComponents {
             this._$canvasHoverPreview.hide();
             this._$rangeHoverPreview.hide();
 
+            if (this._data.helper && this._data.canvas) {
+                const ranges: Manifesto.IRange[] =  this._data.helper.getCanvasRanges(this._data.canvas);
+
+                ranges.forEach((range: Manifesto.IRange) => {
+                    this._ranges.push(new AVComponentObjects.CanvasRange(range));
+                });
+            }
+            
             this._canvasClockDuration = <number>this._data.canvas.getDuration();
 
             const canvasWidth: number = this._data.canvas.getWidth();
@@ -374,7 +383,7 @@ namespace IIIFComponents {
         }
 
         private _previous(isDouble: boolean): void {
-            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+            if (this._data.limitToRange) {
                 // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
                 if (isDouble) {
                     if (this._isNavigationConstrainedToRange()) {
@@ -389,7 +398,7 @@ namespace IIIFComponents {
                 // not limited to range. 
                 // if there is a currentDuration, single click goes to previous range, double click clears current duration and rewinds.
                 // if there is no currentDuration, single and double click rewinds.
-                if (this._data.range && this._data.range.duration) {
+                if (this._data.range) {
                     if (isDouble) {
                         this.set({
                             range: undefined
@@ -405,7 +414,7 @@ namespace IIIFComponents {
         }
 
         private _next(): void {
-            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+            if (this._data.limitToRange) {
                 if (this._isNavigationConstrainedToRange()) {
                     this.fastforward();
                 } else {
@@ -422,9 +431,41 @@ namespace IIIFComponents {
             this._data = Object.assign(this._data, data);
             const diff: string[] = AVComponentUtils.Utils.diff(oldData, this._data);
 
-            if (diff.includes('range') && this._data.range && this._data.range.duration) {
-                // if the range has changed, update the time
-                this._setCurrentTime(this._data.range.duration.start);
+            if (diff.includes('visible')) {
+
+                if (this._data.canvas) {
+                    if (this._data.visible) {
+                        this.$playerElement.show();
+                        this.pause();
+                        console.log('show ' + this._data.canvas.id);
+                    } else {
+                        this.$playerElement.hide();
+                        //this.play();
+                        console.log('hide ' + this._data.canvas.id);
+                    }
+                }
+                
+            }
+
+            if (diff.includes('range') && this._data.range) {
+
+                if (this._data.helper) {
+                    if (this._data.range.duration) {
+                        // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
+                        this._data.helper.rangeId = this._data.range.rangeId;
+    
+                        // if the range has changed, update the time if not already within the duration span
+                        if (!this._data.range.spans(this._canvasClockTime)) {
+                            this._setCurrentTime(this._data.range.duration.start);
+                        }
+    
+                        this.play();
+                    } else {
+                        this._data.helper.rangeId = null;
+                    }
+                }
+
+                this.fire(AVComponent.Events.RANGE_CHANGED); 
             }
 
             this._render();
@@ -478,10 +519,6 @@ namespace IIIFComponents {
                 });
 
             } else {
-                // if (this._data && this._data.helper) {
-                //     this._data.helper.rangeId = null;
-                // }
-
                 this._$durationHighlight.hide();
             }
 
@@ -620,8 +657,29 @@ namespace IIIFComponents {
         }
 
         private _hasRangeChanged(): void {
-            // generate a NEXT_RANGE event if the currentduration changes
+            // create a RANGE_CHANGED event if the currently applicable range changes
+            const range: AVComponentObjects.CanvasRange | undefined = this._getRangeForCurrentTime();
 
+            if (range !== this._data.range) {
+                //console.log('hasRangeChanged');
+                this.set({
+                    range: range
+                });
+            }
+        }
+
+        private _getRangeForCurrentTime(): AVComponentObjects.CanvasRange | undefined {
+
+            for (let i = 0; i < this._ranges.length; i++) {
+
+                const range: AVComponentObjects.CanvasRange = this._ranges[i];
+
+                if (range.spans(this._canvasClockTime)) {
+                    return range;
+                }
+            }
+
+            return undefined;
         }
 
         private _updateCurrentTimeDisplay(): void {
@@ -705,9 +763,8 @@ namespace IIIFComponents {
             if (!this._data.limitToRange) {
                 if (this._data && this._data.helper) {
                     this.set({
-                        rangeId: undefined
+                        range: undefined
                     });
-                    this.fire(AVComponent.Events.NO_RANGE);
                 }
             }
 
@@ -954,7 +1011,7 @@ namespace IIIFComponents {
                 if (!this._isStalled) {
 
                     if (this.$playerElement) {
-                        this._showWorkingIndicator(this._$canvasContainer);
+                        //this._showWorkingIndicator(this._$canvasContainer);
                     }
 
                     this._wasPlaying = this._isPlaying;
@@ -972,7 +1029,7 @@ namespace IIIFComponents {
 
                 if (this._stallRequestedBy.length === 0) {
 
-                    this._hideWorkingIndicator();
+                    //this._hideWorkingIndicator();
 
                     if (this._isStalled && this._wasPlaying) {
                         this.play(true);
@@ -983,18 +1040,18 @@ namespace IIIFComponents {
             }
         }
 
-        private _showWorkingIndicator($targetElement: JQuery): void {
-            const workingIndicator: JQuery = $('<div class="working-indicator">Waiting...</div>');
-            if ($targetElement.find('.working-indicator').length == 0) {
-                $targetElement.append(workingIndicator);
-            }
-            //console.log('show working');
-        }
+        // private _showWorkingIndicator($targetElement: JQuery): void {
+        //     const workingIndicator: JQuery = $('<div class="working-indicator">Waiting...</div>');
+        //     if ($targetElement.find('.working-indicator').length == 0) {
+        //         $targetElement.append(workingIndicator);
+        //     }
+        //     //console.log('show working');
+        // }
 
-        private _hideWorkingIndicator() {
-            $('.workingIndicator').remove();
-            //console.log('hide working');
-        }
+        // private _hideWorkingIndicator() {
+        //     $('.workingIndicator').remove();
+        //     //console.log('hide working');
+        // }
 
         public resize(): void {
             if (this.$playerElement) {

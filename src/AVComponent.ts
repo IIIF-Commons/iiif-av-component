@@ -55,46 +55,61 @@ namespace IIIFComponents {
                 this._reset();
                 return;
             }
+
+            if (!this._data.helper) {
+                console.warn('must pass a helper object');
+                return;
+            }
+
+            if (diff.includes('canvasId') && this._data.canvasId) {
+
+                const currentCanvasInstance: CanvasInstance | null = this._getCanvasInstanceById(this._data.canvasId);
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                    if (canvasInstance !== currentCanvasInstance) {
+                        canvasInstance.set({ visible: false });
+                    } else {
+                        canvasInstance.set({ visible: true });
+                    }
+                });
+            }
             
-            if (diff.includes('rangeId') && this._data.rangeId) {
+            if (diff.includes('range') && this._data.range) {
 
-                if (!this._data.helper) {
-                    console.warn('must pass a helper object');
-                    return;
-                }
-
-                const rangeId: string = this._data.rangeId;
-
-                const range: Manifesto.IRange | null = this._data.helper.getRangeById(rangeId);
+                const range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.range.rangeId);
 
                 if (!range) {
                     console.warn('range not found');
-                    return;
-                }
+                } else {
 
-                // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
-                this._data.helper.rangeId = rangeId;
-
-                if (range.canvases) {
-                    const canvasId = range.canvases[0];
-
-                    const canvasInstance: CanvasInstance | null = this._getCanvasInstanceById(canvasId);
-                    
-                    if (canvasInstance) {
-
-                        const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(canvasId);
-
-                        if (canvasRange.duration) {                           
-                            canvasInstance.set({
-                                range: canvasRange
-                            });
-                            canvasInstance.play();
-                        }
-
-                        if (this._data.canvasId && this._data.canvasId !== canvasId) {
-                            this.set({
-                                canvasId: canvasId
-                            });
+                    if (range.canvases) {
+                        const canvasId = range.canvases[0];
+    
+                        // get canvas by normalised id (without temporal part)
+                        const canvasInstance: CanvasInstance | null = this._getCanvasInstanceById(canvasId);
+                        
+                        if (canvasInstance) {
+    
+                            const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(range);
+    
+                            // if not using the correct canvasinstance, switch to it
+                            if (this._data.canvasId && this._data.canvasId !== canvasId) {
+                                
+                                canvasInstance.set({
+                                    range: undefined
+                                });
+                                
+                                this.set({
+                                    canvasId: canvasId
+                                });
+    
+                            } else {
+                         
+                                canvasInstance.set({
+                                    range: canvasRange
+                                });
+    
+                            }
                         }
                     }
                 }
@@ -110,18 +125,7 @@ namespace IIIFComponents {
 
         private _render(): void {
 
-            if (!this._data || !this._data.canvasId) return;
-
-            const currentCanvasInstance: CanvasInstance | null = this._getCanvasInstanceById(this._data.canvasId);
-
-            this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                if (canvasInstance !== currentCanvasInstance) {
-                    canvasInstance.pause();
-                    canvasInstance.$playerElement.hide();
-                } else {
-                    canvasInstance.$playerElement.show();
-                }
-            });
+            
         }
 
         private _reset(): void {
@@ -176,11 +180,19 @@ namespace IIIFComponents {
             }, false);
 
             canvasInstance.on(AVComponent.Events.NEXT_RANGE, () => {
-                this._nextRage();
+                this._nextRange();
             }, false);
 
-            canvasInstance.on(AVComponent.Events.NO_RANGE, () => {
-                this.fire(AVComponent.Events.NO_RANGE);
+            canvasInstance.on(AVComponent.Events.RANGE_CHANGED, () => {
+                if (!this._data.helper) {
+                    return;
+                }
+
+                if (this._data.range && this._data.helper.rangeId !== this._data.range.rangeId) {
+                    //console.log('range changed avcomponent handler');
+                    this.fire(AVComponent.Events.RANGE_CHANGED);
+                }
+
             }, false);
         }
 
@@ -192,18 +204,14 @@ namespace IIIFComponents {
             const prevRange: Manifesto.IRange | null = this._data.helper.getPreviousRange();
 
             if (prevRange) {
-                // todo: eventually this should happen automatically using redux in manifold
-                // instead of helper.getPreviousRange() it should invoke and action like helper.previousRange() which updates the internal state
-                this._data.helper.rangeId = prevRange.id;
                 this.playRange(prevRange.id);
-                this.fire(AVComponent.Events.RANGE_CHANGED);
             } else {
                 // no previous range. rewind.
                 this._rewind();
             }
         }
 
-        private _nextRage(): void {
+        private _nextRange(): void {
             if (!this._data || !this._data.helper) {
                 return;
             }
@@ -211,11 +219,7 @@ namespace IIIFComponents {
             const nextRange: Manifesto.IRange | null = this._data.helper.getNextRange();
 
             if (nextRange) {
-                // todo: eventually this should happen automatically using redux in manifold
-                // instead of helper.getNextRange() it should invoke and action like helper.nextRange() which updates the internal state
-                this._data.helper.rangeId = nextRange.id;
-                this.playRange(nextRange.id);
-                this.fire(AVComponent.Events.RANGE_CHANGED);              
+                this.playRange(nextRange.id);         
             }
         }
 
@@ -260,16 +264,28 @@ namespace IIIFComponents {
 
             if (canvasInstance) {
                 canvasInstance.set({
-                    currentDuration: undefined
+                    range: undefined
                 });
+                // todo: should be canvasInstance.set({ rewind: true })
                 canvasInstance.rewind();                
             }
         }
 
         public playRange(rangeId: string): void {
-            this.set({
-                rangeId: rangeId
-            });
+
+            if (!this._data.helper) {
+                return;
+            }
+
+            const range: Manifesto.IRange | null = this._data.helper.getRangeById(rangeId);
+
+            if (range) {
+                const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(range);
+
+                this.set({
+                    range: canvasRange
+                });
+            }
         }
 
         public showCanvas(canvasId: string): void {
@@ -295,7 +311,6 @@ namespace IIIFComponents.AVComponent {
         static CANVASREADY: string = 'canvasready';
         static LOG: string = 'log';
         static NEXT_RANGE: string = 'nextrange';
-        static NO_RANGE: string = 'norange';
         static PAUSECANVAS: string = 'pause';
         static PLAYCANVAS: string = 'play';
         static PREVIOUS_RANGE: string = 'previousrange';

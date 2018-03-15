@@ -18,13 +18,12 @@
     <script src="https://rawgit.com/iiif-commons/iiif-tree-component/master/dist/iiif-tree-component.js"></script>
 
     <script src="https://unpkg.com/manifesto.js/dist/client/manifesto.bundle.js"></script>
-    <script src="https://unpkg.com/@iiif/manifold/dist/manifold.js"></script>
+    <script src="https://unpkg.com/@iiif/manifold/dist/manifold.js"></script>    
+
+    <!-- <script src="https://rawgit.com/iiif-commons/manifesto/master/dist/client/manifesto.bundle.js"></script> -->
+    <!-- <script src="https://rawgit.com/iiif-commons/manifold/normalise/dist/manifold.js"></script> -->
+
     <script src="https://unpkg.com/dashjs@2.6.6/dist/dash.all.min.js"></script>
-
-    <!-- <script src="https://rawgit.com/iiif-commons/manifesto/master/dist/client/manifesto.bundle.js"></script>
-    <script src="https://rawgit.com/iiif-commons/manifold/prevnextrange/dist/manifold.js"></script> -->
-
-    <!-- <script src="js/manifold.bundle.js"></script> -->
 
     <style>
         .playerContainer {
@@ -141,17 +140,21 @@
                 console.log('canvas ready');
             });
 
-            avcomponent.on('previousrange', function() {
-                console.log('previous range');
+            avcomponent.on('rangechanged', function() {
+                console.log('range changed parent page');
             });
 
-            avcomponent.on('nextrange', function() {
-                console.log('next range');
-            });
+            // avcomponent.on('previousrange', function() {
+            //     console.log('previous range');
+            // });
 
-            avcomponent.on('norange', function() {
-                console.log('no range');
-            });
+            // avcomponent.on('nextrange', function() {
+            //     console.log('next range');
+            // });
+
+            // avcomponent.on('norange', function() {
+            //     console.log('no range');
+            // });
 
             treecomponent = new IIIFComponents.TreeComponent({
                 target: document.querySelector('#tree')

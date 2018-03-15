@@ -61,34 +61,47 @@ var IIIFComponents;
                 this._reset();
                 return;
             }
-            if (diff.includes('rangeId') && this._data.rangeId) {
-                if (!this._data.helper) {
-                    console.warn('must pass a helper object');
-                    return;
-                }
-                var rangeId = this._data.rangeId;
-                var range = this._data.helper.getRangeById(rangeId);
+            if (!this._data.helper) {
+                console.warn('must pass a helper object');
+                return;
+            }
+            if (diff.includes('canvasId') && this._data.canvasId) {
+                var currentCanvasInstance_1 = this._getCanvasInstanceById(this._data.canvasId);
+                this.canvasInstances.forEach(function (canvasInstance, index) {
+                    if (canvasInstance !== currentCanvasInstance_1) {
+                        canvasInstance.set({ visible: false });
+                    }
+                    else {
+                        canvasInstance.set({ visible: true });
+                    }
+                });
+            }
+            if (diff.includes('range') && this._data.range) {
+                var range = this._data.helper.getRangeById(this._data.range.rangeId);
                 if (!range) {
                     console.warn('range not found');
-                    return;
                 }
-                // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
-                this._data.helper.rangeId = rangeId;
-                if (range.canvases) {
-                    var canvasId = range.canvases[0];
-                    var canvasInstance = this._getCanvasInstanceById(canvasId);
-                    if (canvasInstance) {
-                        var canvasRange = new IIIFComponents.AVComponentObjects.CanvasRange(canvasId);
-                        if (canvasRange.duration) {
-                            canvasInstance.set({
-                                range: canvasRange
-                            });
-                            canvasInstance.play();
-                        }
-                        if (this._data.canvasId && this._data.canvasId !== canvasId) {
-                            this.set({
-                                canvasId: canvasId
-                            });
+                else {
+                    if (range.canvases) {
+                        var canvasId = range.canvases[0];
+                        // get canvas by normalised id (without temporal part)
+                        var canvasInstance = this._getCanvasInstanceById(canvasId);
+                        if (canvasInstance) {
+                            var canvasRange = new IIIFComponents.AVComponentObjects.CanvasRange(range);
+                            // if not using the correct canvasinstance, switch to it
+                            if (this._data.canvasId && this._data.canvasId !== canvasId) {
+                                canvasInstance.set({
+                                    range: undefined
+                                });
+                                this.set({
+                                    canvasId: canvasId
+                                });
+                            }
+                            else {
+                                canvasInstance.set({
+                                    range: canvasRange
+                                });
+                            }
                         }
                     }
                 }
@@ -100,18 +113,6 @@ var IIIFComponents;
             this._resize();
         };
         AVComponent.prototype._render = function () {
-            if (!this._data || !this._data.canvasId)
-                return;
-            var currentCanvasInstance = this._getCanvasInstanceById(this._data.canvasId);
-            this.canvasInstances.forEach(function (canvasInstance, index) {
-                if (canvasInstance !== currentCanvasInstance) {
-                    canvasInstance.pause();
-                    canvasInstance.$playerElement.hide();
-                }
-                else {
-                    canvasInstance.$playerElement.show();
-                }
-            });
         };
         AVComponent.prototype._reset = function () {
             var _this = this;
@@ -152,10 +153,16 @@ var IIIFComponents;
                 _this._prevRange();
             }, false);
             canvasInstance.on(AVComponent.Events.NEXT_RANGE, function () {
-                _this._nextRage();
+                _this._nextRange();
             }, false);
-            canvasInstance.on(AVComponent.Events.NO_RANGE, function () {
-                _this.fire(AVComponent.Events.NO_RANGE);
+            canvasInstance.on(AVComponent.Events.RANGE_CHANGED, function () {
+                if (!_this._data.helper) {
+                    return;
+                }
+                if (_this._data.range && _this._data.helper.rangeId !== _this._data.range.rangeId) {
+                    //console.log('range changed avcomponent handler');
+                    _this.fire(AVComponent.Events.RANGE_CHANGED);
+                }
             }, false);
         };
         AVComponent.prototype._prevRange = function () {
@@ -164,28 +171,20 @@ var IIIFComponents;
             }
             var prevRange = this._data.helper.getPreviousRange();
             if (prevRange) {
-                // todo: eventually this should happen automatically using redux in manifold
-                // instead of helper.getPreviousRange() it should invoke and action like helper.previousRange() which updates the internal state
-                this._data.helper.rangeId = prevRange.id;
                 this.playRange(prevRange.id);
-                this.fire(AVComponent.Events.RANGE_CHANGED);
             }
             else {
                 // no previous range. rewind.
                 this._rewind();
             }
         };
-        AVComponent.prototype._nextRage = function () {
+        AVComponent.prototype._nextRange = function () {
             if (!this._data || !this._data.helper) {
                 return;
             }
             var nextRange = this._data.helper.getNextRange();
             if (nextRange) {
-                // todo: eventually this should happen automatically using redux in manifold
-                // instead of helper.getNextRange() it should invoke and action like helper.nextRange() which updates the internal state
-                this._data.helper.rangeId = nextRange.id;
                 this.playRange(nextRange.id);
-                this.fire(AVComponent.Events.RANGE_CHANGED);
             }
         };
         AVComponent.prototype._getCanvasInstanceById = function (canvasId) {
@@ -215,15 +214,23 @@ var IIIFComponents;
             var canvasInstance = this._getCurrentCanvas();
             if (canvasInstance) {
                 canvasInstance.set({
-                    currentDuration: undefined
+                    range: undefined
                 });
+                // todo: should be canvasInstance.set({ rewind: true })
                 canvasInstance.rewind();
             }
         };
         AVComponent.prototype.playRange = function (rangeId) {
-            this.set({
-                rangeId: rangeId
-            });
+            if (!this._data.helper) {
+                return;
+            }
+            var range = this._data.helper.getRangeById(rangeId);
+            if (range) {
+                var canvasRange = new IIIFComponents.AVComponentObjects.CanvasRange(range);
+                this.set({
+                    range: canvasRange
+                });
+            }
         };
         AVComponent.prototype.showCanvas = function (canvasId) {
             this.set({
@@ -251,7 +258,6 @@ var IIIFComponents;
             Events.CANVASREADY = 'canvasready';
             Events.LOG = 'log';
             Events.NEXT_RANGE = 'nextrange';
-            Events.NO_RANGE = 'norange';
             Events.PAUSECANVAS = 'pause';
             Events.PLAYCANVAS = 'play';
             Events.PREVIOUS_RANGE = 'previousrange';
@@ -395,7 +401,8 @@ var IIIFComponents;
             _this._highPriorityFrequency = 25;
             _this._isPlaying = false;
             _this._isStalled = false;
-            _this._lowPriorityFrequency = 100;
+            _this._lowPriorityFrequency = 250;
+            _this._ranges = [];
             _this._readyCanvasesCount = 0;
             _this._stallRequestedBy = []; //todo: type
             _this._wasPlaying = false;
@@ -442,6 +449,12 @@ var IIIFComponents;
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
             this._$canvasHoverPreview.hide();
             this._$rangeHoverPreview.hide();
+            if (this._data.helper && this._data.canvas) {
+                var ranges = this._data.helper.getCanvasRanges(this._data.canvas);
+                ranges.forEach(function (range) {
+                    _this._ranges.push(new IIIFComponents.AVComponentObjects.CanvasRange(range));
+                });
+            }
             this._canvasClockDuration = this._data.canvas.getDuration();
             var canvasWidth = this._data.canvas.getWidth();
             var canvasHeight = this._data.canvas.getHeight();
@@ -656,7 +669,7 @@ var IIIFComponents;
             });
         };
         CanvasInstance.prototype._previous = function (isDouble) {
-            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+            if (this._data.limitToRange) {
                 // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
                 if (isDouble) {
                     if (this._isNavigationConstrainedToRange()) {
@@ -674,7 +687,7 @@ var IIIFComponents;
                 // not limited to range. 
                 // if there is a currentDuration, single click goes to previous range, double click clears current duration and rewinds.
                 // if there is no currentDuration, single and double click rewinds.
-                if (this._data.range && this._data.range.duration) {
+                if (this._data.range) {
                     if (isDouble) {
                         this.set({
                             range: undefined
@@ -691,7 +704,7 @@ var IIIFComponents;
             }
         };
         CanvasInstance.prototype._next = function () {
-            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+            if (this._data.limitToRange) {
                 if (this._isNavigationConstrainedToRange()) {
                     this.fastforward();
                 }
@@ -707,9 +720,36 @@ var IIIFComponents;
             var oldData = Object.assign({}, this._data);
             this._data = Object.assign(this._data, data);
             var diff = IIIFComponents.AVComponentUtils.Utils.diff(oldData, this._data);
-            if (diff.includes('range') && this._data.range && this._data.range.duration) {
-                // if the range has changed, update the time
-                this._setCurrentTime(this._data.range.duration.start);
+            if (diff.includes('visible')) {
+                if (this._data.canvas) {
+                    if (this._data.visible) {
+                        this.$playerElement.show();
+                        this.pause();
+                        console.log('show ' + this._data.canvas.id);
+                    }
+                    else {
+                        this.$playerElement.hide();
+                        //this.play();
+                        console.log('hide ' + this._data.canvas.id);
+                    }
+                }
+            }
+            if (diff.includes('range') && this._data.range) {
+                if (this._data.helper) {
+                    if (this._data.range.duration) {
+                        // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
+                        this._data.helper.rangeId = this._data.range.rangeId;
+                        // if the range has changed, update the time if not already within the duration span
+                        if (!this._data.range.spans(this._canvasClockTime)) {
+                            this._setCurrentTime(this._data.range.duration.start);
+                        }
+                        this.play();
+                    }
+                    else {
+                        this._data.helper.rangeId = null;
+                    }
+                }
+                this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED);
             }
             this._render();
         };
@@ -752,9 +792,6 @@ var IIIFComponents;
                 });
             }
             else {
-                // if (this._data && this._data.helper) {
-                //     this._data.helper.rangeId = null;
-                // }
                 this._$durationHighlight.hide();
             }
             if (this._data.limitToRange && this._data.range && this._data.range.duration) {
@@ -863,7 +900,23 @@ var IIIFComponents;
             this._renderSyncIndicator(data);
         };
         CanvasInstance.prototype._hasRangeChanged = function () {
-            // generate a NEXT_RANGE event if the currentduration changes
+            // create a RANGE_CHANGED event if the currently applicable range changes
+            var range = this._getRangeForCurrentTime();
+            if (range !== this._data.range) {
+                //console.log('hasRangeChanged');
+                this.set({
+                    range: range
+                });
+            }
+        };
+        CanvasInstance.prototype._getRangeForCurrentTime = function () {
+            for (var i = 0; i < this._ranges.length; i++) {
+                var range = this._ranges[i];
+                if (range.spans(this._canvasClockTime)) {
+                    return range;
+                }
+            }
+            return undefined;
         };
         CanvasInstance.prototype._updateCurrentTimeDisplay = function () {
             if (this._data.limitToRange && this._data.range && this._data.range.duration) {
@@ -929,9 +982,8 @@ var IIIFComponents;
             if (!this._data.limitToRange) {
                 if (this._data && this._data.helper) {
                     this.set({
-                        rangeId: undefined
+                        range: undefined
                     });
-                    this.fire(IIIFComponents.AVComponent.Events.NO_RANGE);
                 }
             }
             this.play();
@@ -1114,7 +1166,7 @@ var IIIFComponents;
                 }
                 if (!this._isStalled) {
                     if (this.$playerElement) {
-                        this._showWorkingIndicator(this._$canvasContainer);
+                        //this._showWorkingIndicator(this._$canvasContainer);
                     }
                     this._wasPlaying = this._isPlaying;
                     this.pause(true);
@@ -1127,7 +1179,7 @@ var IIIFComponents;
                     this._stallRequestedBy.splice(idx, 1);
                 }
                 if (this._stallRequestedBy.length === 0) {
-                    this._hideWorkingIndicator();
+                    //this._hideWorkingIndicator();
                     if (this._isStalled && this._wasPlaying) {
                         this.play(true);
                     }
@@ -1135,17 +1187,17 @@ var IIIFComponents;
                 }
             }
         };
-        CanvasInstance.prototype._showWorkingIndicator = function ($targetElement) {
-            var workingIndicator = $('<div class="working-indicator">Waiting...</div>');
-            if ($targetElement.find('.working-indicator').length == 0) {
-                $targetElement.append(workingIndicator);
-            }
-            //console.log('show working');
-        };
-        CanvasInstance.prototype._hideWorkingIndicator = function () {
-            $('.workingIndicator').remove();
-            //console.log('hide working');
-        };
+        // private _showWorkingIndicator($targetElement: JQuery): void {
+        //     const workingIndicator: JQuery = $('<div class="working-indicator">Waiting...</div>');
+        //     if ($targetElement.find('.working-indicator').length == 0) {
+        //         $targetElement.append(workingIndicator);
+        //     }
+        //     //console.log('show working');
+        // }
+        // private _hideWorkingIndicator() {
+        //     $('.workingIndicator').remove();
+        //     //console.log('hide working');
+        // }
         CanvasInstance.prototype.resize = function () {
             if (this.$playerElement) {
                 var containerWidth = this._$canvasContainer.width();
@@ -1169,15 +1221,30 @@ var IIIFComponents;
     var AVComponentObjects;
     (function (AVComponentObjects) {
         var CanvasRange = /** @class */ (function () {
-            function CanvasRange(canvasId) {
+            function CanvasRange(range) {
+                this.rangeId = null;
+                this.canvasId = null;
                 this.duration = null;
+                if (!range.canvases || !range.canvases.length) {
+                    return;
+                }
+                this.rangeId = range.id;
+                this.canvasId = range.canvases[0];
                 // get the temporal part of the canvas id
-                var temporal = /t=([^&]+)/g.exec(canvasId);
+                var temporal = /t=([^&]+)/g.exec(this.canvasId);
                 if (temporal && temporal.length > 1) {
                     var rangeTiming = temporal[1].split(',');
                     this.duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
                 }
             }
+            CanvasRange.prototype.spans = function (time) {
+                if (this.duration) {
+                    if (time >= this.duration.start && time <= this.duration.end) {
+                        return true;
+                    }
+                }
+                return false;
+            };
             return CanvasRange;
         }());
         AVComponentObjects.CanvasRange = CanvasRange;

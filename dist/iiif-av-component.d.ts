@@ -23,7 +23,7 @@ declare namespace IIIFComponents {
         private _getCanvases();
         private _initCanvas(canvas);
         private _prevRange();
-        private _nextRage();
+        private _nextRange();
         private _getCanvasInstanceById(canvasId);
         private _getCurrentCanvas();
         private _rewind();
@@ -38,7 +38,6 @@ declare namespace IIIFComponents.AVComponent {
         static CANVASREADY: string;
         static LOG: string;
         static NEXT_RANGE: string;
-        static NO_RANGE: string;
         static PAUSECANVAS: string;
         static PLAYCANVAS: string;
         static PREVIOUS_RANGE: string;
@@ -102,6 +101,7 @@ declare namespace IIIFComponents {
         private _isStalled;
         private _lowPriorityFrequency;
         private _lowPriorityInterval;
+        private _ranges;
         private _readyCanvasesCount;
         private _stallRequestedBy;
         private _volume;
@@ -120,6 +120,7 @@ declare namespace IIIFComponents {
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
         private _hasRangeChanged();
+        private _getRangeForCurrentTime();
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
         private _setVolume(value);
@@ -137,16 +138,18 @@ declare namespace IIIFComponents {
         private _synchronizeMedia();
         private _checkMediaSynchronization();
         private _playbackStalled(aBoolean, syncMediaRequestingStall);
-        private _showWorkingIndicator($targetElement);
-        private _hideWorkingIndicator();
         resize(): void;
     }
 }
 
+/// <reference types="manifesto.js" />
 declare namespace IIIFComponents.AVComponentObjects {
     class CanvasRange {
+        rangeId: string | null;
+        canvasId: string | null;
         duration: Duration | null;
-        constructor(canvasId: string);
+        constructor(range: Manifesto.IRange);
+        spans(time: number): boolean;
     }
 }
 
@@ -164,6 +167,7 @@ declare namespace IIIFComponents {
     interface IAVCanvasInstanceData extends IAVComponentData {
         canvas?: Manifesto.ICanvas;
         range?: AVComponentObjects.CanvasRange;
+        visible?: boolean;
     }
 }
 
