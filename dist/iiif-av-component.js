@@ -64,13 +64,22 @@ var IIIFComponents;
                 console.warn('must pass a helper object');
                 return;
             }
+            if (diff.includes('limitToRange') && this._data.canvasId) {
+                var canvasInstance = this._getCanvasInstanceById(this._data.canvasId);
+                if (canvasInstance) {
+                    canvasInstance.set({
+                        limitToRange: this._data.limitToRange
+                    });
+                }
+            }
             if (diff.includes('canvasId') && this._data.canvasId) {
                 var currentCanvasInstance_1 = this._getCanvasInstanceById(this._data.canvasId);
                 this.canvasInstances.forEach(function (canvasInstance, index) {
                     if (canvasInstance !== currentCanvasInstance_1) {
                         canvasInstance.set({
                             visible: false,
-                            range: undefined
+                            range: undefined,
+                            limitToRange: false
                         });
                     }
                     else {

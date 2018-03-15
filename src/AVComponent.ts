@@ -61,6 +61,17 @@ namespace IIIFComponents {
                 return;
             }
 
+            if (diff.includes('limitToRange') && this._data.canvasId) {
+
+                const canvasInstance: CanvasInstance | null = this._getCanvasInstanceById(this._data.canvasId);
+
+                if (canvasInstance) {
+                    canvasInstance.set({ 
+                        limitToRange: this._data.limitToRange
+                    });
+                }
+            }
+
             if (diff.includes('canvasId') && this._data.canvasId) {
 
                 const currentCanvasInstance: CanvasInstance | null = this._getCanvasInstanceById(this._data.canvasId);
@@ -69,7 +80,8 @@ namespace IIIFComponents {
                     if (canvasInstance !== currentCanvasInstance) {
                         canvasInstance.set({ 
                             visible: false,
-                            range: undefined
+                            range: undefined,
+                            limitToRange: false
                         });
                     } else {
                         canvasInstance.set({ visible: true });
