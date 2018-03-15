@@ -67,7 +67,10 @@ namespace IIIFComponents {
 
                 this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
                     if (canvasInstance !== currentCanvasInstance) {
-                        canvasInstance.set({ visible: false });
+                        canvasInstance.set({ 
+                            visible: false,
+                            range: undefined
+                        });
                     } else {
                         canvasInstance.set({ visible: true });
                     }
@@ -83,7 +86,7 @@ namespace IIIFComponents {
                 } else {
 
                     if (range.canvases) {
-                        const canvasId = range.canvases[0];
+                        const canvasId = Manifesto.Utils.normaliseUrl(range.canvases[0]);
     
                         // get canvas by normalised id (without temporal part)
                         const canvasInstance: CanvasInstance | null = this._getCanvasInstanceById(canvasId);
@@ -91,20 +94,17 @@ namespace IIIFComponents {
                         if (canvasInstance) {
     
                             const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(range);
-    
+ 
                             // if not using the correct canvasinstance, switch to it
-                            if (this._data.canvasId && this._data.canvasId !== canvasId) {
-                                
-                                canvasInstance.set({
-                                    range: undefined
-                                });
-                                
+                            if (this._data.canvasId && Manifesto.Utils.normaliseUrl(this._data.canvasId) !== canvasId) {
+
                                 this.set({
-                                    canvasId: canvasId
+                                    canvasId: canvasId,
+                                    range: canvasRange
                                 });
-    
+
                             } else {
-                         
+
                                 canvasInstance.set({
                                     range: canvasRange
                                 });
@@ -114,10 +114,6 @@ namespace IIIFComponents {
                     }
                 }
             } 
-
-            this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
-                canvasInstance.set(<IAVCanvasInstanceData>this._data);
-            });
             
             this._render();
             this._resize();
@@ -225,7 +221,7 @@ namespace IIIFComponents {
 
         private _getCanvasInstanceById(canvasId: string): CanvasInstance | null {
             
-            canvasId = manifesto.Utils.normaliseUrl(canvasId);
+            canvasId = Manifesto.Utils.normaliseUrl(canvasId);
     
             for (let i = 0; i < this.canvasInstances.length; i++) {
     
@@ -234,7 +230,7 @@ namespace IIIFComponents {
                 const id: string | null = canvasInstance.getCanvasId();
 
                 if (id) {
-                    const canvasInstanceId: string = manifesto.Utils.normaliseUrl(id);
+                    const canvasInstanceId: string = Manifesto.Utils.normaliseUrl(id);
 
                     if (canvasInstanceId === canvasId) {
                         return canvasInstance;

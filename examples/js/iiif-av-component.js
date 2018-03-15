@@ -50,7 +50,6 @@ var IIIFComponents;
             };
         };
         AVComponent.prototype.set = function (data) {
-            var _this = this;
             var oldData = Object.assign({}, this._data);
             this._data = Object.assign(this._data, data);
             var diff = IIIFComponents.AVComponentUtils.Utils.diff(oldData, this._data);
@@ -69,7 +68,10 @@ var IIIFComponents;
                 var currentCanvasInstance_1 = this._getCanvasInstanceById(this._data.canvasId);
                 this.canvasInstances.forEach(function (canvasInstance, index) {
                     if (canvasInstance !== currentCanvasInstance_1) {
-                        canvasInstance.set({ visible: false });
+                        canvasInstance.set({
+                            visible: false,
+                            range: undefined
+                        });
                     }
                     else {
                         canvasInstance.set({ visible: true });
@@ -83,18 +85,16 @@ var IIIFComponents;
                 }
                 else {
                     if (range.canvases) {
-                        var canvasId = range.canvases[0];
+                        var canvasId = Manifesto.Utils.normaliseUrl(range.canvases[0]);
                         // get canvas by normalised id (without temporal part)
                         var canvasInstance = this._getCanvasInstanceById(canvasId);
                         if (canvasInstance) {
                             var canvasRange = new IIIFComponents.AVComponentObjects.CanvasRange(range);
                             // if not using the correct canvasinstance, switch to it
-                            if (this._data.canvasId && this._data.canvasId !== canvasId) {
-                                canvasInstance.set({
-                                    range: undefined
-                                });
+                            if (this._data.canvasId && Manifesto.Utils.normaliseUrl(this._data.canvasId) !== canvasId) {
                                 this.set({
-                                    canvasId: canvasId
+                                    canvasId: canvasId,
+                                    range: canvasRange
                                 });
                             }
                             else {
@@ -106,9 +106,6 @@ var IIIFComponents;
                     }
                 }
             }
-            this.canvasInstances.forEach(function (canvasInstance) {
-                canvasInstance.set(_this._data);
-            });
             this._render();
             this._resize();
         };
@@ -188,12 +185,12 @@ var IIIFComponents;
             }
         };
         AVComponent.prototype._getCanvasInstanceById = function (canvasId) {
-            canvasId = manifesto.Utils.normaliseUrl(canvasId);
+            canvasId = Manifesto.Utils.normaliseUrl(canvasId);
             for (var i = 0; i < this.canvasInstances.length; i++) {
                 var canvasInstance = this.canvasInstances[i];
                 var id = canvasInstance.getCanvasId();
                 if (id) {
-                    var canvasInstanceId = manifesto.Utils.normaliseUrl(id);
+                    var canvasInstanceId = Manifesto.Utils.normaliseUrl(id);
                     if (canvasInstanceId === canvasId) {
                         return canvasInstance;
                     }
@@ -724,12 +721,11 @@ var IIIFComponents;
                 if (this._data.canvas) {
                     if (this._data.visible) {
                         this.$playerElement.show();
-                        this.pause();
                         console.log('show ' + this._data.canvas.id);
                     }
                     else {
                         this.$playerElement.hide();
-                        //this.play();
+                        this.pause();
                         console.log('hide ' + this._data.canvas.id);
                     }
                 }
@@ -794,7 +790,7 @@ var IIIFComponents;
             else {
                 this._$durationHighlight.hide();
             }
-            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+            if (this._data.limitToRange) {
                 this._$canvasTimelineContainer.hide();
                 this._$rangeTimelineContainer.show();
             }
@@ -1070,7 +1066,7 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._lowPriorityUpdater = function () {
             this._updateMediaActiveStates();
-            this._hasRangeChanged();
+            //this._hasRangeChanged();
         };
         CanvasInstance.prototype._updateMediaActiveStates = function () {
             var contentAnnotation;
@@ -1229,9 +1225,9 @@ var IIIFComponents;
                     return;
                 }
                 this.rangeId = range.id;
-                this.canvasId = range.canvases[0];
+                var canvasId = range.canvases[0];
                 // get the temporal part of the canvas id
-                var temporal = /t=([^&]+)/g.exec(this.canvasId);
+                var temporal = /t=([^&]+)/g.exec(canvasId);
                 if (temporal && temporal.length > 1) {
                     var rangeTiming = temporal[1].split(',');
                     this.duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));

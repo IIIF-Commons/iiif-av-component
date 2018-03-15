@@ -436,11 +436,10 @@ namespace IIIFComponents {
                 if (this._data.canvas) {
                     if (this._data.visible) {
                         this.$playerElement.show();
-                        this.pause();
                         console.log('show ' + this._data.canvas.id);
                     } else {
                         this.$playerElement.hide();
-                        //this.play();
+                        this.pause();
                         console.log('hide ' + this._data.canvas.id);
                     }
                 }
@@ -450,6 +449,7 @@ namespace IIIFComponents {
             if (diff.includes('range') && this._data.range) {
 
                 if (this._data.helper) {
+
                     if (this._data.range.duration) {
                         // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
                         this._data.helper.rangeId = this._data.range.rangeId;
@@ -463,6 +463,7 @@ namespace IIIFComponents {
                     } else {
                         this._data.helper.rangeId = null;
                     }
+                    
                 }
 
                 this.fire(AVComponent.Events.RANGE_CHANGED); 
@@ -522,7 +523,7 @@ namespace IIIFComponents {
                 this._$durationHighlight.hide();
             }
 
-            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
+            if (this._data.limitToRange) {
                 this._$canvasTimelineContainer.hide();
                 this._$rangeTimelineContainer.show();
             } else {
@@ -878,7 +879,7 @@ namespace IIIFComponents {
 
         private _lowPriorityUpdater(): void {
             this._updateMediaActiveStates();
-            this._hasRangeChanged();
+            //this._hasRangeChanged();
         }
 
         private _updateMediaActiveStates(): void {
