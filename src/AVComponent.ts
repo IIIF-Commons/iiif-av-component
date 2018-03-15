@@ -273,9 +273,7 @@ namespace IIIFComponents {
             if (canvasInstance) {
                 canvasInstance.set({
                     range: undefined
-                });
-                // todo: should be canvasInstance.set({ rewind: true })
-                canvasInstance.rewind();                
+                });             
             }
         }
 

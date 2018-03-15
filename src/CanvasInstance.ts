@@ -158,9 +158,9 @@ namespace IIIFComponents {
 
             this._$playButton.on('click', () => {
                 if (this._isPlaying) {
-                    this.pause();
+                    this._pause();
                 } else {
-                    this.play();
+                    this._play();
                 }
             });
 
@@ -387,12 +387,12 @@ namespace IIIFComponents {
                 // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
                 if (isDouble) {
                     if (this._isNavigationConstrainedToRange()) {
-                        this.rewind();
+                        this._rewind();
                     } else {
                         this.fire(AVComponent.Events.PREVIOUS_RANGE);
                     }
                 } else {
-                    this.rewind();
+                    this._rewind();
                 }
             } else {
                 // not limited to range. 
@@ -403,12 +403,12 @@ namespace IIIFComponents {
                         this.set({
                             range: undefined
                         });
-                        this.rewind();
+                        this._rewind();
                     } else {
                         this.fire(AVComponent.Events.PREVIOUS_RANGE);
                     }
                 } else {
-                    this.rewind();
+                    this._rewind();
                 }
             }
         }
@@ -416,7 +416,7 @@ namespace IIIFComponents {
         private _next(): void {
             if (this._data.limitToRange) {
                 if (this._isNavigationConstrainedToRange()) {
-                    this.fastforward();
+                    this._fastforward();
                 } else {
                     this.fire(AVComponent.Events.NEXT_RANGE);
                 }
@@ -436,21 +436,25 @@ namespace IIIFComponents {
                 if (this._data.canvas) {
                     if (this._data.visible) {
                         this.$playerElement.show();
-                        console.log('show ' + this._data.canvas.id);
+                        //console.log('show ' + this._data.canvas.id);
                     } else {
                         this.$playerElement.hide();
-                        this.pause();
-                        console.log('hide ' + this._data.canvas.id);
+                        this._pause();
+                        //console.log('hide ' + this._data.canvas.id);
                     }
                 }
                 
             }
 
-            if (diff.includes('range') && this._data.range) {
+            if (diff.includes('range')) {
 
                 if (this._data.helper) {
 
-                    if (this._data.range.duration) {
+                    if (!this._data.range) {
+                        this._rewind(); // settings range to undefined currently rewinds, not sure if it should work like that
+                        this._data.helper.rangeId = null;
+                    } else if (this._data.range.duration) {
+                        
                         // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
                         this._data.helper.rangeId = this._data.range.rangeId;
     
@@ -459,14 +463,12 @@ namespace IIIFComponents {
                             this._setCurrentTime(this._data.range.duration.start);
                         }
     
-                        this.play();
-                    } else {
-                        this._data.helper.rangeId = null;
+                        this._play();
                     }
-                    
+
+                    this.fire(AVComponent.Events.RANGE_CHANGED); 
                 }
 
-                this.fire(AVComponent.Events.RANGE_CHANGED); 
             }
 
             this._render();
@@ -640,7 +642,7 @@ namespace IIIFComponents {
                         that._setCurrentTime(0);
 
                         if (that.options.data.autoPlay) {
-                            that.play();
+                            that._play();
                         }
 
                         that._updateDurationDisplay();
@@ -751,9 +753,9 @@ namespace IIIFComponents {
 
         // todo: can this be part of the _data state?
         // this._data.rewind = true?
-        public rewind(withoutUpdate?: boolean): void {
+        private _rewind(withoutUpdate?: boolean): void {
 
-            this.pause();
+            this._pause();
 
             if (this._data.limitToRange && this._data.range && this._data.range.duration) {
                 this._canvasClockTime = this._data.range.duration.start;
@@ -769,12 +771,12 @@ namespace IIIFComponents {
                 }
             }
 
-            this.play();
+            this._play();
         }
 
         // todo: can this be part of the _data state?
         // this._data.fastforward = true?
-        public fastforward(): void {
+        private _fastforward(): void {
 
             if (this._data.limitToRange && this._data.range && this._data.range.duration) {
                 this._canvasClockTime = this._data.range.duration.end;
@@ -782,12 +784,12 @@ namespace IIIFComponents {
                 this._canvasClockTime = this._canvasClockDuration;
             }
 
-            this.pause();
+            this._pause();
         }
 
         // todo: can this be part of the _data state?
         // this._data.play = true?
-        public play(withoutUpdate?: boolean): void {
+        private _play(withoutUpdate?: boolean): void {
             if (this._isPlaying) return;
 
             if (this._data.limitToRange && this._data.range && this._data.range.duration && this._canvasClockTime >= this._data.range.duration.end) {
@@ -826,7 +828,7 @@ namespace IIIFComponents {
 
         // todo: can this be part of the _data state?
         // this._data.play = false?
-        public pause(withoutUpdate?: boolean): void {
+        private _pause(withoutUpdate?: boolean): void {
 
             window.clearInterval(this._highPriorityInterval);
             window.clearInterval(this._lowPriorityInterval);
@@ -854,12 +856,12 @@ namespace IIIFComponents {
             this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
 
             if (this._data.limitToRange && this._data.range && this._data.range.duration && this._canvasClockTime >= this._data.range.duration.end) {
-                this.pause();
+                this._pause();
             }
 
             if (this._canvasClockTime >= this._canvasClockDuration) {
                 this._canvasClockTime = this._canvasClockDuration;
-                this.pause();
+                this._pause();
             }
         }
 
@@ -1016,7 +1018,7 @@ namespace IIIFComponents {
                     }
 
                     this._wasPlaying = this._isPlaying;
-                    this.pause(true);
+                    this._pause(true);
                     this._isStalled = aBoolean;
                 }
 
@@ -1033,7 +1035,7 @@ namespace IIIFComponents {
                     //this._hideWorkingIndicator();
 
                     if (this._isStalled && this._wasPlaying) {
-                        this.play(true);
+                        this._play(true);
                     }
 
                     this._isStalled = aBoolean;

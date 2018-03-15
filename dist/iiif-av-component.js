@@ -222,8 +222,6 @@ var IIIFComponents;
                 canvasInstance.set({
                     range: undefined
                 });
-                // todo: should be canvasInstance.set({ rewind: true })
-                canvasInstance.rewind();
             }
         };
         AVComponent.prototype.playRange = function (rangeId) {
@@ -501,10 +499,10 @@ var IIIFComponents;
             });
             this._$playButton.on('click', function () {
                 if (_this._isPlaying) {
-                    _this.pause();
+                    _this._pause();
                 }
                 else {
-                    _this.play();
+                    _this._play();
                 }
             });
             this._$nextButton.on('click', function () {
@@ -679,14 +677,14 @@ var IIIFComponents;
                 // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
                 if (isDouble) {
                     if (this._isNavigationConstrainedToRange()) {
-                        this.rewind();
+                        this._rewind();
                     }
                     else {
                         this.fire(IIIFComponents.AVComponent.Events.PREVIOUS_RANGE);
                     }
                 }
                 else {
-                    this.rewind();
+                    this._rewind();
                 }
             }
             else {
@@ -698,21 +696,21 @@ var IIIFComponents;
                         this.set({
                             range: undefined
                         });
-                        this.rewind();
+                        this._rewind();
                     }
                     else {
                         this.fire(IIIFComponents.AVComponent.Events.PREVIOUS_RANGE);
                     }
                 }
                 else {
-                    this.rewind();
+                    this._rewind();
                 }
             }
         };
         CanvasInstance.prototype._next = function () {
             if (this._data.limitToRange) {
                 if (this._isNavigationConstrainedToRange()) {
-                    this.fastforward();
+                    this._fastforward();
                 }
                 else {
                     this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
@@ -730,31 +728,32 @@ var IIIFComponents;
                 if (this._data.canvas) {
                     if (this._data.visible) {
                         this.$playerElement.show();
-                        console.log('show ' + this._data.canvas.id);
+                        //console.log('show ' + this._data.canvas.id);
                     }
                     else {
                         this.$playerElement.hide();
-                        this.pause();
-                        console.log('hide ' + this._data.canvas.id);
+                        this._pause();
+                        //console.log('hide ' + this._data.canvas.id);
                     }
                 }
             }
-            if (diff.includes('range') && this._data.range) {
+            if (diff.includes('range')) {
                 if (this._data.helper) {
-                    if (this._data.range.duration) {
+                    if (!this._data.range) {
+                        this._rewind(); // settings range to undefined currently rewinds, not sure if it should work like that
+                        this._data.helper.rangeId = null;
+                    }
+                    else if (this._data.range.duration) {
                         // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
                         this._data.helper.rangeId = this._data.range.rangeId;
                         // if the range has changed, update the time if not already within the duration span
                         if (!this._data.range.spans(this._canvasClockTime)) {
                             this._setCurrentTime(this._data.range.duration.start);
                         }
-                        this.play();
+                        this._play();
                     }
-                    else {
-                        this._data.helper.rangeId = null;
-                    }
+                    this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED);
                 }
-                this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED);
             }
             this._render();
         };
@@ -893,7 +892,7 @@ var IIIFComponents;
                     if (that_3._readyCanvasesCount === that_3._contentAnnotations.length) {
                         that_3._setCurrentTime(0);
                         if (that_3.options.data.autoPlay) {
-                            that_3.play();
+                            that_3._play();
                         }
                         that_3._updateDurationDisplay();
                         that_3.fire(IIIFComponents.AVComponent.Events.CANVASREADY);
@@ -976,8 +975,8 @@ var IIIFComponents;
         };
         // todo: can this be part of the _data state?
         // this._data.rewind = true?
-        CanvasInstance.prototype.rewind = function (withoutUpdate) {
-            this.pause();
+        CanvasInstance.prototype._rewind = function (withoutUpdate) {
+            this._pause();
             if (this._data.limitToRange && this._data.range && this._data.range.duration) {
                 this._canvasClockTime = this._data.range.duration.start;
             }
@@ -991,22 +990,22 @@ var IIIFComponents;
                     });
                 }
             }
-            this.play();
+            this._play();
         };
         // todo: can this be part of the _data state?
         // this._data.fastforward = true?
-        CanvasInstance.prototype.fastforward = function () {
+        CanvasInstance.prototype._fastforward = function () {
             if (this._data.limitToRange && this._data.range && this._data.range.duration) {
                 this._canvasClockTime = this._data.range.duration.end;
             }
             else {
                 this._canvasClockTime = this._canvasClockDuration;
             }
-            this.pause();
+            this._pause();
         };
         // todo: can this be part of the _data state?
         // this._data.play = true?
-        CanvasInstance.prototype.play = function (withoutUpdate) {
+        CanvasInstance.prototype._play = function (withoutUpdate) {
             var _this = this;
             if (this._isPlaying)
                 return;
@@ -1036,7 +1035,7 @@ var IIIFComponents;
         };
         // todo: can this be part of the _data state?
         // this._data.play = false?
-        CanvasInstance.prototype.pause = function (withoutUpdate) {
+        CanvasInstance.prototype._pause = function (withoutUpdate) {
             window.clearInterval(this._highPriorityInterval);
             window.clearInterval(this._lowPriorityInterval);
             window.clearInterval(this._canvasClockInterval);
@@ -1056,11 +1055,11 @@ var IIIFComponents;
         CanvasInstance.prototype._canvasClockUpdater = function () {
             this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
             if (this._data.limitToRange && this._data.range && this._data.range.duration && this._canvasClockTime >= this._data.range.duration.end) {
-                this.pause();
+                this._pause();
             }
             if (this._canvasClockTime >= this._canvasClockDuration) {
                 this._canvasClockTime = this._canvasClockDuration;
-                this.pause();
+                this._pause();
             }
         };
         CanvasInstance.prototype._highPriorityUpdater = function () {
@@ -1174,7 +1173,7 @@ var IIIFComponents;
                         //this._showWorkingIndicator(this._$canvasContainer);
                     }
                     this._wasPlaying = this._isPlaying;
-                    this.pause(true);
+                    this._pause(true);
                     this._isStalled = aBoolean;
                 }
             }
@@ -1186,7 +1185,7 @@ var IIIFComponents;
                 if (this._stallRequestedBy.length === 0) {
                     //this._hideWorkingIndicator();
                     if (this._isStalled && this._wasPlaying) {
-                        this.play(true);
+                        this._play(true);
                     }
                     this._isStalled = aBoolean;
                 }

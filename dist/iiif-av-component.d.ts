@@ -126,10 +126,10 @@ declare namespace IIIFComponents {
         private _setVolume(value);
         private _renderSyncIndicator(mediaElementData);
         private _setCurrentTime(seconds);
-        rewind(withoutUpdate?: boolean): void;
-        fastforward(): void;
-        play(withoutUpdate?: boolean): void;
-        pause(withoutUpdate?: boolean): void;
+        private _rewind(withoutUpdate?);
+        private _fastforward();
+        private _play(withoutUpdate?);
+        private _pause(withoutUpdate?);
         private _isNavigationConstrainedToRange();
         private _canvasClockUpdater();
         private _highPriorityUpdater();
