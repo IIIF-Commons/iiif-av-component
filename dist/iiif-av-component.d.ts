@@ -146,7 +146,6 @@ declare namespace IIIFComponents {
 declare namespace IIIFComponents.AVComponentObjects {
     class CanvasRange {
         rangeId: string | null;
-        canvasId: string | null;
         duration: Duration | null;
         constructor(range: Manifesto.IRange);
         spans(time: number): boolean;

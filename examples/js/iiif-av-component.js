@@ -130,6 +130,11 @@ var IIIFComponents;
             canvases.forEach(function (canvas) {
                 _this._initCanvas(canvas);
             });
+            if (this.canvasInstances.length > 0) {
+                this.set({
+                    canvasId: this.canvasInstances[0].getCanvasId()
+                });
+            }
         };
         AVComponent.prototype._getCanvases = function () {
             if (this._data.helper) {
@@ -642,13 +647,14 @@ var IIIFComponents;
                 if (this._data.canvas) {
                     if (this._data.visible) {
                         this.$playerElement.show();
-                        console.log('show ' + this._data.canvas.id);
+                        //console.log('show ' + this._data.canvas.id);
                     }
                     else {
                         this.$playerElement.hide();
                         this._pause();
-                        console.log('hide ' + this._data.canvas.id);
+                        //console.log('hide ' + this._data.canvas.id);
                     }
+                    this.resize();
                 }
             }
             if (diff.includes('range')) {
@@ -1226,7 +1232,6 @@ var IIIFComponents;
         var CanvasRange = /** @class */ (function () {
             function CanvasRange(range) {
                 this.rangeId = null;
-                this.canvasId = null;
                 this.duration = null;
                 if (!range.canvases || !range.canvases.length) {
                     return;

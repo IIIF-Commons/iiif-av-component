@@ -344,14 +344,15 @@ namespace IIIFComponents {
                 if (this._data.canvas) {
                     if (this._data.visible) {
                         this.$playerElement.show();
-                        console.log('show ' + this._data.canvas.id);
+                        //console.log('show ' + this._data.canvas.id);
                     } else {
                         this.$playerElement.hide();
                         this._pause();
-                        console.log('hide ' + this._data.canvas.id);
+                        //console.log('hide ' + this._data.canvas.id);
                     }
+
+                    this.resize();
                 }
-                
             }
 
             if (diff.includes('range')) {

@@ -151,6 +151,12 @@ namespace IIIFComponents {
                 this._initCanvas(canvas);
             });
 
+            if (this.canvasInstances.length > 0) {
+                this.set({
+                    canvasId: <string>this.canvasInstances[0].getCanvasId()
+                });
+            }
+
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {

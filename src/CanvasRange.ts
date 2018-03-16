@@ -2,7 +2,6 @@ namespace IIIFComponents.AVComponentObjects {
     export class CanvasRange {
 
         public rangeId: string | null = null;
-        public canvasId: string | null = null;
         public duration: Duration | null = null;
 
         constructor(range: Manifesto.IRange) {
