@@ -210,7 +210,7 @@ namespace IIIFComponents {
 
             this._contentAnnotations = [];
 
-            const items: Manifesto.IAnnotation[] = this._data.canvas.getContent();// (<any>this._data.canvas).__jsonld.content[0].items; //todo: use canvas.getContent()
+            const items: Manifesto.IAnnotation[] = this._data.canvas.getContent();// (<any>this._data.canvas).__jsonld.content[0].items;
 
             if (items.length === 1) {
                 this._$timelineItemContainer.hide();
@@ -333,98 +333,6 @@ namespace IIIFComponents {
             }
         }
 
-        public getCanvasId(): string | null {
-            if (this._data && this._data.canvas) {
-                return this._data.canvas.id;
-            }
-
-            return null;
-        }
-
-        private _updateHoverPreview(e: any, $container: JQuery, duration: number): void {
-            const offset = <any>$container.offset();
-
-            const x = e.pageX - offset.left;
-
-            const $hoverArrow: JQuery = $container.find('.arrow');
-            const $hoverHighlight: JQuery = $container.find('.hover-highlight');
-            const $hoverPreview: JQuery = $container.find('.hover-preview');
-
-            $hoverHighlight.width(x);
-
-            const fullWidth: number = <number>$container.width();
-            const ratio: number = x / fullWidth;
-            const seconds: number = Math.min(duration * ratio);
-            $hoverPreview.find('.label').text(AVComponentUtils.Utils.formatTime(seconds));
-            const hoverPreviewWidth: number = <number>$hoverPreview.outerWidth();
-            const hoverPreviewHeight: number = <number>$hoverPreview.outerHeight();
-
-            let left: number = x - hoverPreviewWidth * 0.5;
-            let arrowLeft: number = hoverPreviewWidth * 0.5 - 6;
-
-            if (left < 0) {
-                left = 0;
-                arrowLeft = x - 6;
-            }
-
-            if (left + hoverPreviewWidth > fullWidth) {
-                left = fullWidth - hoverPreviewWidth;
-                arrowLeft = (hoverPreviewWidth - (fullWidth - x)) - 6;
-            }
-
-            $hoverPreview.css({
-                left: left,
-                top: hoverPreviewHeight * -1 + 'px'
-            }).show();
-
-            $hoverArrow.css({
-                left: arrowLeft
-            });
-        }
-
-        private _previous(isDouble: boolean): void {
-            if (this._data.limitToRange) {
-                // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
-                if (isDouble) {
-                    if (this._isNavigationConstrainedToRange()) {
-                        this._rewind();
-                    } else {
-                        this.fire(AVComponent.Events.PREVIOUS_RANGE);
-                    }
-                } else {
-                    this._rewind();
-                }
-            } else {
-                // not limited to range. 
-                // if there is a currentDuration, single click goes to previous range, double click clears current duration and rewinds.
-                // if there is no currentDuration, single and double click rewinds.
-                if (this._data.range) {
-                    if (isDouble) {
-                        this.set({
-                            range: undefined
-                        });
-                        this._rewind();
-                    } else {
-                        this.fire(AVComponent.Events.PREVIOUS_RANGE);
-                    }
-                } else {
-                    this._rewind();
-                }
-            }
-        }
-
-        private _next(): void {
-            if (this._data.limitToRange) {
-                if (this._isNavigationConstrainedToRange()) {
-                    this._fastforward();
-                } else {
-                    this.fire(AVComponent.Events.NEXT_RANGE);
-                }
-            } else {
-                this.fire(AVComponent.Events.NEXT_RANGE);
-            }
-        }
-
         public set(data: IAVCanvasInstanceData): void {
 
             const oldData: IAVCanvasInstanceData = Object.assign({}, this._data);
@@ -436,11 +344,11 @@ namespace IIIFComponents {
                 if (this._data.canvas) {
                     if (this._data.visible) {
                         this.$playerElement.show();
-                        //console.log('show ' + this._data.canvas.id);
+                        console.log('show ' + this._data.canvas.id);
                     } else {
                         this.$playerElement.hide();
                         this._pause();
-                        //console.log('hide ' + this._data.canvas.id);
+                        console.log('hide ' + this._data.canvas.id);
                     }
                 }
                 
@@ -535,6 +443,98 @@ namespace IIIFComponents {
 
             this._updateCurrentTimeDisplay();
             this._updateDurationDisplay();
+        }
+
+        public getCanvasId(): string | null {
+            if (this._data && this._data.canvas) {
+                return this._data.canvas.id;
+            }
+
+            return null;
+        }
+
+        private _updateHoverPreview(e: any, $container: JQuery, duration: number): void {
+            const offset = <any>$container.offset();
+
+            const x = e.pageX - offset.left;
+
+            const $hoverArrow: JQuery = $container.find('.arrow');
+            const $hoverHighlight: JQuery = $container.find('.hover-highlight');
+            const $hoverPreview: JQuery = $container.find('.hover-preview');
+
+            $hoverHighlight.width(x);
+
+            const fullWidth: number = <number>$container.width();
+            const ratio: number = x / fullWidth;
+            const seconds: number = Math.min(duration * ratio);
+            $hoverPreview.find('.label').text(AVComponentUtils.Utils.formatTime(seconds));
+            const hoverPreviewWidth: number = <number>$hoverPreview.outerWidth();
+            const hoverPreviewHeight: number = <number>$hoverPreview.outerHeight();
+
+            let left: number = x - hoverPreviewWidth * 0.5;
+            let arrowLeft: number = hoverPreviewWidth * 0.5 - 6;
+
+            if (left < 0) {
+                left = 0;
+                arrowLeft = x - 6;
+            }
+
+            if (left + hoverPreviewWidth > fullWidth) {
+                left = fullWidth - hoverPreviewWidth;
+                arrowLeft = (hoverPreviewWidth - (fullWidth - x)) - 6;
+            }
+
+            $hoverPreview.css({
+                left: left,
+                top: hoverPreviewHeight * -1 + 'px'
+            }).show();
+
+            $hoverArrow.css({
+                left: arrowLeft
+            });
+        }
+
+        private _previous(isDouble: boolean): void {
+            if (this._data.limitToRange) {
+                // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
+                if (isDouble) {
+                    if (this._isNavigationConstrainedToRange()) {
+                        this._rewind();
+                    } else {
+                        this.fire(AVComponent.Events.PREVIOUS_RANGE);
+                    }
+                } else {
+                    this._rewind();
+                }
+            } else {
+                // not limited to range. 
+                // if there is a currentDuration, single click goes to previous range, double click clears current duration and rewinds.
+                // if there is no currentDuration, single and double click rewinds.
+                if (this._data.range) {
+                    if (isDouble) {
+                        this.set({
+                            range: undefined
+                        });
+                        this._rewind();
+                    } else {
+                        this.fire(AVComponent.Events.PREVIOUS_RANGE);
+                    }
+                } else {
+                    this._rewind();
+                }
+            }
+        }
+
+        private _next(): void {
+            if (this._data.limitToRange) {
+                if (this._isNavigationConstrainedToRange()) {
+                    this._fastforward();
+                } else {
+                    this.fire(AVComponent.Events.NEXT_RANGE);
+                }
+            } else {
+                this.fire(AVComponent.Events.NEXT_RANGE);
+            }
         }
 
         public destroy(): void {

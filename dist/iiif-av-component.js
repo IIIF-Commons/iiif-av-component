@@ -78,7 +78,6 @@ var IIIFComponents;
                     if (canvasInstance !== currentCanvasInstance_1) {
                         canvasInstance.set({
                             visible: false,
-                            range: undefined,
                             limitToRange: false
                         });
                     }
@@ -543,7 +542,7 @@ var IIIFComponents;
             });
             // create annotations
             this._contentAnnotations = [];
-            var items = this._data.canvas.getContent(); // (<any>this._data.canvas).__jsonld.content[0].items; //todo: use canvas.getContent()
+            var items = this._data.canvas.getContent(); // (<any>this._data.canvas).__jsonld.content[0].items;
             if (items.length === 1) {
                 this._$timelineItemContainer.hide();
             }
@@ -635,6 +634,95 @@ var IIIFComponents;
                 this._renderMediaElement(itemData);
             }
         };
+        CanvasInstance.prototype.set = function (data) {
+            var oldData = Object.assign({}, this._data);
+            this._data = Object.assign(this._data, data);
+            var diff = IIIFComponents.AVComponentUtils.Utils.diff(oldData, this._data);
+            if (diff.includes('visible')) {
+                if (this._data.canvas) {
+                    if (this._data.visible) {
+                        this.$playerElement.show();
+                        console.log('show ' + this._data.canvas.id);
+                    }
+                    else {
+                        this.$playerElement.hide();
+                        this._pause();
+                        console.log('hide ' + this._data.canvas.id);
+                    }
+                }
+            }
+            if (diff.includes('range')) {
+                if (this._data.helper) {
+                    if (!this._data.range) {
+                        this._rewind(); // settings range to undefined currently rewinds, not sure if it should work like that
+                        this._data.helper.rangeId = null;
+                    }
+                    else if (this._data.range.duration) {
+                        // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
+                        this._data.helper.rangeId = this._data.range.rangeId;
+                        // if the range has changed, update the time if not already within the duration span
+                        if (!this._data.range.spans(this._canvasClockTime)) {
+                            this._setCurrentTime(this._data.range.duration.start);
+                        }
+                        this._play();
+                    }
+                    this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED);
+                }
+            }
+            this._render();
+        };
+        CanvasInstance.prototype._render = function () {
+            if (this._data.range && this._data.range.duration) {
+                // get the total length in seconds.
+                var totalLength = this._canvasClockDuration;
+                // get the length of the timeline container
+                var timelineLength = this._$canvasTimelineContainer.width();
+                // get the ratio of seconds to length
+                var ratio = timelineLength / totalLength;
+                var start = this._data.range.duration.start * ratio;
+                var end = this._data.range.duration.end * ratio;
+                var width = end - start;
+                this._$durationHighlight.show();
+                // set the start position and width
+                this._$durationHighlight.css({
+                    left: start,
+                    width: width
+                });
+                var that_1 = this;
+                this._$rangeTimelineContainer.slider("destroy");
+                this._$rangeTimelineContainer.slider({
+                    value: this._data.range.duration.start,
+                    step: 0.01,
+                    orientation: "horizontal",
+                    range: "min",
+                    min: this._data.range.duration.start,
+                    max: this._data.range.duration.end,
+                    animate: false,
+                    create: function (evt, ui) {
+                        // on create
+                    },
+                    slide: function (evt, ui) {
+                        that_1._setCurrentTime(ui.value);
+                    },
+                    stop: function (evt, ui) {
+                        //this._setCurrentTime(ui.value);
+                    }
+                });
+            }
+            else {
+                this._$durationHighlight.hide();
+            }
+            if (this._data.limitToRange) {
+                this._$canvasTimelineContainer.hide();
+                this._$rangeTimelineContainer.show();
+            }
+            else {
+                this._$canvasTimelineContainer.show();
+                this._$rangeTimelineContainer.hide();
+            }
+            this._updateCurrentTimeDisplay();
+            this._updateDurationDisplay();
+        };
         CanvasInstance.prototype.getCanvasId = function () {
             if (this._data && this._data.canvas) {
                 return this._data.canvas.id;
@@ -719,95 +807,6 @@ var IIIFComponents;
             else {
                 this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
             }
-        };
-        CanvasInstance.prototype.set = function (data) {
-            var oldData = Object.assign({}, this._data);
-            this._data = Object.assign(this._data, data);
-            var diff = IIIFComponents.AVComponentUtils.Utils.diff(oldData, this._data);
-            if (diff.includes('visible')) {
-                if (this._data.canvas) {
-                    if (this._data.visible) {
-                        this.$playerElement.show();
-                        //console.log('show ' + this._data.canvas.id);
-                    }
-                    else {
-                        this.$playerElement.hide();
-                        this._pause();
-                        //console.log('hide ' + this._data.canvas.id);
-                    }
-                }
-            }
-            if (diff.includes('range')) {
-                if (this._data.helper) {
-                    if (!this._data.range) {
-                        this._rewind(); // settings range to undefined currently rewinds, not sure if it should work like that
-                        this._data.helper.rangeId = null;
-                    }
-                    else if (this._data.range.duration) {
-                        // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
-                        this._data.helper.rangeId = this._data.range.rangeId;
-                        // if the range has changed, update the time if not already within the duration span
-                        if (!this._data.range.spans(this._canvasClockTime)) {
-                            this._setCurrentTime(this._data.range.duration.start);
-                        }
-                        this._play();
-                    }
-                    this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED);
-                }
-            }
-            this._render();
-        };
-        CanvasInstance.prototype._render = function () {
-            if (this._data.range && this._data.range.duration) {
-                // get the total length in seconds.
-                var totalLength = this._canvasClockDuration;
-                // get the length of the timeline container
-                var timelineLength = this._$canvasTimelineContainer.width();
-                // get the ratio of seconds to length
-                var ratio = timelineLength / totalLength;
-                var start = this._data.range.duration.start * ratio;
-                var end = this._data.range.duration.end * ratio;
-                var width = end - start;
-                this._$durationHighlight.show();
-                // set the start position and width
-                this._$durationHighlight.css({
-                    left: start,
-                    width: width
-                });
-                var that_1 = this;
-                this._$rangeTimelineContainer.slider("destroy");
-                this._$rangeTimelineContainer.slider({
-                    value: this._data.range.duration.start,
-                    step: 0.01,
-                    orientation: "horizontal",
-                    range: "min",
-                    min: this._data.range.duration.start,
-                    max: this._data.range.duration.end,
-                    animate: false,
-                    create: function (evt, ui) {
-                        // on create
-                    },
-                    slide: function (evt, ui) {
-                        that_1._setCurrentTime(ui.value);
-                    },
-                    stop: function (evt, ui) {
-                        //this._setCurrentTime(ui.value);
-                    }
-                });
-            }
-            else {
-                this._$durationHighlight.hide();
-            }
-            if (this._data.limitToRange) {
-                this._$canvasTimelineContainer.hide();
-                this._$rangeTimelineContainer.show();
-            }
-            else {
-                this._$canvasTimelineContainer.show();
-                this._$rangeTimelineContainer.hide();
-            }
-            this._updateCurrentTimeDisplay();
-            this._updateDurationDisplay();
         };
         CanvasInstance.prototype.destroy = function () {
             window.clearInterval(this._highPriorityInterval);

@@ -110,12 +110,12 @@ declare namespace IIIFComponents {
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
+        set(data: IAVCanvasInstanceData): void;
+        private _render();
         getCanvasId(): string | null;
         private _updateHoverPreview(e, $container, duration);
         private _previous(isDouble);
         private _next();
-        set(data: IAVCanvasInstanceData): void;
-        private _render();
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);

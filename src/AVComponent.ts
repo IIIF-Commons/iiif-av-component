@@ -80,7 +80,6 @@ namespace IIIFComponents {
                     if (canvasInstance !== currentCanvasInstance) {
                         canvasInstance.set({ 
                             visible: false,
-                            range: undefined,
                             limitToRange: false
                         });
                     } else {
