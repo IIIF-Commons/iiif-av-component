@@ -53,9 +53,9 @@
             "label": { "en": [ "WS0003" ] }
         },
         {
-            "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8.json",
+            "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615_70.json",
             "type": "Manifest",
-            "label": { "en": [ "WS0003 Aburria aburri r1" ] }
+            "label": { "en": [ "C615/70 C615/71 Tamas Vasary piano" ] }
         }
     ]  
   }
