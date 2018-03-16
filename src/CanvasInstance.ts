@@ -360,7 +360,6 @@ namespace IIIFComponents {
                 if (this._data.helper) {
 
                     if (!this._data.range) {
-                        this._rewind(); // settings range to undefined currently rewinds, not sure if it should work like that
                         this._data.helper.rangeId = null;
                     } else if (this._data.range.duration) {
                         
@@ -665,7 +664,6 @@ namespace IIIFComponents {
             const range: AVComponentObjects.CanvasRange | undefined = this._getRangeForCurrentTime();
 
             if (range !== this._data.range) {
-                //console.log('hasRangeChanged');
                 this.set({
                     range: range
                 });
@@ -882,7 +880,7 @@ namespace IIIFComponents {
 
         private _lowPriorityUpdater(): void {
             this._updateMediaActiveStates();
-            //this._hasRangeChanged();
+            this._hasRangeChanged();
         }
 
         private _updateMediaActiveStates(): void {

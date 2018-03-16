@@ -166,13 +166,7 @@ var IIIFComponents;
                 _this._nextRange();
             }, false);
             canvasInstance.on(AVComponent.Events.RANGE_CHANGED, function () {
-                if (!_this._data.helper) {
-                    return;
-                }
-                if (_this._data.range && _this._data.helper.rangeId !== _this._data.range.rangeId) {
-                    //console.log('range changed avcomponent handler');
-                    _this.fire(AVComponent.Events.RANGE_CHANGED);
-                }
+                _this.fire(AVComponent.Events.RANGE_CHANGED);
             }, false);
         };
         AVComponent.prototype._prevRange = function () {
@@ -211,6 +205,17 @@ var IIIFComponents;
             }
             return null;
         };
+        // private _getCurrentRange(): AVComponentObjects.CanvasRange | null {
+        //     if (!this._data.helper || !this._data.helper.rangeId) {
+        //         return null;
+        //     }
+        //     const range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.helper.rangeId);
+        //     if (range) {
+        //         const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(range);
+        //         return canvasRange;
+        //     }
+        //     return null;
+        // }
         AVComponent.prototype._getCurrentCanvas = function () {
             if (this._data.canvasId) {
                 return this._getCanvasInstanceById(this._data.canvasId);
@@ -660,7 +665,6 @@ var IIIFComponents;
             if (diff.includes('range')) {
                 if (this._data.helper) {
                     if (!this._data.range) {
-                        this._rewind(); // settings range to undefined currently rewinds, not sure if it should work like that
                         this._data.helper.rangeId = null;
                     }
                     else if (this._data.range.duration) {
@@ -912,7 +916,6 @@ var IIIFComponents;
             // create a RANGE_CHANGED event if the currently applicable range changes
             var range = this._getRangeForCurrentTime();
             if (range !== this._data.range) {
-                //console.log('hasRangeChanged');
                 this.set({
                     range: range
                 });
@@ -1079,7 +1082,7 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._lowPriorityUpdater = function () {
             this._updateMediaActiveStates();
-            //this._hasRangeChanged();
+            this._hasRangeChanged();
         };
         CanvasInstance.prototype._updateMediaActiveStates = function () {
             var contentAnnotation;
