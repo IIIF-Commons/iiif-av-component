@@ -188,11 +188,11 @@ namespace IIIFComponents {
             //     this.playCanvas(canvasInstance.canvas.id);
             // }, false);
 
-            canvasInstance.on(AVComponent.Events.PREVIOUS_RANGE, () => {
+            canvasInstance.on(AVComponentCanvasInstance.Events.PREVIOUS_RANGE, () => {
                 this._prevRange();
             }, false);
 
-            canvasInstance.on(AVComponent.Events.NEXT_RANGE, () => {
+            canvasInstance.on(AVComponentCanvasInstance.Events.NEXT_RANGE, () => {
                 this._nextRange();
             }, false);
 
@@ -329,10 +329,6 @@ namespace IIIFComponents.AVComponent {
     export class Events {
         static CANVASREADY: string = 'canvasready';
         static LOG: string = 'log';
-        static NEXT_RANGE: string = 'nextrange';
-        static PAUSECANVAS: string = 'pause';
-        static PLAYCANVAS: string = 'play';
-        static PREVIOUS_RANGE: string = 'previousrange';
         static RANGE_CHANGED: string = 'rangechanged';
     }
 }

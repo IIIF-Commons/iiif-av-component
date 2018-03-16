@@ -37,10 +37,6 @@ declare namespace IIIFComponents.AVComponent {
     class Events {
         static CANVASREADY: string;
         static LOG: string;
-        static NEXT_RANGE: string;
-        static PAUSECANVAS: string;
-        static PLAYCANVAS: string;
-        static PREVIOUS_RANGE: string;
         static RANGE_CHANGED: string;
     }
 }
@@ -139,6 +135,14 @@ declare namespace IIIFComponents {
         private _checkMediaSynchronization();
         private _playbackStalled(aBoolean, syncMediaRequestingStall);
         resize(): void;
+    }
+}
+declare namespace IIIFComponents.AVComponentCanvasInstance {
+    class Events {
+        static NEXT_RANGE: string;
+        static PAUSECANVAS: string;
+        static PLAYCANVAS: string;
+        static PREVIOUS_RANGE: string;
     }
 }
 

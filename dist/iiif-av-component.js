@@ -159,10 +159,10 @@ var IIIFComponents;
             // canvasInstance.on(AVComponent.Events.RESETCANVAS, () => {
             //     this.playCanvas(canvasInstance.canvas.id);
             // }, false);
-            canvasInstance.on(AVComponent.Events.PREVIOUS_RANGE, function () {
+            canvasInstance.on(IIIFComponents.AVComponentCanvasInstance.Events.PREVIOUS_RANGE, function () {
                 _this._prevRange();
             }, false);
-            canvasInstance.on(AVComponent.Events.NEXT_RANGE, function () {
+            canvasInstance.on(IIIFComponents.AVComponentCanvasInstance.Events.NEXT_RANGE, function () {
                 _this._nextRange();
             }, false);
             canvasInstance.on(AVComponent.Events.RANGE_CHANGED, function () {
@@ -270,10 +270,6 @@ var IIIFComponents;
             }
             Events.CANVASREADY = 'canvasready';
             Events.LOG = 'log';
-            Events.NEXT_RANGE = 'nextrange';
-            Events.PAUSECANVAS = 'pause';
-            Events.PLAYCANVAS = 'play';
-            Events.PREVIOUS_RANGE = 'previousrange';
             Events.RANGE_CHANGED = 'rangechanged';
             return Events;
         }());
@@ -778,7 +774,7 @@ var IIIFComponents;
                         this._rewind();
                     }
                     else {
-                        this.fire(IIIFComponents.AVComponent.Events.PREVIOUS_RANGE);
+                        this.fire(IIIFComponents.AVComponentCanvasInstance.Events.PREVIOUS_RANGE);
                     }
                 }
                 else {
@@ -797,7 +793,7 @@ var IIIFComponents;
                         this._rewind();
                     }
                     else {
-                        this.fire(IIIFComponents.AVComponent.Events.PREVIOUS_RANGE);
+                        this.fire(IIIFComponents.AVComponentCanvasInstance.Events.PREVIOUS_RANGE);
                     }
                 }
                 else {
@@ -811,11 +807,11 @@ var IIIFComponents;
                     this._fastforward();
                 }
                 else {
-                    this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
+                    this.fire(IIIFComponents.AVComponentCanvasInstance.Events.NEXT_RANGE);
                 }
             }
             else {
-                this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
+                this.fire(IIIFComponents.AVComponentCanvasInstance.Events.NEXT_RANGE);
             }
         };
         CanvasInstance.prototype.destroy = function () {
@@ -1038,7 +1034,7 @@ var IIIFComponents;
                 this._synchronizeMedia();
             }
             this._$playButton.find('i').switchClass('play', 'pause');
-            this.fire(IIIFComponents.AVComponent.Events.PLAYCANVAS);
+            this.fire(IIIFComponents.AVComponentCanvasInstance.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
         };
         // todo: can this be part of the _data state?
@@ -1054,7 +1050,7 @@ var IIIFComponents;
                 this._synchronizeMedia();
             }
             this._$playButton.find('i').switchClass('pause', 'play');
-            this.fire(IIIFComponents.AVComponent.Events.PAUSECANVAS);
+            this.fire(IIIFComponents.AVComponentCanvasInstance.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
         };
         CanvasInstance.prototype._isNavigationConstrainedToRange = function () {
@@ -1226,6 +1222,21 @@ var IIIFComponents;
         return CanvasInstance;
     }(_Components.BaseComponent));
     IIIFComponents.CanvasInstance = CanvasInstance;
+})(IIIFComponents || (IIIFComponents = {}));
+(function (IIIFComponents) {
+    var AVComponentCanvasInstance;
+    (function (AVComponentCanvasInstance) {
+        var Events = /** @class */ (function () {
+            function Events() {
+            }
+            Events.NEXT_RANGE = 'nextrange';
+            Events.PAUSECANVAS = 'pause';
+            Events.PLAYCANVAS = 'play';
+            Events.PREVIOUS_RANGE = 'previousrange';
+            return Events;
+        }());
+        AVComponentCanvasInstance.Events = Events;
+    })(AVComponentCanvasInstance = IIIFComponents.AVComponentCanvasInstance || (IIIFComponents.AVComponentCanvasInstance = {}));
 })(IIIFComponents || (IIIFComponents = {}));
 
 var IIIFComponents;

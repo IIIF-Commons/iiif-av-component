@@ -501,7 +501,7 @@ namespace IIIFComponents {
                     if (this._isNavigationConstrainedToRange()) {
                         this._rewind();
                     } else {
-                        this.fire(AVComponent.Events.PREVIOUS_RANGE);
+                        this.fire(AVComponentCanvasInstance.Events.PREVIOUS_RANGE);
                     }
                 } else {
                     this._rewind();
@@ -517,7 +517,7 @@ namespace IIIFComponents {
                         });
                         this._rewind();
                     } else {
-                        this.fire(AVComponent.Events.PREVIOUS_RANGE);
+                        this.fire(AVComponentCanvasInstance.Events.PREVIOUS_RANGE);
                     }
                 } else {
                     this._rewind();
@@ -530,10 +530,10 @@ namespace IIIFComponents {
                 if (this._isNavigationConstrainedToRange()) {
                     this._fastforward();
                 } else {
-                    this.fire(AVComponent.Events.NEXT_RANGE);
+                    this.fire(AVComponentCanvasInstance.Events.NEXT_RANGE);
                 }
             } else {
-                this.fire(AVComponent.Events.NEXT_RANGE);
+                this.fire(AVComponentCanvasInstance.Events.NEXT_RANGE);
             }
         }
 
@@ -821,7 +821,7 @@ namespace IIIFComponents {
 
             this._$playButton.find('i').switchClass('play', 'pause');
 
-            this.fire(AVComponent.Events.PLAYCANVAS);
+            this.fire(AVComponentCanvasInstance.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
         }
 
@@ -843,7 +843,7 @@ namespace IIIFComponents {
 
             this._$playButton.find('i').switchClass('pause', 'play');
 
-            this.fire(AVComponent.Events.PAUSECANVAS);
+            this.fire(AVComponentCanvasInstance.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
         }
 
@@ -1074,5 +1074,14 @@ namespace IIIFComponents {
             }
         }
 
+    }
+}
+
+namespace IIIFComponents.AVComponentCanvasInstance {
+    export class Events {
+        static NEXT_RANGE: string = 'nextrange';
+        static PAUSECANVAS: string = 'pause';
+        static PLAYCANVAS: string = 'play';
+        static PREVIOUS_RANGE: string = 'previousrange';
     }
 }
