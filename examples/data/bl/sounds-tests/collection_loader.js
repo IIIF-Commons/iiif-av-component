@@ -1,7 +1,7 @@
 
 var rangeDetails = {}
 
-function determineRangePlayInfo(range){
+function determineRangePlayInfo(range, manifestId){
     var playList = [];
     addToPlayList(playList, range);
     var message = "Range: <b>" + getString(range.label) + "</b> (" + range.id + ")<br/>Parts: <br/>";
@@ -34,7 +34,7 @@ function determineRangePlayInfo(range){
         message += (i+1) + ": start: " + segment.start + ", stop: " + segment.stop + ", canvas: " + segment.canvas;
         message += "<br/>";
     }
-    rangeDetails[range.id] = message;
+    rangeDetails[manifestId + range.id] = message;
 }
 
 function addToPlayList(playList, range){
@@ -109,8 +109,8 @@ function processItems(manifestId, items, $element, prefix){
                 elementId = prefix + "_" + i;
                 var $listItem = appendListItemLink($list, elementId, makeUrl(manifestId, range.id), getString(range.label))
                 var $link = $listItem.children("a").first();
-                $link.attr("data-range-id", range.id);
-                determineRangePlayInfo(range);
+                $link.attr("data-range-id", manifestId + range.id);
+                determineRangePlayInfo(range, manifestId);
                 $link.on("mouseover", function(){                    
                     rangeId = $(this).attr("data-range-id");
                     if(rangeId){
