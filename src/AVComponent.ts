@@ -63,13 +63,20 @@ namespace IIIFComponents {
 
             if (diff.includes('limitToRange') && this._data.canvasId) {
 
-                const canvasInstance: CanvasInstance | null = this._getCanvasInstanceById(this._data.canvasId);
-
-                if (canvasInstance) {
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
                     canvasInstance.set({ 
                         limitToRange: this._data.limitToRange
                     });
-                }
+                });
+            }
+
+            if (diff.includes('constrainNavigationToRange') && this._data.canvasId) {
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                    canvasInstance.set({ 
+                        constrainNavigationToRange: this._data.constrainNavigationToRange
+                    });
+                });
             }
 
             if (diff.includes('canvasId') && this._data.canvasId) {

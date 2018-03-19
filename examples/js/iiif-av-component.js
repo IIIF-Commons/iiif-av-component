@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.29 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.31 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 
@@ -50,6 +50,7 @@ var IIIFComponents;
             };
         };
         AVComponent.prototype.set = function (data) {
+            var _this = this;
             var oldData = Object.assign({}, this._data);
             this._data = Object.assign(this._data, data);
             var diff = IIIFComponents.AVComponentUtils.Utils.diff(oldData, this._data);
@@ -65,12 +66,18 @@ var IIIFComponents;
                 return;
             }
             if (diff.includes('limitToRange') && this._data.canvasId) {
-                var canvasInstance = this._getCanvasInstanceById(this._data.canvasId);
-                if (canvasInstance) {
+                this.canvasInstances.forEach(function (canvasInstance, index) {
                     canvasInstance.set({
-                        limitToRange: this._data.limitToRange
+                        limitToRange: _this._data.limitToRange
                     });
-                }
+                });
+            }
+            if (diff.includes('constrainNavigationToRange') && this._data.canvasId) {
+                this.canvasInstances.forEach(function (canvasInstance, index) {
+                    canvasInstance.set({
+                        constrainNavigationToRange: _this._data.constrainNavigationToRange
+                    });
+                });
             }
             if (diff.includes('canvasId') && this._data.canvasId) {
                 var currentCanvasInstance_1 = this._getCanvasInstanceById(this._data.canvasId);
