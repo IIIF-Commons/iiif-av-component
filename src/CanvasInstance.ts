@@ -877,7 +877,11 @@ namespace IIIFComponents {
 
         private _lowPriorityUpdater(): void {
             this._updateMediaActiveStates();
-            this._hasRangeChanged();
+
+            if (this._data.autoSelectRange) {
+                this._hasRangeChanged();
+            }
+
         }
 
         private _updateMediaActiveStates(): void {

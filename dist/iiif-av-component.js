@@ -1076,7 +1076,9 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._lowPriorityUpdater = function () {
             this._updateMediaActiveStates();
-            this._hasRangeChanged();
+            if (this._data.autoSelectRange) {
+                this._hasRangeChanged();
+            }
         };
         CanvasInstance.prototype._updateMediaActiveStates = function () {
             var contentAnnotation;

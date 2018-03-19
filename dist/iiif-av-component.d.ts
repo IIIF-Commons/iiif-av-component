@@ -193,6 +193,7 @@ declare namespace IIIFComponents {
     interface IAVComponentData {
         [key: string]: any;
         autoPlay?: boolean;
+        autoSelectRange?: boolean;
         canvasId?: string;
         constrainNavigationToRange?: boolean;
         content?: IAVComponentContent;
