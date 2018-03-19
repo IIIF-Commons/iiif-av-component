@@ -196,8 +196,8 @@ namespace IIIFComponents {
                 this._nextRange();
             }, false);
 
-            canvasInstance.on(AVComponent.Events.RANGE_CHANGED, () => {
-                this.fire(AVComponent.Events.RANGE_CHANGED);
+            canvasInstance.on(AVComponent.Events.RANGE_CHANGED, (rangeId: string) => {
+                this.fire(AVComponent.Events.RANGE_CHANGED, rangeId);
             }, false);
         }
 

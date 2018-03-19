@@ -140,8 +140,9 @@
                 console.log('canvas ready');
             });
 
-            avcomponent.on('rangechanged', function() {
-                console.log('range changed');
+            avcomponent.on('rangechanged', function(rangeid) {
+                helper.rangeId = rangeid;
+                console.log('range changed', rangeid);
             });
 
             // avcomponent.on('previousrange', function() {

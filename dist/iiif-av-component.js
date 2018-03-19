@@ -165,8 +165,8 @@ var IIIFComponents;
             canvasInstance.on(IIIFComponents.AVComponentCanvasInstance.Events.NEXT_RANGE, function () {
                 _this._nextRange();
             }, false);
-            canvasInstance.on(AVComponent.Events.RANGE_CHANGED, function () {
-                _this.fire(AVComponent.Events.RANGE_CHANGED);
+            canvasInstance.on(AVComponent.Events.RANGE_CHANGED, function (rangeId) {
+                _this.fire(AVComponent.Events.RANGE_CHANGED, rangeId);
             }, false);
         };
         AVComponent.prototype._prevRange = function () {
@@ -661,18 +661,16 @@ var IIIFComponents;
             if (diff.includes('range')) {
                 if (this._data.helper) {
                     if (!this._data.range) {
-                        this._data.helper.rangeId = null;
+                        this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, null);
                     }
                     else if (this._data.range.duration) {
-                        // todo: should invoke an action like helper.setRange(id) which updates the internal state using redux
-                        this._data.helper.rangeId = this._data.range.rangeId;
                         // if the range has changed, update the time if not already within the duration span
                         if (!this._data.range.spans(this._canvasClockTime)) {
                             this._setCurrentTime(this._data.range.duration.start);
                         }
                         this._play();
+                        this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, this._data.range.rangeId);
                     }
-                    this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED);
                 }
             }
             this._render();
