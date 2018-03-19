@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.27 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.28 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -37,10 +37,6 @@ declare namespace IIIFComponents.AVComponent {
     class Events {
         static CANVASREADY: string;
         static LOG: string;
-        static NEXT_RANGE: string;
-        static PAUSECANVAS: string;
-        static PLAYCANVAS: string;
-        static PREVIOUS_RANGE: string;
         static RANGE_CHANGED: string;
     }
 }
@@ -139,6 +135,14 @@ declare namespace IIIFComponents {
         private _checkMediaSynchronization();
         private _playbackStalled(aBoolean, syncMediaRequestingStall);
         resize(): void;
+    }
+}
+declare namespace IIIFComponents.AVComponentCanvasInstance {
+    class Events {
+        static NEXT_RANGE: string;
+        static PAUSECANVAS: string;
+        static PLAYCANVAS: string;
+        static PREVIOUS_RANGE: string;
     }
 }
 

@@ -188,24 +188,16 @@ namespace IIIFComponents {
             //     this.playCanvas(canvasInstance.canvas.id);
             // }, false);
 
-            canvasInstance.on(AVComponent.Events.PREVIOUS_RANGE, () => {
+            canvasInstance.on(AVComponentCanvasInstance.Events.PREVIOUS_RANGE, () => {
                 this._prevRange();
             }, false);
 
-            canvasInstance.on(AVComponent.Events.NEXT_RANGE, () => {
+            canvasInstance.on(AVComponentCanvasInstance.Events.NEXT_RANGE, () => {
                 this._nextRange();
             }, false);
 
             canvasInstance.on(AVComponent.Events.RANGE_CHANGED, () => {
-                if (!this._data.helper) {
-                    return;
-                }
-
-                if (this._data.range && this._data.helper.rangeId !== this._data.range.rangeId) {
-                    //console.log('range changed avcomponent handler');
-                    this.fire(AVComponent.Events.RANGE_CHANGED);
-                }
-
+                this.fire(AVComponent.Events.RANGE_CHANGED);
             }, false);
         }
 
@@ -258,6 +250,22 @@ namespace IIIFComponents {
     
             return null;
         }
+
+        // private _getCurrentRange(): AVComponentObjects.CanvasRange | null {
+
+        //     if (!this._data.helper || !this._data.helper.rangeId) {
+        //         return null;
+        //     }
+
+        //     const range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.helper.rangeId);
+
+        //     if (range) {
+        //         const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(range);
+        //         return canvasRange;
+        //     }
+
+        //     return null;
+        // }
 
         private _getCurrentCanvas(): CanvasInstance | null {
             if (this._data.canvasId) {
@@ -321,10 +329,6 @@ namespace IIIFComponents.AVComponent {
     export class Events {
         static CANVASREADY: string = 'canvasready';
         static LOG: string = 'log';
-        static NEXT_RANGE: string = 'nextrange';
-        static PAUSECANVAS: string = 'pause';
-        static PLAYCANVAS: string = 'play';
-        static PREVIOUS_RANGE: string = 'previousrange';
         static RANGE_CHANGED: string = 'rangechanged';
     }
 }

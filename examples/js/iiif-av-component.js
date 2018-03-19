@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.27 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.28 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 
@@ -159,20 +159,14 @@ var IIIFComponents;
             // canvasInstance.on(AVComponent.Events.RESETCANVAS, () => {
             //     this.playCanvas(canvasInstance.canvas.id);
             // }, false);
-            canvasInstance.on(AVComponent.Events.PREVIOUS_RANGE, function () {
+            canvasInstance.on(IIIFComponents.AVComponentCanvasInstance.Events.PREVIOUS_RANGE, function () {
                 _this._prevRange();
             }, false);
-            canvasInstance.on(AVComponent.Events.NEXT_RANGE, function () {
+            canvasInstance.on(IIIFComponents.AVComponentCanvasInstance.Events.NEXT_RANGE, function () {
                 _this._nextRange();
             }, false);
             canvasInstance.on(AVComponent.Events.RANGE_CHANGED, function () {
-                if (!_this._data.helper) {
-                    return;
-                }
-                if (_this._data.range && _this._data.helper.rangeId !== _this._data.range.rangeId) {
-                    //console.log('range changed avcomponent handler');
-                    _this.fire(AVComponent.Events.RANGE_CHANGED);
-                }
+                _this.fire(AVComponent.Events.RANGE_CHANGED);
             }, false);
         };
         AVComponent.prototype._prevRange = function () {
@@ -211,6 +205,17 @@ var IIIFComponents;
             }
             return null;
         };
+        // private _getCurrentRange(): AVComponentObjects.CanvasRange | null {
+        //     if (!this._data.helper || !this._data.helper.rangeId) {
+        //         return null;
+        //     }
+        //     const range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.helper.rangeId);
+        //     if (range) {
+        //         const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(range);
+        //         return canvasRange;
+        //     }
+        //     return null;
+        // }
         AVComponent.prototype._getCurrentCanvas = function () {
             if (this._data.canvasId) {
                 return this._getCanvasInstanceById(this._data.canvasId);
@@ -265,10 +270,6 @@ var IIIFComponents;
             }
             Events.CANVASREADY = 'canvasready';
             Events.LOG = 'log';
-            Events.NEXT_RANGE = 'nextrange';
-            Events.PAUSECANVAS = 'pause';
-            Events.PLAYCANVAS = 'play';
-            Events.PREVIOUS_RANGE = 'previousrange';
             Events.RANGE_CHANGED = 'rangechanged';
             return Events;
         }());
@@ -660,7 +661,6 @@ var IIIFComponents;
             if (diff.includes('range')) {
                 if (this._data.helper) {
                     if (!this._data.range) {
-                        this._rewind(); // settings range to undefined currently rewinds, not sure if it should work like that
                         this._data.helper.rangeId = null;
                     }
                     else if (this._data.range.duration) {
@@ -774,7 +774,7 @@ var IIIFComponents;
                         this._rewind();
                     }
                     else {
-                        this.fire(IIIFComponents.AVComponent.Events.PREVIOUS_RANGE);
+                        this.fire(IIIFComponents.AVComponentCanvasInstance.Events.PREVIOUS_RANGE);
                     }
                 }
                 else {
@@ -793,7 +793,7 @@ var IIIFComponents;
                         this._rewind();
                     }
                     else {
-                        this.fire(IIIFComponents.AVComponent.Events.PREVIOUS_RANGE);
+                        this.fire(IIIFComponents.AVComponentCanvasInstance.Events.PREVIOUS_RANGE);
                     }
                 }
                 else {
@@ -807,11 +807,11 @@ var IIIFComponents;
                     this._fastforward();
                 }
                 else {
-                    this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
+                    this.fire(IIIFComponents.AVComponentCanvasInstance.Events.NEXT_RANGE);
                 }
             }
             else {
-                this.fire(IIIFComponents.AVComponent.Events.NEXT_RANGE);
+                this.fire(IIIFComponents.AVComponentCanvasInstance.Events.NEXT_RANGE);
             }
         };
         CanvasInstance.prototype.destroy = function () {
@@ -912,7 +912,6 @@ var IIIFComponents;
             // create a RANGE_CHANGED event if the currently applicable range changes
             var range = this._getRangeForCurrentTime();
             if (range !== this._data.range) {
-                //console.log('hasRangeChanged');
                 this.set({
                     range: range
                 });
@@ -1035,7 +1034,7 @@ var IIIFComponents;
                 this._synchronizeMedia();
             }
             this._$playButton.find('i').switchClass('play', 'pause');
-            this.fire(IIIFComponents.AVComponent.Events.PLAYCANVAS);
+            this.fire(IIIFComponents.AVComponentCanvasInstance.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
         };
         // todo: can this be part of the _data state?
@@ -1051,7 +1050,7 @@ var IIIFComponents;
                 this._synchronizeMedia();
             }
             this._$playButton.find('i').switchClass('pause', 'play');
-            this.fire(IIIFComponents.AVComponent.Events.PAUSECANVAS);
+            this.fire(IIIFComponents.AVComponentCanvasInstance.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');
         };
         CanvasInstance.prototype._isNavigationConstrainedToRange = function () {
@@ -1079,7 +1078,7 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._lowPriorityUpdater = function () {
             this._updateMediaActiveStates();
-            //this._hasRangeChanged();
+            this._hasRangeChanged();
         };
         CanvasInstance.prototype._updateMediaActiveStates = function () {
             var contentAnnotation;
@@ -1223,6 +1222,21 @@ var IIIFComponents;
         return CanvasInstance;
     }(_Components.BaseComponent));
     IIIFComponents.CanvasInstance = CanvasInstance;
+})(IIIFComponents || (IIIFComponents = {}));
+(function (IIIFComponents) {
+    var AVComponentCanvasInstance;
+    (function (AVComponentCanvasInstance) {
+        var Events = /** @class */ (function () {
+            function Events() {
+            }
+            Events.NEXT_RANGE = 'nextrange';
+            Events.PAUSECANVAS = 'pause';
+            Events.PLAYCANVAS = 'play';
+            Events.PREVIOUS_RANGE = 'previousrange';
+            return Events;
+        }());
+        AVComponentCanvasInstance.Events = Events;
+    })(AVComponentCanvasInstance = IIIFComponents.AVComponentCanvasInstance || (IIIFComponents.AVComponentCanvasInstance = {}));
 })(IIIFComponents || (IIIFComponents = {}));
 
 var IIIFComponents;
