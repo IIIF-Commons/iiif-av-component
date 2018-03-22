@@ -69,8 +69,10 @@
         loading...
     </div>
 
-    <div id="limitToRangeToggle">
+    <div id="options">
         <input id="limitToRangeCheckbox" type="checkbox"><label for="limitToRangeCheckbox">Limit to Range</label>
+        <input id="constrainNavigationToRangeCheckbox" type="checkbox"><label for="constrainNavigationToRangeCheckbox">Constrain Navigation To Range</label>
+        <input id="autoSelectRangeCheckbox" type="checkbox"><label for="autoSelectRangeCheckbox">Auto Select Range</label>
     </div>
 
     <div id="tree" class="iiif-tree-component"></div>
@@ -84,6 +86,12 @@
     <script>
 
         var helper, avcomponent, treecomponent;
+
+        var state = {
+            limitToRange: true,
+            autoSelectRange: true,
+            constrainNavigationToRange: true
+        }
 
         function resize() {
             var $playerContainer = $('.playerContainer');
@@ -109,8 +117,9 @@
 
                 avcomponent.set({
                     helper: helper,
-                    autoSelectRange: false,
-                    constrainNavigationToRange: true
+                    limitToRange: state.limitToRange,
+                    autoSelectRange: state.autoSelectRange,
+                    constrainNavigationToRange: state.constrainNavigationToRange
                 });
 
                 treecomponent.set({
@@ -145,18 +154,6 @@
                 helper.rangeId = rangeid;
                 console.log('range changed', rangeid);
             });
-
-            // avcomponent.on('previousrange', function() {
-            //     console.log('previous range');
-            // });
-
-            // avcomponent.on('nextrange', function() {
-            //     console.log('next range');
-            // });
-
-            // avcomponent.on('norange', function() {
-            //     console.log('no range');
-            // });
 
             treecomponent = new IIIFComponents.TreeComponent({
                 target: document.querySelector('#tree')
@@ -263,9 +260,30 @@
 
             });
 
+            $('#limitToRangeCheckbox').prop('checked', state.limitToRange);
+
             $('#limitToRangeCheckbox').change(function() {
+                state.limitToRange = this.checked;
                 avcomponent.set({
-                    limitToRange: this.checked
+                    limitToRange: state.limitToRange
+                });
+            });
+
+            $('#autoSelectRangeCheckbox').prop('checked', state.autoSelectRange);
+
+            $('#autoSelectRangeCheckbox').change(function() {
+                state.autoSelectRange = this.checked;
+                avcomponent.set({
+                    autoSelectRange: state.autoSelectRange
+                });
+            });
+
+            $('#constrainNavigationToRangeCheckbox').prop('checked', state.constrainNavigationToRange);
+
+            $('#constrainNavigationToRangeCheckbox').change(function() {
+                state.constrainNavigationToRange = this.checked;
+                avcomponent.set({
+                    constrainNavigationToRange: state.constrainNavigationToRange
                 });
             });
 

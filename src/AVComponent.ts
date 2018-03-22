@@ -79,6 +79,15 @@ namespace IIIFComponents {
                 });
             }
 
+            if (diff.includes('autoSelectRange') && this._data.canvasId) {
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                    canvasInstance.set({ 
+                        autoSelectRange: this._data.autoSelectRange
+                    });
+                });
+            }
+
             if (diff.includes('canvasId') && this._data.canvasId) {
 
                 const currentCanvasInstance: CanvasInstance | null = this._getCanvasInstanceById(this._data.canvasId);

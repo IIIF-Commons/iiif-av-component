@@ -430,7 +430,7 @@ namespace IIIFComponents {
                 this._$durationHighlight.hide();
             }
 
-            if (this._data.limitToRange) {
+            if (this._data.limitToRange && this._data.range) {
                 this._$canvasTimelineContainer.hide();
                 this._$rangeTimelineContainer.show();
             } else {
@@ -657,10 +657,10 @@ namespace IIIFComponents {
         }
 
         private _hasRangeChanged(): void {
-            // create a RANGE_CHANGED event if the currently applicable range changes
+
             const range: AVComponentObjects.CanvasRange | undefined = this._getRangeForCurrentTime();
 
-            if (range !== this._data.range) {
+            if (range !== this._data.range && !this._data.limitToRange) {
                 this.set({
                     range: range
                 });
