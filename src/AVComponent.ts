@@ -50,10 +50,8 @@ namespace IIIFComponents {
 
             // changing any of these data properties forces a reload.
             if (diff.includes('helper')) {
-                // reset all global properties and terminate all running processes
                 // create canvases
                 this._reset();
-                return;
             }
 
             if (!this._data.helper) {
@@ -95,8 +93,7 @@ namespace IIIFComponents {
                 this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
                     if (canvasInstance !== currentCanvasInstance) {
                         canvasInstance.set({ 
-                            visible: false,
-                            limitToRange: false
+                            visible: false
                         });
                     } else {
                         canvasInstance.set({ visible: true });
@@ -168,9 +165,7 @@ namespace IIIFComponents {
             });
 
             if (this.canvasInstances.length > 0) {
-                this.set({
-                    canvasId: <string>this.canvasInstances[0].getCanvasId()
-                });
+                this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
             }
 
         }

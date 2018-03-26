@@ -56,10 +56,9 @@ var IIIFComponents;
             var diff = IIIFComponents.AVComponentUtils.Utils.diff(oldData, this._data);
             // changing any of these data properties forces a reload.
             if (diff.includes('helper')) {
-                // reset all global properties and terminate all running processes
                 // create canvases
                 this._reset();
-                return;
+                //return;
             }
             if (!this._data.helper) {
                 console.warn('must pass a helper object');
@@ -91,8 +90,7 @@ var IIIFComponents;
                 this.canvasInstances.forEach(function (canvasInstance, index) {
                     if (canvasInstance !== currentCanvasInstance_1) {
                         canvasInstance.set({
-                            visible: false,
-                            limitToRange: false
+                            visible: false
                         });
                     }
                     else {
@@ -145,9 +143,7 @@ var IIIFComponents;
                 _this._initCanvas(canvas);
             });
             if (this.canvasInstances.length > 0) {
-                this.set({
-                    canvasId: this.canvasInstances[0].getCanvasId()
-                });
+                this._data.canvasId = this.canvasInstances[0].getCanvasId();
             }
         };
         AVComponent.prototype._getCanvases = function () {
@@ -836,6 +832,7 @@ var IIIFComponents;
             return percentage;
         };
         CanvasInstance.prototype._renderMediaElement = function (data) {
+            var _this = this;
             var $mediaElement;
             var type = data.type.toString().toLowerCase();
             switch (type) {
@@ -891,7 +888,6 @@ var IIIFComponents;
                 this._$canvasContainer.append($mediaElement);
             }
             if (type === 'video' || type === 'audio') {
-                var that_3 = this;
                 $mediaElement.on('loadstart', function () {
                     //console.log('loadstart');
                     data.checkForStall();
@@ -905,14 +901,16 @@ var IIIFComponents;
                     //data.checkForStall();
                 });
                 $mediaElement.on('loadedmetadata', function () {
-                    that_3._readyCanvasesCount++;
-                    if (that_3._readyCanvasesCount === that_3._contentAnnotations.length) {
-                        that_3._setCurrentTime(0);
-                        if (that_3.options.data.autoPlay) {
-                            that_3._play();
+                    _this._readyCanvasesCount++;
+                    if (_this._readyCanvasesCount === _this._contentAnnotations.length) {
+                        //if (!this._data.range) {
+                        _this._setCurrentTime(0);
+                        //}                        
+                        if (_this.options.data.autoPlay) {
+                            _this._play();
                         }
-                        that_3._updateDurationDisplay();
-                        that_3.fire(IIIFComponents.AVComponent.Events.CANVASREADY);
+                        _this._updateDurationDisplay();
+                        _this.fire(IIIFComponents.AVComponent.Events.CANVASREADY);
                     }
                 });
                 $mediaElement.attr('preload', 'auto');
@@ -1089,7 +1087,7 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._lowPriorityUpdater = function () {
             this._updateMediaActiveStates();
-            if (this._data.autoSelectRange) {
+            if (this._isPlaying && this._data.autoSelectRange) {
                 this._hasRangeChanged();
             }
         };

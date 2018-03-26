@@ -615,8 +615,6 @@ namespace IIIFComponents {
 
             if (type === 'video' || type === 'audio') {
 
-                const that = this;
-
                 $mediaElement.on('loadstart', () => {
                     //console.log('loadstart');
                     data.checkForStall();
@@ -632,19 +630,22 @@ namespace IIIFComponents {
                     //data.checkForStall();
                 });
 
-                $mediaElement.on('loadedmetadata', function () {
-                    that._readyCanvasesCount++;
+                $mediaElement.on('loadedmetadata', () => {
+                    this._readyCanvasesCount++;
 
-                    if (that._readyCanvasesCount === that._contentAnnotations.length) {
-                        that._setCurrentTime(0);
+                    if (this._readyCanvasesCount === this._contentAnnotations.length) {
+                        
+                        //if (!this._data.range) {
+                            this._setCurrentTime(0);
+                        //}                        
 
-                        if (that.options.data.autoPlay) {
-                            that._play();
+                        if (this.options.data.autoPlay) {
+                            this._play();
                         }
 
-                        that._updateDurationDisplay();
+                        this._updateDurationDisplay();
 
-                        that.fire(AVComponent.Events.CANVASREADY);
+                        this.fire(AVComponent.Events.CANVASREADY);
                     }
                 });
 
@@ -878,7 +879,7 @@ namespace IIIFComponents {
         private _lowPriorityUpdater(): void {
             this._updateMediaActiveStates();
 
-            if (this._data.autoSelectRange) {
+            if (this._isPlaying && this._data.autoSelectRange) {
                 this._hasRangeChanged();
             }
 
