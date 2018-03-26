@@ -737,7 +737,7 @@ namespace IIIFComponents {
             // }
 
             this._canvasClockTime = seconds; //secondsAsFloat;
-            this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000)
+            this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
 
             this.logMessage('SET CURRENT TIME to: ' + this._canvasClockTime + ' seconds.');
 
