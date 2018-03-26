@@ -2,6 +2,7 @@ namespace IIIFComponents {
 
     export class AVComponent extends _Components.BaseComponent {
 
+        private _data: IAVComponentData = this.data();
         public options: _Components.IBaseComponentOptions;
         public canvasInstances: CanvasInstance[] = [];
 
@@ -25,222 +26,307 @@ namespace IIIFComponents {
         public data(): IAVComponentData {
             return <IAVComponentData> {
                 autoPlay: false,
+                constrainNavigationToRange: false,
                 defaultAspectRatio: 0.56,
+                doubleClickMS: 350,
+                limitToRange: false,
                 content: <IAVComponentContent>{
-                    play: "Play",
-                    pause: "Pause",
                     currentTime: "Current Time",
-                    duration: "Duration"
+                    duration: "Duration",
+                    mute: "Mute",
+                    next: "Next",
+                    pause: "Pause",
+                    play: "Play",
+                    previous: "Previous"
                 }
             }
         }
 
         public set(data: IAVComponentData): void {
 
-            this.options.data = data;
+            const oldData: IAVComponentData = Object.assign({}, this._data);
+            this._data = Object.assign(this._data, data);
+            const diff: string[] = AVComponentUtils.Utils.diff(oldData, this._data);
 
-            // reset all global properties and terminate all running processes
-            this._reset();
+            // changing any of these data properties forces a reload.
+            if (diff.includes('helper')) {
+                // reset all global properties and terminate all running processes
+                // create canvases
+                this._reset();
+                return;
+            }
 
-            // render ui
-            this._render();
+            if (!this._data.helper) {
+                console.warn('must pass a helper object');
+                return;
+            }
+
+            if (diff.includes('limitToRange') && this._data.canvasId) {
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                    canvasInstance.set({ 
+                        limitToRange: this._data.limitToRange
+                    });
+                });
+            }
+
+            if (diff.includes('constrainNavigationToRange') && this._data.canvasId) {
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                    canvasInstance.set({ 
+                        constrainNavigationToRange: this._data.constrainNavigationToRange
+                    });
+                });
+            }
+
+            if (diff.includes('autoSelectRange') && this._data.canvasId) {
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                    canvasInstance.set({ 
+                        autoSelectRange: this._data.autoSelectRange
+                    });
+                });
+            }
+
+            if (diff.includes('canvasId') && this._data.canvasId) {
+
+                const currentCanvasInstance: CanvasInstance | null = this._getCanvasInstanceById(this._data.canvasId);
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                    if (canvasInstance !== currentCanvasInstance) {
+                        canvasInstance.set({ 
+                            visible: false,
+                            limitToRange: false
+                        });
+                    } else {
+                        canvasInstance.set({ visible: true });
+                    }
+                });
+            }
             
-            // resize everything
+            if (diff.includes('range') && this._data.range) {
+
+                const range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.range.rangeId);
+
+                if (!range) {
+                    console.warn('range not found');
+                } else {
+
+                    if (range.canvases) {
+                        const canvasId = Manifesto.Utils.normaliseUrl(range.canvases[0]);
+    
+                        // get canvas by normalised id (without temporal part)
+                        const canvasInstance: CanvasInstance | null = this._getCanvasInstanceById(canvasId);
+                        
+                        if (canvasInstance) {
+    
+                            const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(range);
+ 
+                            // if not using the correct canvasinstance, switch to it
+                            if (this._data.canvasId && Manifesto.Utils.normaliseUrl(this._data.canvasId) !== canvasId) {
+
+                                this.set({
+                                    canvasId: canvasId,
+                                    range: canvasRange
+                                });
+
+                            } else {
+
+                                canvasInstance.set({
+                                    range: canvasRange
+                                });
+    
+                            }
+                        }
+                    }
+                }
+            } 
+            
+            this._render();
             this._resize();
         }
 
-        private _reset(): void {
-            for (let i = 0; i < this.canvasInstances.length; i++) {
-                window.clearInterval(this.canvasInstances[i].highPriorityInterval);
-                window.clearInterval(this.canvasInstances[i].lowPriorityInterval);
-                window.clearInterval(this.canvasInstances[i].canvasClockInterval);
-            }
+        private _render(): void {
 
-            this.canvasInstances = [];
+            
         }
 
-        private _render(): void {
+        private _reset(): void {
+
+            this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                canvasInstance.destroy();
+            });
+
+            this.canvasInstances = [];
 
             this._$element.empty();
 
             const canvases: Manifesto.ICanvas[] = this._getCanvases();
 
-			for (let i = 0; i < canvases.length; i++) {
-				this._initCanvas(canvases[i]);
-			}
+			canvases.forEach((canvas: Manifesto.ICanvas) => {
+                this._initCanvas(canvas);
+            });
+
+            if (this.canvasInstances.length > 0) {
+                this.set({
+                    canvasId: <string>this.canvasInstances[0].getCanvasId()
+                });
+            }
+
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {
-            return this.options.data.helper.getCanvases();
+            if (this._data.helper) {
+                return this._data.helper.getCanvases();
+            }
+            
+            return [];
         }
 
         private _initCanvas(canvas: Manifesto.ICanvas): void {
-    
-            const $player: JQuery = $('<div class="player"></div>');
-            const $canvasContainer: JQuery = $('<div class="canvasContainer"></div>');
-            const $optionsContainer: JQuery = $('<div class="optionsContainer"></div>');
-            const $timelineContainer: JQuery = $('<div class="timelineContainer"></div>');
-            const $durationHighlight: JQuery = $('<div class="durationHighlight"></div>');
-            const $timelineItemContainer: JQuery = $('<div class="timelineItemContainer"></div>');
-            const $controlsContainer: JQuery = $('<div class="controlsContainer"></div>');
-            const $playButton: JQuery = $('<button class="playButton">' + this.options.data.content.play + '</button>');
-            const $timingControls: JQuery = $('<span>' + this.options.data.content.currentTime + ': <span class="canvasTime"></span> / ' + this.options.data.content.duration + ': <span class="canvasDuration"></span></span>');
-            const $volumeControl: JQuery<HTMLInputElement> = $('<input type="range" class="volume" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
 
-            $controlsContainer.append($playButton, $timingControls, $volumeControl);
-            $timelineContainer.append($durationHighlight);
-            $optionsContainer.append($timelineContainer, $timelineItemContainer, $controlsContainer);
-            $player.append($canvasContainer, $optionsContainer);
-
-            this._$element.append($player);
-
-            const canvasInstance: CanvasInstance = new CanvasInstance(canvas);
-
-            const canvasWidth: number = canvas.getWidth();
-            const canvasHeight: number = canvas.getHeight();
-
-            if (!canvasWidth) {
-                canvasInstance.canvasWidth = <number>this._$element.width(); // this.options.data.defaultCanvasWidth;
-            } else {
-                canvasInstance.canvasWidth = canvasWidth;
-            }
-
-            if (!canvasHeight) {
-                canvasInstance.canvasHeight = canvasInstance.canvasWidth * this.options.data.defaultAspectRatio; //this.options.data.defaultCanvasHeight;
-            } else {
-                canvasInstance.canvasHeight = canvasHeight;
-            }
-
-            canvasInstance.$playerElement = $player;
-            canvasInstance.logMessage = this._logMessage.bind(this);
-
-            canvasInstance.on(AVComponent.Events.PLAYCANVAS, function() {
-                $playButton.removeClass('play');
-                $playButton.addClass('pause');
-                $playButton.text(this.options.data.content.pause);
-            }, this);
-
-            canvasInstance.on(AVComponent.Events.PAUSECANVAS, function() {
-                $playButton.removeClass('pause');
-                $playButton.addClass('play');
-                $playButton.text(this.options.data.content.play);
-            }, this);
-
-            $timelineContainer.slider({
-                value: 0,
-                step: 0.01,
-                orientation: "horizontal",
-                range: "min",
-                max: canvasInstance.canvasClockDuration,
-                animate: false,			
-                create: function(evt: any, ui: any) {
-                    // on create
-                },
-                slide: function(evt: any, ui: any) {
-                    canvasInstance.setCurrentTime(ui.value);
-                },
-                stop: function(evt: any, ui: any) {
-                    //canvasInstance.setCurrentTime(ui.value);
-                }
+            const canvasInstance: CanvasInstance = new CanvasInstance({
+                target: document.createElement('div'),
+                data: Object.assign({}, { canvas: canvas }, this._data)
             });
 
+            canvasInstance.logMessage = this._logMessage.bind(this);   
+            this._$element.append(canvasInstance.$playerElement);
+            canvasInstance.init();
             this.canvasInstances.push(canvasInstance);
 
-            canvasInstance.initContents();
-
-            $playButton.on('click', () => {
-
-                if (canvasInstance.isPlaying) {
-                    canvasInstance.pause();
-                } else {
-                    canvasInstance.play();
-                }
-	
-            });
-
-            $volumeControl.on('input', function() {
-                canvasInstance.setVolume(Number(this.value));
-            });
-
-            $volumeControl.on('change', function() {
-                canvasInstance.setVolume(Number(this.value));
-            });
-
-            const that = this;
-
-            canvasInstance.on('canvasready', function() {
-
-                canvasInstance.setCurrentTime(0);
-
-                if (that.options.data.autoPlay) {
-                    canvasInstance.play();
-                }
-    
-                $timingControls.find('.canvasDuration').text(AVComponentUtils.Utils.formatTime(canvasInstance.canvasClockDuration));
-    
-                that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
-
-                that.fire(AVComponent.Events.CANVASREADY);
-
+            canvasInstance.on(AVComponent.Events.CANVASREADY, () => {
+                //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
+                this.fire(AVComponent.Events.CANVASREADY);
             }, false);
 
+            // canvasInstance.on(AVComponent.Events.RESETCANVAS, () => {
+            //     this.playCanvas(canvasInstance.canvas.id);
+            // }, false);
+
+            canvasInstance.on(AVComponentCanvasInstance.Events.PREVIOUS_RANGE, () => {
+                this._prevRange();
+            }, false);
+
+            canvasInstance.on(AVComponentCanvasInstance.Events.NEXT_RANGE, () => {
+                this._nextRange();
+            }, false);
+
+            canvasInstance.on(AVComponent.Events.RANGE_CHANGED, (rangeId: string | null) => {
+                this.fire(AVComponent.Events.RANGE_CHANGED, rangeId);
+            }, false);
         }
 
-        public getCanvasInstanceById(canvasId: string): CanvasInstance | null {
+        private _prevRange(): void {
+            if (!this._data || !this._data.helper) {
+                return;
+            }
+
+            const prevRange: Manifesto.IRange | null = this._data.helper.getPreviousRange();
+
+            if (prevRange) {
+                this.playRange(prevRange.id);
+            } else {
+                // no previous range. rewind.
+                this._rewind();
+            }
+        }
+
+        private _nextRange(): void {
+            if (!this._data || !this._data.helper) {
+                return;
+            }
+
+            const nextRange: Manifesto.IRange | null = this._data.helper.getNextRange();
+
+            if (nextRange) {
+                this.playRange(nextRange.id);         
+            }
+        }
+
+        private _getCanvasInstanceById(canvasId: string): CanvasInstance | null {
             
-            canvasId = manifesto.Utils.normaliseUrl(canvasId);
+            canvasId = Manifesto.Utils.normaliseUrl(canvasId);
     
             for (let i = 0; i < this.canvasInstances.length; i++) {
     
                 const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
-    
-                if (canvasInstance.data && canvasInstance.data.id) {
-                    const canvasInstanceId: string = manifesto.Utils.normaliseUrl(canvasInstance.data.id);
-                    
+                
+                const id: string | null = canvasInstance.getCanvasId();
+
+                if (id) {
+                    const canvasInstanceId: string = Manifesto.Utils.normaliseUrl(id);
+
                     if (canvasInstanceId === canvasId) {
                         return canvasInstance;
                     }
                 }
+                
             }
     
             return null;
         }
 
-        public play(canvasId: string): void {
+        // private _getCurrentRange(): AVComponentObjects.CanvasRange | null {
 
-            this.showCanvas(canvasId);
+        //     if (!this._data.helper || !this._data.helper.rangeId) {
+        //         return null;
+        //     }
 
-            const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
+        //     const range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.helper.rangeId);
+
+        //     if (range) {
+        //         const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(range);
+        //         return canvasRange;
+        //     }
+
+        //     return null;
+        // }
+
+        private _getCurrentCanvas(): CanvasInstance | null {
+            if (this._data.canvasId) {
+                return this._getCanvasInstanceById(this._data.canvasId);
+            }
+
+            return null;
+        }
+        
+        private _rewind(): void {
+
+            if (this._data.limitToRange) {
+                return;
+            }
             
+            const canvasInstance: CanvasInstance | null = this._getCurrentCanvas();
+
             if (canvasInstance) {
-                const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
-                
-                if (temporal && temporal.length > 1) {
-                    const rangeTiming: string[] = temporal[1].split(',');
-                    const duration: AVComponentObjects.Duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
-                    canvasInstance.currentDuration = duration;
-                    canvasInstance.highlightDuration();
-                    canvasInstance.setCurrentTime(duration.start);
-                    canvasInstance.play();
-                }
+                canvasInstance.set({
+                    range: undefined
+                });             
+            }
+        }
+
+        public playRange(rangeId: string): void {
+
+            if (!this._data.helper) {
+                return;
+            }
+
+            const range: Manifesto.IRange | null = this._data.helper.getRangeById(rangeId);
+
+            if (range) {
+                const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(range);
+
+                this.set({
+                    range: canvasRange
+                });
             }
         }
 
         public showCanvas(canvasId: string): void {
-
-            // pause all canvases
-            for (var i = 0; i < this.canvasInstances.length; i++) {
-                this.canvasInstances[i].pause();
-            }
-
-            // hide all players
-            this._$element.find('.player').hide();
-
-            const canvasInstance: CanvasInstance | null = this.getCanvasInstanceById(canvasId);
-
-            if (canvasInstance && canvasInstance.$playerElement) {
-                canvasInstance.$playerElement.show();
-            }
+            this.set({
+                canvasId: canvasId
+            });
         }
 
         private _logMessage(message: string): void {
@@ -248,39 +334,9 @@ namespace IIIFComponents {
         }
 
         public resize(): void {
-            this._resize();
-        }
-
-        protected _resize(): void {
-
-            // loop through all canvases resizing their elements
-
-            for (let i = 0; i < this.canvasInstances.length; i++) {
-
-                const canvasInstance: CanvasInstance = this.canvasInstances[i];
-
-                canvasInstance.highlightDuration();
-
-                if (canvasInstance.$playerElement) {
-                    const $canvasContainer = canvasInstance.$playerElement.find('.canvasContainer');
-                    const $timelineContainer = canvasInstance.$playerElement.find('.timelineContainer');
-
-                    const containerWidth: number | undefined = $canvasContainer.width();
-
-                    if (containerWidth) {
-                        $timelineContainer.width(containerWidth);
-
-                        //const resizeFactorY: number = containerWidth / canvasInstance.canvasWidth;
-                        //$canvasContainer.height(canvasInstance.canvasHeight * resizeFactorY);
-
-                        const $options: JQuery = canvasInstance.$playerElement.find('.optionsContainer');
-                        $canvasContainer.height(<number>this._$element.height() - <number>$options.height());
-                    }
-                    
-                }
-
-            }
-
+            this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
+                canvasInstance.resize();
+            });
         }
     }
 }
@@ -288,9 +344,8 @@ namespace IIIFComponents {
 namespace IIIFComponents.AVComponent {
     export class Events {
         static CANVASREADY: string = 'canvasready';
-        static PLAYCANVAS: string = 'play';
-        static PAUSECANVAS: string = 'pause';
         static LOG: string = 'log';
+        static RANGE_CHANGED: string = 'rangechanged';
     }
 }
 

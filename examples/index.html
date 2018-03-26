@@ -17,10 +17,13 @@
     <script src="js/iiif-av-component.js"></script>
     <script src="https://rawgit.com/iiif-commons/iiif-tree-component/master/dist/iiif-tree-component.js"></script>
 
-    <!-- <script src="https://rawgit.com/iiif-commons/manifesto/dev/dist/client/manifesto.bundle.js"></script>
-    <script src="https://rawgit.com/iiif-commons/manifold/dev/dist/manifold.js"></script> -->
+    <script src="https://unpkg.com/manifesto.js/dist/client/manifesto.bundle.js"></script>
+    <script src="https://unpkg.com/@iiif/manifold/dist/manifold.js"></script>    
 
-    <script src="js/manifold.bundle.js"></script>
+    <!-- <script src="https://rawgit.com/iiif-commons/manifesto/master/dist/client/manifesto.bundle.js"></script> -->
+    <!-- <script src="https://rawgit.com/iiif-commons/manifold/normalise/dist/manifold.js"></script> -->
+
+    <script src="https://unpkg.com/dashjs@2.6.6/dist/dash.all.min.js"></script>
 
     <style>
         .playerContainer {
@@ -31,18 +34,26 @@
 <body>
 
     <div class="testFixtureSelection">
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/01_gapless_audio.json">Load Test 1</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/02_gapless_video.json">Load Test 2</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/03_synchronised_video.json">Load Test 3</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/04_synchronised_av.json">Load Test 4</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/05_synchronised_av_text.json">Load Test 5</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/fire.json">Load Test 6</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/mahler-symphony.json">Load Test 7</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/lunchroom-manners.json">Load Test 8</button>
-        <button class="testFixture" data-json="https://britishlibrary.github.io/iiif-av-samples/symphony/manifest.json">Load Test 9</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/02.json">Load Test 10</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/16.json">Load Test 11</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/01_gapless_audio.json">Test 1</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/02_gapless_video.json">Test 2</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/03_synchronised_video.json">Test 3</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/04_synchronised_av.json">Test 4</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/05_synchronised_av_text.json">Test 5</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/fire.json">Test 6</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/mahler-symphony.json">Symphony no. 3 - Mahler, Gustav</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/lunchroom-manners.json">Lunchroom Manners</button>
+        <button class="testFixture" data-json="https://britishlibrary.github.io/iiif-av-samples/symphony/manifest.json">Test 9</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/02.json">Test 10</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/16.json">Test 11</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98.json">C1685_98 Loose ends 17/7/99</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8.json">C308_8 Brian Hayes programme</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241.json">C728_241 [Demo]</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1132_116.json">C1132_116 Cliff Richard interview (Heathcliff)</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/WS0003.json">WS0003 Aburria aburri r1</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98-choice.json">mpg dash</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1074_6.json">Ire Ekiti, Ògún festival</button>
     </div>
+    
     <input type="text" name="manifestInput" id="manifestInput"/>
     <button id="parseManifestButton">Parse Manifest</button>
     <button id="viewManifestButton">View Manifest</button>
@@ -58,6 +69,12 @@
         loading...
     </div>
 
+    <div id="options">
+        <input id="limitToRangeCheckbox" type="checkbox"><label for="limitToRangeCheckbox">Limit to Range</label>
+        <input id="constrainNavigationToRangeCheckbox" type="checkbox"><label for="constrainNavigationToRangeCheckbox">Constrain Navigation To Range</label>
+        <input id="autoSelectRangeCheckbox" type="checkbox"><label for="autoSelectRangeCheckbox">Auto Select Range</label>
+    </div>
+
     <div id="tree" class="iiif-tree-component"></div>
 
     <button id="toggleLogsButton">Show / Hide Logs</button>
@@ -69,6 +86,12 @@
     <script>
 
         var helper, avcomponent, treecomponent;
+
+        var state = {
+            limitToRange: true,
+            autoSelectRange: true,
+            constrainNavigationToRange: true
+        }
 
         function resize() {
             var $playerContainer = $('.playerContainer');
@@ -94,18 +117,13 @@
 
                 avcomponent.set({
                     helper: helper,
-                    autoPlay: false,
-                    defaultAspectRatio: 0.56,
-                    content: {
-                        play: "Play",
-                        pause: "Pause",
-                        duration: "Duration",
-                        currentTime: "Current Time"
-                    }
+                    limitToRange: state.limitToRange,
+                    autoSelectRange: state.autoSelectRange,
+                    constrainNavigationToRange: state.constrainNavigationToRange
                 });
 
                 treecomponent.set({
-                    branchNodesSelectable: false,
+                    branchNodesSelectable: true,
                     helper: helper
                 });
 
@@ -132,6 +150,11 @@
                 console.log('canvas ready');
             });
 
+            avcomponent.on('rangechanged', function(rangeid) {
+                helper.rangeId = rangeid;
+                console.log('range changed', rangeid);
+            });
+
             treecomponent = new IIIFComponents.TreeComponent({
                 target: document.querySelector('#tree')
             });
@@ -153,10 +176,10 @@
                     $('.canvasNavigationContainer').show();
                 }
 
-                window.setTimeout(function() {
-                    var firstID = avcomponent.canvasInstances[0].data.id;
-                    avcomponent.showCanvas(firstID);
-                }, 10);
+                // window.setTimeout(function() {
+                //     var firstID = avcomponent.canvasInstances[0].options.data.canvas.id;
+                //     avcomponent.showCanvas(firstID);
+                // }, 10);
                 
             }
 
@@ -237,20 +260,36 @@
 
             });
 
+            $('#limitToRangeCheckbox').prop('checked', state.limitToRange);
+
+            $('#limitToRangeCheckbox').change(function() {
+                state.limitToRange = this.checked;
+                avcomponent.set({
+                    limitToRange: state.limitToRange
+                });
+            });
+
+            $('#autoSelectRangeCheckbox').prop('checked', state.autoSelectRange);
+
+            $('#autoSelectRangeCheckbox').change(function() {
+                state.autoSelectRange = this.checked;
+                avcomponent.set({
+                    autoSelectRange: state.autoSelectRange
+                });
+            });
+
+            $('#constrainNavigationToRangeCheckbox').prop('checked', state.constrainNavigationToRange);
+
+            $('#constrainNavigationToRangeCheckbox').change(function() {
+                state.constrainNavigationToRange = this.checked;
+                avcomponent.set({
+                    constrainNavigationToRange: state.constrainNavigationToRange
+                });
+            });
+
             treecomponent.on('treeNodeSelected', function(node) {
                 console.log('selected: ' + node.label);
-
-                var canvasId = node.data.canvases[0];
-                var canvas = helper.getCanvasById(canvasId);
-
-                if (canvas) {
-                    
-                    avcomponent.play(canvasId);
-
-                    logMessage('SELECT RANGE: '+ node.label);
-                } else {
-                    logMessage('ERROR: Could not find canvas for range '+ node.label);
-                }
+                avcomponent.playRange(node.data.id);
             });
 
         });

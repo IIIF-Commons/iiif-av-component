@@ -1,6 +1,6 @@
 {
   "name": "iiif-av-component",
-  "version": "0.0.10",
+  "version": "0.0.32",
   "description": "",
   "main": "index.js",
   "types": "./dist/iiif-av-component.d.ts",
@@ -22,7 +22,7 @@
     "gulp-tasks": "iiif-commons/gulp-tasks#v1.0.7",
     "jquery-ui": "^1.12.1",
     "manifesto.js": "2.2.2",
-    "manifold": "iiif-commons/manifold#v1.2.13"
+    "@iiif/manifold": "1.2.17"
   },
   "dependencies": {
     "@types/jquery": "^3.2.16",

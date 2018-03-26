@@ -5,13 +5,13 @@
 
     // todo: put colours in variables.less
 
-    .canvasContainer {
+    .canvas-container {
         position: relative;
         background: #000000;
         width: 100%;
     }
 
-    .canvasContainer .workingIndicator {
+    .canvas-container .working-indicator {
         position: absolute;
         top: 0px;
         left: 0px;
@@ -26,7 +26,7 @@
         font-size: 20px;
     }
 
-    .canvasContainer .anno {
+    .canvas-container .anno {
         position: absolute;
         /*border: 1px solid rgba(0,255,0,.4);*/
         background: transparent;
@@ -35,14 +35,62 @@
         color: #fff;
     }
 
-    .timelineContainer {
+    .range-timeline-container {
+        background: chartreuse;
+        height: 20px;
+        border: none;
+        border-radius: 0;
+    }
+
+    .canvas-timeline-container {
         background: #AFAFAF;
         height: 20px;
         width: 0px;
         border: none;
     }
 
-    .timelineItemContainer {
+    .hover-preview {
+        position: absolute;
+
+        .label {
+            background: rgba(66, 66, 66, 0.85);
+            height: 18px;
+            padding: 5px;
+            color: #fff;
+        }
+        
+        .pointer {
+            height: 6px;
+            position: relative;
+
+            .arrow {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                border-top: 6px solid rgba(66, 66, 66, 0.85);
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+            }
+        }
+    }
+
+    .hover-highlight {
+        position: absolute;
+        background: rgb(226, 226, 226);
+        height: 20px;
+    }
+
+    .canvas-timeline-container {
+        border-radius: 0;
+    }
+
+    .canvas-timeline-container .duration-highlight {
+        position: absolute;
+        background: chartreuse;
+        height: 20px;
+    }
+
+    .timeline-item-container {
         position: relative;
         width: 100%;
         min-height: 6px;
@@ -51,11 +99,11 @@
         padding-bottom: 3px;
     }
 
-    .timelineItemContainer .lineWrapper {
+    .timeline-item-container .line-wrapper {
         margin-top: 2px;
     }
 
-    .timelineItemContainer .timelineItem {
+    .timeline-item-container .timeline-item {
         position: relative;
         height: 6px;
         box-sizing: border-box;
@@ -64,24 +112,19 @@
         background: #777;
     }
 
-    .timelineItemContainer .timelineItem.active {
+    .timeline-item-container .timeline-item.active {
         background: #333;
     }
 
-    .timelineContainer .durationHighlight {
-        position: absolute;
-        background: chartreuse;
-        height: 20px;
-    }
-
-    .timelineContainer .ui-slider-range {
-        background: #888888;
+    .ui-slider-range {
+        background: rgba(66, 66, 66, 0.5);
         box-sizing: border-box;
-        border-right: 2px solid #000000;
-        .opacity(.6);
+        border-radius: 0;
+        //border-right: 2px solid #000000;
+        //.opacity(.6);
     }
 
-    .timelineContainer .ui-slider-handle {
+    .ui-slider-handle {
         top: 0px;
         height: 100%;
         width: 16px;
@@ -91,26 +134,84 @@
         z-index: 1;
     }
 
-    .timelineContainer .ui-slider-handle:focus {
+    .ui-slider-handle:focus {
         outline: none;
     }
 
-    .timelineContainer .ui-slider-handle:after {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        content: "";
-        border-top: 12px solid #000000;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
+    // .ui-slider-handle:after {
+    //     position: absolute;
+    //     top: 0px;
+    //     left: 0px;
+    //     content: "";
+    //     border-top: 12px solid #000000;
+    //     border-left: 8px solid transparent;
+    //     border-right: 8px solid transparent;
+    // }
+
+    .controls-container {
+        margin-top: 10px;
     }
 
-    .controlsContainer {
-        margin-top: 16px;
-    }
-
-    .controlsContainer .pauseButton {
+    .controls-container .pause-button {
         margin-right: 14px;
+    }
+
+    .controls-container .time-display {
+        display: inline-block;
+    }
+
+    .controls-container .volume {
+        display: inline-block;
+
+        .volume-slider {
+            width: 100px;
+        }
+    }
+
+    .btn {
+        font-size: 0;
+        background: 0 0;
+        border: 0;
+
+        i {
+            background-repeat: no-repeat;
+            display: inline-block;
+            height: 30px;
+            vertical-align: middle;
+            width: 30px;
+            cursor: pointer;
+        }
+    }
+
+    .av-icon-mute {
+
+        &.on {
+            background-image: data-uri('@{img-path}volume-on.png');
+        }
+
+        &.off {
+            background-image: data-uri('@{img-path}volume-off.png');
+        }
+    }
+
+    .av-icon-previous {
+        background-image: data-uri('@{img-path}previous.png');
+    }
+
+    .av-icon-play {
+
+        &.play {
+            background-image: data-uri('@{img-path}play.png');
+        }
+
+        &.pause {
+            background-image: data-uri('@{img-path}pause.png');
+        }
+        
+    }
+
+    .av-icon-next {
+        background-image: data-uri('@{img-path}next.png');
     }
 
 }

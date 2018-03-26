@@ -1,5 +1,20 @@
 namespace IIIFComponents.AVComponentUtils {
     export class Utils {
+
+        private static _compare(a: any, b: any): string[] {
+            const changed: string[] = [];
+            Object.keys(a).forEach((p) => {
+                if (!Object.is(b[p], a[p])) {
+                    changed.push(p);
+                }
+            });
+            return changed;
+        }
+        
+        public static diff(a: any, b: any) {
+            return Array.from(new Set(Utils._compare(a, b).concat(Utils._compare(b, a))));
+        }
+
         public static formatTime(aNumber: number): string {
 
             let hours: number | string, minutes: number | string, seconds: number | string, hourValue: string;
@@ -20,5 +35,6 @@ namespace IIIFComponents.AVComponentUtils {
 
             return hourValue + minutes + ':' + seconds;
         }
+
     }
 }

@@ -1,16 +1,26 @@
 namespace IIIFComponents {
     
     export interface IAVComponentContent {
-        play: string;
-        pause: string;
         currentTime: string;
         duration: string;
+        mute: string;
+        next: string;
+        pause: string;
+        play: string;
+        previous: string;
     }
     
     export interface IAVComponentData {
-        helper: Manifold.IHelper | null;
-        autoPlay: boolean;
-        defaultAspectRatio: number;
-        content: IAVComponentContent;
+        [key: string]: any;
+        autoPlay?: boolean;
+        autoSelectRange?: boolean;
+        canvasId?: string;
+        constrainNavigationToRange?: boolean;
+        content?: IAVComponentContent;
+        defaultAspectRatio?: number;
+        doubleClickMS?: number;
+        helper?: Manifold.IHelper;
+        limitToRange?: boolean;
+        rangeId?: string;
     }
 }
