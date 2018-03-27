@@ -55,7 +55,7 @@
                                             "items": [
                                                 {
                                                     "format": "application/dash+xml",
-                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019/manifest.mpd",
+                                                    "id": "https://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019/manifest.mpd",
                                                     "type": "Audio"
                                                 },
                                                 {
@@ -65,7 +65,7 @@
                                                 },
                                                 {
                                                     "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
+                                                    "id": "https://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
                                                     "type": "Audio"
                                                 }
                                             ],
