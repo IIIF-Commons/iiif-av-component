@@ -236,6 +236,7 @@ namespace IIIFComponents {
 
                 const body: Manifesto.IAnnotationBody = bodies[0];
                 const type: Manifesto.ResourceType | null = body.getType();
+                const format: Manifesto.MediaType | null = body.getFormat();
 
                 // if (type && type.toString() === 'choice') {
                 //     // Choose first "Choice" item as body
@@ -315,6 +316,7 @@ namespace IIIFComponents {
                 const offsetStart = (ot[0]) ? parseInt(<string>ot[0]) : ot[0],
                     offsetEnd = (ot[1]) ? parseInt(<string>ot[1]) : ot[1];
 
+                // todo: type this
                 const itemData: any = {
                     'type': type,
                     'source': mediaSource,
@@ -326,7 +328,8 @@ namespace IIIFComponents {
                     'height': percentageHeight,
                     'startOffset': offsetStart,
                     'endOffset': offsetEnd,
-                    'active': false
+                    'active': false,
+                    'format': format
                 }
 
                 this._renderMediaElement(itemData);
@@ -555,16 +558,24 @@ namespace IIIFComponents {
                     $mediaElement = $('<img class="anno" src="' + data.source + '" />');
                     break;
                 case 'video':
-                    $mediaElement = $('<video class="anno" src="' + data.source + '" />');
+                    $mediaElement = $('<video class="anno" />');
                     break;
                 case 'audio':
-                    $mediaElement = $('<audio class="anno" src="' + data.source + '" />');
+                    $mediaElement = $('<audio class="anno" />');
                     break;
                 case 'textualbody':
                     $mediaElement = $('<div class="anno">' + data.source + '</div>');
                     break;
                 default:
                     return;
+            }
+
+            if (data.format && data.format.toString() === 'application/dash+xml') {
+                $mediaElement.attr('data-dashjs-player', '');
+                const player = dashjs.MediaPlayer().create();
+                player.initialize($mediaElement[0], data.source);
+            } else {
+                $mediaElement.attr('src', data.source);
             }
 
             $mediaElement.css({

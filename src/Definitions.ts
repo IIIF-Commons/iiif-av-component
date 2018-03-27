@@ -7,3 +7,5 @@ interface Array<T> {
      */
     includes(searchElement: T, fromIndex?: number): boolean;
 }
+
+declare var dashjs: any;

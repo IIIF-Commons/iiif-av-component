@@ -576,6 +576,7 @@ var IIIFComponents;
                 }
                 var body = bodies[0];
                 var type = body.getType();
+                var format = body.getFormat();
                 // if (type && type.toString() === 'choice') {
                 //     // Choose first "Choice" item as body
                 //     const tmpItem = item;
@@ -633,6 +634,7 @@ var IIIFComponents;
                     ot = [null, null];
                 }
                 var offsetStart = (ot[0]) ? parseInt(ot[0]) : ot[0], offsetEnd = (ot[1]) ? parseInt(ot[1]) : ot[1];
+                // todo: type this
                 var itemData = {
                     'type': type,
                     'source': mediaSource,
@@ -644,7 +646,8 @@ var IIIFComponents;
                     'height': percentageHeight,
                     'startOffset': offsetStart,
                     'endOffset': offsetEnd,
-                    'active': false
+                    'active': false,
+                    'format': format
                 };
                 this._renderMediaElement(itemData);
             }
@@ -839,16 +842,24 @@ var IIIFComponents;
                     $mediaElement = $('<img class="anno" src="' + data.source + '" />');
                     break;
                 case 'video':
-                    $mediaElement = $('<video class="anno" src="' + data.source + '" />');
+                    $mediaElement = $('<video class="anno" />');
                     break;
                 case 'audio':
-                    $mediaElement = $('<audio class="anno" src="' + data.source + '" />');
+                    $mediaElement = $('<audio class="anno" />');
                     break;
                 case 'textualbody':
                     $mediaElement = $('<div class="anno">' + data.source + '</div>');
                     break;
                 default:
                     return;
+            }
+            if (data.format && data.format.toString() === 'application/dash+xml') {
+                $mediaElement.attr('data-dashjs-player', '');
+                var player = dashjs.MediaPlayer().create();
+                player.initialize($mediaElement[0], data.source);
+            }
+            else {
+                $mediaElement.attr('src', data.source);
             }
             $mediaElement.css({
                 top: data.top + '%',
