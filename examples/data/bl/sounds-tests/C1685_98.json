@@ -1,426 +1,172 @@
-
 {
     "@context": "http://iiif.io/api/presentation/3/context.json",
-    "attribution": {
-        "en": [
-            "<span>Rights unassigned - staff access only</span>"
-        ]
-    },
-    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98.json",
-    "label": {
-        "en": [
-            "C1685/98 Loose ends 17/7/99"
-        ]
-    },
-    "logo": {
-        "id": "https://www.bl.uk/images/bl_logo_100.gif",
-        "type": "Image"
-    },
+    "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_p3.json",
+    "type": "Manifest",
+    "label": {  "en": [ "C1685/98 Loose ends 17/7/99 No Nav"  ] },
     "metadata": [
         {
-            "label": {
-                "en": [
-                    "Identifier"
-                ]
-            },
-            "value": {
-                "en": [
-                    "C1685/98"
-                ]
-            }
+            "label": { "en": [ "Title" ] },
+            "value": { "en": [ "Loose ends 17/7/99" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Title"
-                ]
-            },
-            "value": {
-                "en": [
-                    "Loose ends 17/7/99"
-                ]
-            }
+            "label": { "en": [ "Details" ] },
+            "value": { "en": [ "<p>Correct Range implementation</p>" ] }
         }
     ],
-    "sequences": [
+    "behavior": "auto-advance",
+    "items": [
         {
-            "canvases": [
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
+            "type": "Canvas",
+            "label": { "en": [ "Tape 1 Side 1" ] },
+            "duration": 3723.4,
+            "content": [
                 {
-                    "content": [
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno",
+                    "type": "AnnotationPage",
+                    "items": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno",
-                            "items": [
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno/",
+                            "type": "Annotation",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
+                            "timeMode": "trim",
+                            "body": [
                                 {
-                                    "body": [
+                                    "items": [
                                         {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
+                                            "format": "application/dash+xml",
+                                            "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019/manifest.mpd",
+                                            "type": "Audio"
                                         }
                                     ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
+                                    "type": "Choice"
                                 }
-                            ],
-                            "type": "AnnotationPage"
+                            ]
                         }
-                    ],
-                    "duration": 4119.16,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
-                    "label": "Tape 1 Side 1",
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 3723.4,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
-                    "label": "Tape 1 Side 2",
-                    "type": "Canvas"
+                    ]
                 }
-            ],
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000001",
-            "type": "Sequence"
+            ]
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
+            "type": "Canvas",
+            "label": "Tape 1 Side 2",
+            "duration": 3723.4,
+            "content": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno",
+                    "type": "AnnotationPage",
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno/",
+                            "type": "Annotation",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
+                            "timeMode": "trim",
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
+
     ],
     "structures": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/top",
-            "label": {
-                "en": [
-                    "Loose ends 17/7/99"
-                ]
-            },
-            "members": [
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
-                    "type": "Canvas"
-                },
+            "type": "Range",
+            "label": { "en": [ "Loose ends 17/7/99" ] },
+            "items": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000006",
-                    "label": {
-                        "en": [
-                            "Loose ends"
-                        ]
-                    },
-                    "members": [
+                    "type": "Range",
+                    "label": { "en": [ "Loose ends" ] },
+                    "items": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,2504.64",
-                            "type": "Canvas"
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.nn1",
+                            "type": "Range",
+                            "behavior": "no-nav",
+                            "items": [
+                                {
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,560",
+                                    "type": "Canvas"
+                                }
+                            ]
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007",
-                            "label": {
-                                "en": [
-                                    "There's a touch"
-                                ]
-                            },
-                            "members": [
+                            "type": "Range",
+                            "label": { "en": [ "There's a touch" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=560,741.28",
                                     "type": "Canvas"
                                 }
-                            ],
-                            "metadata": [
+                            ]
+                        },
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.nn2",
+                            "type": "Range",
+                            "behavior": "no-nav",
+                            "items": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C1685/98"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "There's a touch"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "The Proclaimers"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "not after 1999-07-17"
-                                        ]
-                                    }
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=741.28,1700.36",
+                                    "type": "Canvas"
                                 }
-                            ],
-                            "type": "Range"
+                            ]
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000008",
-                            "label": {
-                                "en": [
-                                    "Song of dreams"
-                                ]
-                            },
-                            "members": [
+                            "type": "Range",
+                            "label": { "en": [ "Song of dreams" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1700.36,1914.84",
                                     "type": "Canvas"
                                 }
-                            ],
-                            "metadata": [
+                            ]
+                        },
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.nn3",
+                            "type": "Range",
+                            "behavior": "no-nav",
+                            "items": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C1685/98"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Song of dreams"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Taylor, Becky (singer, female)",
-                                            "unidentified orchestra"
-                                        ]
-                                    }
-                                },
-                                {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "not after 1999-07-17"
-                                        ]
-                                    }
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1914.84,2504.64",
+                                    "type": "Canvas"
                                 }
-                            ],
-                            "type": "Range"
+                            ]
                         }
-                    ],
-                    "metadata": [
-                        {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1685/98"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Loose ends"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Royal Albert Hall, London"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Sherrin, Ned, 1931-2007 (speaker, male; presenter / interviewer)",
-                                    "Glover, Julian, 1935- (speaker, male; interviewee)",
-                                    "Windsor, Barbara, 1937- (speaker, female; interviewee)",
-                                    "The Proclaimers (speakers, male; interviewees / performers)",
-                                    "Frisby, Dominic (speaker, male)",
-                                    "Jupitus, Phil (speaker, male / interviewee)",
-                                    "Taylor, Becky (speaker, female; interviewee / singer)",
-                                    "Brown, Errol (speaker, male; interviewee)"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "not after 1999-07-17"
-                                ]
-                            }
-                        }
-                    ],
-                    "type": "Range"
+                    ]
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x00000c",
-                    "label": {
-                        "en": [
-                            "[News May 2001]"
-                        ]
-                    },
-                    "members": [
+                    "type": "Range",
+                    "label": { "en": [ "[News May 2001]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2504.64,2661.56",
                             "type": "Canvas"
                         }
-                    ],
-                    "metadata": [
-                        {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1685/98"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[News May 2001]"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "unidentified speaker, female (newsreader)"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "not after 2001-05-19"
-                                ]
-                            }
-                        }
-                    ],
-                    "type": "Range"
+                    ]
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x00000e",
-                    "label": {
-                        "en": [
-                            "Saturday review"
-                        ]
-                    },
-                    "members": [
+                    "type": "Range",
+                    "label": { "en": [ "Saturday review" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=2661.56,3723.4",
                             "type": "Canvas"
@@ -429,261 +175,42 @@
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=0,1585.16",
                             "type": "Canvas"
                         }
-                    ],
-                    "metadata": [
-                        {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1685/98"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Saturday review"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Sutcliffe, Thomas, 1956- (speaker, male; presenter)",
-                                    "Roberts, Michèle, 1949- (speaker, female)",
-                                    "White, Jim, speaker (speaker, male)",
-                                    "Whittam Smith, Andreas, 1937- (speaker, male)"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "not after 2001-05-19"
-                                ]
-                            }
-                        }
-                    ],
-                    "type": "Range"
+                    ]
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000011",
-                    "label": {
-                        "en": [
-                            "My dear Jim - Letters to a friend [2]"
-                        ]
-                    },
-                    "members": [
+                    "type": "Range",
+                    "label": { "en": [ "My dear Jim - Letters to a friend [2]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=1585.16,2501.8",
                             "type": "Canvas"
                         }
-                    ],
-                    "metadata": [
-                        {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1685/98"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "My dear Jim - Letters to a friend [2]"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Rietti, Robert, 1923-2015 (speaker, male)"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "not after 2001-05-19"
-                                ]
-                            }
-                        }
-                    ],
-                    "type": "Range"
+                    ]
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000013",
-                    "label": {
-                        "en": [
-                            "[News May 2001]"
-                        ]
-                    },
-                    "members": [
+                    "type": "Range",
+                    "label": { "en": [ "[News May 2001]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2501.8,2620.44",
                             "type": "Canvas"
                         }
-                    ],
-                    "metadata": [
-                        {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1685/98"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[News May 2001]"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "unidentified speaker, female (newsreader)"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "not after 1999-05-19"
-                                ]
-                            }
-                        }
-                    ],
-                    "type": "Range"
+                    ]
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000015",
-                    "label": {
-                        "en": [
-                            "The archive hour: Humph at 80"
-                        ]
-                    },
-                    "members": [
+                    "type": "Range",
+                    "label": { "en": [ "The archive hour: Humph at 80" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005#t=2620.44,3723.4",
                             "type": "Canvas"
                         }
-                    ],
-                    "metadata": [
-                        {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1685/98"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "The archive hour: Humph at 80"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Lyttelton, Humphrey, 1921-2008 (speaker, male; presenter)",
-                                    "unidentified speakers"
-                                ]
-                            }
-                        },
-                        {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "not after 2001-05-19"
-                                ]
-                            }
-                        }
-                    ],
-                    "type": "Range"
+                    ]
                 }
-            ],
-            "type": "Range"
+            ]
         }
-    ],
-    "type": "Manifest"
+    ]
 }
