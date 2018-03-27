@@ -55,7 +55,7 @@
                                             "items": [
                                                 {
                                                     "format": "application/dash+xml",
-                                                    "id": "https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x000019/manifest.mpd",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019/manifest.mpd",
                                                     "type": "Audio"
                                                 },
                                                 {
@@ -98,7 +98,7 @@
                                             "items": [
                                                 {
                                                     "format": "application/dash+xml",
-                                                    "id": "https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x00001b/manifest.mpd",
+                                                    "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b/manifest.mpd",
                                                     "type": "Audio"
                                                 },
                                                 {
