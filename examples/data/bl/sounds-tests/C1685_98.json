@@ -31,6 +31,12 @@
                             "motivation": "painting",
                             "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
                             "timeMode": "trim",
+                            "metadata": [
+                                {
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "Loose ends Side One" ] }
+                                }
+                            ],
                             "body": [
                                 {
                                     "items": [
@@ -64,6 +70,12 @@
                             "motivation": "painting",
                             "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
                             "timeMode": "trim",
+                            "metadata": [
+                                {
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "Loose ends Side Two" ] }
+                                }
+                            ],
                             "body": [
                                 {
                                     "items": [
