@@ -939,7 +939,7 @@ var IIIFComponents;
         CanvasInstance.prototype._getRangeForCurrentTime = function () {
             for (var i = 0; i < this._ranges.length; i++) {
                 var range = this._ranges[i];
-                if (range.spans(this._canvasClockTime)) {
+                if (!range.nonav && range.spans(this._canvasClockTime)) {
                     return range;
                 }
             }
@@ -1268,6 +1268,7 @@ var IIIFComponents;
             function CanvasRange(range) {
                 this.rangeId = null;
                 this.duration = null;
+                this.nonav = false;
                 if (!range.canvases || !range.canvases.length) {
                     return;
                 }
@@ -1279,6 +1280,7 @@ var IIIFComponents;
                     var rangeTiming = temporal[1].split(',');
                     this.duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
                 }
+                this.nonav = range.getProperty('behavior') === 'no-nav';
             }
             CanvasRange.prototype.spans = function (time) {
                 if (this.duration) {

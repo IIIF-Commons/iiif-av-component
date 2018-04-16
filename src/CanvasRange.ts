@@ -3,6 +3,7 @@ namespace IIIFComponents.AVComponentObjects {
 
         public rangeId: string | null = null;
         public duration: Duration | null = null;
+        public nonav: boolean = false;
 
         constructor(range: Manifesto.IRange) {
 
@@ -21,6 +22,7 @@ namespace IIIFComponents.AVComponentObjects {
                 this.duration = new Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
             }
 
+            this.nonav = range.getProperty('behavior') === 'no-nav';
         }
 
         public spans(time: number): boolean {

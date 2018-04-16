@@ -685,7 +685,7 @@ namespace IIIFComponents {
 
                 const range: AVComponentObjects.CanvasRange = this._ranges[i];
 
-                if (range.spans(this._canvasClockTime)) {
+                if (!range.nonav && range.spans(this._canvasClockTime)) {
                     return range;
                 }
             }
