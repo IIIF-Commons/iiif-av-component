@@ -42,7 +42,7 @@
                                     "items": [
                                         {
                                             "format": "application/dash+xml",
-                                            "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019/index.m3u8",
+                                            "id": "https://resources.digirati.com/bl/C1685_98-HLS/vdc_100052359795.0x000019/index.m3u8",
                                             "type": "Audio"
                                         }
                                     ],
