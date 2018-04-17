@@ -4,5 +4,6 @@ namespace IIIFComponents {
         canvas?: Manifesto.ICanvas;
         range?: AVComponentObjects.CanvasRange;
         visible?: boolean;
+        volume?: number;
     }
 }

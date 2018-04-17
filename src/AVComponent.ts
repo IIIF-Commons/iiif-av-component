@@ -210,6 +210,11 @@ namespace IIIFComponents {
             canvasInstance.on(AVComponent.Events.RANGE_CHANGED, (rangeId: string | null) => {
                 this.fire(AVComponent.Events.RANGE_CHANGED, rangeId);
             }, false);
+
+            canvasInstance.on(AVVolumeControl.Events.VOLUME_CHANGED, (volume: number) => {
+                this._setCanvasInstanceVolumes(volume);
+                this.fire(AVVolumeControl.Events.VOLUME_CHANGED, volume);
+            }, false);
         }
 
         private _prevRange(): void {
@@ -237,6 +242,15 @@ namespace IIIFComponents {
             if (nextRange) {
                 this.playRange(nextRange.id);         
             }
+        }
+
+        private _setCanvasInstanceVolumes(volume: number): void {
+
+            this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
+                canvasInstance.set({
+                    volume: volume
+                });
+            });
         }
 
         private _getCanvasInstanceById(canvasId: string): CanvasInstance | null {

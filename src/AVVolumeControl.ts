@@ -5,9 +5,10 @@ namespace IIIFComponents {
         private _$volumeSlider: JQuery<HTMLInputElement>;
         private _$volumeMute: JQuery;
 
-        private _state: AVVolumeControlState = {
-            currentVolume: 1,
-            lastVolume: 1
+        private _lastVolume: number = 1;
+
+        private _data: IAVVolumeControlState = {
+            volume: 1
         };
 
         constructor(options: _Components.IBaseComponentOptions) {
@@ -37,57 +38,63 @@ namespace IIIFComponents {
             this._$volumeMute.on('click', () => {
 
                 // start reducer
-                if (this._state.currentVolume !== 0) {
+                if (this._data.volume !== 0) {
                     // mute
-                    this._state.lastVolume = this._state.currentVolume;
-                    this._state.currentVolume = 0;
+                    this._lastVolume = <number>this._data.volume;
+                    this._data.volume = 0;
                 } else {
                     // unmute
-                    this._state.currentVolume = this._state.lastVolume;
+                    this._data.volume = this._lastVolume;
                 }
                 // end reducer
                 
                 this._render();
 
-                this.fire(AVVolumeControl.Events.VOLUME_CHANGED, this._state.currentVolume);
+                this.fire(AVVolumeControl.Events.VOLUME_CHANGED, this._data.volume);
             });
 
             this._$volumeSlider.on('input', function () {
 
                 // start reducer
-                that._state.currentVolume = Number(this.value);
+                that._data.volume = Number(this.value);
 
-                if (that._state.currentVolume === 0) {
-                    that._state.lastVolume = 0;
+                if (that._data.volume === 0) {
+                    that._lastVolume = 0;
                 }
                 // end reducer
 
                 that._render();
-                that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._state.currentVolume);
+                that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
             });
 
             this._$volumeSlider.on('change', function () {
 
                 // start reducer
-                that._state.currentVolume = Number(this.value);
+                that._data.volume = Number(this.value);
 
-                if (that._state.currentVolume === 0) {
-                    that._state.lastVolume = 0;
+                if (that._data.volume === 0) {
+                    that._lastVolume = 0;
                 }
                 // end reducer
                 
                 that._render();
-                that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._state.currentVolume);
+                that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
             });
 
             return success;
         }
 
+        public set(data: IAVVolumeControlState): void {
+            this._data = Object.assign(this._data, data);
+
+            this._render();
+        }
+
         private _render(): void {
 
-            this._$volumeSlider.val(this._state.currentVolume);
+            this._$volumeSlider.val(<number>this._data.volume);
 
-            if (this._state.currentVolume === 0) {
+            if (this._data.volume === 0) {
                 this._$volumeMute.find('i').switchClass('on', 'off');                
             } else {
                 this._$volumeMute.find('i').switchClass('off', 'on');
@@ -97,11 +104,6 @@ namespace IIIFComponents {
         protected _resize(): void {
 
         }
-    }
-
-    interface AVVolumeControlState {
-        currentVolume: number;
-        lastVolume: number;
     }
 
 }

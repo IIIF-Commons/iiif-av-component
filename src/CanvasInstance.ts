@@ -92,7 +92,7 @@ namespace IIIFComponents {
             });
 
             this._volume.on(AVVolumeControl.Events.VOLUME_CHANGED, (value: number) => {
-                this._setVolume(value);
+                 this.fire(AVVolumeControl.Events.VOLUME_CHANGED, value);
             }, false);
 
             this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
@@ -433,6 +433,14 @@ namespace IIIFComponents {
                 this._$durationHighlight.hide();
             }
 
+            this._contentAnnotations.forEach(($mediaElement: any) => {
+                $($mediaElement.element).prop("volume", this._data.volume);
+
+                this._volume.set({
+                    volume: this._data.volume
+                });
+            });
+
             if (this._data.limitToRange && this._data.range) {
                 this._$canvasTimelineContainer.hide();
                 this._$rangeTimelineContainer.show();
@@ -710,12 +718,14 @@ namespace IIIFComponents {
             }
         }
 
-        private _setVolume(value: number): void {
-            for (let i = 0; i < this._contentAnnotations.length; i++) {
-                const $mediaElement = this._contentAnnotations[i];
-                $($mediaElement.element).prop("volume", value);
-            }
-        }
+        // public setVolume(value: number): void {
+        //     //console.log('set volume', (<any>this._data.canvas).id);
+        //     this._data.volume = value;
+        //     for (let i = 0; i < this._contentAnnotations.length; i++) {
+        //         const $mediaElement = this._contentAnnotations[i];
+        //         $($mediaElement.element).prop("volume", value);
+        //     }
+        // }
 
         private _renderSyncIndicator(mediaElementData: any) {
 

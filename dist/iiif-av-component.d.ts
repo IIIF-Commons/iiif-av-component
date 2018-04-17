@@ -25,6 +25,7 @@ declare namespace IIIFComponents {
         private _initCanvas(canvas);
         private _prevRange();
         private _nextRange();
+        private _setCanvasInstanceVolumes(volume);
         private _getCanvasInstanceById(canvasId);
         private _getCurrentCanvas();
         private _rewind();
@@ -47,9 +48,11 @@ declare namespace IIIFComponents {
     class AVVolumeControl extends _Components.BaseComponent {
         private _$volumeSlider;
         private _$volumeMute;
-        private _state;
+        private _lastVolume;
+        private _data;
         constructor(options: _Components.IBaseComponentOptions);
         protected _init(): boolean;
+        set(data: IAVVolumeControlState): void;
         private _render();
         protected _resize(): void;
     }
@@ -120,7 +123,6 @@ declare namespace IIIFComponents {
         private _getRangeForCurrentTime();
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
-        private _setVolume(value);
         private _renderSyncIndicator(mediaElementData);
         private _setCurrentTime(seconds);
         private _rewind(withoutUpdate?);
@@ -173,6 +175,7 @@ declare namespace IIIFComponents {
         canvas?: Manifesto.ICanvas;
         range?: AVComponentObjects.CanvasRange;
         visible?: boolean;
+        volume?: number;
     }
 }
 
@@ -204,6 +207,12 @@ declare namespace IIIFComponents {
         helper?: Manifold.IHelper;
         limitToRange?: boolean;
         rangeId?: string;
+    }
+}
+
+declare namespace IIIFComponents {
+    interface IAVVolumeControlState {
+        volume?: number;
     }
 }
 
