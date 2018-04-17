@@ -875,10 +875,29 @@ var IIIFComponents;
                 default:
                     return;
             }
+            var video = $mediaElement[0];
             if (data.format && data.format.toString() === 'application/dash+xml') {
+                // dash
                 $mediaElement.attr('data-dashjs-player', '');
                 var player = dashjs.MediaPlayer().create();
-                player.initialize($mediaElement[0], data.source);
+                player.initialize(video, data.source);
+            }
+            else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
+                // hls
+                if (Hls.isSupported()) {
+                    var hls = new Hls();
+                    hls.loadSource(data.source);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                        video.play();
+                    });
+                }
+                else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = data.source;
+                    video.addEventListener('canplay', function () {
+                        video.play();
+                    });
+                }
             }
             else {
                 $mediaElement.attr('src', data.source);

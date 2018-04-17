@@ -9,3 +9,4 @@ interface Array<T> {
 }
 
 declare var dashjs: any;
+declare var Hls: any;

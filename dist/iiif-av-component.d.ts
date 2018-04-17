@@ -8,6 +8,7 @@ interface Array<T> {
     includes(searchElement: T, fromIndex?: number): boolean;
 }
 declare var dashjs: any;
+declare var Hls: any;
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
