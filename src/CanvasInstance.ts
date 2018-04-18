@@ -92,7 +92,7 @@ namespace IIIFComponents {
             });
 
             this._volume.on(AVVolumeControl.Events.VOLUME_CHANGED, (value: number) => {
-                 this.fire(AVVolumeControl.Events.VOLUME_CHANGED, value);
+                this.fire(AVVolumeControl.Events.VOLUME_CHANGED, value);
             }, false);
 
             this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
@@ -105,13 +105,13 @@ namespace IIIFComponents {
             this._$rangeHoverPreview.hide();
 
             if (this._data.helper && this._data.canvas) {
-                const ranges: Manifesto.IRange[] =  this._data.helper.getCanvasRanges(this._data.canvas);
+                const ranges: Manifesto.IRange[] = this._data.helper.getCanvasRanges(this._data.canvas);
 
                 ranges.forEach((range: Manifesto.IRange) => {
                     this._ranges.push(new AVComponentObjects.CanvasRange(range));
                 });
             }
-            
+
             this._canvasClockDuration = <number>this._data.canvas.getDuration();
 
             const canvasWidth: number = this._data.canvas.getWidth();
@@ -365,16 +365,16 @@ namespace IIIFComponents {
                     if (!this._data.range) {
                         this.fire(AVComponent.Events.RANGE_CHANGED, null);
                     } else if (this._data.range.duration) {
-                        
+
                         // if the range has changed, update the time if not already within the duration span
                         if (!this._data.range.spans(this._canvasClockTime)) {
                             this._setCurrentTime(this._data.range.duration.start);
                         }
-    
+
                         this._play();
 
                         this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.rangeId);
-                    } 
+                    }
                 }
 
             }
@@ -587,20 +587,20 @@ namespace IIIFComponents {
                 player.initialize(video, data.source);
             } else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
                 // hls
-                if(Hls.isSupported()) {
+                if (Hls.isSupported()) {
                     var hls = new Hls();
                     hls.loadSource(data.source);
                     hls.attachMedia(video);
-                    hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    hls.on(Hls.Events.MANIFEST_PARSED, function () {
                         video.play();
                     });
                 }
-                 // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
-                 // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
-                 // This is using the built-in support of the plain video element, without using hls.js.
+                // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+                // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
+                // This is using the built-in support of the plain video element, without using hls.js.
                 else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                     video.src = data.source;
-                    video.addEventListener('canplay', function() {
+                    video.addEventListener('canplay', function () {
                         video.play();
                     });
                 }
@@ -675,9 +675,9 @@ namespace IIIFComponents {
                     this._readyCanvasesCount++;
 
                     if (this._readyCanvasesCount === this._contentAnnotations.length) {
-                        
+
                         //if (!this._data.range) {
-                            this._setCurrentTime(0);
+                        this._setCurrentTime(0);
                         //}                        
 
                         if (this.options.data.autoPlay) {
@@ -951,7 +951,7 @@ namespace IIIFComponents {
                     if (type === 'video' || type === 'audio') {
 
                         if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
-                            contentAnnotation.element[0].pause();
+                            this._pauseMedia(contentAnnotation.element[0]);
                         }
 
                     }
@@ -963,7 +963,7 @@ namespace IIIFComponents {
                         contentAnnotation.element.hide();
                         contentAnnotation.timelineElement.removeClass('active');
                         if (type === 'video' || type === 'audio') {
-                            contentAnnotation.element[0].pause();
+                            this._pauseMedia(contentAnnotation.element[0]);
                         }
                     }
 
@@ -972,6 +972,25 @@ namespace IIIFComponents {
             }
 
             //this.logMessage('UPDATE MEDIA ACTIVE STATES at: '+ this._canvasClockTime + ' seconds.');
+        }
+
+        private _pauseMedia(media: HTMLMediaElement): void {
+            const playPromise = media.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
+                    media.pause();
+                });
+            } else {
+                media.pause();
+            }
+        }
+
+        private _setMediaCurrentTime(media: HTMLMediaElement, time: number): void {
+            if (!isNaN(media.duration)) {
+                media.currentTime = time;
+            }
         }
 
         private _synchronizeMedia(): void {
@@ -985,7 +1004,7 @@ namespace IIIFComponents {
 
                 if (type === 'video' || type === 'audio') {
 
-                    contentAnnotation.element[0].currentTime = this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset;
+                    this._setMediaCurrentTime(contentAnnotation.element[0], this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
 
                     if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
                         if (this._isPlaying) {
@@ -996,14 +1015,14 @@ namespace IIIFComponents {
                                 }
                             }
                         } else {
-                            contentAnnotation.element[0].pause();
+                            this._pauseMedia(contentAnnotation.element[0]);
                         }
                     } else {
-                        contentAnnotation.element[0].pause();
+                        this._pauseMedia(contentAnnotation.element[0]);
                     }
 
                     if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
-                        contentAnnotation.element[0].pause();
+                        this._pauseMedia(contentAnnotation.element[0]);
                     }
                 }
             }
@@ -1036,7 +1055,7 @@ namespace IIIFComponents {
 
                         const lag: number = Math.abs(factualTime - correctTime);
                         this.logMessage('DETECTED synchronization lag: ' + Math.abs(lag));
-                        contentAnnotation.element[0].currentTime = correctTime;
+                        this._setMediaCurrentTime(contentAnnotation.element[0], correctTime);
                         //this.synchronizeMedia();
 
                     } else {

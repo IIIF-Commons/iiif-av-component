@@ -135,6 +135,8 @@ declare namespace IIIFComponents {
         private _highPriorityUpdater();
         private _lowPriorityUpdater();
         private _updateMediaActiveStates();
+        private _pauseMedia(media);
+        private _setMediaCurrentTime(media, time);
         private _synchronizeMedia();
         private _checkMediaSynchronization();
         private _playbackStalled(aBoolean, syncMediaRequestingStall);
