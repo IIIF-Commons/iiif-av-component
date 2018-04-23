@@ -435,6 +435,7 @@ var IIIFComponents;
             _this._isPlaying = false;
             _this._isStalled = false;
             _this._lowPriorityFrequency = 250;
+            _this._mediaSyncMarginSecs = 5;
             _this._ranges = [];
             _this._readyCanvasesCount = 0;
             _this._stallRequestedBy = []; //todo: type
@@ -1233,7 +1234,7 @@ var IIIFComponents;
                     var correctTime = (this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
                     var factualTime = contentAnnotation.element[0].currentTime;
                     // off by 0.2 seconds
-                    if (Math.abs(factualTime - correctTime) > 0.4) {
+                    if (Math.abs(factualTime - correctTime) > this._mediaSyncMarginSecs) {
                         contentAnnotation.outOfSync = true;
                         //this.playbackStalled(true, contentAnnotation);
                         var lag = Math.abs(factualTime - correctTime);
