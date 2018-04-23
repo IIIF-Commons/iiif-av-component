@@ -35,6 +35,7 @@ namespace IIIFComponents {
         private _isStalled: boolean = false;
         private _lowPriorityFrequency: number = 250;
         private _lowPriorityInterval: number;
+        private _mediaSyncMarginSecs: number = 5;
         private _ranges: AVComponentObjects.CanvasRange[] = [];
         private _readyCanvasesCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
@@ -1048,7 +1049,7 @@ namespace IIIFComponents {
                     const factualTime: number = contentAnnotation.element[0].currentTime;
 
                     // off by 0.2 seconds
-                    if (Math.abs(factualTime - correctTime) > 0.4) {
+                    if (Math.abs(factualTime - correctTime) > this._mediaSyncMarginSecs) {
 
                         contentAnnotation.outOfSync = true;
                         //this.playbackStalled(true, contentAnnotation);
