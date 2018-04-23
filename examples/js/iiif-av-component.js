@@ -435,7 +435,7 @@ var IIIFComponents;
             _this._isPlaying = false;
             _this._isStalled = false;
             _this._lowPriorityFrequency = 250;
-            _this._mediaSyncMarginSecs = 5;
+            _this._mediaSyncMarginSecs = 1;
             _this._ranges = [];
             _this._readyCanvasesCount = 0;
             _this._stallRequestedBy = []; //todo: type

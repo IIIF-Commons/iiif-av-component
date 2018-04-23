@@ -35,7 +35,7 @@ namespace IIIFComponents {
         private _isStalled: boolean = false;
         private _lowPriorityFrequency: number = 250;
         private _lowPriorityInterval: number;
-        private _mediaSyncMarginSecs: number = 5;
+        private _mediaSyncMarginSecs: number = 1;
         private _ranges: AVComponentObjects.CanvasRange[] = [];
         private _readyCanvasesCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
