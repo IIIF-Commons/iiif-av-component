@@ -158,16 +158,27 @@ namespace IIIFComponents {
 
             this._$element.empty();
 
-            const canvases: Manifesto.ICanvas[] = this._getCanvases();
+            // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
+            if (this._data && this._data.helper) {
 
-			canvases.forEach((canvas: Manifesto.ICanvas) => {
-                this._initCanvas(canvas);
-            });
+                const behavior: Manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
 
-            if (this.canvasInstances.length > 0) {
-                this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
+                if (behavior && behavior.toString() === Manifesto.Behavior.AUTOADVANCE.toString()) {
+
+
+
+                } else {
+                    const canvases: Manifesto.ICanvas[] = this._getCanvases();
+    
+                    canvases.forEach((canvas: Manifesto.ICanvas) => {
+                        this._initCanvas(canvas);
+                    });
+                }
+
+                if (this.canvasInstances.length > 0) {
+                    this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
+                }
             }
-
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {
