@@ -224,6 +224,8 @@ declare namespace IIIFComponents.AVComponentUtils {
     class Utils {
         private static _compare(a, b);
         static diff(a: any, b: any): string[];
+        static getSpatialComponent(target: string): number[] | null;
+        static getTemporalComponent(target: string): number[] | null;
         static formatTime(aNumber: number): string;
     }
 }
@@ -231,7 +233,7 @@ declare namespace IIIFComponents.AVComponentUtils {
 /// <reference types="manifesto.js" />
 declare namespace IIIFComponents.AVComponentObjects {
     class VirtualCanvas {
-        private _canvases;
+        canvases: Manifesto.ICanvas[];
         id: string;
         constructor();
         addCanvas(canvas: Manifesto.ICanvas): void;

@@ -173,6 +173,8 @@ namespace IIIFComponents {
                         virtualCanvas.addCanvas(canvas);
                     });
 
+                    this._initCanvas(virtualCanvas);
+
                 } else {
 
                     canvases.forEach((canvas: Manifesto.ICanvas) => {
@@ -194,7 +196,7 @@ namespace IIIFComponents {
             return [];
         }
 
-        private _initCanvas(canvas: Manifesto.ICanvas): void {
+        private _initCanvas(canvas: Manifesto.ICanvas | AVComponentObjects.VirtualCanvas): void {
 
             const canvasInstance: CanvasInstance = new CanvasInstance({
                 target: document.createElement('div'),

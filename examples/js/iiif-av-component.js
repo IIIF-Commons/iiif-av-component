@@ -146,6 +146,7 @@ var IIIFComponents;
                     canvases.forEach(function (canvas) {
                         virtualCanvas_1.addCanvas(canvas);
                     });
+                    this._initCanvas(virtualCanvas_1);
                 }
                 else {
                     canvases.forEach(function (canvas) {
@@ -499,10 +500,10 @@ var IIIFComponents;
                 var ranges_1 = [];
                 // if the canvas is virtual, get the ranges for all sub canvases
                 if (this._data.canvas instanceof IIIFComponents.AVComponentObjects.VirtualCanvas) {
-                    this._data.canvases.forEach(function (canvas) {
+                    this._data.canvas.canvases.forEach(function (canvas) {
                         if (_this._data && _this._data.helper) {
                             var r = _this._data.helper.getCanvasRanges(canvas);
-                            ranges_1.concat(r);
+                            ranges_1.push.apply(ranges_1, r);
                         }
                     });
                 }
@@ -647,23 +648,15 @@ var IIIFComponents;
                     console.warn('item has no target');
                     return;
                 }
-                var spatial = /xywh=([^&]+)/g.exec(target);
-                var temporal = /t=([^&]+)/g.exec(target);
-                var xywh = void 0;
-                if (spatial && spatial[1]) {
-                    xywh = spatial[1].split(',');
-                }
-                else {
+                var xywh = IIIFComponents.AVComponentUtils.Utils.getSpatialComponent(target);
+                var t = IIIFComponents.AVComponentUtils.Utils.getTemporalComponent(target);
+                if (!xywh) {
                     xywh = [0, 0, this._canvasWidth, this._canvasHeight];
                 }
-                var t = void 0;
-                if (temporal && temporal[1]) {
-                    t = temporal[1].split(',');
-                }
-                else {
+                if (!t) {
                     t = [0, this._canvasClockDuration];
                 }
-                var positionLeft = parseInt(xywh[0]), positionTop = parseInt(xywh[1]), mediaWidth = parseInt(xywh[2]), mediaHeight = parseInt(xywh[3]), startTime = parseInt(t[0]), endTime = parseInt(t[1]);
+                var positionLeft = parseInt(String(xywh[0])), positionTop = parseInt(String(xywh[1])), mediaWidth = parseInt(String(xywh[2])), mediaHeight = parseInt(String(xywh[3])), startTime = parseInt(String(t[0])), endTime = parseInt(String(t[1]));
                 var percentageTop = this._convertToPercentage(positionTop, this._canvasHeight), percentageLeft = this._convertToPercentage(positionLeft, this._canvasWidth), percentageWidth = this._convertToPercentage(mediaWidth, this._canvasWidth), percentageHeight = this._convertToPercentage(mediaHeight, this._canvasHeight);
                 var temporalOffsets = /t=([^&]+)/g.exec(body.id);
                 var ot = void 0;
@@ -1422,6 +1415,22 @@ var IIIFComponents;
             Utils.diff = function (a, b) {
                 return Array.from(new Set(Utils._compare(a, b).concat(Utils._compare(b, a))));
             };
+            Utils.getSpatialComponent = function (target) {
+                var spatial = /xywh=([^&]+)/g.exec(target);
+                var xywh = null;
+                if (spatial && spatial[1]) {
+                    xywh = spatial[1].split(',');
+                }
+                return xywh;
+            };
+            Utils.getTemporalComponent = function (target) {
+                var temporal = /t=([^&]+)/g.exec(target);
+                var t = null;
+                if (temporal && temporal[1]) {
+                    t = temporal[1].split(',');
+                }
+                return t;
+            };
             Utils.formatTime = function (aNumber) {
                 var hours, minutes, seconds, hourValue;
                 seconds = Math.ceil(aNumber);
@@ -1451,21 +1460,62 @@ var IIIFComponents;
     (function (AVComponentObjects) {
         var VirtualCanvas = /** @class */ (function () {
             function VirtualCanvas() {
-                this._canvases = [];
+                this.canvases = [];
             }
             VirtualCanvas.prototype.addCanvas = function (canvas) {
-                this._canvases.push(canvas);
+                this.canvases.push(canvas);
             };
             VirtualCanvas.prototype.getContent = function () {
+                var _this = this;
                 var annotations = [];
-                this._canvases.forEach(function (canvas) {
-                    annotations.concat(canvas.getContent());
+                this.canvases.forEach(function (canvas) {
+                    var items = canvas.getContent();
+                    // if the annotations have no temporal target, add one so that
+                    // they specifically target the duration of their canvas
+                    items.forEach(function (item) {
+                        var target = item.getTarget();
+                        if (target) {
+                            var t = IIIFComponents.AVComponentUtils.Utils.getTemporalComponent(target);
+                            if (!t) {
+                                item.__jsonld.target += '#t=0,' + canvas.getDuration();
+                            }
+                        }
+                    });
+                    // shift the targets forward by the total previous canvas durations
+                    items.forEach(function (item) {
+                        var target = item.getTarget();
+                        if (target) {
+                            var t = IIIFComponents.AVComponentUtils.Utils.getTemporalComponent(target);
+                            if (t) {
+                                var offset = 0;
+                                var targetWithoutTemporal = target.substr(0, target.indexOf('#'));
+                                // loop through canvases adding up their durations until we reach the targeted canvas
+                                for (var i = 0; i < _this.canvases.length; i++) {
+                                    var canvas_1 = _this.canvases[i];
+                                    if (!canvas_1.id.includes(targetWithoutTemporal)) {
+                                        var duration = canvas_1.getDuration();
+                                        if (duration) {
+                                            offset += duration;
+                                        }
+                                    }
+                                    else {
+                                        // we've reached the canvas whose target we're adjusting
+                                        break;
+                                    }
+                                }
+                                t[0] = Number(t[0]) + offset;
+                                t[1] = Number(t[1]) + offset;
+                                item.__jsonld.target = targetWithoutTemporal + '#t=' + t[0] + ',' + t[1];
+                            }
+                        }
+                    });
+                    annotations.push.apply(annotations, items);
                 });
                 return annotations;
             };
             VirtualCanvas.prototype.getDuration = function () {
                 var duration = 0;
-                this._canvases.forEach(function (canvas) {
+                this.canvases.forEach(function (canvas) {
                     var d = canvas.getDuration();
                     if (d) {
                         duration += d;
@@ -1474,14 +1524,14 @@ var IIIFComponents;
                 return duration;
             };
             VirtualCanvas.prototype.getWidth = function () {
-                if (this._canvases.length) {
-                    return this._canvases[0].getWidth();
+                if (this.canvases.length) {
+                    return this.canvases[0].getWidth();
                 }
                 return 0;
             };
             VirtualCanvas.prototype.getHeight = function () {
-                if (this._canvases.length) {
-                    return this._canvases[0].getHeight();
+                if (this.canvases.length) {
+                    return this.canvases[0].getHeight();
                 }
                 return 0;
             };

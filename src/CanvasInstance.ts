@@ -111,10 +111,10 @@ namespace IIIFComponents {
 
                 // if the canvas is virtual, get the ranges for all sub canvases
                 if (this._data.canvas instanceof AVComponentObjects.VirtualCanvas) {
-                    this._data.canvases.forEach((canvas: Manifesto.ICanvas) => {
+                    this._data.canvas.canvases.forEach((canvas: Manifesto.ICanvas) => {
                         if (this._data && this._data.helper) {
                             const r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
-                            ranges.concat(r);
+                            ranges.push(...r);
                         }
                     });
                 } else {
@@ -286,31 +286,23 @@ namespace IIIFComponents {
                     return;
                 }
 
-                const spatial: RegExpExecArray | null = /xywh=([^&]+)/g.exec(target);
-                const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(target);
+                let xywh: number[] | null = AVComponentUtils.Utils.getSpatialComponent(target);
+                let t: number[] | null = AVComponentUtils.Utils.getTemporalComponent(target);
 
-                let xywh;
-
-                if (spatial && spatial[1]) {
-                    xywh = spatial[1].split(',');
-                } else {
+                if (!xywh) {
                     xywh = [0, 0, this._canvasWidth, this._canvasHeight];
                 }
 
-                let t;
-
-                if (temporal && temporal[1]) {
-                    t = temporal[1].split(',');
-                } else {
+                if (!t) {
                     t = [0, this._canvasClockDuration];
                 }
 
-                const positionLeft = parseInt(<string>xywh[0]),
-                    positionTop = parseInt(<string>xywh[1]),
-                    mediaWidth = parseInt(<string>xywh[2]),
-                    mediaHeight = parseInt(<string>xywh[3]),
-                    startTime = parseInt(<string>t[0]),
-                    endTime = parseInt(<string>t[1]);
+                const positionLeft = parseInt(String(xywh[0])),
+                    positionTop = parseInt(String(xywh[1])),
+                    mediaWidth = parseInt(String(xywh[2])),
+                    mediaHeight = parseInt(String(xywh[3])),
+                    startTime = parseInt(String(t[0])),
+                    endTime = parseInt(String(t[1]));
 
                 const percentageTop = this._convertToPercentage(positionTop, this._canvasHeight),
                     percentageLeft = this._convertToPercentage(positionLeft, this._canvasWidth),

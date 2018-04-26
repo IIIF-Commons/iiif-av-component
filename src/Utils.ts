@@ -15,6 +15,28 @@ namespace IIIFComponents.AVComponentUtils {
             return Array.from(new Set(Utils._compare(a, b).concat(Utils._compare(b, a))));
         }
 
+        public static getSpatialComponent(target: string): number[] | null {
+            const spatial: RegExpExecArray | null = /xywh=([^&]+)/g.exec(target);
+            let xywh: number[] | null = null;
+
+            if (spatial && spatial[1]) {
+                xywh = <any>spatial[1].split(',');
+            }
+
+            return xywh;
+        }
+
+        public static getTemporalComponent(target: string): number[] | null {
+            const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(target);
+            let t: number[] | null = null;
+
+            if (temporal && temporal[1]) {
+                t = <any>temporal[1].split(',');
+            }
+
+            return t;
+        }
+
         public static formatTime(aNumber: number): string {
 
             let hours: number | string, minutes: number | string, seconds: number | string, hourValue: string;
