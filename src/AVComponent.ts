@@ -163,13 +163,18 @@ namespace IIIFComponents {
 
                 const behavior: Manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
 
-                if (behavior && behavior.toString() === Manifesto.Behavior.AUTOADVANCE.toString()) {
+                const canvases: Manifesto.ICanvas[] = this._getCanvases();
 
+                if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
 
+                    const virtualCanvas: AVComponentObjects.VirtualCanvas = new AVComponentObjects.VirtualCanvas();
+
+                    canvases.forEach((canvas: Manifesto.ICanvas) => {
+                        virtualCanvas.addCanvas(canvas);
+                    });
 
                 } else {
-                    const canvases: Manifesto.ICanvas[] = this._getCanvases();
-    
+
                     canvases.forEach((canvas: Manifesto.ICanvas) => {
                         this._initCanvas(canvas);
                     });

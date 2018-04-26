@@ -105,9 +105,22 @@ namespace IIIFComponents {
             this._$canvasHoverPreview.hide();
             this._$rangeHoverPreview.hide();
 
-            if (this._data.helper && this._data.canvas) {
-                const ranges: Manifesto.IRange[] = this._data.helper.getCanvasRanges(this._data.canvas);
+            if (this._data && this._data.helper && this._data.canvas) {
 
+                const ranges: Manifesto.IRange[] = [];
+
+                // if the canvas is virtual, get the ranges for all sub canvases
+                if (this._data.canvas instanceof AVComponentObjects.VirtualCanvas) {
+                    this._data.canvases.forEach((canvas: Manifesto.ICanvas) => {
+                        if (this._data && this._data.helper) {
+                            const r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
+                            ranges.concat(r);
+                        }
+                    });
+                } else {
+                    ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Manifesto.ICanvas));
+                }
+  
                 ranges.forEach((range: Manifesto.IRange) => {
                     this._ranges.push(new AVComponentObjects.CanvasRange(range));
                 });

@@ -176,7 +176,7 @@ declare namespace IIIFComponents.AVComponentObjects {
 /// <reference types="manifesto.js" />
 declare namespace IIIFComponents {
     interface IAVCanvasInstanceData extends IAVComponentData {
-        canvas?: Manifesto.ICanvas;
+        canvas?: Manifesto.ICanvas | AVComponentObjects.VirtualCanvas;
         range?: AVComponentObjects.CanvasRange;
         visible?: boolean;
         volume?: number;
@@ -225,5 +225,19 @@ declare namespace IIIFComponents.AVComponentUtils {
         private static _compare(a, b);
         static diff(a: any, b: any): string[];
         static formatTime(aNumber: number): string;
+    }
+}
+
+/// <reference types="manifesto.js" />
+declare namespace IIIFComponents.AVComponentObjects {
+    class VirtualCanvas {
+        private _canvases;
+        id: string;
+        constructor();
+        addCanvas(canvas: Manifesto.ICanvas): void;
+        getContent(): Manifesto.IAnnotation[];
+        getDuration(): number | null;
+        getWidth(): number;
+        getHeight(): number;
     }
 }

@@ -140,10 +140,14 @@ var IIIFComponents;
             // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
             if (this._data && this._data.helper) {
                 var behavior = this._data.helper.manifest.getBehavior();
-                if (behavior && behavior.toString() === Manifesto.Behavior.AUTOADVANCE.toString()) {
+                var canvases = this._getCanvases();
+                if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
+                    var virtualCanvas_1 = new IIIFComponents.AVComponentObjects.VirtualCanvas();
+                    canvases.forEach(function (canvas) {
+                        virtualCanvas_1.addCanvas(canvas);
+                    });
                 }
                 else {
-                    var canvases = this._getCanvases();
                     canvases.forEach(function (canvas) {
                         _this._initCanvas(canvas);
                     });
@@ -491,9 +495,21 @@ var IIIFComponents;
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
             this._$canvasHoverPreview.hide();
             this._$rangeHoverPreview.hide();
-            if (this._data.helper && this._data.canvas) {
-                var ranges = this._data.helper.getCanvasRanges(this._data.canvas);
-                ranges.forEach(function (range) {
+            if (this._data && this._data.helper && this._data.canvas) {
+                var ranges_1 = [];
+                // if the canvas is virtual, get the ranges for all sub canvases
+                if (this._data.canvas instanceof IIIFComponents.AVComponentObjects.VirtualCanvas) {
+                    this._data.canvases.forEach(function (canvas) {
+                        if (_this._data && _this._data.helper) {
+                            var r = _this._data.helper.getCanvasRanges(canvas);
+                            ranges_1.concat(r);
+                        }
+                    });
+                }
+                else {
+                    ranges_1.concat(this._data.helper.getCanvasRanges(this._data.canvas));
+                }
+                ranges_1.forEach(function (range) {
                     _this._ranges.push(new IIIFComponents.AVComponentObjects.CanvasRange(range));
                 });
             }
@@ -1427,6 +1443,52 @@ var IIIFComponents;
         }());
         AVComponentUtils.Utils = Utils;
     })(AVComponentUtils = IIIFComponents.AVComponentUtils || (IIIFComponents.AVComponentUtils = {}));
+})(IIIFComponents || (IIIFComponents = {}));
+
+var IIIFComponents;
+(function (IIIFComponents) {
+    var AVComponentObjects;
+    (function (AVComponentObjects) {
+        var VirtualCanvas = /** @class */ (function () {
+            function VirtualCanvas() {
+                this._canvases = [];
+            }
+            VirtualCanvas.prototype.addCanvas = function (canvas) {
+                this._canvases.push(canvas);
+            };
+            VirtualCanvas.prototype.getContent = function () {
+                var annotations = [];
+                this._canvases.forEach(function (canvas) {
+                    annotations.concat(canvas.getContent());
+                });
+                return annotations;
+            };
+            VirtualCanvas.prototype.getDuration = function () {
+                var duration = 0;
+                this._canvases.forEach(function (canvas) {
+                    var d = canvas.getDuration();
+                    if (d) {
+                        duration += d;
+                    }
+                });
+                return duration;
+            };
+            VirtualCanvas.prototype.getWidth = function () {
+                if (this._canvases.length) {
+                    return this._canvases[0].getWidth();
+                }
+                return 0;
+            };
+            VirtualCanvas.prototype.getHeight = function () {
+                if (this._canvases.length) {
+                    return this._canvases[0].getHeight();
+                }
+                return 0;
+            };
+            return VirtualCanvas;
+        }());
+        AVComponentObjects.VirtualCanvas = VirtualCanvas;
+    })(AVComponentObjects = IIIFComponents.AVComponentObjects || (IIIFComponents.AVComponentObjects = {}));
 })(IIIFComponents || (IIIFComponents = {}));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})

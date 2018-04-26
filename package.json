@@ -21,7 +21,7 @@
     "gulp": "^3.9.1",
     "gulp-tasks": "iiif-commons/gulp-tasks#v1.0.7",
     "jquery-ui": "^1.12.1",
-    "manifesto.js": "2.2.18",
+    "manifesto.js": "2.2.20",
     "@iiif/manifold": "1.2.17"
   },
   "dependencies": {
