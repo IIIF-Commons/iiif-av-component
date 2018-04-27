@@ -33,7 +33,6 @@ namespace IIIFComponents.AVComponentObjects {
                     
                 });
 
-                // shift the targets forward by the total previous canvas durations
                 items.forEach((item: Manifesto.IAnnotation) => {
                     const target: string | null = item.getTarget();
 

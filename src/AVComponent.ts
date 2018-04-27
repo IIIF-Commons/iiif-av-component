@@ -279,16 +279,22 @@ namespace IIIFComponents {
     
                 const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
                 
-                const id: string | null = canvasInstance.getCanvasId();
-
-                if (id) {
-                    const canvasInstanceId: string = Manifesto.Utils.normaliseUrl(id);
-
-                    if (canvasInstanceId === canvasId) {
+                // if the canvasinstance has a virtual canvas
+                if (canvasInstance.isVirtual()) {
+                    if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
                         return canvasInstance;
                     }
+                } else {
+                    const id: string | undefined = canvasInstance.getCanvasId();
+
+                    if (id) {
+                        const canvasInstanceId: string = Manifesto.Utils.normaliseUrl(id);
+
+                        if (canvasInstanceId === canvasId) {
+                            return canvasInstance;
+                        }
+                    }
                 }
-                
             }
     
             return null;

@@ -112,9 +112,11 @@ declare namespace IIIFComponents {
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
+        isVirtual(): boolean;
+        includesVirtualSubCanvas(canvasId: string): boolean;
         set(data: IAVCanvasInstanceData): void;
         private _render();
-        getCanvasId(): string | null;
+        getCanvasId(): string | undefined;
         private _updateHoverPreview(e, $container, duration);
         private _previous(isDouble);
         private _next();

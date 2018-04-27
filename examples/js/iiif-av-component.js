@@ -228,11 +228,19 @@ var IIIFComponents;
             canvasId = Manifesto.Utils.normaliseUrl(canvasId);
             for (var i = 0; i < this.canvasInstances.length; i++) {
                 var canvasInstance = this.canvasInstances[i];
-                var id = canvasInstance.getCanvasId();
-                if (id) {
-                    var canvasInstanceId = Manifesto.Utils.normaliseUrl(id);
-                    if (canvasInstanceId === canvasId) {
+                // if the canvasinstance has a virtual canvas
+                if (canvasInstance.isVirtual()) {
+                    if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
                         return canvasInstance;
+                    }
+                }
+                else {
+                    var id = canvasInstance.getCanvasId();
+                    if (id) {
+                        var canvasInstanceId = Manifesto.Utils.normaliseUrl(id);
+                        if (canvasInstanceId === canvasId) {
+                            return canvasInstance;
+                        }
                     }
                 }
             }
@@ -499,7 +507,7 @@ var IIIFComponents;
             if (this._data && this._data.helper && this._data.canvas) {
                 var ranges_1 = [];
                 // if the canvas is virtual, get the ranges for all sub canvases
-                if (this._data.canvas instanceof IIIFComponents.AVComponentObjects.VirtualCanvas) {
+                if (this.isVirtual()) {
                     this._data.canvas.canvases.forEach(function (canvas) {
                         if (_this._data && _this._data.helper) {
                             var r = _this._data.helper.getCanvasRanges(canvas);
@@ -685,6 +693,20 @@ var IIIFComponents;
                 this._renderMediaElement(itemData);
             }
         };
+        CanvasInstance.prototype.isVirtual = function () {
+            return this._data.canvas instanceof IIIFComponents.AVComponentObjects.VirtualCanvas;
+        };
+        CanvasInstance.prototype.includesVirtualSubCanvas = function (canvasId) {
+            if (this.isVirtual() && this._data.canvas && this._data.canvas.canvases) {
+                for (var i = 0; i < this._data.canvas.canvases.length; i++) {
+                    var canvas = this._data.canvas.canvases[i];
+                    if (Manifesto.Utils.normaliseUrl(canvas.id) === canvasId) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
         CanvasInstance.prototype.set = function (data) {
             var oldData = Object.assign({}, this._data);
             this._data = Object.assign(this._data, data);
@@ -783,7 +805,7 @@ var IIIFComponents;
             if (this._data && this._data.canvas) {
                 return this._data.canvas.id;
             }
-            return null;
+            return undefined;
         };
         CanvasInstance.prototype._updateHoverPreview = function (e, $container, duration) {
             var offset = $container.offset();
@@ -1481,7 +1503,6 @@ var IIIFComponents;
                             }
                         }
                     });
-                    // shift the targets forward by the total previous canvas durations
                     items.forEach(function (item) {
                         var target = item.getTarget();
                         if (target) {

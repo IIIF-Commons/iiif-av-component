@@ -1,5 +1,7 @@
 namespace IIIFComponents {
 
+    type VirtualCanvas = AVComponentObjects.VirtualCanvas;
+
     export class CanvasInstance extends _Components.BaseComponent {
 
         private _$canvasContainer: JQuery;
@@ -110,8 +112,8 @@ namespace IIIFComponents {
                 const ranges: Manifesto.IRange[] = [];
 
                 // if the canvas is virtual, get the ranges for all sub canvases
-                if (this._data.canvas instanceof AVComponentObjects.VirtualCanvas) {
-                    this._data.canvas.canvases.forEach((canvas: Manifesto.ICanvas) => {
+                if (this.isVirtual()) {
+                    (<VirtualCanvas>this._data.canvas).canvases.forEach((canvas: Manifesto.ICanvas) => {
                         if (this._data && this._data.helper) {
                             const r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
                             ranges.push(...r);
@@ -342,6 +344,23 @@ namespace IIIFComponents {
             }
         }
 
+        public isVirtual(): boolean {
+            return this._data.canvas instanceof AVComponentObjects.VirtualCanvas;
+        }
+
+        public includesVirtualSubCanvas(canvasId: string): boolean {
+            if (this.isVirtual() && this._data.canvas && (<VirtualCanvas>this._data.canvas).canvases) {
+                for (let i = 0; i < (<VirtualCanvas>this._data.canvas).canvases.length; i++) {
+                    const canvas: Manifesto.ICanvas = (<VirtualCanvas>this._data.canvas).canvases[i];
+                    if (Manifesto.Utils.normaliseUrl(canvas.id) === canvasId) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public set(data: IAVCanvasInstanceData): void {
 
             const oldData: IAVCanvasInstanceData = Object.assign({}, this._data);
@@ -459,12 +478,13 @@ namespace IIIFComponents {
             this._updateDurationDisplay();
         }
 
-        public getCanvasId(): string | null {
+        public getCanvasId(): string | undefined {
+
             if (this._data && this._data.canvas) {
-                return this._data.canvas.id;
+                return this._data.canvas.id;           
             }
 
-            return null;
+            return undefined;
         }
 
         private _updateHoverPreview(e: any, $container: JQuery, duration: number): void {
