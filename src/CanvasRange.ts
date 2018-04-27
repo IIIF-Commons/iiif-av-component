@@ -15,11 +15,12 @@ namespace IIIFComponents.AVComponentObjects {
             const canvasId: string = range.canvases[0];
 
             // get the temporal part of the canvas id
-            const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
+            let temporal: number[] | null = AVComponentUtils.Utils.getTemporalComponent(canvasId);
+            //const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
 
             if (temporal && temporal.length > 1) {
-                const rangeTiming: string[] = temporal[1].split(',');
-                this.duration = new Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
+                //const rangeTiming: string[] = temporal[1].split(',');
+                this.duration = new Duration(Number(temporal[0]), Number(temporal[1]));
             }
 
             this.nonav = range.getProperty('behavior') === 'no-nav';

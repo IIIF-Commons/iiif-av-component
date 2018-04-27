@@ -511,6 +511,14 @@ var IIIFComponents;
                     this._data.canvas.canvases.forEach(function (canvas) {
                         if (_this._data && _this._data.helper) {
                             var r = _this._data.helper.getCanvasRanges(canvas);
+                            // shift the range targets forward by the duration of their previous canvases
+                            r.forEach(function (range) {
+                                if (range.canvases && range.canvases.length) {
+                                    for (var i = 0; i < range.canvases.length; i++) {
+                                        range.canvases[i] = IIIFComponents.AVComponentUtils.Utils.retargetTemporalComponent(_this._data.canvas.canvases, range.__jsonld.items[i].id);
+                                    }
+                                }
+                            });
                             ranges_1.push.apply(ranges_1, r);
                         }
                     });
@@ -1375,10 +1383,11 @@ var IIIFComponents;
                 this.rangeId = range.id;
                 var canvasId = range.canvases[0];
                 // get the temporal part of the canvas id
-                var temporal = /t=([^&]+)/g.exec(canvasId);
+                var temporal = IIIFComponents.AVComponentUtils.Utils.getTemporalComponent(canvasId);
+                //const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
                 if (temporal && temporal.length > 1) {
-                    var rangeTiming = temporal[1].split(',');
-                    this.duration = new AVComponentObjects.Duration(Number(rangeTiming[0]), Number(rangeTiming[1]));
+                    //const rangeTiming: string[] = temporal[1].split(',');
+                    this.duration = new AVComponentObjects.Duration(Number(temporal[0]), Number(temporal[1]));
                 }
                 this.nonav = range.getProperty('behavior') === 'no-nav';
             }
@@ -1453,6 +1462,31 @@ var IIIFComponents;
                 }
                 return t;
             };
+            Utils.retargetTemporalComponent = function (canvases, target) {
+                var t = AVComponentUtils.Utils.getTemporalComponent(target);
+                if (t) {
+                    var offset = 0;
+                    var targetWithoutTemporal = target.substr(0, target.indexOf('#'));
+                    // loop through canvases adding up their durations until we reach the targeted canvas
+                    for (var i = 0; i < canvases.length; i++) {
+                        var canvas = canvases[i];
+                        if (!canvas.id.includes(targetWithoutTemporal)) {
+                            var duration = canvas.getDuration();
+                            if (duration) {
+                                offset += duration;
+                            }
+                        }
+                        else {
+                            // we've reached the canvas whose target we're adjusting
+                            break;
+                        }
+                    }
+                    t[0] = Number(t[0]) + offset;
+                    t[1] = Number(t[1]) + offset;
+                    return targetWithoutTemporal + '#t=' + t[0] + ',' + t[1];
+                }
+                return undefined;
+            };
             Utils.formatTime = function (aNumber) {
                 var hours, minutes, seconds, hourValue;
                 seconds = Math.ceil(aNumber);
@@ -1506,28 +1540,7 @@ var IIIFComponents;
                     items.forEach(function (item) {
                         var target = item.getTarget();
                         if (target) {
-                            var t = IIIFComponents.AVComponentUtils.Utils.getTemporalComponent(target);
-                            if (t) {
-                                var offset = 0;
-                                var targetWithoutTemporal = target.substr(0, target.indexOf('#'));
-                                // loop through canvases adding up their durations until we reach the targeted canvas
-                                for (var i = 0; i < _this.canvases.length; i++) {
-                                    var canvas_1 = _this.canvases[i];
-                                    if (!canvas_1.id.includes(targetWithoutTemporal)) {
-                                        var duration = canvas_1.getDuration();
-                                        if (duration) {
-                                            offset += duration;
-                                        }
-                                    }
-                                    else {
-                                        // we've reached the canvas whose target we're adjusting
-                                        break;
-                                    }
-                                }
-                                t[0] = Number(t[0]) + offset;
-                                t[1] = Number(t[1]) + offset;
-                                item.__jsonld.target = targetWithoutTemporal + '#t=' + t[0] + ',' + t[1];
-                            }
+                            item.__jsonld.target = IIIFComponents.AVComponentUtils.Utils.retargetTemporalComponent(_this.canvases, target);
                         }
                     });
                     annotations.push.apply(annotations, items);

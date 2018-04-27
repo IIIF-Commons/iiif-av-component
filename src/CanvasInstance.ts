@@ -116,6 +116,18 @@ namespace IIIFComponents {
                     (<VirtualCanvas>this._data.canvas).canvases.forEach((canvas: Manifesto.ICanvas) => {
                         if (this._data && this._data.helper) {
                             const r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
+
+                            // shift the range targets forward by the duration of their previous canvases
+                            r.forEach((range: Manifesto.IRange) => {
+                                if (range.canvases && range.canvases.length) {
+                                    
+                                    for (let i = 0; i < range.canvases.length; i++) {
+                                        range.canvases[i] = <string>AVComponentUtils.Utils.retargetTemporalComponent((<VirtualCanvas>this._data.canvas).canvases, range.__jsonld.items[i].id);
+                                    }
+
+                                }
+                            });
+
                             ranges.push(...r);
                         }
                     });

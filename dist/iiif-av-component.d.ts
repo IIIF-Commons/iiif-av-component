@@ -222,12 +222,14 @@ declare namespace IIIFComponents {
     }
 }
 
+/// <reference types="manifesto.js" />
 declare namespace IIIFComponents.AVComponentUtils {
     class Utils {
         private static _compare(a, b);
         static diff(a: any, b: any): string[];
         static getSpatialComponent(target: string): number[] | null;
         static getTemporalComponent(target: string): number[] | null;
+        static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined;
         static formatTime(aNumber: number): string;
     }
 }
