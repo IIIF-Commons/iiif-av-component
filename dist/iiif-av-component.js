@@ -1381,13 +1381,24 @@ var IIIFComponents;
                     return;
                 }
                 this.rangeId = range.id;
-                var canvasId = range.canvases[0];
-                // get the temporal part of the canvas id
-                var temporal = IIIFComponents.AVComponentUtils.Utils.getTemporalComponent(canvasId);
-                //const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(canvasId);
-                if (temporal && temporal.length > 1) {
-                    //const rangeTiming: string[] = temporal[1].split(',');
-                    this.duration = new AVComponentObjects.Duration(Number(temporal[0]), Number(temporal[1]));
+                // if there are multiple canvases, get the start of the first canvas,
+                // and the end of the last canvas.
+                var start;
+                var end;
+                for (var i = 0; i < range.canvases.length; i++) {
+                    var canvas = range.canvases[i];
+                    var temporal = IIIFComponents.AVComponentUtils.Utils.getTemporalComponent(canvas);
+                    if (temporal && temporal.length > 1) {
+                        if (i === 0) {
+                            start = Number(temporal[0]);
+                        }
+                        if (i === range.canvases.length - 1) {
+                            end = Number(temporal[1]);
+                        }
+                    }
+                }
+                if (start && end) {
+                    this.duration = new AVComponentObjects.Duration(start, end);
                 }
                 this.nonav = range.getProperty('behavior') === 'no-nav';
             }
