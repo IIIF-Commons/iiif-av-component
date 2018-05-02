@@ -5,7 +5,8 @@ namespace IIIFComponents.AVComponentObjects {
         public id: string;
 
         constructor() {
-            
+            // generate an id
+            this.id = String(new Date().valueOf());
         }
 
         public addCanvas(canvas: Manifesto.ICanvas): void {

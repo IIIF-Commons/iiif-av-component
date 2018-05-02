@@ -615,9 +615,10 @@ var IIIFComponents;
             // create annotations
             this._contentAnnotations = [];
             var items = this._data.canvas.getContent(); // (<any>this._data.canvas).__jsonld.content[0].items;
-            if (items.length === 1) {
-                this._$timelineItemContainer.hide();
-            }
+            // always hide timelineItemContainer for now
+            //if (items.length === 1) {
+            this._$timelineItemContainer.hide();
+            //}
             for (var i = 0; i < items.length; i++) {
                 var item = items[i];
                 /*
@@ -1528,6 +1529,8 @@ var IIIFComponents;
         var VirtualCanvas = /** @class */ (function () {
             function VirtualCanvas() {
                 this.canvases = [];
+                // generate an id
+                this.id = String(new Date().valueOf());
             }
             VirtualCanvas.prototype.addCanvas = function (canvas) {
                 this.canvases.push(canvas);

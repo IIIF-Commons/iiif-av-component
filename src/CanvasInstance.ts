@@ -240,9 +240,10 @@ namespace IIIFComponents {
 
             const items: Manifesto.IAnnotation[] = this._data.canvas.getContent();// (<any>this._data.canvas).__jsonld.content[0].items;
 
-            if (items.length === 1) {
+            // always hide timelineItemContainer for now
+            //if (items.length === 1) {
                 this._$timelineItemContainer.hide();
-            }
+            //}
 
             for (let i = 0; i < items.length; i++) {
 
