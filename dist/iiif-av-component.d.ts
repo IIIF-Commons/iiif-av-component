@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.37 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.39 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -112,9 +112,11 @@ declare namespace IIIFComponents {
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
+        isVirtual(): boolean;
+        includesVirtualSubCanvas(canvasId: string): boolean;
         set(data: IAVCanvasInstanceData): void;
         private _render();
-        getCanvasId(): string | null;
+        getCanvasId(): string | undefined;
         private _updateHoverPreview(e, $container, duration);
         private _previous(isDouble);
         private _next();
@@ -176,7 +178,7 @@ declare namespace IIIFComponents.AVComponentObjects {
 /// <reference types="manifesto.js" />
 declare namespace IIIFComponents {
     interface IAVCanvasInstanceData extends IAVComponentData {
-        canvas?: Manifesto.ICanvas;
+        canvas?: Manifesto.ICanvas | AVComponentObjects.VirtualCanvas;
         range?: AVComponentObjects.CanvasRange;
         visible?: boolean;
         volume?: number;
@@ -220,10 +222,28 @@ declare namespace IIIFComponents {
     }
 }
 
+/// <reference types="manifesto.js" />
 declare namespace IIIFComponents.AVComponentUtils {
     class Utils {
         private static _compare(a, b);
         static diff(a: any, b: any): string[];
+        static getSpatialComponent(target: string): number[] | null;
+        static getTemporalComponent(target: string): number[] | null;
+        static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined;
         static formatTime(aNumber: number): string;
+    }
+}
+
+/// <reference types="manifesto.js" />
+declare namespace IIIFComponents.AVComponentObjects {
+    class VirtualCanvas {
+        canvases: Manifesto.ICanvas[];
+        id: string;
+        constructor();
+        addCanvas(canvas: Manifesto.ICanvas): void;
+        getContent(): Manifesto.IAnnotation[];
+        getDuration(): number | null;
+        getWidth(): number;
+        getHeight(): number;
     }
 }

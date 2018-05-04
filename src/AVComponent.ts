@@ -158,16 +158,34 @@ namespace IIIFComponents {
 
             this._$element.empty();
 
-            const canvases: Manifesto.ICanvas[] = this._getCanvases();
+            // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
+            if (this._data && this._data.helper) {
 
-			canvases.forEach((canvas: Manifesto.ICanvas) => {
-                this._initCanvas(canvas);
-            });
+                const behavior: Manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
 
-            if (this.canvasInstances.length > 0) {
-                this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
+                const canvases: Manifesto.ICanvas[] = this._getCanvases();
+
+                if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
+
+                    const virtualCanvas: AVComponentObjects.VirtualCanvas = new AVComponentObjects.VirtualCanvas();
+
+                    canvases.forEach((canvas: Manifesto.ICanvas) => {
+                        virtualCanvas.addCanvas(canvas);
+                    });
+
+                    this._initCanvas(virtualCanvas);
+
+                } else {
+
+                    canvases.forEach((canvas: Manifesto.ICanvas) => {
+                        this._initCanvas(canvas);
+                    });
+                }
+
+                if (this.canvasInstances.length > 0) {
+                    this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
+                }
             }
-
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {
@@ -178,7 +196,7 @@ namespace IIIFComponents {
             return [];
         }
 
-        private _initCanvas(canvas: Manifesto.ICanvas): void {
+        private _initCanvas(canvas: Manifesto.ICanvas | AVComponentObjects.VirtualCanvas): void {
 
             const canvasInstance: CanvasInstance = new CanvasInstance({
                 target: document.createElement('div'),
@@ -261,16 +279,22 @@ namespace IIIFComponents {
     
                 const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
                 
-                const id: string | null = canvasInstance.getCanvasId();
-
-                if (id) {
-                    const canvasInstanceId: string = Manifesto.Utils.normaliseUrl(id);
-
-                    if (canvasInstanceId === canvasId) {
+                // if the canvasinstance has a virtual canvas
+                if (canvasInstance.isVirtual()) {
+                    if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
                         return canvasInstance;
                     }
+                } else {
+                    const id: string | undefined = canvasInstance.getCanvasId();
+
+                    if (id) {
+                        const canvasInstanceId: string = Manifesto.Utils.normaliseUrl(id);
+
+                        if (canvasInstanceId === canvasId) {
+                            return canvasInstance;
+                        }
+                    }
                 }
-                
             }
     
             return null;

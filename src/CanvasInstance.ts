@@ -1,5 +1,7 @@
 namespace IIIFComponents {
 
+    type VirtualCanvas = AVComponentObjects.VirtualCanvas;
+
     export class CanvasInstance extends _Components.BaseComponent {
 
         private _$canvasContainer: JQuery;
@@ -105,9 +107,34 @@ namespace IIIFComponents {
             this._$canvasHoverPreview.hide();
             this._$rangeHoverPreview.hide();
 
-            if (this._data.helper && this._data.canvas) {
-                const ranges: Manifesto.IRange[] = this._data.helper.getCanvasRanges(this._data.canvas);
+            if (this._data && this._data.helper && this._data.canvas) {
 
+                const ranges: Manifesto.IRange[] = [];
+
+                // if the canvas is virtual, get the ranges for all sub canvases
+                if (this.isVirtual()) {
+                    (<VirtualCanvas>this._data.canvas).canvases.forEach((canvas: Manifesto.ICanvas) => {
+                        if (this._data && this._data.helper) {
+                            const r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
+
+                            // shift the range targets forward by the duration of their previous canvases
+                            r.forEach((range: Manifesto.IRange) => {
+                                if (range.canvases && range.canvases.length) {
+                                    
+                                    for (let i = 0; i < range.canvases.length; i++) {
+                                        range.canvases[i] = <string>AVComponentUtils.Utils.retargetTemporalComponent((<VirtualCanvas>this._data.canvas).canvases, range.__jsonld.items[i].id);
+                                    }
+
+                                }
+                            });
+
+                            ranges.push(...r);
+                        }
+                    });
+                } else {
+                    ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Manifesto.ICanvas));
+                }
+  
                 ranges.forEach((range: Manifesto.IRange) => {
                     this._ranges.push(new AVComponentObjects.CanvasRange(range));
                 });
@@ -213,9 +240,10 @@ namespace IIIFComponents {
 
             const items: Manifesto.IAnnotation[] = this._data.canvas.getContent();// (<any>this._data.canvas).__jsonld.content[0].items;
 
-            if (items.length === 1) {
+            // always hide timelineItemContainer for now
+            //if (items.length === 1) {
                 this._$timelineItemContainer.hide();
-            }
+            //}
 
             for (let i = 0; i < items.length; i++) {
 
@@ -273,31 +301,23 @@ namespace IIIFComponents {
                     return;
                 }
 
-                const spatial: RegExpExecArray | null = /xywh=([^&]+)/g.exec(target);
-                const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(target);
+                let xywh: number[] | null = AVComponentUtils.Utils.getSpatialComponent(target);
+                let t: number[] | null = AVComponentUtils.Utils.getTemporalComponent(target);
 
-                let xywh;
-
-                if (spatial && spatial[1]) {
-                    xywh = spatial[1].split(',');
-                } else {
+                if (!xywh) {
                     xywh = [0, 0, this._canvasWidth, this._canvasHeight];
                 }
 
-                let t;
-
-                if (temporal && temporal[1]) {
-                    t = temporal[1].split(',');
-                } else {
+                if (!t) {
                     t = [0, this._canvasClockDuration];
                 }
 
-                const positionLeft = parseInt(<string>xywh[0]),
-                    positionTop = parseInt(<string>xywh[1]),
-                    mediaWidth = parseInt(<string>xywh[2]),
-                    mediaHeight = parseInt(<string>xywh[3]),
-                    startTime = parseInt(<string>t[0]),
-                    endTime = parseInt(<string>t[1]);
+                const positionLeft = parseInt(String(xywh[0])),
+                    positionTop = parseInt(String(xywh[1])),
+                    mediaWidth = parseInt(String(xywh[2])),
+                    mediaHeight = parseInt(String(xywh[3])),
+                    startTime = parseInt(String(t[0])),
+                    endTime = parseInt(String(t[1]));
 
                 const percentageTop = this._convertToPercentage(positionTop, this._canvasHeight),
                     percentageLeft = this._convertToPercentage(positionLeft, this._canvasWidth),
@@ -335,6 +355,23 @@ namespace IIIFComponents {
 
                 this._renderMediaElement(itemData);
             }
+        }
+
+        public isVirtual(): boolean {
+            return this._data.canvas instanceof AVComponentObjects.VirtualCanvas;
+        }
+
+        public includesVirtualSubCanvas(canvasId: string): boolean {
+            if (this.isVirtual() && this._data.canvas && (<VirtualCanvas>this._data.canvas).canvases) {
+                for (let i = 0; i < (<VirtualCanvas>this._data.canvas).canvases.length; i++) {
+                    const canvas: Manifesto.ICanvas = (<VirtualCanvas>this._data.canvas).canvases[i];
+                    if (Manifesto.Utils.normaliseUrl(canvas.id) === canvasId) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public set(data: IAVCanvasInstanceData): void {
@@ -454,12 +491,13 @@ namespace IIIFComponents {
             this._updateDurationDisplay();
         }
 
-        public getCanvasId(): string | null {
+        public getCanvasId(): string | undefined {
+
             if (this._data && this._data.canvas) {
-                return this._data.canvas.id;
+                return this._data.canvas.id;           
             }
 
-            return null;
+            return undefined;
         }
 
         private _updateHoverPreview(e: any, $container: JQuery, duration: number): void {

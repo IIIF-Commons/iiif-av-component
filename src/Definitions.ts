@@ -8,5 +8,10 @@ interface Array<T> {
     includes(searchElement: T, fromIndex?: number): boolean;
 }
 
+interface Window {
+    MediaSource: any;
+    WebKitMediaSource: any;
+}
+
 declare var dashjs: any;
 declare var Hls: any;
