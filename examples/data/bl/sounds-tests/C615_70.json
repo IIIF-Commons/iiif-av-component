@@ -33,88 +33,85 @@
 	 	 	"value":{"en":["The British Library, 2018"]}
 	 	}
 	],
-	"logo":{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"},
-	"attribution":{"en":["<span>Rights unassigned - staff access only</span>"]},
-	"sequences": [
-	 	{
-	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000001",
-	 	 	"type":"Sequence",
-	 	 	"canvases" : [
-	 	 	 	{
-	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004",
-	 	 	 	 	"type":"Canvas",
-	 	 	 	 	"label":{"en":["Tape 1 Side 1"]},
-	 	 	 	 	"duration": 6264.04,
-	 	 	 	 	"content": [
-	 	 	 	 	 	{
-	 	 	 	 	 	 	"type": "AnnotationPage",
-	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004/anno1",
-	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"type":"Annotation",
-	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004/anno1/1",
-	 	 	 	 	 	 	 	 	"motivation":"painting",
-	 	 	 	 	 	 	 	 	"timeMode":"trim",
-	 	 	 	 	 	 	 	 	"body": [
-	 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	 	"type":"Choice",
-	 	 	 	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	 	 	 	"id":"http://resources.digirati.com/bl/C615_70/vdc_100055540263.0x000024.mp4",
-	 	 	 	 	 	 	 	 	 	 	 	 	"type":"Audio",
-	 	 	 	 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
-	 	 	 	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	 	"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004"
-	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	]
-	 	 	 	 	 	}
-	 	 	 	 	]
-	 	 	 	},
-	 	 	 	{
-	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006",
-	 	 	 	 	"type":"Canvas",
-	 	 	 	 	"label":{"en":["Tape 2 Side 1"]},
-	 	 	 	 	"duration": 7251.2,
-	 	 	 	 	"content": [
-	 	 	 	 	 	{
-	 	 	 	 	 	 	"type": "AnnotationPage",
-	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006/anno2",
-	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"type":"Annotation",
-	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006/anno2/1",
-	 	 	 	 	 	 	 	 	"motivation":"painting",
-	 	 	 	 	 	 	 	 	"timeMode":"trim",
-	 	 	 	 	 	 	 	 	"body": [
-	 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	 	"type":"Choice",
-	 	 	 	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	 	 	 	"id":"http://resources.digirati.com/bl/C615_70/vdc_100055540263.0x000026.mp4",
-	 	 	 	 	 	 	 	 	 	 	 	 	"type":"Audio",
-	 	 	 	 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
-	 	 	 	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	 	"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006"
-	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	]
-	 	 	 	 	 	}
-	 	 	 	 	]
-	 	 	 	}
-	 	 	]
-	 	}
+	"logo":{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"},    
+	"requiredStatement": {
+        "label": { "en": [ "Attribution" ] },
+        "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
+    },
+	"items" : [
+		{
+			"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004",
+			"type":"Canvas",
+			"label":{"en":["Tape 1 Side 1"]},
+			"duration": 6264.04,
+			"items": [
+				{
+					"type": "AnnotationPage",
+					"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004/anno1",
+					"items": [
+						{
+							"type":"Annotation",
+							"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004/anno1/1",
+							"motivation":"painting",
+							"timeMode":"trim",
+							"body": [
+								{
+									"type":"Choice",
+									"items": [
+										{
+											"id":"http://resources.digirati.com/bl/C615_70/vdc_100055540263.0x000024.mp4",
+											"type":"Audio",
+											"format":"audio/mp4"
+										}
+									]
+								}
+							],
+							"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006",
+			"type":"Canvas",
+			"label":{"en":["Tape 2 Side 1"]},
+			"duration": 7251.2,
+			"items": [
+				{
+					"type": "AnnotationPage",
+					"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006/anno2",
+					"items": [
+						{
+							"type":"Annotation",
+							"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006/anno2/1",
+							"motivation":"painting",
+							"timeMode":"trim",
+							"body": [
+								{
+									"type":"Choice",
+									"items": [
+										{
+											"id":"http://resources.digirati.com/bl/C615_70/vdc_100055540263.0x000026.mp4",
+											"type":"Audio",
+											"format":"audio/mp4"
+										}
+									]
+								}
+							],
+							"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006"
+						}
+					]
+				}
+			]
+		}
 	],
 	"structures": [
 		{
 			"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/top",
 			"label":{"en":["Tamas Vasary piano"]},
 			"type":"Range",
-			"members": [
+			"items": [
 	 	 	 	 	{
 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000007",
 	 	 	 	 	 	"type":"Range",
@@ -146,24 +143,8 @@
 	 	 	 	 	 	 	}
 	 	 	 	 	 	],
 	 	 	 	 	 	
-	 	 	 	 	 	"members": [
-	 	 	 	 	 	 	
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=31.28,3166.84",
-	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=15.16,3286.28",
-	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=3298.6,3524.6",
-	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=3621.8,3750.28",
-	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	},
+	 	 	 	 	 	"items": [
+								 
 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000008",
 	 	 	 	 	 	 	 	"type":"Range",
@@ -195,7 +176,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=31.28,888.8",
@@ -234,7 +215,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=888.8,2109",
@@ -273,7 +254,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=2109,3159.76",
@@ -312,7 +293,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=15.16,1821.36",
@@ -351,7 +332,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=1821.36,2037.88",
@@ -390,7 +371,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2037.88,2244.68",
@@ -429,7 +410,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2244.68,2536.12",
@@ -468,7 +449,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2536.12,2908.2",
@@ -507,7 +488,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2908.2,3286.28",
@@ -546,7 +527,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=3298.6,3524.6",
@@ -585,7 +566,7 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"members": [
+	 	 	 	 	 	 	 	"items": [
 	 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=3621.8,3750.28",

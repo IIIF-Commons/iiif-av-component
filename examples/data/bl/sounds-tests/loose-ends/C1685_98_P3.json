@@ -20,7 +20,7 @@
             "type": "Canvas",
             "label": { "en": [ "Tape 1 Side 1" ] },
             "duration": 3723.4,
-            "content": [
+            "items": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004/anno",
                     "type": "AnnotationPage",
@@ -33,14 +33,14 @@
                             "timeMode": "trim",
                             "body": [
                                 {
+                                    "type": "Choice",
                                     "items": [
                                         {
-                                            "format": "audio/mp4",
                                             "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
-                                            "type": "Audio"
+                                            "type": "Audio",
+                                            "format": "audio/mp4"
                                         }
-                                    ],
-                                    "type": "Choice"
+                                    ]
                                 }
                             ]
                         }
@@ -53,7 +53,7 @@
             "type": "Canvas",
             "label": "Tape 1 Side 2",
             "duration": 3723.4,
-            "content": [
+            "items": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005/anno",
                     "type": "AnnotationPage",
@@ -66,14 +66,14 @@
                             "timeMode": "trim",
                             "body": [
                                 {
+                                    "type": "Choice",
                                     "items": [
                                         {
                                             "format": "audio/mp4",
                                             "id": "http://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
                                             "type": "Audio"
                                         }
-                                    ],
-                                    "type": "Choice"
+                                    ]
                                 }
                             ]
                         }
@@ -81,7 +81,6 @@
                 }
             ]
         }
-
     ],
     "structures": [
         {

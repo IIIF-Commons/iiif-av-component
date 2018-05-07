@@ -1,1389 +1,1114 @@
 {
     "@context": "http://iiif.io/api/presentation/3/context.json",
-    "attribution": {
-        "en": [
-            "<span>Rights unassigned - staff access only</span>"
-        ]
-    },
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C465_13.json",
-    "label": {
-        "en": [
-            "C465/13/01-14 F5574 F5575 F5576 F5577 F5578 F5579 F5580 F5581 F5582 F5583 F5584 F5585 F5586 F5587 Jocelyn Herbert interviewed by Cathy Courtney"
-        ]
+    "requiredStatement": {
+        "label": { "en": [ "Attribution" ] },
+        "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
     },
+    "label": { "en": [ "C465/13/01-14 F5574 F5575 F5576 F5577 F5578 F5579 F5580 F5581 F5582 F5583 F5584 F5585 F5586 F5587 Jocelyn Herbert interviewed by Cathy Courtney" ] },
     "logo": {
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"
     },
     "metadata": [
         {
-            "label": {
-                "en": [
-                    "Identifier"
-                ]
-            },
-            "value": {
-                "en": [
-                    "C465/13/01-14"
-                ]
-            }
+            "label": { "en": [ "Identifier" ] },
+            "value": { "en": [ "C465/13/01-14" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Title"
-                ]
-            },
-            "value": {
-                "en": [
-                    "Jocelyn Herbert interviewed by Cathy Courtney"
-                ]
-            }
+            "label": { "en": [ "Title" ] },
+            "value": { "en": [ "Jocelyn Herbert interviewed by Cathy Courtney" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Contributor"
-                ]
-            },
-            "value": {
-                "en": [
-                    "Courtney, Cathy (sound recordist)"
-                ]
-            }
+            "label": { "en": [ "Contributor" ] },
+            "value": { "en": [ "Courtney, Cathy (sound recordist)" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Digitisation funded by"
-                ]
-            },
-            "value": {
-                "en": [
-                    "The British Library"
-                ]
-            }
+            "label": { "en": [ "Digitisation funded by" ] },
+            "value": { "en": [ "The British Library" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Digitised by"
-                ]
-            },
-            "value": {
-                "en": [
-                    "The British Library, 2018"
-                ]
-            }
+            "label": { "en": [ "Digitised by" ] },
+            "value": { "en": [ "The British Library, 2018" ] }
         }
     ],
-    "sequences": [
+    "items": [
         {
-            "canvases": [
+            "items": [
                 {
-                    "content": [
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000004/anno1",
+                    "items": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000004/anno1",
-                            "items": [
+                            "body": [
                                 {
-                                    "body": [
+                                    "items": [
                                         {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000049.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000049.mp4",
+                                            "type": "Audio"
                                         }
                                     ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000004/anno1/node-id-000002",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000004",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
+                                    "type": "Choice"
                                 }
                             ],
-                            "type": "AnnotationPage"
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000004/anno1/node-id-000002",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000004",
+                            "timeMode": "trim",
+                            "type": "Annotation"
                         }
                     ],
-                    "duration": 1859.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000004",
-                    "label": {
-                        "en": [
-                            "Tape 1 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000005/anno2",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00004b.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000005/anno2/node-id-000004",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000005",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1730.08,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000005",
-                    "label": {
-                        "en": [
-                            "Tape 1 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000007/anno3",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00004d.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000007/anno3/node-id-000006",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000007",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1863.48,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000007",
-                    "label": {
-                        "en": [
-                            "Tape 2 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000008/anno4",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00004f.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000008/anno4/node-id-000008",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000008",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1859.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000008",
-                    "label": {
-                        "en": [
-                            "Tape 2 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000a/anno5",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000051.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000a/anno5/node-id-000010",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000a",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1857.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000a",
-                    "label": {
-                        "en": [
-                            "Tape 3 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000b/anno6",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000053.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000b/anno6/node-id-000012",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000b",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1855.2,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000b",
-                    "label": {
-                        "en": [
-                            "Tape 3 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000d/anno7",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000055.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000d/anno7/node-id-000014",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000d",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1857,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000d",
-                    "label": {
-                        "en": [
-                            "Tape 4 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000e/anno8",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000057.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000e/anno8/node-id-000016",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000e",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1856.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000e",
-                    "label": {
-                        "en": [
-                            "Tape 4 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000010/anno9",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000059.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000010/anno9/node-id-000018",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000010",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1858.76,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000010",
-                    "label": {
-                        "en": [
-                            "Tape 5 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000011/anno10",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00005b.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000011/anno10/node-id-000020",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000011",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1862.36,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000011",
-                    "label": {
-                        "en": [
-                            "Tape 5 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000013/anno11",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00005d.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000013/anno11/node-id-000022",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000013",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1972.92,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000013",
-                    "label": {
-                        "en": [
-                            "Tape 6 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000014/anno12",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00005f.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000014/anno12/node-id-000024",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000014",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1859.76,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000014",
-                    "label": {
-                        "en": [
-                            "Tape 6 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000016/anno13",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000061.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000016/anno13/node-id-000026",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000016",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1864.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000016",
-                    "label": {
-                        "en": [
-                            "Tape 7 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000017/anno14",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000063.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000017/anno14/node-id-000028",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000017",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1863.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000017",
-                    "label": {
-                        "en": [
-                            "Tape 7 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000019/anno15",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000065.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000019/anno15/node-id-000030",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000019",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1862.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000019",
-                    "label": {
-                        "en": [
-                            "Tape 8 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001a/anno16",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000067.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001a/anno16/node-id-000032",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001a",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1866,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001a",
-                    "label": {
-                        "en": [
-                            "Tape 8 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001c/anno17",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000069.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001c/anno17/node-id-000034",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001c",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1858.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001c",
-                    "label": {
-                        "en": [
-                            "Tape 9 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001d/anno18",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00006b.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001d/anno18/node-id-000036",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001d",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1856.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001d",
-                    "label": {
-                        "en": [
-                            "Tape 9 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001f/anno19",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00006d.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001f/anno19/node-id-000038",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001f",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1862,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001f",
-                    "label": {
-                        "en": [
-                            "Tape 10 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000020/anno20",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00006f.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000020/anno20/node-id-000040",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000020",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1858.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000020",
-                    "label": {
-                        "en": [
-                            "Tape 10 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000022/anno21",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000071.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000022/anno21/node-id-000042",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000022",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1862.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000022",
-                    "label": {
-                        "en": [
-                            "Tape 11 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000023/anno22",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000073.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000023/anno22/node-id-000044",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000023",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1860,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000023",
-                    "label": {
-                        "en": [
-                            "Tape 11 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000025/anno23",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000075.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000025/anno23/node-id-000046",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000025",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1858.16,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000025",
-                    "label": {
-                        "en": [
-                            "Tape 12 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000026/anno24",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000077.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000026/anno24/node-id-000048",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000026",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1870,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000026",
-                    "label": {
-                        "en": [
-                            "Tape 12 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000028/anno25",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000079.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000028/anno25/node-id-000050",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000028",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1858.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000028",
-                    "label": {
-                        "en": [
-                            "Tape 13 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000029/anno26",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00007b.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000029/anno26/node-id-000052",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000029",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1864.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000029",
-                    "label": {
-                        "en": [
-                            "Tape 13 Side 2"
-                        ]
-                    },
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002/anno27",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00007d.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002/anno27/node-id-000054",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                },
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00007f.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002/anno27/node-id-000056",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 3720.96,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
-                    "label": {
-                        "en": [
-                            "Tape 14 Side 1"
-                        ]
-                    },
-                    "type": "Canvas"
+                    "type": "AnnotationPage"
                 }
             ],
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000001",
-            "type": "Sequence"
+            "duration": 1859.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000004",
+            "label": { "en": [ "Tape 1 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000005/anno2",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00004b.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000005/anno2/node-id-000004",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000005",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1730.08,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000005",
+            "label": { "en": [ "Tape 1 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000007/anno3",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00004d.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000007/anno3/node-id-000006",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000007",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1863.48,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000007",
+            "label": { "en": [ "Tape 2 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000008/anno4",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00004f.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000008/anno4/node-id-000008",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000008",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1859.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000008",
+            "label": { "en": [ "Tape 2 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000a/anno5",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000051.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000a/anno5/node-id-000010",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000a",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1857.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000a",
+            "label": { "en": [ "Tape 3 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000b/anno6",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000053.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000b/anno6/node-id-000012",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000b",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1855.2,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000b",
+            "label": { "en": [ "Tape 3 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000d/anno7",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000055.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000d/anno7/node-id-000014",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000d",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1857,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000d",
+            "label": { "en": [ "Tape 4 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000e/anno8",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000057.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000e/anno8/node-id-000016",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000e",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1856.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000e",
+            "label": { "en": [ "Tape 4 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000010/anno9",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000059.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000010/anno9/node-id-000018",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000010",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1858.76,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000010",
+            "label": { "en": [ "Tape 5 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000011/anno10",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00005b.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000011/anno10/node-id-000020",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000011",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1862.36,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000011",
+            "label": { "en": [ "Tape 5 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000013/anno11",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00005d.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000013/anno11/node-id-000022",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000013",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1972.92,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000013",
+            "label": { "en": [ "Tape 6 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000014/anno12",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00005f.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000014/anno12/node-id-000024",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000014",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1859.76,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000014",
+            "label": { "en": [ "Tape 6 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000016/anno13",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000061.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000016/anno13/node-id-000026",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000016",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1864.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000016",
+            "label": { "en": [ "Tape 7 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000017/anno14",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000063.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000017/anno14/node-id-000028",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000017",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1863.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000017",
+            "label": { "en": [ "Tape 7 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000019/anno15",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000065.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000019/anno15/node-id-000030",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000019",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1862.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000019",
+            "label": { "en": [ "Tape 8 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001a/anno16",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000067.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001a/anno16/node-id-000032",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001a",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1866,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001a",
+            "label": { "en": [ "Tape 8 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001c/anno17",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000069.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001c/anno17/node-id-000034",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001c",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1858.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001c",
+            "label": { "en": [ "Tape 9 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001d/anno18",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00006b.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001d/anno18/node-id-000036",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001d",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1856.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001d",
+            "label": { "en": [ "Tape 9 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001f/anno19",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00006d.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001f/anno19/node-id-000038",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001f",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1862,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001f",
+            "label": { "en": [ "Tape 10 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000020/anno20",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00006f.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000020/anno20/node-id-000040",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000020",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1858.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000020",
+            "label": { "en": [ "Tape 10 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000022/anno21",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000071.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000022/anno21/node-id-000042",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000022",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1862.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000022",
+            "label": { "en": [ "Tape 11 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000023/anno22",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000073.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000023/anno22/node-id-000044",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000023",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1860,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000023",
+            "label": { "en": [ "Tape 11 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000025/anno23",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000075.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000025/anno23/node-id-000046",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000025",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1858.16,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000025",
+            "label": { "en": [ "Tape 12 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000026/anno24",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000077.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000026/anno24/node-id-000048",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000026",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1870,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000026",
+            "label": { "en": [ "Tape 12 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000028/anno25",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x000079.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000028/anno25/node-id-000050",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000028",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1858.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000028",
+            "label": { "en": [ "Tape 13 Side 1" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000029/anno26",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00007b.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000029/anno26/node-id-000052",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000029",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1864.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000029",
+            "label": { "en": [ "Tape 13 Side 2" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002/anno27",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00007d.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002/anno27/node-id-000054",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        },
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C465_13/vdc_100054358191.0x00007f.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002/anno27/node-id-000056",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 3720.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
+            "label": { "en": [ "Tape 14 Side 1" ] },
+            "type": "Canvas"
         }
     ],
     "structures": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000002/top",
-            "label": {
-                "en": [
-                    "Jocelyn Herbert interviewed by Cathy Courtney"
-                ]
-            },
-            "members": [
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000004",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000005",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000007",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000008",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000a",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000b",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000d",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000e",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000010",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000011",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000013",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000014",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000016",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000017",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000019",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001a",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001c",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001d",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001f",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000020",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000022",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000023",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000025",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000026",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000028",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000029",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
-                    "type": "Canvas"
-                },
+            "label": { "en": [ "Jocelyn Herbert interviewed by Cathy Courtney" ] },
+            "items": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00002a",
-                    "label": {
-                        "en": [
-                            "Jocelyn Herbert interviewed by Cathy Courtney"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "Jocelyn Herbert interviewed by Cathy Courtney" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000004#t=0,1859.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000005#t=0,1730.08",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000007#t=0,1863.48",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000008#t=0,1859.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000a#t=0,1857.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000b#t=0,1855.2",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000d#t=0,1857",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00000e#t=0,1856.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000010#t=0,1858.76",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000011#t=0,1862.36",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000013#t=0,1972.92",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000014#t=0,1859.76",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000016#t=0,1864.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000017#t=0,1863.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000019#t=0,1862.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001a#t=0,1866",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001c#t=0,1858.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001d#t=0,1856.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x00001f#t=0,1862",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000020#t=0,1858.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000022#t=0,1862.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000023#t=0,1860",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000025#t=0,1858.16",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000026#t=0,1870",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000028#t=0,1858.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054358191.0x000029#t=0,1864.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002#t=0,1863",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002#t=0,1857.96",
-                            "type": "Canvas"
+                            "type": "Canvas",
+                            "label": { "en": [ "[TC - this needs a range with a label created for it]" ] }
                         }
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C465/13/01-14"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C465/13/01-14" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Jocelyn Herbert interviewed by Cathy Courtney"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Jocelyn Herbert interviewed by Cathy Courtney" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "interviewee's homes in London and Hampshire"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "interviewee's homes in London and Hampshire" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "Herbert, Jocelyn, 1917-2003 (speaker, female; interviewee)",
@@ -1393,23 +1118,11 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1992-05-19"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1992-05-19" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Summary"
-                                ]
-                            },
+                            "label": { "en": [ "Summary" ] },
                             "value": {
                                 "en": [
                                     "Track 1 [Tape 1 (F5574) Side A] [Session one: 1992] [Recording in JH’s London home] Names of Jocelyn Herbert [JH] siblings, Crystal, Lavender and John. JH’s grandparents, of which she knew only her maternal grandmother. Mentions JH’s father [A.P. Herbert, Alan Herbert] was looked after as a child by a housekeeper, Miss Deacon. Details maternal grandmother; upbringing of JH’s mother [Gwendolyn Quilter, Gwendolyn Herbert [QH]] and her siblings. Marriage of JH’s parents. JH’s maternal grandfather, Harry Quilter. JH’s maternal and paternal aunts and uncles. Impact of First World War on A.P. Herbert. QH’s upbringing. JH and siblings having a nanny as children. Painter, Edward Wadsworth, a family friend, his daughter Barbara Wadsworth. A.P. Herbert’s play written for his children, Fat King Mellon and Princess Caraway. Actors rehearsing A.P. Herbert’s plays coming to house in JH’s childhood. JH learning piano; mentions music at St Paul’s school, where JH was a pupil. JH left school aged fifteen, went to Paris.",
