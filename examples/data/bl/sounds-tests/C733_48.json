@@ -6,10 +6,11 @@
     },
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C733_48.json",
     "label": { "en": [ "C733/48 C733/49 C733/50 [Recordings in Soqotri / 'Survey' recordings in English]" ] },
-    "logo": {
+    "logo": [{
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"
-    },
+    }],
+    "behavior": "auto-advance",
     "metadata": [
         {
             "label": { "en": [ "Identifier" ] },

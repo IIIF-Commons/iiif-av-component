@@ -6,10 +6,11 @@
     },
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98-choice.json",
     "label": { "en": [ "C1685/98 Loose ends 17/7/99" ] },
-    "logo": {
+    "logo": [{
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"
-    },
+    }],
+    "behavior": "auto-advance",
     "metadata": [
         {
             "label": { "en": [ "Identifier" ] },

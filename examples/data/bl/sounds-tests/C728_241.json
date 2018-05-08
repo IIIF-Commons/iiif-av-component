@@ -2,6 +2,7 @@
     "@context": "http://iiif.io/api/presentation/3/context.json",
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241.json",
     "label": { "en": [ "C728/241 [Demo]" ] },
+    "behavior": "auto-advance",
     "metadata": [
         {
             "label": { "en": [ "Identifier" ] },

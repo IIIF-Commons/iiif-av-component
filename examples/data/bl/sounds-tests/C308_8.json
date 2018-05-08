@@ -13,6 +13,7 @@
             "value": { "en": [ "Brian Hayes programme" ] }
         }
     ],
+    "behavior": "auto-advance",
     "items": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",

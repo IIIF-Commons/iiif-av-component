@@ -6,10 +6,11 @@
     },
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1074_6.json",
     "label": { "en": [ "C1074/6 Igbo Iwin overlays" ] },
-    "logo": {
+    "behavior": "auto-advance",
+    "logo": [{
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"
-    },
+    }],
     "metadata": [
         {
             "label": { "en": [ "Identifier" ] },

@@ -2,6 +2,7 @@
 	"@context":"http://iiif.io/api/presentation/3/context.json",
 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/manifest.json",
 	"type":"Manifest",
+    "behavior": "auto-advance",
 	"label":{"en":["C615/70 C615/71 Tamas Vasary piano"]},
 	"metadata": [
 	 	{
@@ -33,7 +34,7 @@
 	 	 	"value":{"en":["The British Library, 2018"]}
 	 	}
 	],
-	"logo":{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"},    
+	"logo": [{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],    
 	"requiredStatement": {
         "label": { "en": [ "Attribution" ] },
         "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
