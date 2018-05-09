@@ -1,136 +1,98 @@
 {
     "@context": "http://iiif.io/api/presentation/3/context.json",
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8.json",
-    "label": {
-        "en": [
-            "C308/8 Brian Hayes programme"
-        ]
-    },
+    "type": "Manifest",
+    "label": { "en": [ "C308/8 Brian Hayes programme" ] },
     "metadata": [
         {
-            "label": {
-                "en": [
-                    "Identifier"
-                ]
-            },
-            "value": {
-                "en": [
-                    "C308/8"
-                ]
-            }
+            "label": { "en": [ "Identifier" ] },
+            "value": { "en": [ "C308/8" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Title"
-                ]
-            },
-            "value": {
-                "en": [
-                    "Brian Hayes programme"
-                ]
-            }
+            "label": { "en": [ "Title" ] },
+            "value": { "en": [ "Brian Hayes programme" ] }
         }
     ],
-    "sequences": [
+    "behavior": "auto-advance",
+    "items": [
         {
-            "canvases": [
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
+            "label": { "en": [ "Tape 1 Side 1" ] },
+            "type": "Canvas",
+            "duration": 3279.16,
+            "items": [
                 {
-                    "content": [
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004/anno",
+                    "type": "AnnotationPage",
+                    "items": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004/anno",
-                            "items": [
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004/anno/",
+                            "type": "Annotation",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
+                            "timeMode": "trim",
+                            "body": [
                                 {
-                                    "body": [
+                                    "type": "Choice",
+                                    "items": [
                                         {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C308_8/vdc_100050889733.0x00000c.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C308_8/vdc_100050889733.0x00000c.mp4",
+                                            "type": "Audio"
                                         }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
+                                    ]
                                 }
-                            ],
-                            "type": "AnnotationPage"
+                            ]
                         }
-                    ],
-                    "duration": 3279.16,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
-                    "label": "Tape 1 Side 1",
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005/anno",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C308_8/vdc_100050889733.0x00000e.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 223.32,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005",
-                    "label": "Tape 1 Side 2",
-                    "type": "Canvas"
+                    ]
                 }
-            ],
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000001",
-            "type": "Sequence"
+            ]
+        },
+        {
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005",
+            "label": { "en": [ "Tape 1 Side 2" ] },
+            "type": "Canvas",
+            "duration": 223.32,
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005/anno",
+                    "type": "AnnotationPage",
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005/anno/",
+                            "type": "Annotation",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005",
+                            "timeMode": "trim",
+                            "body": [
+                                {
+                                    "type": "Choice",
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C308_8/vdc_100050889733.0x00000e.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "structures": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000002/top",
-            "label": {
-                "en": [
-                    "Brian Hayes programme"
-                ]
-            },
-            "members": [
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005",
-                    "type": "Canvas"
-                },
+            "type": "Range",
+            "label": { "en": [ "Brian Hayes programme" ] },
+            "items": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000006",
-                    "label": {
-                        "en": [
-                            "Brian Hayes programme"
-                        ]
-                    },
-                    "members": [
+                    "type": "Range",
+                    "label": { "en": [ "Brian Hayes programme" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004#t=162.64,3441.8",
                             "type": "Canvas"
@@ -138,64 +100,28 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C308/8"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C308/8" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Brian Hayes programme"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Brian Hayes programme" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Hayes, Brian, 1937- (speaker, male; presenter)"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Hayes, Brian, 1937- (speaker, male; presenter)" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1987-05-19"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1987-05-19" ] }
                         }
-                    ],
-                    "type": "Range"
+                    ]
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000008",
-                    "label": {
-                        "en": [
-                            "[News]; excerpt"
-                        ]
-                    },
-                    "members": [
+                    "type": "Range",
+                    "label": { "en": [ "[News]; excerpt" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000005#t=0,223.32",
                             "type": "Canvas"
@@ -203,59 +129,24 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C308/8"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C308/8" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[News]; excerpt"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "[News]; excerpt" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "unidentified speaker, male (newsreader)"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "unidentified speaker, male (newsreader)" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1987-05-19?"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1987-05-19?" ] }
                         }
-                    ],
-                    "type": "Range"
+                    ]
                 }
-            ],
-            "type": "Range"
+            ]
         }
-    ],
-    "type": "Manifest"
+    ]
 }

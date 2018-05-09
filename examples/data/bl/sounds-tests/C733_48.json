@@ -1,313 +1,239 @@
 {
     "@context": "http://iiif.io/api/presentation/3/context.json",
-    "attribution": {
-        "en": [
-            "<span>Rights unassigned - staff access only</span>"
-        ]
+	"requiredStatement": {
+        "label": { "en": [ "Attribution" ] },
+        "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
     },
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C733_48.json",
-    "label": {
-        "en": [
-            "C733/48 C733/49 C733/50 [Recordings in Soqotri / 'Survey' recordings in English]"
-        ]
-    },
-    "logo": {
+    "label": { "en": [ "C733/48 C733/49 C733/50 [Recordings in Soqotri / 'Survey' recordings in English]" ] },
+    "logo": [{
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"
-    },
+    }],
+    "behavior": "auto-advance",
     "metadata": [
         {
-            "label": {
-                "en": [
-                    "Identifier"
-                ]
-            },
-            "value": {
-                "en": [
-                    "C733/48"
-                ]
-            }
+            "label": { "en": [ "Identifier" ] },
+            "value": { "en": [ "C733/48" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Title"
-                ]
-            },
-            "value": {
-                "en": [
-                    "[Recordings in Soqotri / 'Survey' recordings in English]"
-                ]
-            }
+            "label": { "en": [ "Title" ] },
+            "value": { "en": [ "[Recordings in Soqotri / 'Survey' recordings in English]" ] }
         }
     ],
-    "sequences": [
+    "items": [
         {
-            "canvases": [
+            "items": [
                 {
-                    "content": [
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004/anno",
+                    "items": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004/anno",
-                            "items": [
+                            "body": [
                                 {
-                                    "body": [
+                                    "items": [
                                         {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000033.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000033.mp4",
+                                            "type": "Audio"
                                         }
                                     ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
+                                    "type": "Choice"
                                 }
                             ],
-                            "type": "AnnotationPage"
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004/anno/",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004",
+                            "timeMode": "trim",
+                            "type": "Annotation"
                         }
                     ],
-                    "duration": 4047.12,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004",
-                    "label": "Tape 1 Side 1",
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005/anno",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000035.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 3520.08,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005",
-                    "label": "Tape 1 Side 2",
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000037.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 2239,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007",
-                    "label": "Tape 2 Side 1",
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000039.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 2223.84,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008",
-                    "label": "Tape 2 Side 2",
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a/anno",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003b.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1405.2,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a",
-                    "label": "Tape 3 Side 1",
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b/anno",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003d.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1398.84,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b",
-                    "label": "Tape 3 Side 2",
-                    "type": "Canvas"
+                    "type": "AnnotationPage"
                 }
             ],
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000001",
-            "type": "Sequence"
+            "duration": 4047.12,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004",
+            "label": "Tape 1 Side 1",
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005/anno",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000035.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005/anno/",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 3520.08,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005",
+            "label": "Tape 1 Side 2",
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000037.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno/",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 2239,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007",
+            "label": "Tape 2 Side 1",
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000039.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno/",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 2223.84,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008",
+            "label": "Tape 2 Side 2",
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a/anno",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003b.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a/anno/",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1405.2,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a",
+            "label": "Tape 3 Side 1",
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b/anno",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003d.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b/anno/",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1398.84,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b",
+            "label": "Tape 3 Side 2",
+            "type": "Canvas"
         }
     ],
     "structures": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000002/top",
-            "label": {
-                "en": [
-                    "[Recordings in Soqotri / 'Survey' recordings in English]"
-                ]
-            },
-            "members": [
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b",
-                    "type": "Canvas"
-                },
+            "label": { "en": [ "[Recordings in Soqotri / 'Survey' recordings in English]" ] },
+            "items": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000c",
-                    "label": {
-                        "en": [
-                            "[A'raf Biladik]"
-                        ]
-                    },
-                    "members": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004#t=0,2023.56",
-                            "type": "Canvas"
-                        },
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005#t=0,1760.04",
-                            "type": "Canvas"
-                        },
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=0,484.8",
-                            "type": "Canvas"
-                        },
+                    "label": { "en": [ "[A'raf Biladik]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000d",
-                            "label": {
-                                "en": [
-                                    "[A'raf Biladik, Soqotri]"
-                                ]
-                            },
-                            "members": [
+                            "label": { "en": [ "[A'raf Biladik, Soqotri]" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004#t=0,2023.56",
                                     "type": "Canvas"
@@ -315,47 +241,19 @@
                             ],
                             "metadata": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C733/48"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Identifier" ] },
+                                    "value": { "en": [ "C733/48" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "[A'raf Biladik, Soqotri]"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "[A'raf Biladik, Soqotri]" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Place"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Aden Governorate, Soqotra?"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Place" ] },
+                                    "value": { "en": [ "Aden Governorate, Soqotra?" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
+                                    "label": { "en": [ "Contributor" ] },
                                     "value": {
                                         "en": [
                                             "Wazir Al-Nubi, Ibrahim (speaker, male)",
@@ -365,28 +263,16 @@
                                     }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "1965-12-24"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Date" ] },
+                                    "value": { "en": [ "1965-12-24" ] }
                                 }
                             ],
                             "type": "Range"
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000e",
-                            "label": {
-                                "en": [
-                                    "[A'raf Biladik, Mehri]"
-                                ]
-                            },
-                            "members": [
+                            "label": { "en": [ "[A'raf Biladik, Mehri]" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005#t=0,1760.04",
                                     "type": "Canvas"
@@ -394,47 +280,19 @@
                             ],
                             "metadata": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C733/48"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Identifier" ] },
+                                    "value": { "en": [ "C733/48" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "[A'raf Biladik, Mehri]"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "[A'raf Biladik, Mehri]" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Place"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Eastern Yemen/Western Oman?"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Place" ] },
+                                    "value": { "en": [ "Eastern Yemen/Western Oman?" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
+                                    "label": { "en": [ "Contributor" ] },
                                     "value": {
                                         "en": [
                                             "unidentified (speaker, male)",
@@ -444,28 +302,16 @@
                                     }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "1965-12-24"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Date" ] },
+                                    "value": { "en": [ "1965-12-24" ] }
                                 }
                             ],
                             "type": "Range"
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000f",
-                            "label": {
-                                "en": [
-                                    "[A'raf Biladik, Soqotri, page 4]"
-                                ]
-                            },
-                            "members": [
+                            "label": { "en": [ "[A'raf Biladik, Soqotri, page 4]" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=0.36,484.8",
                                     "type": "Canvas"
@@ -473,47 +319,19 @@
                             ],
                             "metadata": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C733/49"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Identifier" ] },
+                                    "value": { "en": [ "C733/49" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "[A'raf Biladik, Soqotri, page 4]"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "[A'raf Biladik, Soqotri, page 4]" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Place"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Aden Governorate, Soqotra?"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Place" ] },
+                                    "value": { "en": [ "Aden Governorate, Soqotra?" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
+                                    "label": { "en": [ "Contributor" ] },
                                     "value": {
                                         "en": [
                                             "Bin Ali, Thani (speaker, male)",
@@ -523,16 +341,8 @@
                                     }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "1965-12-24"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Date" ] },
+                                    "value": { "en": [ "1965-12-24" ] }
                                 }
                             ],
                             "type": "Range"
@@ -540,47 +350,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C733/48"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C733/48" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[A'raf Biladik]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "[A'raf Biladik]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Aden Governorate, Soqotra? Eastern Yemen/Western Oman?"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Aden Governorate, Soqotra? Eastern Yemen/Western Oman?" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "Wazir Al-Nubi, Ibrahim (speaker, male)",
@@ -592,28 +374,16 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1965-12-24"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1965-12-24" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000016",
-                    "label": {
-                        "en": [
-                            "[Translation of Arabic to Soqotri]"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "[Translation of Arabic to Soqotri]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=487.56,526.36",
                             "type": "Canvas"
@@ -621,47 +391,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C733/49"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C733/49" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[Translation of Arabic to Soqotri]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "[Translation of Arabic to Soqotri]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Aden Governorate, Soqotra?"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Aden Governorate, Soqotra?" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "Suleiman (speaker, male)",
@@ -672,28 +414,16 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1965-12-24?"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1965-12-24?" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000018",
-                    "label": {
-                        "en": [
-                            "[Medical interview in Arabic and Soqotri]"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "[Medical interview in Arabic and Soqotri]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=526.64,1026.48",
                             "type": "Canvas"
@@ -701,47 +431,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C733/49"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C733/49" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[Medical interview in Arabic and Soqotri]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "[Medical interview in Arabic and Soqotri]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Aden Governorate, Soqotra?"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Aden Governorate, Soqotra?" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "unidentified (speaker, male; interviewee)",
@@ -755,28 +457,16 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1965-12-24"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1965-12-24" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00001a",
-                    "label": {
-                        "en": [
-                            "[Arabic to Soqotri translations]"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "[Arabic to Soqotri translations]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=1027,1392.56",
                             "type": "Canvas"
@@ -787,12 +477,8 @@
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00001b",
-                            "label": {
-                                "en": [
-                                    "[Single-word translation of Arabic to Soqotri]"
-                                ]
-                            },
-                            "members": [
+                            "label": { "en": [ "[Single-word translation of Arabic to Soqotri]" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=1027,1392.56",
                                     "type": "Canvas"
@@ -804,47 +490,19 @@
                             ],
                             "metadata": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C733/49"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Identifier" ] },
+                                    "value": { "en": [ "C733/49" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "[Single-word translation of Arabic to Soqotri]"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "[Single-word translation of Arabic to Soqotri]" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Place"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Aden Governorate, Soqotra?"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Place" ] },
+                                    "value": { "en": [ "Aden Governorate, Soqotra?" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
+                                    "label": { "en": [ "Contributor" ] },
                                     "value": {
                                         "en": [
                                             "Suleiman (speaker, male)",
@@ -854,28 +512,16 @@
                                     }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "1965-12-24?"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Date" ] },
+                                    "value": { "en": [ "1965-12-24?" ] }
                                 }
                             ],
                             "type": "Range"
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00001c",
-                            "label": {
-                                "en": [
-                                    "[Pronunciation of lateral s]"
-                                ]
-                            },
-                            "members": [
+                            "label": { "en": [ "[Pronunciation of lateral s]" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=260,276.24",
                                     "type": "Canvas"
@@ -883,47 +529,19 @@
                             ],
                             "metadata": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C733/49"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Identifier" ] },
+                                    "value": { "en": [ "C733/49" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "[Pronunciation of lateral s]"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "[Pronunciation of lateral s]" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Place"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Aden Governorate, Soqotra?"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Place" ] },
+                                    "value": { "en": [ "Aden Governorate, Soqotra?" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
+                                    "label": { "en": [ "Contributor" ] },
                                     "value": {
                                         "en": [
                                             "Suleiman (speaker, male)",
@@ -933,28 +551,16 @@
                                     }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "1965-12-24?"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Date" ] },
+                                    "value": { "en": [ "1965-12-24?" ] }
                                 }
                             ],
                             "type": "Range"
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00001d",
-                            "label": {
-                                "en": [
-                                    "[Medical phrases]"
-                                ]
-                            },
-                            "members": [
+                            "label": { "en": [ "[Medical phrases]" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=277.44,821.36",
                                     "type": "Canvas"
@@ -962,47 +568,19 @@
                             ],
                             "metadata": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C733/49"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Identifier" ] },
+                                    "value": { "en": [ "C733/49" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "[Medical phrases]"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "[Medical phrases]" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Place"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Aden Governorate, Soqotra?"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Place" ] },
+                                    "value": { "en": [ "Aden Governorate, Soqotra?" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
+                                    "label": { "en": [ "Contributor" ] },
                                     "value": {
                                         "en": [
                                             "Suleiman (speaker, male)",
@@ -1012,16 +590,8 @@
                                     }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "1965-12-24?"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Date" ] },
+                                    "value": { "en": [ "1965-12-24?" ] }
                                 }
                             ],
                             "type": "Range"
@@ -1029,47 +599,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C733/49"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C733/49" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[Arabic to Soqotri translations]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "[Arabic to Soqotri translations]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Aden Governorate, Soqotra?"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Aden Governorate, Soqotra?" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "Suleiman (speaker, male)",
@@ -1079,28 +621,16 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1965-12-24?"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1965-12-24?" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000024",
-                    "label": {
-                        "en": [
-                            "Arabic/Soqotri [Mu'allaqat of the Imru Al-Qays]"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "Arabic/Soqotri [Mu'allaqat of the Imru Al-Qays]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=821.76,992.32",
                             "type": "Canvas"
@@ -1108,47 +638,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C733/49"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C733/49" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Arabic/Soqotri [Mu'allaqat of the Imru Al-Qays]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Arabic/Soqotri [Mu'allaqat of the Imru Al-Qays]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Aden Governorate, Soqotra?"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Aden Governorate, Soqotra?" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "Unidentified (speaker, male)",
@@ -1157,28 +659,16 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1965-12-24"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1965-12-24" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000026",
-                    "label": {
-                        "en": [
-                            "Arabic/Soqotri [Page 121]"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "Arabic/Soqotri [Page 121]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=992.96,1404.92",
                             "type": "Canvas"
@@ -1186,47 +676,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C733/49"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C733/49" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Arabic/Soqotri [Page 121]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Arabic/Soqotri [Page 121]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Aden Governorate, Soqotra?"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Aden Governorate, Soqotra?" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "unidentified (speaker, male)",
@@ -1235,28 +697,16 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1965-12-24"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1965-12-24" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000028",
-                    "label": {
-                        "en": [
-                            "[Phrases from Arabic to Soqotri]"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "[Phrases from Arabic to Soqotri]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=0,736",
                             "type": "Canvas"
@@ -1264,47 +714,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C733/50"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C733/50" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[Phrases from Arabic to Soqotri]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "[Phrases from Arabic to Soqotri]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Abd Al-Kuri, Soqotra Archipelago, Aden Governorate?"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Abd Al-Kuri, Soqotra Archipelago, Aden Governorate?" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "unidentified (speaker, male)",
@@ -1315,28 +737,16 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1965-12?"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1965-12?" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00002a",
-                    "label": {
-                        "en": [
-                            "[Soqotri songs]"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "[Soqotri songs]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=736.72,1158.84",
                             "type": "Canvas"
@@ -1344,47 +754,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C733/50"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C733/50" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[Soqotri songs]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "[Soqotri songs]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Abd Al-Kuri, Soqotra Archipelago, Aden Governorate?"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Abd Al-Kuri, Soqotra Archipelago, Aden Governorate?" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "unidentified (speakers, male)",
@@ -1394,28 +776,16 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1965-12?"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1965-12?" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00002c",
-                    "label": {
-                        "en": [
-                            "[Arabic/Mahri translation]"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "[Arabic/Mahri translation]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=1159.12,1346.4",
                             "type": "Canvas"
@@ -1423,47 +793,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C733/50"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C733/50" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[Arabic/Mahri translation]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "[Arabic/Mahri translation]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Eastern Yemen/Western Oman?"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Eastern Yemen/Western Oman?" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "unidentified (speaker, male)",
@@ -1472,28 +814,16 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1965-12?"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1965-12?" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00002e",
-                    "label": {
-                        "en": [
-                            "['Survey' recordings]"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "['Survey' recordings]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a#t=1346.52,1406.32",
                             "type": "Canvas"
@@ -1505,47 +835,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C733/50"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C733/50" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "['Survey' recordings]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "['Survey' recordings]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Abd Al-Kuri, Soqotra Archipelago, Aden Governorate?"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Abd Al-Kuri, Soqotra Archipelago, Aden Governorate?" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "Johnstone, Thomas Muir, 1924-1983 (speaker, male)",
@@ -1554,16 +856,8 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "not before 1966-01-16"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "not before 1966-01-16" ] }
                         }
                     ],
                     "type": "Range"

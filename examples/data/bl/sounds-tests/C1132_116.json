@@ -3,6 +3,7 @@
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1132_116.json",
     "type":"Manifest",
     "label":{"en":["C1132/116 Cliff Richard (Heathcliff)"]},
+    "behavior": "auto-advance",
     "metadata": [
         {
             "label":{"en":["Identifier"]},
@@ -13,74 +14,68 @@
             "value":{"en":["Cliff Richard (Heathcliff)"]}
         }
     ],
-    "sequences": [
+    "items" : [
         {
-            "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000001",
-            "type":"Sequence",
-            "canvases" : [
+            "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004",
+            "type":"Canvas",
+            "label":"Tape 1 Side 1",
+            "duration": 3964.08,
+            "items": [
                 {
-                    "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004",
-                    "type":"Canvas",
-                    "label":"Tape 1 Side 1",
-                    "duration": 3964.08,
-                    "content": [
+                    "type": "AnnotationPage",
+                    "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004/anno",
+                    "items": [
                         {
-                            "type": "AnnotationPage",
-                            "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004/anno",
-                            "items": [
+                            "type":"Annotation",
+                            "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004/anno/",
+                            "motivation":"painting",
+                            "timeMode":"trim",
+                            "body": [
                                 {
-                                    "type":"Annotation",
-                                    "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004/anno/",
-                                    "motivation":"painting",
-                                    "timeMode":"trim",
-                                    "body": [
+                                    "type":"Choice",
+                                    "items": [
                                         {
-                                            "type":"Choice",
-                                            "items": [
-                                                {
-                                                    "id":"http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000c.mp4",
-                                                    "type":"Audio",
-                                                    "format":"audio/mp4"
-                                                }
-                                            ]
+                                            "id":"http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000c.mp4",
+                                            "type":"Audio",
+                                            "format":"audio/mp4"
                                         }
-                                    ],
-                                    "target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004"
+                                    ]
                                 }
-                            ]
+                            ],
+                            "target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004"
                         }
                     ]
-                },
+                }
+            ]
+        },
+        {
+            "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006",
+            "type":"Canvas",
+            "label":"Tape 2 Side 1",
+            "duration": 1490.48,
+            "items": [
                 {
-                    "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006",
-                    "type":"Canvas",
-                    "label":"Tape 2 Side 1",
-                    "duration": 1490.48,
-                    "content": [
+                    "type": "AnnotationPage",
+                    "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006/anno",
+                    "items": [
                         {
-                            "type": "AnnotationPage",
-                            "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006/anno",
-                            "items": [
+                            "type":"Annotation",
+                            "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006/anno/",
+                            "motivation":"painting",
+                            "timeMode":"trim",
+                            "body": [
                                 {
-                                    "type":"Annotation",
-                                    "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006/anno/",
-                                    "motivation":"painting",
-                                    "timeMode":"trim",
-                                    "body": [
+                                    "type":"Choice",
+                                    "items": [
                                         {
-                                            "type":"Choice",
-                                            "items": [
-                                                {
-                                                    "id":"http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000e.mp4",
-                                                    "type":"Audio",
-                                                    "format":"audio/mp4"
-                                                }
-                                            ]
+                                            "id":"http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000e.mp4",
+                                            "type":"Audio",
+                                            "format":"audio/mp4"
                                         }
-                                    ],
-                                    "target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006"
+                                    ]
                                 }
-                            ]
+                            ],
+                            "target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006"
                         }
                     ]
                 }
@@ -92,15 +87,7 @@
             "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000002/top",
             "label":{"en":["Cliff Richard (Heathcliff)"]},
             "type":"Range",
-            "members": [
-                    {
-                        "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004",
-                        "type":"Canvas"
-                    },
-                    {
-                        "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000006",
-                        "type":"Canvas"
-                    },
+            "items": [
                     {
                         "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000007",
                         "type":"Range",
@@ -124,7 +111,7 @@
                             }
                         ],
                         
-                        "members": [
+                        "items": [
                             
                             {
                                 "id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050735359.0x000004#t=0,3964.08",
