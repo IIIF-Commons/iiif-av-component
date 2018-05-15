@@ -2,6 +2,13 @@
   position: relative;
   overflow: hidden;
 }
+.iiif-av-component input[type=range]::-ms-tooltip {
+  display: none;
+}
+.iiif-av-component input[type=range]::-ms-track {
+  transition-duration: 0s;
+  transition-delay: 0s;
+}
 .iiif-av-component .canvas-container {
   position: relative;
   background: #000000;
