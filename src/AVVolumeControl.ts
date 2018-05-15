@@ -2,6 +2,7 @@ namespace IIIFComponents {
 
     export class AVVolumeControl extends _Components.BaseComponent {
         
+        private _$volumeWrapper: JQuery;
         private _$volumeSlider: JQuery<HTMLInputElement>;
         private _$volumeMute: JQuery;
 
@@ -29,9 +30,12 @@ namespace IIIFComponents {
                                 <button class="btn volume-mute" title="${this.options.data.content.mute}">
                                     <i class="av-icon-mute on" aria-hidden="true"></i>${this.options.data.content.mute}
                                 </button>`);
-            this._$volumeSlider = $('<input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
 
-            this._$element.append(this._$volumeMute, this._$volumeSlider);
+            this._$volumeWrapper = $('<div class="wrap" style="--min: 0; --max: 100; --val: 100;"><input type="range" min="0" max="100" value="100" /></div>');
+            this._$volumeSlider = this._$volumeWrapper.find('input') as JQuery<HTMLInputElement>;
+            //this._$volumeSlider = $('<input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
+
+            this._$element.append(this._$volumeMute, this._$volumeWrapper);
 
             const that = this;
 
@@ -53,24 +57,28 @@ namespace IIIFComponents {
                 this.fire(AVVolumeControl.Events.VOLUME_CHANGED, this._data.volume);
             });
 
-            this._$volumeSlider.on('input', function () {
+            if (!AVComponentUtils.Utils.detectIE()) {
+                this._$volumeSlider.on('input', function () {
 
-                // start reducer
-                that._data.volume = Number(this.value);
-
-                if (that._data.volume === 0) {
-                    that._lastVolume = 0;
-                }
-                // end reducer
-
-                that._render();
-                that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
-            });
+                    const value: number = Number(this.value) / 100;
+    
+                    // start reducer
+                    that._data.volume = value;
+    
+                    if (that._data.volume === 0) {
+                        that._lastVolume = 0;
+                    }
+                    // end reducer
+    
+                    that._render();
+                    that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
+                });
+            }
 
             this._$volumeSlider.on('change', function () {
 
                 // start reducer
-                that._data.volume = Number(this.value);
+                that._data.volume = Number(this.value) / 100;
 
                 if (that._data.volume === 0) {
                     that._lastVolume = 0;
@@ -92,7 +100,7 @@ namespace IIIFComponents {
 
         private _render(): void {
 
-            this._$volumeSlider.val(<number>this._data.volume);
+            this._$volumeSlider.val(<number>this._data.volume * 100);
 
             if (this._data.volume === 0) {
                 this._$volumeMute.find('i').switchClass('on', 'off');                

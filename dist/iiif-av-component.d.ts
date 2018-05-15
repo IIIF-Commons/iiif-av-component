@@ -51,6 +51,7 @@ declare namespace IIIFComponents.AVComponent {
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
     class AVVolumeControl extends _Components.BaseComponent {
+        private _$volumeWrapper;
         private _$volumeSlider;
         private _$volumeMute;
         private _lastVolume;
@@ -235,6 +236,7 @@ declare namespace IIIFComponents.AVComponentUtils {
         static getTemporalComponent(target: string): number[] | null;
         static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined;
         static formatTime(aNumber: number): string;
+        static detectIE(): number | boolean;
     }
 }
 

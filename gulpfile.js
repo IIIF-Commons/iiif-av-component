@@ -7,5 +7,8 @@ tasks.init({
     libs: [
         'node_modules/base-component/dist/base-component.js',
         'node_modules/manifold/dist/manifold.bundle.js'
-    ]
+    ],
+    less: {
+        strictMath: 'off'
+    }
 });

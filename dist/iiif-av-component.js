@@ -357,8 +357,10 @@ var IIIFComponents;
                 console.error("Component failed to initialise");
             }
             this._$volumeMute = $("\n                                <button class=\"btn volume-mute\" title=\"" + this.options.data.content.mute + "\">\n                                    <i class=\"av-icon-mute on\" aria-hidden=\"true\"></i>" + this.options.data.content.mute + "\n                                </button>");
-            this._$volumeSlider = $('<input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">');
-            this._$element.append(this._$volumeMute, this._$volumeSlider);
+            this._$volumeWrapper = $('<div class="wrap" style="--min: 0; --max: 100; --val: 100;"><input type="range" min="0" max="100" value="100" /></div>');
+            this._$volumeSlider = this._$volumeWrapper.find('input');
+            //this._$volumeSlider = $('<input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
+            this._$element.append(this._$volumeMute, this._$volumeWrapper);
             var that = this;
             this._$volumeMute.on('click', function () {
                 // start reducer
@@ -375,19 +377,22 @@ var IIIFComponents;
                 _this._render();
                 _this.fire(AVVolumeControl.Events.VOLUME_CHANGED, _this._data.volume);
             });
-            this._$volumeSlider.on('input', function () {
-                // start reducer
-                that._data.volume = Number(this.value);
-                if (that._data.volume === 0) {
-                    that._lastVolume = 0;
-                }
-                // end reducer
-                that._render();
-                that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
-            });
+            if (!IIIFComponents.AVComponentUtils.Utils.detectIE()) {
+                this._$volumeSlider.on('input', function () {
+                    var value = Number(this.value) / 100;
+                    // start reducer
+                    that._data.volume = value;
+                    if (that._data.volume === 0) {
+                        that._lastVolume = 0;
+                    }
+                    // end reducer
+                    that._render();
+                    that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
+                });
+            }
             this._$volumeSlider.on('change', function () {
                 // start reducer
-                that._data.volume = Number(this.value);
+                that._data.volume = Number(this.value) / 100;
                 if (that._data.volume === 0) {
                     that._lastVolume = 0;
                 }
@@ -402,7 +407,7 @@ var IIIFComponents;
             this._render();
         };
         AVVolumeControl.prototype._render = function () {
-            this._$volumeSlider.val(this._data.volume);
+            this._$volumeSlider.val(this._data.volume * 100);
             if (this._data.volume === 0) {
                 this._$volumeMute.find('i').switchClass('on', 'off');
             }
@@ -1515,6 +1520,36 @@ var IIIFComponents;
                     hourValue = '';
                 }
                 return hourValue + minutes + ':' + seconds;
+            };
+            Utils.detectIE = function () {
+                var ua = window.navigator.userAgent;
+                // Test values; Uncomment to check result …
+                // IE 10
+                // ua = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
+                // IE 11
+                // ua = 'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko';
+                // Edge 12 (Spartan)
+                // ua = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Edge/12.0';
+                // Edge 13
+                // ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586';
+                var msie = ua.indexOf('MSIE ');
+                if (msie > 0) {
+                    // IE 10 or older => return version number
+                    return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+                }
+                var trident = ua.indexOf('Trident/');
+                if (trident > 0) {
+                    // IE 11 => return version number
+                    var rv = ua.indexOf('rv:');
+                    return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+                }
+                var edge = ua.indexOf('Edge/');
+                if (edge > 0) {
+                    // Edge (IE 12+) => return version number
+                    return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+                }
+                // other browser
+                return false;
             };
             return Utils;
         }());

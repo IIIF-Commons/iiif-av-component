@@ -19,7 +19,7 @@
     "base-component": "iiif-commons/base-component#v1.1.2",
     "exjs": "BSick7/exjs#0.5.1",
     "gulp": "^3.9.1",
-    "gulp-tasks": "iiif-commons/gulp-tasks#v1.0.7",
+    "gulp-tasks": "iiif-commons/gulp-tasks#v1.0.8",
     "jquery-ui": "^1.12.1",
     "manifesto.js": "2.2.20",
     "@iiif/manifold": "1.2.17"
