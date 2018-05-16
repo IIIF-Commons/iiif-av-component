@@ -31,7 +31,7 @@ namespace IIIFComponents {
                                     <i class="av-icon-mute on" aria-hidden="true"></i>${this.options.data.content.mute}
                                 </button>`);
 
-            this._$volumeWrapper = $('<div class="wrap" style="--min: 0; --max: 100; --val: 100;"><input type="range" min="0" max="100" value="100" /></div>');
+            this._$volumeWrapper = $('<div class="wrap" style="--min: 0; --max: 100; --val: 50;"><input type="range" /></div>');
             this._$volumeSlider = this._$volumeWrapper.find('input') as JQuery<HTMLInputElement>;
             //this._$volumeSlider = $('<input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
 
@@ -57,7 +57,9 @@ namespace IIIFComponents {
                 this.fire(AVVolumeControl.Events.VOLUME_CHANGED, this._data.volume);
             });
 
-            if (!AVComponentUtils.Utils.detectIE()) {
+            const isIE: number | boolean = AVComponentUtils.Utils.detectIE();
+
+            if (!isIE) {
                 this._$volumeSlider.on('input', function () {
 
                     const value: number = Number(this.value) / 100;
@@ -75,18 +77,26 @@ namespace IIIFComponents {
                 });
             }
 
-            this._$volumeSlider.on('change', function () {
+            this._$volumeSlider.on('change', function() {
 
-                // start reducer
-                that._data.volume = Number(this.value) / 100;
+                const value: number = Number(this.value) / 100;
 
-                if (that._data.volume === 0) {
-                    that._lastVolume = 0;
-                }
-                // end reducer
-                
-                that._render();
-                that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
+                AVComponentUtils.Utils.debounce(() => {
+
+                    //console.log(value);
+    
+                    // start reducer
+                    that._data.volume = value;
+    
+                    if (that._data.volume === 0) {
+                        that._lastVolume = 0;
+                    }
+                    // end reducer
+                    
+                    that._render();
+                    that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
+                }, 250)();
+
             });
 
             return success;

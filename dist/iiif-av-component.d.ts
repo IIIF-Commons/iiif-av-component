@@ -237,6 +237,7 @@ declare namespace IIIFComponents.AVComponentUtils {
         static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined;
         static formatTime(aNumber: number): string;
         static detectIE(): number | boolean;
+        static debounce(fn: any, debounceDuration: number): any;
     }
 }
 

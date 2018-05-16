@@ -196,12 +196,6 @@
 .iiif-av-component .controls-container .time-display {
   display: inline-block;
 }
-.iiif-av-component .controls-container .volume {
-  display: inline-block;
-}
-.iiif-av-component .controls-container .volume .volume-slider {
-  width: 100px;
-}
 .iiif-av-component .btn {
   font-size: 0;
   background: 0 0;

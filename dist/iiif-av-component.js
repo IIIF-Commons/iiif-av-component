@@ -357,7 +357,7 @@ var IIIFComponents;
                 console.error("Component failed to initialise");
             }
             this._$volumeMute = $("\n                                <button class=\"btn volume-mute\" title=\"" + this.options.data.content.mute + "\">\n                                    <i class=\"av-icon-mute on\" aria-hidden=\"true\"></i>" + this.options.data.content.mute + "\n                                </button>");
-            this._$volumeWrapper = $('<div class="wrap" style="--min: 0; --max: 100; --val: 100;"><input type="range" min="0" max="100" value="100" /></div>');
+            this._$volumeWrapper = $('<div class="wrap" style="--min: 0; --max: 100; --val: 50;"><input type="range" /></div>');
             this._$volumeSlider = this._$volumeWrapper.find('input');
             //this._$volumeSlider = $('<input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
             this._$element.append(this._$volumeMute, this._$volumeWrapper);
@@ -377,22 +377,12 @@ var IIIFComponents;
                 _this._render();
                 _this.fire(AVVolumeControl.Events.VOLUME_CHANGED, _this._data.volume);
             });
-            if (!IIIFComponents.AVComponentUtils.Utils.detectIE()) {
-                this._$volumeSlider.on('input', function () {
-                    var value = Number(this.value) / 100;
-                    // start reducer
-                    that._data.volume = value;
-                    if (that._data.volume === 0) {
-                        that._lastVolume = 0;
-                    }
-                    // end reducer
-                    that._render();
-                    that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
-                });
-            }
-            this._$volumeSlider.on('change', function () {
+            //const isIE: number | boolean = AVComponentUtils.Utils.detectIE();
+            this._$volumeSlider.on('input', function () {
+                var value = Number(this.value) / 100;
+                console.log(value);
                 // start reducer
-                that._data.volume = Number(this.value) / 100;
+                that._data.volume = value;
                 if (that._data.volume === 0) {
                     that._lastVolume = 0;
                 }
@@ -400,6 +390,33 @@ var IIIFComponents;
                 that._render();
                 that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
             });
+            // if (!isIE) {
+            //     this._$volumeSlider.on('input', function () {
+            //         const value: number = Number(this.value) / 100;
+            //         // start reducer
+            //         that._data.volume = value;
+            //         if (that._data.volume === 0) {
+            //             that._lastVolume = 0;
+            //         }
+            //         // end reducer
+            //         that._render();
+            //         that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
+            //     });
+            // }
+            // this._$volumeSlider.on('change', function() {
+            //     const value: number = Number(this.value) / 100;
+            //     AVComponentUtils.Utils.debounce(() => {
+            //         //console.log(value);
+            //         // start reducer
+            //         that._data.volume = value;
+            //         if (that._data.volume === 0) {
+            //             that._lastVolume = 0;
+            //         }
+            //         // end reducer
+            //         that._render();
+            //         that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
+            //     }, 250)();
+            // });
             return success;
         };
         AVVolumeControl.prototype.set = function (data) {
@@ -1550,6 +1567,29 @@ var IIIFComponents;
                 }
                 // other browser
                 return false;
+            };
+            Utils.debounce = function (fn, debounceDuration) {
+                // summary:
+                //      Returns a debounced function that will make sure the given
+                //      function is not triggered too much.
+                // fn: Function
+                //      Function to debounce.
+                // debounceDuration: Number
+                //      OPTIONAL. The amount of time in milliseconds for which we
+                //      will debounce the function. (defaults to 100ms)
+                debounceDuration = debounceDuration || 100;
+                return function () {
+                    if (!fn.debouncing) {
+                        var args = Array.prototype.slice.apply(arguments);
+                        fn.lastReturnVal = fn.apply(window, args);
+                        fn.debouncing = true;
+                    }
+                    clearTimeout(fn.debounceTimeout);
+                    fn.debounceTimeout = setTimeout(function () {
+                        fn.debouncing = false;
+                    }, debounceDuration);
+                    return fn.lastReturnVal;
+                };
             };
             return Utils;
         }());
