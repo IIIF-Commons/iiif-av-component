@@ -378,9 +378,9 @@ var IIIFComponents;
                 _this.fire(AVVolumeControl.Events.VOLUME_CHANGED, _this._data.volume);
             });
             //const isIE: number | boolean = AVComponentUtils.Utils.detectIE();
+            //if (!isIE) {
             this._$volumeSlider.on('input', function () {
                 var value = Number(this.value) / 100;
-                console.log(value);
                 // start reducer
                 that._data.volume = value;
                 if (that._data.volume === 0) {
@@ -388,35 +388,21 @@ var IIIFComponents;
                 }
                 // end reducer
                 that._render();
-                that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
+                //that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
             });
-            // if (!isIE) {
-            //     this._$volumeSlider.on('input', function () {
-            //         const value: number = Number(this.value) / 100;
-            //         // start reducer
-            //         that._data.volume = value;
-            //         if (that._data.volume === 0) {
-            //             that._lastVolume = 0;
-            //         }
-            //         // end reducer
-            //         that._render();
-            //         that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
-            //     });
-            // }
-            // this._$volumeSlider.on('change', function() {
-            //     const value: number = Number(this.value) / 100;
-            //     AVComponentUtils.Utils.debounce(() => {
-            //         //console.log(value);
-            //         // start reducer
-            //         that._data.volume = value;
-            //         if (that._data.volume === 0) {
-            //             that._lastVolume = 0;
-            //         }
-            //         // end reducer
-            //         that._render();
-            //         that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
-            //     }, 250)();
-            // });
+            //}
+            this._$volumeSlider.on('change', function () {
+                var value = Number(this.value) / 100;
+                //console.log(value);
+                // start reducer
+                that._data.volume = value;
+                if (that._data.volume === 0) {
+                    that._lastVolume = 0;
+                }
+                // end reducer
+                that._render();
+                //that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
+            });
             return success;
         };
         AVVolumeControl.prototype.set = function (data) {

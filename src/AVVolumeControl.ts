@@ -57,9 +57,9 @@ namespace IIIFComponents {
                 this.fire(AVVolumeControl.Events.VOLUME_CHANGED, this._data.volume);
             });
 
-            const isIE: number | boolean = AVComponentUtils.Utils.detectIE();
+            //const isIE: number | boolean = AVComponentUtils.Utils.detectIE();
 
-            if (!isIE) {
+            //if (!isIE) {
                 this._$volumeSlider.on('input', function () {
 
                     const value: number = Number(this.value) / 100;
@@ -73,29 +73,26 @@ namespace IIIFComponents {
                     // end reducer
     
                     that._render();
-                    that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
+                    //that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
                 });
-            }
+            //}
 
             this._$volumeSlider.on('change', function() {
 
                 const value: number = Number(this.value) / 100;
 
-                AVComponentUtils.Utils.debounce(() => {
+                //console.log(value);
 
-                    //console.log(value);
-    
-                    // start reducer
-                    that._data.volume = value;
-    
-                    if (that._data.volume === 0) {
-                        that._lastVolume = 0;
-                    }
-                    // end reducer
-                    
-                    that._render();
-                    that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
-                }, 250)();
+                // start reducer
+                that._data.volume = value;
+
+                if (that._data.volume === 0) {
+                    that._lastVolume = 0;
+                }
+                // end reducer
+                
+                that._render();
+                //that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
 
             });
 
