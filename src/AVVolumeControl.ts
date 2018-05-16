@@ -2,8 +2,7 @@ namespace IIIFComponents {
 
     export class AVVolumeControl extends _Components.BaseComponent {
         
-        private _$volumeWrapper: JQuery;
-        private _$volumeSlider: JQuery<HTMLInputElement>;
+        private _$volumeSlider: JQuery;
         private _$volumeMute: JQuery;
 
         private _lastVolume: number = 1;
@@ -31,11 +30,9 @@ namespace IIIFComponents {
                                     <i class="av-icon-mute on" aria-hidden="true"></i>${this.options.data.content.mute}
                                 </button>`);
 
-            this._$volumeWrapper = $('<div class="wrap" style="--min: 0; --max: 100; --val: 50;"><input type="range" /></div>');
-            this._$volumeSlider = this._$volumeWrapper.find('input') as JQuery<HTMLInputElement>;
-            //this._$volumeSlider = $('<input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">') as JQuery<HTMLInputElement>;
+            this._$volumeSlider = $('<div class="volume-slider"></div>');
 
-            this._$element.append(this._$volumeMute, this._$volumeWrapper);
+            this._$element.append(this._$volumeMute, this._$volumeSlider);
 
             const that = this;
 
@@ -57,15 +54,20 @@ namespace IIIFComponents {
                 this.fire(AVVolumeControl.Events.VOLUME_CHANGED, this._data.volume);
             });
 
-            const isIE: number | boolean = AVComponentUtils.Utils.detectIE();
+            this._$volumeSlider.slider({
+                value: that._data.volume,
+                step: 0.01,
+                orientation: "horizontal",
+                min: 0,
+                max: 1,
+                animate: false,
+                create: function (evt: any, ui: any) {
+ 
+                },
+                slide: function (evt: any, ui: any) {
 
-            if (!isIE) {
-                this._$volumeSlider.on('input', function () {
-
-                    const value: number = Number(this.value) / 100;
-    
                     // start reducer
-                    that._data.volume = value;
+                    that._data.volume = ui.value;
     
                     if (that._data.volume === 0) {
                         that._lastVolume = 0;
@@ -74,29 +76,10 @@ namespace IIIFComponents {
     
                     that._render();
                     that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
-                });
-            }
+                },
+                stop: function (evt: any, ui: any) {
 
-            this._$volumeSlider.on('change', function() {
-
-                const value: number = Number(this.value) / 100;
-
-                AVComponentUtils.Utils.debounce(() => {
-
-                    //console.log(value);
-    
-                    // start reducer
-                    that._data.volume = value;
-    
-                    if (that._data.volume === 0) {
-                        that._lastVolume = 0;
-                    }
-                    // end reducer
-                    
-                    that._render();
-                    that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
-                }, 250)();
-
+                }
             });
 
             return success;
@@ -110,13 +93,18 @@ namespace IIIFComponents {
 
         private _render(): void {
 
-            this._$volumeSlider.val(<number>this._data.volume * 100);
+            if (this._data.volume !== undefined) {
 
-            if (this._data.volume === 0) {
-                this._$volumeMute.find('i').switchClass('on', 'off');                
-            } else {
-                this._$volumeMute.find('i').switchClass('off', 'on');
-            }
+                this._$volumeSlider.slider({
+                    value: this._data.volume
+                });
+    
+                if (this._data.volume === 0) {
+                    this._$volumeMute.find('i').switchClass('on', 'off');                
+                } else {
+                    this._$volumeMute.find('i').switchClass('off', 'on');
+                }
+            }            
         }
 
         protected _resize(): void {

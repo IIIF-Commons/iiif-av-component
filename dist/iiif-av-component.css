@@ -1,76 +1,3 @@
-.iiif-av-component .wrap {
-  display: flex;
-  align-items: center;
-  position: relative;
-  width: 12.5em;
-  height: 5.25em;
-  font: 1em/1 arial, sans-serif;
-}
-.iiif-av-component [type='range'] {
-  flex: 1;
-  margin: 0;
-  padding: 0;
-  min-height: 1.5em;
-  background: transparent;
-  font: inherit;
-}
-.iiif-av-component [type='range'],
-.iiif-av-component [type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none;
-}
-.iiif-av-component [type='range']::-webkit-slider-runnable-track {
-  box-sizing: border-box;
-  border: none;
-  width: 12.5em;
-  height: 0.25em;
-  background: #ccc;
-}
-.iiif-av-component [type='range']::-moz-range-track {
-  box-sizing: border-box;
-  border: none;
-  width: 12.5em;
-  height: 0.25em;
-  background: #ccc;
-}
-.iiif-av-component [type='range']::-ms-track {
-  box-sizing: border-box;
-  border: none;
-  width: 12.5em;
-  height: 0.25em;
-  background: #ccc;
-}
-.iiif-av-component [type='range']::-webkit-slider-thumb {
-  margin-top: -0.625em;
-  box-sizing: border-box;
-  border: none;
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 50%;
-  background: #000;
-}
-.iiif-av-component [type='range']::-moz-range-thumb {
-  box-sizing: border-box;
-  border: none;
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 50%;
-  background: #000;
-}
-.iiif-av-component [type='range']::-ms-thumb {
-  margin-top: 0;
-  box-sizing: border-box;
-  border: none;
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 50%;
-  background: #000;
-}
-.iiif-av-component [type='range']::-ms-tooltip {
-  display: none;
-}
-.iiif-av-component [type='range'] ~ output {
-  display: none;
-}
 .iiif-av-component {
   position: relative;
   overflow: hidden;
@@ -170,12 +97,12 @@
 .iiif-av-component .timeline-item-container .timeline-item.active {
   background: #333;
 }
-.iiif-av-component .ui-slider-range {
+.iiif-av-component .canvas-timeline-container .ui-slider-range {
   background: rgba(66, 66, 66, 0.5);
   box-sizing: border-box;
   border-radius: 0;
 }
-.iiif-av-component .ui-slider-handle {
+.iiif-av-component .canvas-timeline-container .ui-slider-handle {
   top: 0px;
   height: 100%;
   width: 16px;
@@ -184,7 +111,24 @@
   border: none;
   z-index: 1;
 }
-.iiif-av-component .ui-slider-handle:focus {
+.iiif-av-component .canvas-timeline-container .ui-slider-handle:focus {
+  outline: none;
+}
+.iiif-av-component .range-timeline-container .ui-slider-range {
+  background: rgba(66, 66, 66, 0.5);
+  box-sizing: border-box;
+  border-radius: 0;
+}
+.iiif-av-component .range-timeline-container .ui-slider-handle {
+  top: 0px;
+  height: 100%;
+  width: 16px;
+  margin-left: -8px;
+  background: transparent;
+  border: none;
+  z-index: 1;
+}
+.iiif-av-component .range-timeline-container .ui-slider-handle:focus {
   outline: none;
 }
 .iiif-av-component .controls-container {
@@ -195,6 +139,18 @@
 }
 .iiif-av-component .controls-container .time-display {
   display: inline-block;
+}
+.iiif-av-component .controls-container .volume {
+  float: right;
+  overflow: hidden;
+  width: 160px;
+}
+.iiif-av-component .controls-container .volume .volume-mute {
+  float: left;
+}
+.iiif-av-component .controls-container .volume .volume-slider {
+  float: left;
+  width: 100px;
 }
 .iiif-av-component .btn {
   font-size: 0;
