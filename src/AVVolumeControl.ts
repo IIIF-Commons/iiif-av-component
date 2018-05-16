@@ -49,7 +49,7 @@ namespace IIIFComponents {
                 }
                 // end reducer
                 
-                this._render();
+                //this._render();
                 this.fire(AVVolumeControl.Events.VOLUME_CHANGED, this._data.volume);
             });
 

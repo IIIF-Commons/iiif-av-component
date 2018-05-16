@@ -372,7 +372,7 @@ var IIIFComponents;
                     _this._data.volume = _this._lastVolume;
                 }
                 // end reducer
-                _this._render();
+                //this._render();
                 _this.fire(AVVolumeControl.Events.VOLUME_CHANGED, _this._data.volume);
             });
             this._$volumeSlider.slider({
