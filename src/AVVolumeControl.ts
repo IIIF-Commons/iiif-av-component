@@ -50,13 +50,12 @@ namespace IIIFComponents {
                 // end reducer
                 
                 this._render();
-
                 this.fire(AVVolumeControl.Events.VOLUME_CHANGED, this._data.volume);
             });
 
             this._$volumeSlider.slider({
                 value: that._data.volume,
-                step: 0.01,
+                step: 0.1,
                 orientation: "horizontal",
                 min: 0,
                 max: 1,
@@ -74,8 +73,9 @@ namespace IIIFComponents {
                     }
                     // end reducer
     
-                    that._render();
+                    //that._render();
                     that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
+                    
                 },
                 stop: function (evt: any, ui: any) {
 

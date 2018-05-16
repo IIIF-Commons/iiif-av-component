@@ -150,6 +150,7 @@
 }
 .iiif-av-component .controls-container .volume .volume-slider {
   float: left;
+  margin-top: 10px;
   width: 100px;
 }
 .iiif-av-component .btn {

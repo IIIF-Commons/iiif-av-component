@@ -377,7 +377,7 @@ var IIIFComponents;
             });
             this._$volumeSlider.slider({
                 value: that._data.volume,
-                step: 0.01,
+                step: 0.1,
                 orientation: "horizontal",
                 min: 0,
                 max: 1,
@@ -391,7 +391,7 @@ var IIIFComponents;
                         that._lastVolume = 0;
                     }
                     // end reducer
-                    that._render();
+                    //that._render();
                     that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
                 },
                 stop: function (evt, ui) {
