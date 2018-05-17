@@ -48,8 +48,7 @@ namespace IIIFComponents {
                     this._data.volume = this._lastVolume;
                 }
                 // end reducer
-                
-                //this._render();
+
                 this.fire(AVVolumeControl.Events.VOLUME_CHANGED, this._data.volume);
             });
 
@@ -73,7 +72,6 @@ namespace IIIFComponents {
                     }
                     // end reducer
     
-                    //that._render();
                     that.fire(AVVolumeControl.Events.VOLUME_CHANGED, that._data.volume);
                     
                 },
