@@ -228,3 +228,27 @@
     }
 
 }
+
+// mixins
+
+.ui-slider-range-scrub() {
+    background: rgba(66, 66, 66, 0.5);
+    box-sizing: border-box;
+    border-radius: 0;
+    //border-right: 2px solid #000000;
+    //.opacity(.6);
+}
+
+.ui-slider-handle-hidden() {
+    top: 0px;
+    height: 100%;
+    width: 16px;
+    margin-left: -8px;
+    background: transparent;
+    border: none;
+    z-index: 1;
+
+    &:focus {
+        outline: none;
+    }
+}
