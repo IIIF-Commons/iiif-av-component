@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.40 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.41 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
