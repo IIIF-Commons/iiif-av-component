@@ -339,18 +339,18 @@ namespace IIIFComponents {
 
                 // todo: type this
                 const itemData: any = {
-                    'type': type,
+                    'active': false,
+                    'end': endTime,
+                    'endOffset': offsetEnd,
+                    'format': format,
+                    'height': percentageHeight,
+                    'left': percentageLeft,
                     'source': mediaSource,
                     'start': startTime,
-                    'end': endTime,
-                    'top': percentageTop,
-                    'left': percentageLeft,
-                    'width': percentageWidth,
-                    'height': percentageHeight,
                     'startOffset': offsetStart,
-                    'endOffset': offsetEnd,
-                    'active': false,
-                    'format': format
+                    'top': percentageTop,
+                    'type': type,
+                    'width': percentageWidth
                 }
 
                 this._renderMediaElement(itemData);
@@ -630,18 +630,18 @@ namespace IIIFComponents {
                     var hls = new Hls();
                     hls.loadSource(data.source);
                     hls.attachMedia(video);
-                    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                    //hls.on(Hls.Events.MANIFEST_PARSED, function () {
                         //video.play();
-                    });
+                    //});
                 }
                 // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
                 // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
                 // This is using the built-in support of the plain video element, without using hls.js.
                 else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                     video.src = data.source;
-                    video.addEventListener('canplay', function () {
+                    //video.addEventListener('canplay', function () {
                         //video.play();
-                    });
+                    //});
                 }
             } else {
                 $mediaElement.attr('src', data.source);
@@ -1014,16 +1014,18 @@ namespace IIIFComponents {
         }
 
         private _pauseMedia(media: HTMLMediaElement): void {
-            const playPromise = media.play();
+            media.pause();
+            
+            // const playPromise = media.play();
 
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    // https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
-                    media.pause();
-                });
-            } else {
-                media.pause();
-            }
+            // if (playPromise !== undefined) {
+            //     playPromise.then(_ => {
+            //         // https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
+            //         media.pause();
+            //     });
+            // } else {
+            //     media.pause();
+            // }
         }
 
         private _setMediaCurrentTime(media: HTMLMediaElement, time: number): void {
@@ -1048,7 +1050,7 @@ namespace IIIFComponents {
                     if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
                         if (this._isPlaying) {
                             if (contentAnnotation.element[0].paused) {
-                                var promise = contentAnnotation.element[0].play();
+                                const promise = contentAnnotation.element[0].play();
                                 if (promise) {
                                     promise.catch(function () { });
                                 }

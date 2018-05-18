@@ -690,18 +690,18 @@ var IIIFComponents;
                 var offsetStart = (ot[0]) ? parseInt(ot[0]) : ot[0], offsetEnd = (ot[1]) ? parseInt(ot[1]) : ot[1];
                 // todo: type this
                 var itemData = {
-                    'type': type,
+                    'active': false,
+                    'end': endTime,
+                    'endOffset': offsetEnd,
+                    'format': format,
+                    'height': percentageHeight,
+                    'left': percentageLeft,
                     'source': mediaSource,
                     'start': startTime,
-                    'end': endTime,
-                    'top': percentageTop,
-                    'left': percentageLeft,
-                    'width': percentageWidth,
-                    'height': percentageHeight,
                     'startOffset': offsetStart,
-                    'endOffset': offsetEnd,
-                    'active': false,
-                    'format': format
+                    'top': percentageTop,
+                    'type': type,
+                    'width': percentageWidth
                 };
                 this._renderMediaElement(itemData);
             }
@@ -941,15 +941,15 @@ var IIIFComponents;
                     var hls = new Hls();
                     hls.loadSource(data.source);
                     hls.attachMedia(video);
-                    hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                        //video.play();
-                    });
+                    //hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                    //video.play();
+                    //});
                 }
                 else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                     video.src = data.source;
-                    video.addEventListener('canplay', function () {
-                        //video.play();
-                    });
+                    //video.addEventListener('canplay', function () {
+                    //video.play();
+                    //});
                 }
             }
             else {
@@ -1230,16 +1230,16 @@ var IIIFComponents;
             //this.logMessage('UPDATE MEDIA ACTIVE STATES at: '+ this._canvasClockTime + ' seconds.');
         };
         CanvasInstance.prototype._pauseMedia = function (media) {
-            var playPromise = media.play();
-            if (playPromise !== undefined) {
-                playPromise.then(function (_) {
-                    // https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
-                    media.pause();
-                });
-            }
-            else {
-                media.pause();
-            }
+            media.pause();
+            // const playPromise = media.play();
+            // if (playPromise !== undefined) {
+            //     playPromise.then(_ => {
+            //         // https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
+            //         media.pause();
+            //     });
+            // } else {
+            //     media.pause();
+            // }
         };
         CanvasInstance.prototype._setMediaCurrentTime = function (media, time) {
             if (!isNaN(media.duration)) {
