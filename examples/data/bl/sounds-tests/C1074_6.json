@@ -1,169 +1,111 @@
 {
     "@context": "http://iiif.io/api/presentation/3/context.json",
-    "attribution": {
-        "en": [
-            "<span>Rights unassigned - staff access only</span>"
-        ]
+	"requiredStatement": {
+        "label": { "en": [ "Attribution" ] },
+        "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
     },
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1074_6.json",
-    "label": {
-        "en": [
-            "C1074/6 Igbo Iwin overlays"
-        ]
-    },
-    "logo": {
+    "label": { "en": [ "C1074/6 Igbo Iwin overlays" ] },
+    "behavior": "auto-advance",
+    "logo": [{
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"
-    },
+    }],
     "metadata": [
         {
-            "label": {
-                "en": [
-                    "Identifier"
-                ]
-            },
-            "value": {
-                "en": [
-                    "C1074/6"
-                ]
-            }
+            "label": { "en": [ "Identifier" ] },
+            "value": { "en": [ "C1074/6" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Title"
-                ]
-            },
-            "value": {
-                "en": [
-                    "Igbo Iwin overlays"
-                ]
-            }
+            "label": { "en": [ "Title" ] },
+            "value": { "en": [ "Igbo Iwin overlays" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Contributor"
-                ]
-            },
-            "value": {
-                "en": [
-                    "Harper, Peggy, 1923-2009, (sound recordist)"
-                ]
-            }
+            "label": { "en": [ "Contributor" ] },
+            "value": { "en": [ "Harper, Peggy, 1923-2009, (sound recordist)" ] }
         }
     ],
-    "sequences": [
+    "items": [
         {
-            "canvases": [
+            "items": [
                 {
-                    "content": [
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004/anno",
+                    "items": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004/anno",
-                            "items": [
+                            "body": [
                                 {
-                                    "body": [
+                                    "items": [
                                         {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C1074_6/vdc_100053724382.0x000014.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C1074_6/vdc_100053724382.0x000014.mp4",
+                                            "type": "Audio"
                                         }
                                     ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
+                                    "type": "Choice"
                                 }
                             ],
-                            "type": "AnnotationPage"
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004/anno/",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004",
+                            "timeMode": "trim",
+                            "type": "Annotation"
                         }
                     ],
-                    "duration": 5991.56,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004",
-                    "label": "Tape 1 Side 1",
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005/anno",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C1074_6/vdc_100053724382.0x000016.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 60.88,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005",
-                    "label": "Tape 1 Side 2",
-                    "type": "Canvas"
+                    "type": "AnnotationPage"
                 }
             ],
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000001",
-            "type": "Sequence"
+            "duration": 5991.56,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004",
+            "label": "Tape 1 Side 1",
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005/anno",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C1074_6/vdc_100053724382.0x000016.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005/anno/",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 60.88,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005",
+            "label": "Tape 1 Side 2",
+            "type": "Canvas"
         }
     ],
     "structures": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000002/top",
-            "label": {
-                "en": [
-                    "Igbo Iwin overlays"
-                ]
-            },
-            "members": [
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005",
-                    "type": "Canvas"
-                },
+            "label": { "en": [ "Igbo Iwin overlays" ] },
+            "items": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000006",
-                    "label": {
-                        "en": [
-                            "Ire Ekiti, Ògún festival"
-                        ]
-                    },
-                    "members": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004#t=9.44,3008",
-                            "type": "Canvas"
-                        },
+                    "label": { "en": [ "Ire Ekiti, Ògún festival" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000007",
-                            "label": {
-                                "en": [
-                                    "Ire Ekiti, Ògún festival - Interview with the Onire of Ire Ekiti Ọba Adéyẹyè II"
-                                ]
-                            },
-                            "members": [
+                            "label": { "en": [ "Ire Ekiti, Ògún festival - Interview with the Onire of Ire Ekiti Ọba Adéyẹyè II" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004#t=9.44,2100.32",
                                     "type": "Canvas"
@@ -171,47 +113,19 @@
                             ],
                             "metadata": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C1074/6"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Identifier" ] },
+                                    "value": { "en": [ "C1074/6" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Ire Ekiti, Ògún festival - Interview with the Onire of Ire Ekiti Ọba Adéyẹyè II"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "Ire Ekiti, Ògún festival - Interview with the Onire of Ire Ekiti Ọba Adéyẹyè II" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Place"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Ire Ekiti, Western State, Nigeria"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Place" ] },
+                                    "value": { "en": [ "Ire Ekiti, Western State, Nigeria" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
+                                    "label": { "en": [ "Contributor" ] },
                                     "value": {
                                         "en": [
                                             "Ọba Adéyẹyè II (speaker, male; interviewee)",
@@ -221,28 +135,16 @@
                                     }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "1973-07-29"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Date" ] },
+                                    "value": { "en": [ "1973-07-29" ] }
                                 }
                             ],
                             "type": "Range"
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000008",
-                            "label": {
-                                "en": [
-                                    "Ire Ekiti, Ògún festival - Interview with unidentified participant"
-                                ]
-                            },
-                            "members": [
+                            "label": { "en": [ "Ire Ekiti, Ògún festival - Interview with unidentified participant" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004#t=2105.84,2481.68",
                                     "type": "Canvas"
@@ -250,47 +152,19 @@
                             ],
                             "metadata": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C1074/6"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Identifier" ] },
+                                    "value": { "en": [ "C1074/6" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Ire Ekiti, Ògún festival - Interview with unidentified participant"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "Ire Ekiti, Ògún festival - Interview with unidentified participant" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Place"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Ire Ekiti, Western State, Nigeria"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Place" ] },
+                                    "value": { "en": [ "Ire Ekiti, Western State, Nigeria" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
+                                    "label": { "en": [ "Contributor" ] },
                                     "value": {
                                         "en": [
                                             "unidentified (speaker, male; interviewee)",
@@ -300,28 +174,16 @@
                                     }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "1973-07-29"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Date" ] },
+                                    "value": { "en": [ "1973-07-29" ] }
                                 }
                             ],
                             "type": "Range"
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000009",
-                            "label": {
-                                "en": [
-                                    "Ire Ekiti, Ògún festival - Recording fragments"
-                                ]
-                            },
-                            "members": [
+                            "label": { "en": [ "Ire Ekiti, Ògún festival - Recording fragments" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004#t=2481.72,2615.68",
                                     "type": "Canvas"
@@ -329,76 +191,32 @@
                             ],
                             "metadata": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C1074/6"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Identifier" ] },
+                                    "value": { "en": [ "C1074/6" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Ire Ekiti, Ògún festival - Recording fragments"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "Ire Ekiti, Ògún festival - Recording fragments" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Place"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Ire Ekiti, Western State, Nigeria"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Place" ] },
+                                    "value": { "en": [ "Ire Ekiti, Western State, Nigeria" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Harper, Peggy, 1923-2009 (sound recordist / speaker, female)"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Contributor" ] },
+                                    "value": { "en": [ "Harper, Peggy, 1923-2009 (sound recordist / speaker, female)" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "1973-07-29"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Date" ] },
+                                    "value": { "en": [ "1973-07-29" ] }
                                 }
                             ],
                             "type": "Range"
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x00000a",
-                            "label": {
-                                "en": [
-                                    "Ire Ekiti, Ògún festival - Interview about the history of the festival"
-                                ]
-                            },
-                            "members": [
+                            "label": { "en": [ "Ire Ekiti, Ògún festival - Interview about the history of the festival" ] },
+                            "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004#t=2615.68,3008",
                                     "type": "Canvas"
@@ -406,47 +224,19 @@
                             ],
                             "metadata": [
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Identifier"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "C1074/6"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Identifier" ] },
+                                    "value": { "en": [ "C1074/6" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Title"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Ire Ekiti, Ògún festival - Interview about the history of the festival"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Title" ] },
+                                    "value": { "en": [ "Ire Ekiti, Ògún festival - Interview about the history of the festival" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Place"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "Ire Ekiti, Western State, Nigeria"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Place" ] },
+                                    "value": { "en": [ "Ire Ekiti, Western State, Nigeria" ] }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Contributor"
-                                        ]
-                                    },
+                                    "label": { "en": [ "Contributor" ] },
                                     "value": {
                                         "en": [
                                             "unidentified (speaker, male; interviewee)",
@@ -455,16 +245,8 @@
                                     }
                                 },
                                 {
-                                    "label": {
-                                        "en": [
-                                            "Date"
-                                        ]
-                                    },
-                                    "value": {
-                                        "en": [
-                                            "1973-07-29 or 1973-07-30"
-                                        ]
-                                    }
+                                    "label": { "en": [ "Date" ] },
+                                    "value": { "en": [ "1973-07-29 or 1973-07-30" ] }
                                 }
                             ],
                             "type": "Range"
@@ -472,47 +254,19 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1074/6"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C1074/6" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Ire Ekiti, Ògún festival"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Ire Ekiti, Ògún festival" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Ire Ekiti, Western State, Nigeria"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Ire Ekiti, Western State, Nigeria" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
+                            "label": { "en": [ "Contributor" ] },
                             "value": {
                                 "en": [
                                     "Ọba Adéyẹyè II (speaker, male; interviewee)",
@@ -523,28 +277,16 @@
                             }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1973-07-29 to 1973-07-30"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1973-07-29 to 1973-07-30" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000010",
-                    "label": {
-                        "en": [
-                            "Unidentified recording with voices and street noise"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "Unidentified recording with voices and street noise" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005#t=0,60.88",
                             "type": "Canvas"
@@ -552,52 +294,20 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C1074/6"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C1074/6" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Unidentified recording with voices and street noise"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Unidentified recording with voices and street noise" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Harper, Peggy, 1923-2009 (sound recordist)"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Harper, Peggy, 1923-2009 (sound recordist)" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "not after 2003-06-05"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "not after 2003-06-05" ] }
                         }
                     ],
                     "type": "Range"

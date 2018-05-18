@@ -1,160 +1,103 @@
 {
     "@context": "http://iiif.io/api/presentation/3/context.json",
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241.json",
-    "label": {
-        "en": [
-            "C728/241 [Demo]"
-        ]
-    },
+    "label": { "en": [ "C728/241 [Demo]" ] },
+    "behavior": "auto-advance",
     "metadata": [
         {
-            "label": {
-                "en": [
-                    "Identifier"
-                ]
-            },
-            "value": {
-                "en": [
-                    "C728/241"
-                ]
-            }
+            "label": { "en": [ "Identifier" ] },
+            "value": { "en": [ "C728/241" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Title"
-                ]
-            },
-            "value": {
-                "en": [
-                    "[Demo]"
-                ]
-            }
+            "label": { "en": [ "Title" ] },
+            "value": { "en": [ "[Demo]" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Contributor"
-                ]
-            },
-            "value": {
-                "en": [
-                    "Brian Melvin Quartet"
-                ]
-            }
+            "label": { "en": [ "Contributor" ] },
+            "value": { "en": [ "Brian Melvin Quartet" ] }
         },
         {
-            "label": {
-                "en": [
-                    "Date"
-                ]
-            },
-            "value": {
-                "en": [
-                    "1992-11-16"
-                ]
-            }
+            "label": { "en": [ "Date" ] },
+            "value": { "en": [ "1992-11-16" ] }
         }
     ],
-    "sequences": [
+    "items": [
         {
-            "canvases": [
+            "items": [
                 {
-                    "content": [
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004/anno",
+                    "items": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004/anno",
-                            "items": [
+                            "body": [
                                 {
-                                    "body": [
+                                    "items": [
                                         {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C728_241/vdc_100049349428.0x00001a.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C728_241/vdc_100049349428.0x00001a.mp4",
+                                            "type": "Audio"
                                         }
                                     ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
+                                    "type": "Choice"
                                 }
                             ],
-                            "type": "AnnotationPage"
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004/anno/",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004",
+                            "timeMode": "trim",
+                            "type": "Annotation"
                         }
                     ],
-                    "duration": 1006.84,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004",
-                    "label": "Tape 1 Side 1",
-                    "type": "Canvas"
-                },
-                {
-                    "content": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005/anno",
-                            "items": [
-                                {
-                                    "body": [
-                                        {
-                                            "items": [
-                                                {
-                                                    "format": "audio/mp4",
-                                                    "id": "http://resources.digirati.com/bl/C728_241/vdc_100049349428.0x00001c.mp4",
-                                                    "type": "Audio"
-                                                }
-                                            ],
-                                            "type": "Choice"
-                                        }
-                                    ],
-                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005/anno/",
-                                    "motivation": "painting",
-                                    "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005",
-                                    "timeMode": "trim",
-                                    "type": "Annotation"
-                                }
-                            ],
-                            "type": "AnnotationPage"
-                        }
-                    ],
-                    "duration": 1591.12,
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005",
-                    "label": "Tape 1 Side 2",
-                    "type": "Canvas"
+                    "type": "AnnotationPage"
                 }
             ],
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000001",
-            "type": "Sequence"
+            "duration": 1006.84,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004",
+            "label": "Tape 1 Side 1",
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005/anno",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "http://resources.digirati.com/bl/C728_241/vdc_100049349428.0x00001c.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005/anno/",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 1591.12,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005",
+            "label": "Tape 1 Side 2",
+            "type": "Canvas"
         }
     ],
     "structures": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000002/top",
-            "label": {
-                "en": [
-                    "[Demo]"
-                ]
-            },
-            "members": [
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004",
-                    "type": "Canvas"
-                },
-                {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005",
-                    "type": "Canvas"
-                },
+            "label": { "en": [ "[Demo]" ] },
+            "items": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000006",
-                    "label": {
-                        "en": [
-                            "Dania"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "Dania" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=0,243.32",
                             "type": "Canvas"
@@ -162,76 +105,32 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C728/241"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C728/241" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Dania"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Dania" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Tarpon Studios, San Anselmo, California, United States"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Tarpon Studios, San Anselmo, California, United States" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Brian Melvin Quartet"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Brian Melvin Quartet" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1992-11-16"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1992-11-16" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000008",
-                    "label": {
-                        "en": [
-                            "A short life"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "A short life" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=243.32,464.08",
                             "type": "Canvas"
@@ -239,76 +138,32 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C728/241"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C728/241" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "A short life"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "A short life" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Tarpon Studios, San Anselmo, California, United States"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Tarpon Studios, San Anselmo, California, United States" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Brian Melvin Quartet"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Brian Melvin Quartet" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1992-11-16"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1992-11-16" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x00000a",
-                    "label": {
-                        "en": [
-                            "Remembrant"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "Remembrant" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=464.08,748.6",
                             "type": "Canvas"
@@ -316,76 +171,32 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C728/241"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C728/241" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Remembrant"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Remembrant" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Tarpon Studios, San Anselmo, California, United States"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Tarpon Studios, San Anselmo, California, United States" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Brian Melvin Quartet"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Brian Melvin Quartet" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1992-11-16"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1992-11-16" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x00000c",
-                    "label": {
-                        "en": [
-                            "[No title]"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "[No title]" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000004#t=748.6,1006.84",
                             "type": "Canvas"
@@ -393,76 +204,32 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C728/241"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C728/241" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "[No title]"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "[No title]" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Tarpon Studios, San Anselmo, California, United States"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Tarpon Studios, San Anselmo, California, United States" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Brian Melvin Quartet"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Brian Melvin Quartet" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1992-11-16"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1992-11-16" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x00000e",
-                    "label": {
-                        "en": [
-                            "Teen town"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "Teen town" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=0,230.48",
                             "type": "Canvas"
@@ -470,76 +237,32 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C728/241"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C728/241" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Teen town"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Teen town" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Tarpon Studios, San Anselmo, California, United States"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Tarpon Studios, San Anselmo, California, United States" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Brian Melvin Quartet"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Brian Melvin Quartet" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1992-11-16"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1992-11-16" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000010",
-                    "label": {
-                        "en": [
-                            "Toys"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "Toys" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=230.48,655.52",
                             "type": "Canvas"
@@ -547,76 +270,32 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C728/241"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C728/241" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Toys"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Toys" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Tarpon Studios, San Anselmo, California, United States"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Tarpon Studios, San Anselmo, California, United States" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Brian Melvin Quartet"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Brian Melvin Quartet" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1992-11-16"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1992-11-16" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000012",
-                    "label": {
-                        "en": [
-                            "What is there to say"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "What is there to say" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=655.52,974",
                             "type": "Canvas"
@@ -624,76 +303,32 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C728/241"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C728/241" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "What is there to say"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "What is there to say" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Tarpon Studios, San Anselmo, California, United States"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Tarpon Studios, San Anselmo, California, United States" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Brian Melvin Quartet"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Brian Melvin Quartet" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1992-11-16"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1992-11-16" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000014",
-                    "label": {
-                        "en": [
-                            "203"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "203" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=974,1209.68",
                             "type": "Canvas"
@@ -701,76 +336,32 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C728/241"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C728/241" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "203"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "203" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Tarpon Studios, San Anselmo, California, United States"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Tarpon Studios, San Anselmo, California, United States" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Brian Melvin Quartet"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Brian Melvin Quartet" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1992-11-16"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1992-11-16" ] }
                         }
                     ],
                     "type": "Range"
                 },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000016",
-                    "label": {
-                        "en": [
-                            "Three views of a secret"
-                        ]
-                    },
-                    "members": [
+                    "label": { "en": [ "Three views of a secret" ] },
+                    "items": [
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100049349428.0x000005#t=1209.68,1591.12",
                             "type": "Canvas"
@@ -778,64 +369,24 @@
                     ],
                     "metadata": [
                         {
-                            "label": {
-                                "en": [
-                                    "Identifier"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "C728/241"
-                                ]
-                            }
+                            "label": { "en": [ "Identifier" ] },
+                            "value": { "en": [ "C728/241" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Title"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Three views of a secret"
-                                ]
-                            }
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Three views of a secret" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Place"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Tarpon Studios, San Anselmo, California, United States"
-                                ]
-                            }
+                            "label": { "en": [ "Place" ] },
+                            "value": { "en": [ "Tarpon Studios, San Anselmo, California, United States" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Contributor"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "Brian Melvin Quartet"
-                                ]
-                            }
+                            "label": { "en": [ "Contributor" ] },
+                            "value": { "en": [ "Brian Melvin Quartet" ] }
                         },
                         {
-                            "label": {
-                                "en": [
-                                    "Date"
-                                ]
-                            },
-                            "value": {
-                                "en": [
-                                    "1992-11-16"
-                                ]
-                            }
+                            "label": { "en": [ "Date" ] },
+                            "value": { "en": [ "1992-11-16" ] }
                         }
                     ],
                     "type": "Range"
