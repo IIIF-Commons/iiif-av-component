@@ -35,7 +35,7 @@
                                     "type":"Choice",
                                     "items": [
                                         {
-                                            "id":"http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000c.mp4",
+                                            "id":"https://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000c.mp4",
                                             "type":"Audio",
                                             "format":"audio/mp4"
                                         }
@@ -68,7 +68,7 @@
                                     "type":"Choice",
                                     "items": [
                                         {
-                                            "id":"http://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000e.mp4",
+                                            "id":"https://resources.digirati.com/bl/C1132_116/vdc_100050735359.0x00000e.mp4",
                                             "type":"Audio",
                                             "format":"audio/mp4"
                                         }

@@ -33,7 +33,7 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000033.mp4",
+                                            "id": "https://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000033.mp4",
                                             "type": "Audio"
                                         }
                                     ],
@@ -66,7 +66,7 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000035.mp4",
+                                            "id": "https://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000035.mp4",
                                             "type": "Audio"
                                         }
                                     ],
@@ -99,7 +99,7 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000037.mp4",
+                                            "id": "https://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000037.mp4",
                                             "type": "Audio"
                                         }
                                     ],
@@ -132,7 +132,7 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000039.mp4",
+                                            "id": "https://resources.digirati.com/bl/C733_48/vdc_100052320369.0x000039.mp4",
                                             "type": "Audio"
                                         }
                                     ],
@@ -165,7 +165,7 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003b.mp4",
+                                            "id": "https://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003b.mp4",
                                             "type": "Audio"
                                         }
                                     ],
@@ -198,7 +198,7 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "http://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003d.mp4",
+                                            "id": "https://resources.digirati.com/bl/C733_48/vdc_100052320369.0x00003d.mp4",
                                             "type": "Audio"
                                         }
                                     ],

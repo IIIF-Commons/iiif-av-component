@@ -37,7 +37,7 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "http://resources.digirati.com/bl/C1074_6/vdc_100053724382.0x000014.mp4",
+                                            "id": "https://resources.digirati.com/bl/C1074_6/vdc_100053724382.0x000014.mp4",
                                             "type": "Audio"
                                         }
                                     ],
@@ -70,7 +70,7 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "http://resources.digirati.com/bl/C1074_6/vdc_100053724382.0x000016.mp4",
+                                            "id": "https://resources.digirati.com/bl/C1074_6/vdc_100053724382.0x000016.mp4",
                                             "type": "Audio"
                                         }
                                     ],
