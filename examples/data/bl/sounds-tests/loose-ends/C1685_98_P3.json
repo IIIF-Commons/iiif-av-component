@@ -13,7 +13,7 @@
             "value": { "en": [ "<p>Correct Range implementation</p>" ] }
         }
     ],
-    "behavior": "auto-advance",
+    "behavior": ["auto-advance"],
     "items": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
@@ -51,7 +51,7 @@
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000005",
             "type": "Canvas",
-            "label": "Tape 1 Side 2",
+            "label": {  "en": [ "Tape 1 Side 2"  ] },
             "duration": 3723.4,
             "items": [
                 {
@@ -96,7 +96,7 @@
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.nn1",
                             "type": "Range",
-                            "behavior": "no-nav",
+                            "behavior": ["no-nav"],
                             "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,560",
@@ -118,7 +118,7 @@
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.nn2",
                             "type": "Range",
-                            "behavior": "no-nav",
+                            "behavior": ["no-nav"],
                             "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=741.28,1700.36",
@@ -140,7 +140,7 @@
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.nn3",
                             "type": "Range",
-                            "behavior": "no-nav",
+                            "behavior": ["no-nav"],
                             "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1914.84,2504.64",
