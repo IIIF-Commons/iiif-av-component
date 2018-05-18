@@ -153,6 +153,7 @@
                 console.log('canvas ready');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000015');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000011');
+                avcomponent.playRange("https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007");
             });
 
             avcomponent.on('rangechanged', function(rangeid) {
@@ -295,6 +296,13 @@
             treecomponent.on('treeNodeSelected', function(node) {
                 console.log('selected: ' + node.label);
                 avcomponent.playRange(node.data.id);
+            });
+
+            loadManifest("https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_P3.json", 
+            function(msg){
+                console.log(msg);
+            }, function(msg){
+                console.log(msg);
             });
 
         });
