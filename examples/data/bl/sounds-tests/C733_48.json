@@ -10,7 +10,7 @@
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"
     }],
-    "behavior": "auto-advance",
+    "behavior": ["auto-advance"],
     "metadata": [
         {
             "label": { "en": [ "Identifier" ] },
@@ -52,7 +52,7 @@
             ],
             "duration": 4047.12,
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004",
-            "label": "Tape 1 Side 1",
+            "label": { "en": [ "Tape 1 Side 1" ] },
             "type": "Canvas"
         },
         {
@@ -85,7 +85,7 @@
             ],
             "duration": 3520.08,
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005",
-            "label": "Tape 1 Side 2",
+            "label": { "en": [ "Tape 1 Side 2" ] },
             "type": "Canvas"
         },
         {
@@ -118,7 +118,7 @@
             ],
             "duration": 2239,
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007",
-            "label": "Tape 2 Side 1",
+            "label": { "en": [ "Tape 2 Side 1" ] },
             "type": "Canvas"
         },
         {
@@ -151,7 +151,7 @@
             ],
             "duration": 2223.84,
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008",
-            "label": "Tape 2 Side 2",
+            "label": { "en": [ "Tape 2 Side 2" ] },
             "type": "Canvas"
         },
         {
@@ -184,7 +184,7 @@
             ],
             "duration": 1405.2,
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a",
-            "label": "Tape 3 Side 1",
+            "label": { "en": [ "Tape 3 Side 1" ] },
             "type": "Canvas"
         },
         {
@@ -217,7 +217,7 @@
             ],
             "duration": 1398.84,
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b",
-            "label": "Tape 3 Side 2",
+            "label": { "en": [ "Tape 3 Side 2" ] },
             "type": "Canvas"
         }
     ],
