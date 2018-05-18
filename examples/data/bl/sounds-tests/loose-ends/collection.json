@@ -5,7 +5,7 @@
     ],
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/collection.json",
     "type": "Collection",
-    "label": { "en": ["Loose Ends: Canonical" ] },  
+    "label": { "en": ["Loose Ends: Canonical"] },  
     "items": [
         {
             "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_P3.json",
