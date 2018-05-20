@@ -33,17 +33,20 @@
                                                 {
                                                     "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/high/lunchroom_manners_1024kb.mp4",
                                                     "type": "Video",
-                                                    "label": "High"
+                                                    "label": "High",
+                                                    "format": "video/mp4"
                                                 },
                                                 {
                                                     "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/medium/lunchroom_manners_512kb.mp4",
                                                     "type": "Video",
-                                                    "label": "Medium"
+                                                    "label": "Medium",
+                                                    "format": "video/mp4"
                                                 },
                                                 {
                                                     "id": "http://dlib.indiana.edu/iiif_av/lunchroom_manners/low/lunchroom_manners_256kb.mp4",
                                                     "type": "Video",
-                                                    "label": "Low"
+                                                    "label": "Low",
+                                                    "format": "video/mp4"
                                                 }
                                             ]
                                         },
