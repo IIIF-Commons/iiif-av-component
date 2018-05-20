@@ -109,7 +109,7 @@ namespace IIIFComponents {
 
             if (this._data && this._data.helper && this._data.canvas) {
 
-                const ranges: Manifesto.IRange[] = [];
+                let ranges: Manifesto.IRange[] = [];
 
                 // if the canvas is virtual, get the ranges for all sub canvases
                 if (this.isVirtual()) {
@@ -132,7 +132,7 @@ namespace IIIFComponents {
                         }
                     });
                 } else {
-                    ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Manifesto.ICanvas));
+                    ranges = ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Manifesto.ICanvas));
                 }
   
                 ranges.forEach((range: Manifesto.IRange) => {
@@ -409,9 +409,8 @@ namespace IIIFComponents {
                             this._setCurrentTime(this._data.range.duration.start);
                         }
 
-                        this._play();
-
                         this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.rangeId);
+                        this._play();
                     }
                 }
 

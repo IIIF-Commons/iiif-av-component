@@ -528,7 +528,7 @@ var IIIFComponents;
                     });
                 }
                 else {
-                    ranges_1.concat(this._data.helper.getCanvasRanges(this._data.canvas));
+                    ranges_1 = ranges_1.concat(this._data.helper.getCanvasRanges(this._data.canvas));
                 }
                 ranges_1.forEach(function (range) {
                     _this._ranges.push(new IIIFComponents.AVComponentObjects.CanvasRange(range));
@@ -748,8 +748,8 @@ var IIIFComponents;
                         if (!this._data.range.spans(this._canvasClockTime)) {
                             this._setCurrentTime(this._data.range.duration.start);
                         }
-                        this._play();
                         this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, this._data.range.rangeId);
+                        this._play();
                     }
                 }
             }
