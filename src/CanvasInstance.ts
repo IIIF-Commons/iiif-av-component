@@ -740,7 +740,7 @@ namespace IIIFComponents {
 
             const range: AVComponentObjects.CanvasRange | undefined = this._getRangeForCurrentTime();
 
-            if (range !== this._data.range && !this._data.limitToRange) {
+            if (range && this._data.range && range.rangeId !== this._data.range.rangeId && !this._data.limitToRange) {
                 this.set({
                     range: range
                 });
