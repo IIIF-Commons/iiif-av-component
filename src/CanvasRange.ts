@@ -33,7 +33,7 @@ namespace IIIFComponents.AVComponentObjects {
                 }
             }
 
-            if (start && end) {
+            if (start !== undefined && end !== undefined) {
                 this.duration = new Duration(start, end);
             }
 

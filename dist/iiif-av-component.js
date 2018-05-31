@@ -1402,7 +1402,7 @@ var IIIFComponents;
                         }
                     }
                 }
-                if (start && end) {
+                if (start !== undefined && end !== undefined) {
                     this.duration = new AVComponentObjects.Duration(start, end);
                 }
                 this.nonav = range.getProperty('behavior') === 'no-nav';
