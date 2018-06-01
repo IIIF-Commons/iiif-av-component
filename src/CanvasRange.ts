@@ -37,7 +37,12 @@ namespace IIIFComponents.AVComponentObjects {
                 this.duration = new Duration(start, end);
             }
 
-            this.nonav = range.getProperty('behavior') === 'no-nav';
+            const behavior: any = range.getProperty('behavior');
+
+            if (behavior) {
+                this.nonav = behavior[0] === 'no-nav';
+            }
+            
         }
 
         public spans(time: number): boolean {

@@ -1024,6 +1024,7 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._hasRangeChanged = function () {
             var range = this._getRangeForCurrentTime();
+            console.log(range);
             if (range && this._data.range && range.rangeId !== this._data.range.rangeId && !this._data.limitToRange) {
                 this.set({
                     range: range
@@ -1405,7 +1406,10 @@ var IIIFComponents;
                 if (start !== undefined && end !== undefined) {
                     this.duration = new AVComponentObjects.Duration(start, end);
                 }
-                this.nonav = range.getProperty('behavior') === 'no-nav';
+                var behavior = range.getProperty('behavior');
+                if (behavior) {
+                    this.nonav = behavior[0] === 'no-nav';
+                }
             }
             CanvasRange.prototype.spans = function (time) {
                 if (this.duration) {
