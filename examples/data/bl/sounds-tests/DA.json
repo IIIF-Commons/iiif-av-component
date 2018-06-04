@@ -1,5 +1,8 @@
 {
-    "@context": "http://iiif.io/api/presentation/3/context.json",
+    "@context": [
+        "http://www.w3.org/ns/anno.jsonld",
+        "http://iiif.io/api/presentation/3/context.json"
+    ],
     "requiredStatement": {
         "label": { "en": [ "Attribution" ] },
         "value": { "en": [ "<span>Except as otherwise permitted under your national copyright law this material may not be copied or distributed further.</span>" ] }

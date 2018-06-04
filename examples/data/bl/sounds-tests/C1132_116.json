@@ -1,5 +1,8 @@
 {
-    "@context":"http://iiif.io/api/presentation/3/context.json",
+    "@context": [
+        "http://www.w3.org/ns/anno.jsonld",
+        "http://iiif.io/api/presentation/3/context.json"
+    ],
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1132_116.json",
     "type":"Manifest",
     "label":{"en":["C1132/116 Cliff Richard (Heathcliff)"]},

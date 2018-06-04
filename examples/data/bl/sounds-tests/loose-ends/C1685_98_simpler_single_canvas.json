@@ -1,5 +1,8 @@
 {
-    "@context": "http://iiif.io/api/presentation/3/context.json",
+    "@context": [
+        "http://www.w3.org/ns/anno.jsonld",
+        "http://iiif.io/api/presentation/3/context.json"
+    ],
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_simpler_single_canvas.json",
     "type": "Manifest",
     "label": {  "en": [ "C1685/98 Loose ends 17/7/99 Single Canvas"  ] },

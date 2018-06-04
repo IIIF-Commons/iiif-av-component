@@ -1,5 +1,8 @@
 {
-	"@context":"http://iiif.io/api/presentation/3/context.json",
+	"@context": [
+        "http://www.w3.org/ns/anno.jsonld",
+        "http://iiif.io/api/presentation/3/context.json"
+    ],
 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/manifest.json",
 	"type":"Manifest",
     "behavior": "auto-advance",
