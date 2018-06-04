@@ -1,9 +1,10 @@
 namespace IIIFComponents.AVComponentObjects {
     export class CanvasRange {
 
-        public rangeId: string | null = null;
-        public duration: Duration | null = null;
+        public rangeId: string | undefined;
+        public duration: Duration | undefined;
         public nonav: boolean = false;
+        public parentRange: CanvasRange | undefined;
 
         constructor(range: Manifesto.IRange) {
 
@@ -12,6 +13,10 @@ namespace IIIFComponents.AVComponentObjects {
             }
 
             this.rangeId = range.id;
+
+            if (range.parentRange) {
+                this.parentRange = new CanvasRange(range.parentRange);
+            }
 
             // if there are multiple canvases, get the start of the first canvas,
             // and the end of the last canvas.

@@ -1024,18 +1024,26 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._hasRangeChanged = function () {
             var range = this._getRangeForCurrentTime();
-            console.log(range);
-            if (range && this._data.range && range.rangeId !== this._data.range.rangeId && !this._data.limitToRange) {
+            if (range && !this._data.limitToRange && this._data.range && range.rangeId !== this._data.range.rangeId) {
                 this.set({
                     range: range
                 });
+            }
+            else {
+                // no range found. 
             }
         };
         CanvasInstance.prototype._getRangeForCurrentTime = function () {
             for (var i = 0; i < this._ranges.length; i++) {
                 var range = this._ranges[i];
-                if (!range.nonav && range.spans(this._canvasClockTime)) {
-                    return range;
+                if (range.spans(this._canvasClockTime)) {
+                    // if it's a no-nav range. return the parent range
+                    if (range.nonav) {
+                        return range.parentRange;
+                    }
+                    else {
+                        return range;
+                    }
                 }
             }
             return undefined;
@@ -1380,13 +1388,14 @@ var IIIFComponents;
     (function (AVComponentObjects) {
         var CanvasRange = /** @class */ (function () {
             function CanvasRange(range) {
-                this.rangeId = null;
-                this.duration = null;
                 this.nonav = false;
                 if (!range.canvases || !range.canvases.length) {
                     return;
                 }
                 this.rangeId = range.id;
+                if (range.parentRange) {
+                    this.parentRange = new CanvasRange(range.parentRange);
+                }
                 // if there are multiple canvases, get the start of the first canvas,
                 // and the end of the last canvas.
                 var start;

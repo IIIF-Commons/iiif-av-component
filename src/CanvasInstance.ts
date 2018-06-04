@@ -740,13 +740,16 @@ namespace IIIFComponents {
 
             const range: AVComponentObjects.CanvasRange | undefined = this._getRangeForCurrentTime();
 
-            console.log(range);
-
-            if (range && this._data.range && range.rangeId !== this._data.range.rangeId && !this._data.limitToRange) {
+            if (range && !this._data.limitToRange && this._data.range && range.rangeId !== this._data.range.rangeId) {
 
                 this.set({
                     range: range
                 });
+
+            } else {
+
+                // no range found. 
+
             }
         }
 
@@ -756,8 +759,15 @@ namespace IIIFComponents {
 
                 const range: AVComponentObjects.CanvasRange = this._ranges[i];
 
-                if (!range.nonav && range.spans(this._canvasClockTime)) {
-                    return range;
+                if (range.spans(this._canvasClockTime)) {
+                    
+                    // if it's a no-nav range. return the parent range
+                    if (range.nonav) {
+                        return range.parentRange;
+                    } else {
+                        return range;
+                    }
+                    
                 }
             }
 

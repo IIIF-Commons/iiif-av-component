@@ -162,9 +162,10 @@ declare namespace IIIFComponents.AVComponentCanvasInstance {
 /// <reference types="manifesto.js" />
 declare namespace IIIFComponents.AVComponentObjects {
     class CanvasRange {
-        rangeId: string | null;
-        duration: Duration | null;
+        rangeId: string | undefined;
+        duration: Duration | undefined;
         nonav: boolean;
+        parentRange: CanvasRange | undefined;
         constructor(range: Manifesto.IRange);
         spans(time: number): boolean;
     }
