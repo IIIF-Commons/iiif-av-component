@@ -32,39 +32,6 @@
         {
             "items": [
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/1/anno1",
-                    "items": [
-                        {
-                            "body": [
-                                {
-                                    "items": [
-                                        {
-                                            "format": "audio/mp4",
-                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234295.0x000001.mp4",
-                                            "type": "Audio"
-                                        }
-                                    ],
-                                    "type": "Choice"
-                                }
-                            ],
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/1/anno1/node-id-000008",
-                            "motivation": "painting",
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/1",
-                            "timeMode": "trim",
-                            "type": "Annotation"
-                        }
-                    ],
-                    "type": "AnnotationPage"
-                }
-            ],
-            "duration": 353.84,
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/1",
-            "label": { "en": [ "Dream Yourself Awake (Ambient Version Instrumental)" ] },
-            "type": "Canvas"
-        },
-        {
-            "items": [
-                {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/2/anno2",
                     "items": [
                         {
@@ -131,7 +98,7 @@
         {
             "items": [
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/4/anno4",
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/7/anno7",
                     "items": [
                         {
                             "body": [
@@ -139,16 +106,16 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234298.0x000001.mp4",
+                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234301.0x000001.mp4",
                                             "type": "Audio"
                                         }
                                     ],
                                     "type": "Choice"
                                 }
                             ],
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/4/anno4/node-id-000016",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/7/anno7/node-id-000006",
                             "motivation": "painting",
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/4",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/7",
                             "timeMode": "trim",
                             "type": "Annotation"
                         }
@@ -156,9 +123,42 @@
                     "type": "AnnotationPage"
                 }
             ],
-            "duration": 382.96,
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/4",
-            "label": { "en": [ "Wallflowers for Pale Saints (Ambient Version)" ] },
+            "duration": 336.56,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/7",
+            "label": { "en": [ "In An Open Space (Ambient Version Instrumental)" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/1/anno1",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234295.0x000001.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/1/anno1/node-id-000008",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/1",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 353.84,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/1",
+            "label": { "en": [ "Dream Yourself Awake (Ambient Version Instrumental)" ] },
             "type": "Canvas"
         },
         {
@@ -230,39 +230,6 @@
         {
             "items": [
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/7/anno7",
-                    "items": [
-                        {
-                            "body": [
-                                {
-                                    "items": [
-                                        {
-                                            "format": "audio/mp4",
-                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234301.0x000001.mp4",
-                                            "type": "Audio"
-                                        }
-                                    ],
-                                    "type": "Choice"
-                                }
-                            ],
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/7/anno7/node-id-000006",
-                            "motivation": "painting",
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/7",
-                            "timeMode": "trim",
-                            "type": "Annotation"
-                        }
-                    ],
-                    "type": "AnnotationPage"
-                }
-            ],
-            "duration": 336.56,
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/7",
-            "label": { "en": [ "In An Open Space (Ambient Version Instrumental)" ] },
-            "type": "Canvas"
-        },
-        {
-            "items": [
-                {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/8/anno8",
                     "items": [
                         {
@@ -296,7 +263,7 @@
         {
             "items": [
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/9/anno9",
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/4/anno4",
                     "items": [
                         {
                             "body": [
@@ -304,16 +271,16 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234303.0x000001.mp4",
+                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234298.0x000001.mp4",
                                             "type": "Audio"
                                         }
                                     ],
                                     "type": "Choice"
                                 }
                             ],
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/9/anno9/node-id-000020",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/4/anno4/node-id-000016",
                             "motivation": "painting",
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/9",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/4",
                             "timeMode": "trim",
                             "type": "Annotation"
                         }
@@ -321,9 +288,9 @@
                     "type": "AnnotationPage"
                 }
             ],
-            "duration": 275.32,
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/9",
-            "label": { "en": [ "In An Open Space (Ambient Version)" ] },
+            "duration": 382.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/4",
+            "label": { "en": [ "Wallflowers for Pale Saints (Ambient Version)" ] },
             "type": "Canvas"
         },
         {
@@ -362,7 +329,7 @@
         {
             "items": [
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/11/anno11",
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/9/anno9",
                     "items": [
                         {
                             "body": [
@@ -370,16 +337,16 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234305.0x000001.mp4",
+                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234303.0x000001.mp4",
                                             "type": "Audio"
                                         }
                                     ],
                                     "type": "Choice"
                                 }
                             ],
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/11/anno11/node-id-000024",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/9/anno9/node-id-000020",
                             "motivation": "painting",
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/11",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/9",
                             "timeMode": "trim",
                             "type": "Annotation"
                         }
@@ -387,9 +354,9 @@
                     "type": "AnnotationPage"
                 }
             ],
-            "duration": 224.08,
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/11",
-            "label": { "en": [ "Islands In The Sky (Ambient Version)" ] },
+            "duration": 275.32,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/9",
+            "label": { "en": [ "In An Open Space (Ambient Version)" ] },
             "type": "Canvas"
         },
         {
@@ -428,7 +395,7 @@
         {
             "items": [
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/13/anno13",
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/11/anno11",
                     "items": [
                         {
                             "body": [
@@ -436,16 +403,16 @@
                                     "items": [
                                         {
                                             "format": "audio/mp4",
-                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234307.0x000001.mp4",
+                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234305.0x000001.mp4",
                                             "type": "Audio"
                                         }
                                     ],
                                     "type": "Choice"
                                 }
                             ],
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/13/anno13/node-id-000034",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/11/anno11/node-id-000024",
                             "motivation": "painting",
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/13",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/11",
                             "timeMode": "trim",
                             "type": "Annotation"
                         }
@@ -453,9 +420,9 @@
                     "type": "AnnotationPage"
                 }
             ],
-            "duration": 461.96,
-            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/13",
-            "label": { "en": [ "Dream Yourself Awake (Shinedoe Remix)" ] },
+            "duration": 224.08,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/11",
+            "label": { "en": [ "Islands In The Sky (Ambient Version)" ] },
             "type": "Canvas"
         },
         {
@@ -555,6 +522,39 @@
             "duration": 419.48,
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/16",
             "label": { "en": [ "Dream Yourself Awake (Solomun Remix)" ] },
+            "type": "Canvas"
+        },
+        {
+            "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/13/anno13",
+                    "items": [
+                        {
+                            "body": [
+                                {
+                                    "items": [
+                                        {
+                                            "format": "audio/mp4",
+                                            "id": "https://resources.digirati.com/bl/DA/dvdc_999001234307.0x000001.mp4",
+                                            "type": "Audio"
+                                        }
+                                    ],
+                                    "type": "Choice"
+                                }
+                            ],
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/13/anno13/node-id-000034",
+                            "motivation": "painting",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/13",
+                            "timeMode": "trim",
+                            "type": "Annotation"
+                        }
+                    ],
+                    "type": "AnnotationPage"
+                }
+            ],
+            "duration": 461.96,
+            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/13",
+            "label": { "en": [ "Dream Yourself Awake (Shinedoe Remix)" ] },
             "type": "Canvas"
         },
         {
@@ -967,23 +967,6 @@
                     "type": "Range"
                 },
                 {
-                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234294.0x00000f",
-                    "label": { "en": [ "Dream Yourself Awake (Solomun Remix)" ] },
-                    "items": [
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/20#t=0,322.88",
-                            "type": "Canvas"
-                        }
-                    ],
-                    "metadata": [
-                        {
-                            "label": { "en": [ "Title" ] },
-                            "value": { "en": [ "Dream Yourself Awake (Solomun Remix)" ] }
-                        }
-                    ],
-                    "type": "Range"
-                },
-                {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234294.0x000010",
                     "label": { "en": [ "Dream Yourself Awake (Solomun Remix)" ] },
                     "items": [
@@ -1064,6 +1047,23 @@
                         {
                             "label": { "en": [ "Title" ] },
                             "value": { "en": [ "Dream Yourself Awake (Solomun Dream Version Remix)" ] }
+                        }
+                    ],
+                    "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234294.0x00000f",
+                    "label": { "en": [ "Dream Yourself Awake (Solomun Remix)" ] },
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/dvdc_999001234290.0x000001/sequence/canvas/20#t=0,322.88",
+                            "type": "Canvas"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "label": { "en": [ "Title" ] },
+                            "value": { "en": [ "Dream Yourself Awake (Solomun Remix)" ] }
                         }
                     ],
                     "type": "Range"
