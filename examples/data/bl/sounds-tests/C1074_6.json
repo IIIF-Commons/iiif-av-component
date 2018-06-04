@@ -1,12 +1,15 @@
 {
-    "@context": "http://iiif.io/api/presentation/3/context.json",
+    "@context": [
+        "http://www.w3.org/ns/anno.jsonld",
+        "http://iiif.io/api/presentation/3/context.json"
+    ],
 	"requiredStatement": {
         "label": { "en": [ "Attribution" ] },
         "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
     },
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1074_6.json",
     "label": { "en": [ "C1074/6 Igbo Iwin overlays" ] },
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
     "logo": [{
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"

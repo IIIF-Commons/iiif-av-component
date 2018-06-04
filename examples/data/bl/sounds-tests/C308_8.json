@@ -1,5 +1,8 @@
 {
-    "@context": "http://iiif.io/api/presentation/3/context.json",
+    "@context": [
+        "http://www.w3.org/ns/anno.jsonld",
+        "http://iiif.io/api/presentation/3/context.json"
+    ],
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8.json",
     "type": "Manifest",
     "label": { "en": [ "C308/8 Brian Hayes programme" ] },
@@ -13,7 +16,7 @@
             "value": { "en": [ "Brian Hayes programme" ] }
         }
     ],
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
     "items": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
