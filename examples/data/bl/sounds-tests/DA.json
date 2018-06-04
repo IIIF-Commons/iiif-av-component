@@ -9,7 +9,7 @@
     },
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/DA.json",
     "label": { "en": [ "The Winter Hymn (Ambient Version)" ] },
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
     "logo": [{
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"

@@ -8,7 +8,7 @@
         "label": { "en": [ "Attribution" ] },
         "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
     },
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
     "label": { "en": [ "C465/13/01-14 F5574 F5575 F5576 F5577 F5578 F5579 F5580 F5581 F5582 F5583 F5584 F5585 F5586 F5587 Jocelyn Herbert interviewed by Cathy Courtney" ] },
     "logo": [{
         "id": "https://www.bl.uk/images/bl_logo_100.gif",

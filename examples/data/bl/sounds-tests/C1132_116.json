@@ -6,7 +6,7 @@
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1132_116.json",
     "type":"Manifest",
     "label":{"en":["C1132/116 Cliff Richard (Heathcliff)"]},
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
     "metadata": [
         {
             "label":{"en":["Identifier"]},

@@ -5,7 +5,7 @@
     ],
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241.json",
     "label": { "en": [ "C728/241 [Demo]" ] },
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
     "metadata": [
         {
             "label": { "en": [ "Identifier" ] },

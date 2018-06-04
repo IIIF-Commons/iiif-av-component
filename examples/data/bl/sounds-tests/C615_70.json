@@ -5,7 +5,7 @@
     ],
 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/manifest.json",
 	"type":"Manifest",
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
 	"label":{"en":["C615/70 C615/71 Tamas Vasary piano"]},
 	"metadata": [
 	 	{

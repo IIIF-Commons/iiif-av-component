@@ -13,7 +13,7 @@
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"
     }],
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
     "metadata": [
         {
             "label": { "en": [ "Identifier" ] },
@@ -124,7 +124,7 @@
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.nn1",
                             "type": "Range",
-                            "behavior": "no-nav",
+                            "behavior": [ "no-nav" ],
                             "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,560",
@@ -164,7 +164,7 @@
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.nn2",
                             "type": "Range",
-                            "behavior": "no-nav",
+                            "behavior": [ "no-nav" ],
                             "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=741.28,1700.36",
@@ -209,7 +209,7 @@
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.nn3",
                             "type": "Range",
-                            "behavior": "no-nav",
+                            "behavior": [ "no-nav" ],
                             "items": [
                                 {
                                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1914.84,2504.64",

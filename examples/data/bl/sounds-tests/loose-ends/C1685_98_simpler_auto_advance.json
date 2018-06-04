@@ -24,7 +24,7 @@
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004",
                     "type": "Canvas",
-                    "behavior": "auto-advance",
+                    "behavior": [ "auto-advance" ],
                     "label": { "en": [ "Tape 1 Side 1" ] },
                     "duration": 3723.4,
                     "content": [
