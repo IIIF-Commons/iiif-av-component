@@ -1,4 +1,5 @@
 namespace IIIFComponents.AVComponentUtils {
+
     export class Utils {
 
         private static _compare(a: any, b: any): string[] {
@@ -35,6 +36,56 @@ namespace IIIFComponents.AVComponentUtils {
             }
 
             return t;
+        }
+
+        public static getRangeDuration(range: Manifesto.IRange): AVComponentObjects.Duration | undefined {
+
+            let start: number | undefined;
+            let end: number | undefined;
+
+            if (range.canvases && range.canvases.length) {
+                for (let i = 0; i < range.canvases.length; i++) {
+                    const canvas: string = range.canvases[i];
+                    let temporal: number[] | null = Utils.getTemporalComponent(canvas);
+                    if (temporal && temporal.length > 1) {
+                        if (i === 0) {
+                            start = Number(temporal[0]);
+                        }
+    
+                        if (i === range.canvases.length - 1) {
+                            end = Number(temporal[1]);
+                        }
+                    }
+                }
+            } else {
+
+                // get child ranges and calculate the start and end based on them
+                const childRanges: Manifesto.IRange[] = range.getRanges();
+
+                for (let i = 0; i < childRanges.length; i++) {
+                    const childRange: Manifesto.IRange = childRanges[i];
+
+                    const duration: AVComponentObjects.Duration | undefined = Utils.getRangeDuration(childRange);
+
+                    if (duration) {
+                        if (i === 0) {
+                            start = duration.start;
+                        }
+    
+                        if (i === childRanges.length - 1) {
+                            end = duration.end;
+                        }
+                    }
+                }
+
+            }
+
+            if (start !== undefined && end !== undefined) {
+                return new AVComponentObjects.Duration(start, end);
+            }
+
+            return undefined;
+
         }
 
         public static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined {

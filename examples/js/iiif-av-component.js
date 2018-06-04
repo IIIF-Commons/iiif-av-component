@@ -1388,33 +1388,15 @@ var IIIFComponents;
     (function (AVComponentObjects) {
         var CanvasRange = /** @class */ (function () {
             function CanvasRange(range) {
+                // if (!range.canvases || !range.canvases.length) {
+                //     return;
+                // }
                 this.nonav = false;
-                if (!range.canvases || !range.canvases.length) {
-                    return;
-                }
                 this.rangeId = range.id;
                 if (range.parentRange) {
                     this.parentRange = new CanvasRange(range.parentRange);
                 }
-                // if there are multiple canvases, get the start of the first canvas,
-                // and the end of the last canvas.
-                var start;
-                var end;
-                for (var i = 0; i < range.canvases.length; i++) {
-                    var canvas = range.canvases[i];
-                    var temporal = IIIFComponents.AVComponentUtils.Utils.getTemporalComponent(canvas);
-                    if (temporal && temporal.length > 1) {
-                        if (i === 0) {
-                            start = Number(temporal[0]);
-                        }
-                        if (i === range.canvases.length - 1) {
-                            end = Number(temporal[1]);
-                        }
-                    }
-                }
-                if (start !== undefined && end !== undefined) {
-                    this.duration = new AVComponentObjects.Duration(start, end);
-                }
+                this.duration = IIIFComponents.AVComponentUtils.Utils.getRangeDuration(range);
                 var behavior = range.getProperty('behavior');
                 if (behavior) {
                     this.nonav = behavior[0] === 'no-nav';
@@ -1490,6 +1472,44 @@ var IIIFComponents;
                     t = temporal[1].split(',');
                 }
                 return t;
+            };
+            Utils.getRangeDuration = function (range) {
+                var start;
+                var end;
+                if (range.canvases && range.canvases.length) {
+                    for (var i = 0; i < range.canvases.length; i++) {
+                        var canvas = range.canvases[i];
+                        var temporal = Utils.getTemporalComponent(canvas);
+                        if (temporal && temporal.length > 1) {
+                            if (i === 0) {
+                                start = Number(temporal[0]);
+                            }
+                            if (i === range.canvases.length - 1) {
+                                end = Number(temporal[1]);
+                            }
+                        }
+                    }
+                }
+                else {
+                    // get child ranges and calculate the start and end based on them
+                    var childRanges = range.getRanges();
+                    for (var i = 0; i < childRanges.length; i++) {
+                        var childRange = childRanges[i];
+                        var duration = Utils.getRangeDuration(childRange);
+                        if (duration) {
+                            if (i === 0) {
+                                start = duration.start;
+                            }
+                            if (i === childRanges.length - 1) {
+                                end = duration.end;
+                            }
+                        }
+                    }
+                }
+                if (start !== undefined && end !== undefined) {
+                    return new IIIFComponents.AVComponentObjects.Duration(start, end);
+                }
+                return undefined;
             };
             Utils.retargetTemporalComponent = function (canvases, target) {
                 var t = AVComponentUtils.Utils.getTemporalComponent(target);

@@ -8,9 +8,9 @@ namespace IIIFComponents.AVComponentObjects {
 
         constructor(range: Manifesto.IRange) {
 
-            if (!range.canvases || !range.canvases.length) {
-                return;
-            }
+            // if (!range.canvases || !range.canvases.length) {
+            //     return;
+            // }
 
             this.rangeId = range.id;
 
@@ -18,29 +18,7 @@ namespace IIIFComponents.AVComponentObjects {
                 this.parentRange = new CanvasRange(range.parentRange);
             }
 
-            // if there are multiple canvases, get the start of the first canvas,
-            // and the end of the last canvas.
-
-            let start: number | undefined;
-            let end: number | undefined;
-
-            for (let i = 0; i < range.canvases.length; i++) {
-                const canvas: string = range.canvases[i];
-                let temporal: number[] | null = AVComponentUtils.Utils.getTemporalComponent(canvas);
-                if (temporal && temporal.length > 1) {
-                    if (i === 0) {
-                        start = Number(temporal[0]);
-                    }
-
-                    if (i === range.canvases.length - 1) {
-                        end = Number(temporal[1]);
-                    }
-                }
-            }
-
-            if (start !== undefined && end !== undefined) {
-                this.duration = new Duration(start, end);
-            }
+            this.duration = AVComponentUtils.Utils.getRangeDuration(range);
 
             const behavior: any = range.getProperty('behavior');
 

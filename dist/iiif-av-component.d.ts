@@ -234,6 +234,7 @@ declare namespace IIIFComponents.AVComponentUtils {
         static diff(a: any, b: any): string[];
         static getSpatialComponent(target: string): number[] | null;
         static getTemporalComponent(target: string): number[] | null;
+        static getRangeDuration(range: Manifesto.IRange): AVComponentObjects.Duration | undefined;
         static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined;
         static formatTime(aNumber: number): string;
         static detectIE(): number | boolean;
