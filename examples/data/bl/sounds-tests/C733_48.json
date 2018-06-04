@@ -24,6 +24,33 @@
             "value": { "en": [ "[Recordings in Soqotri / 'Survey' recordings in English]" ] }
         }
     ],
+    "posterCanvas": {
+        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C733_48/poster",
+        "type": "Canvas",
+        "height": 962,
+        "width": 962,
+        "items": [
+            {
+                "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C733_48/poster/p1",
+                "type": "AnnotationPage",
+                "items": [
+                    {
+                        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C733_48/poster/p1/anno",
+                        "type": "Annotation",
+                        "motivation": "painting",
+                        "target": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C733_48/poster",
+                        "body": {
+                            "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/posters/pop.jpg",
+                            "type": "Image",
+                            "format": "image/jpeg",
+                            "width": 962,
+                            "height": 962
+                        }
+                    }                    
+                ]
+            }
+        ]
+    },
     "items": [
         {
             "items": [

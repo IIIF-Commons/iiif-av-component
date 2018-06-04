@@ -23,7 +23,34 @@
             "label": { "en": [ "Date" ] },
             "value": { "en": [ "1992-11-16" ] }
         }
-    ],
+    ],  
+    "posterCanvas": {
+        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241/poster",
+        "type": "Canvas",
+        "height": 962,
+        "width": 962,
+        "items": [
+            {
+                "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241/poster/p1",
+                "type": "AnnotationPage",
+                "items": [
+                    {
+                        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241/poster/p1/anno",
+                        "type": "Annotation",
+                        "motivation": "painting",
+                        "target": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241/poster",
+                        "body": {
+                            "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/posters/wildlife.jpg",
+                            "type": "Image",
+                            "format": "image/jpeg",
+                            "width": 962,
+                            "height": 962
+                        }
+                    }                    
+                ]
+            }
+        ]
+    },
     "items": [
         {
             "items": [
