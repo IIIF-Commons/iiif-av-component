@@ -410,9 +410,9 @@ namespace IIIFComponents {
                         if (duration) {
 
                             // if the range has changed, update the time if not already within the duration span
-                            if (!this._data.range.spansTime(this._canvasClockTime)) {
+                            //if (!this._data.range.spansTime(this._canvasClockTime)) {
                                 this._setCurrentTime(duration.start);
-                            }
+                            //}
 
                             this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                             this._play();
@@ -761,6 +761,66 @@ namespace IIIFComponents {
             }
         }
 
+        private _rangeSpansCurrentTime(range: Manifesto.IRange): boolean {
+            
+            const behavior: Manifesto.Behavior | null = range.getBehavior();
+
+            let nonav: boolean = false;
+
+            if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
+                nonav = true;
+            }
+
+            if (!nonav && range.spansTime(this._canvasClockTime)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        private _getRangeForCurrentTime(parentRange?: Manifesto.IRange): Manifesto.IRange | undefined {
+
+            let ranges: Manifesto.IRange[];
+
+            if (!parentRange) {
+                ranges = this._ranges;
+            } else {
+                ranges = parentRange.getRanges();
+            }
+
+            for (let i = 0; i < ranges.length; i++) {
+
+                const range: Manifesto.IRange = ranges[i];
+
+                // recursively drill down to deepest sub range
+                // until child doesn't span the current time
+
+                if (this._rangeSpansCurrentTime(range)) {
+                    
+                    let spanningChildRangeFound: boolean = false;
+                    const childRanges: Manifesto.IRange[] = range.getRanges();
+
+                    // if a child range spans the current time, recurse into it
+                    for (let i = 0; i < childRanges.length; i++) {
+                        const childRange: Manifesto.IRange = childRanges[i];
+
+                        if (this._rangeSpansCurrentTime(childRange)) {
+                            spanningChildRangeFound = true;
+                            return this._getRangeForCurrentTime(childRange);
+                        }
+                    }
+
+                    if (!spanningChildRangeFound) {
+                        return range;
+                    }
+                    
+                }
+            }
+
+            return undefined;
+        }
+
+        /*
         private _getRangeForCurrentTime(): Manifesto.IRange | undefined {
 
             for (let i = 0; i < this._ranges.length; i++) {
@@ -786,6 +846,7 @@ namespace IIIFComponents {
 
             return undefined;
         }
+        */
 
         private _updateCurrentTimeDisplay(): void {
 

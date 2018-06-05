@@ -735,9 +735,9 @@ var IIIFComponents;
                         var duration = this._data.range.getDuration();
                         if (duration) {
                             // if the range has changed, update the time if not already within the duration span
-                            if (!this._data.range.spansTime(this._canvasClockTime)) {
-                                this._setCurrentTime(duration.start);
-                            }
+                            //if (!this._data.range.spansTime(this._canvasClockTime)) {
+                            this._setCurrentTime(duration.start);
+                            //}
                             this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                             this._play();
                         }
@@ -1024,24 +1024,74 @@ var IIIFComponents;
                 });
             }
         };
-        CanvasInstance.prototype._getRangeForCurrentTime = function () {
-            for (var i = 0; i < this._ranges.length; i++) {
-                var range = this._ranges[i];
-                // todo: need to drill down to deepest sub range
-                // then work our way up checking if range spans the current time
-                if (range.spansTime(this._canvasClockTime)) {
-                    // if it's a no-nav range. return the parent range
-                    var behavior = range.getBehavior();
-                    if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
-                        return range.parentRange;
+        CanvasInstance.prototype._rangeSpansCurrentTime = function (range) {
+            var behavior = range.getBehavior();
+            var nonav = false;
+            if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
+                nonav = true;
+            }
+            if (!nonav && range.spansTime(this._canvasClockTime)) {
+                return true;
+            }
+            return false;
+        };
+        CanvasInstance.prototype._getRangeForCurrentTime = function (parentRange) {
+            var ranges;
+            if (!parentRange) {
+                ranges = this._ranges;
+            }
+            else {
+                ranges = parentRange.getRanges();
+            }
+            for (var i = 0; i < ranges.length; i++) {
+                var range = ranges[i];
+                // recursively drill down to deepest sub range
+                // until child doesn't span the current time
+                if (this._rangeSpansCurrentTime(range)) {
+                    var spanningChildRangeFound = false;
+                    var childRanges = range.getRanges();
+                    // if a child range spans the current time, recurse into it
+                    for (var i_1 = 0; i_1 < childRanges.length; i_1++) {
+                        var childRange = childRanges[i_1];
+                        if (this._rangeSpansCurrentTime(childRange)) {
+                            spanningChildRangeFound = true;
+                            return this._getRangeForCurrentTime(childRange);
+                        }
                     }
-                    else {
+                    if (!spanningChildRangeFound) {
                         return range;
                     }
                 }
             }
             return undefined;
         };
+        /*
+        private _getRangeForCurrentTime(): Manifesto.IRange | undefined {
+
+            for (let i = 0; i < this._ranges.length; i++) {
+
+                const range: Manifesto.IRange = this._ranges[i];
+
+                // todo: need to drill down to deepest sub range
+                // then work our way up checking if range spans the current time
+
+                if (range.spansTime(this._canvasClockTime)) {
+                    
+                    // if it's a no-nav range. return the parent range
+                    const behavior: Manifesto.Behavior | null = range.getBehavior();
+
+                    if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
+                        return range.parentRange;
+                    } else {
+                        return range;
+                    }
+                    
+                }
+            }
+
+            return undefined;
+        }
+        */
         CanvasInstance.prototype._updateCurrentTimeDisplay = function () {
             var duration;
             if (this._data.range) {
@@ -1398,24 +1448,6 @@ var IIIFComponents;
         }());
         AVComponentCanvasInstance.Events = Events;
     })(AVComponentCanvasInstance = IIIFComponents.AVComponentCanvasInstance || (IIIFComponents.AVComponentCanvasInstance = {}));
-})(IIIFComponents || (IIIFComponents = {}));
-
-var IIIFComponents;
-(function (IIIFComponents) {
-    var AVComponentObjects;
-    (function (AVComponentObjects) {
-        var Duration = /** @class */ (function () {
-            function Duration(start, end) {
-                this.start = start;
-                this.end = end;
-            }
-            Duration.prototype.getLength = function () {
-                return this.end - this.start;
-            };
-            return Duration;
-        }());
-        AVComponentObjects.Duration = Duration;
-    })(AVComponentObjects = IIIFComponents.AVComponentObjects || (IIIFComponents.AVComponentObjects = {}));
 })(IIIFComponents || (IIIFComponents = {}));
 
 

@@ -128,7 +128,8 @@ declare namespace IIIFComponents {
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
         private _hasRangeChanged();
-        private _getRangeForCurrentTime();
+        private _rangeSpansCurrentTime(range);
+        private _getRangeForCurrentTime(parentRange?);
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
         private _renderSyncIndicator(mediaElementData);
@@ -156,15 +157,6 @@ declare namespace IIIFComponents.AVComponentCanvasInstance {
         static PAUSECANVAS: string;
         static PLAYCANVAS: string;
         static PREVIOUS_RANGE: string;
-    }
-}
-
-declare namespace IIIFComponents.AVComponentObjects {
-    class Duration {
-        start: number;
-        end: number;
-        constructor(start: number, end: number);
-        getLength(): number;
     }
 }
 
