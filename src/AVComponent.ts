@@ -88,7 +88,7 @@ namespace IIIFComponents {
 
             if (diff.includes('canvasId') && this._data.canvasId) {
 
-                const currentCanvasInstance: CanvasInstance | null = this._getCanvasInstanceById(this._data.canvasId);
+                const currentCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
 
                 this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
                     if (canvasInstance !== currentCanvasInstance) {
@@ -109,16 +109,17 @@ namespace IIIFComponents {
                     console.warn('range not found');
                 } else {
 
-                    if (range.canvases) {
-                        const canvasId = Manifesto.Utils.normaliseUrl(range.canvases[0]);
-    
+                    const canvasId: string | undefined = AVComponentUtils.Utils.getFirstTargetedCanvasId(range);
+
+                    if (canvasId) {
+
                         // get canvas by normalised id (without temporal part)
-                        const canvasInstance: CanvasInstance | null = this._getCanvasInstanceById(canvasId);
+                        const canvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(canvasId);
                         
                         if (canvasInstance) {
     
                             const canvasRange: AVComponentObjects.CanvasRange = new AVComponentObjects.CanvasRange(range);
- 
+
                             // if not using the correct canvasinstance, switch to it
                             if (this._data.canvasId && Manifesto.Utils.normaliseUrl(this._data.canvasId) !== canvasId) {
 
@@ -271,7 +272,7 @@ namespace IIIFComponents {
             });
         }
 
-        private _getCanvasInstanceById(canvasId: string): CanvasInstance | null {
+        private _getCanvasInstanceById(canvasId: string): CanvasInstance | undefined {
             
             canvasId = Manifesto.Utils.normaliseUrl(canvasId);
     
@@ -297,7 +298,7 @@ namespace IIIFComponents {
                 }
             }
     
-            return null;
+            return undefined;
         }
 
         // private _getCurrentRange(): AVComponentObjects.CanvasRange | null {
@@ -316,12 +317,12 @@ namespace IIIFComponents {
         //     return null;
         // }
 
-        private _getCurrentCanvas(): CanvasInstance | null {
+        private _getCurrentCanvas(): CanvasInstance | undefined {
             if (this._data.canvasId) {
                 return this._getCanvasInstanceById(this._data.canvasId);
             }
 
-            return null;
+            return undefined;
         }
         
         private _rewind(): void {
@@ -330,7 +331,7 @@ namespace IIIFComponents {
                 return;
             }
             
-            const canvasInstance: CanvasInstance | null = this._getCurrentCanvas();
+            const canvasInstance: CanvasInstance | undefined = this._getCurrentCanvas();
 
             if (canvasInstance) {
                 canvasInstance.set({

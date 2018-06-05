@@ -103,8 +103,8 @@ var IIIFComponents;
                     console.warn('range not found');
                 }
                 else {
-                    if (range.canvases) {
-                        var canvasId = Manifesto.Utils.normaliseUrl(range.canvases[0]);
+                    var canvasId = IIIFComponents.AVComponentUtils.Utils.getFirstTargetedCanvasId(range);
+                    if (canvasId) {
                         // get canvas by normalised id (without temporal part)
                         var canvasInstance = this._getCanvasInstanceById(canvasId);
                         if (canvasInstance) {
@@ -244,7 +244,7 @@ var IIIFComponents;
                     }
                 }
             }
-            return null;
+            return undefined;
         };
         // private _getCurrentRange(): AVComponentObjects.CanvasRange | null {
         //     if (!this._data.helper || !this._data.helper.rangeId) {
@@ -261,7 +261,7 @@ var IIIFComponents;
             if (this._data.canvasId) {
                 return this._getCanvasInstanceById(this._data.canvasId);
             }
-            return null;
+            return undefined;
         };
         AVComponent.prototype._rewind = function () {
             if (this._data.limitToRange) {
@@ -1472,6 +1472,23 @@ var IIIFComponents;
                     t = temporal[1].split(',');
                 }
                 return t;
+            };
+            Utils.getFirstTargetedCanvasId = function (range) {
+                var canvasId;
+                if (range.canvases && range.canvases.length) {
+                    canvasId = range.canvases[0];
+                }
+                else {
+                    // todo: this should be recursive
+                    var childRanges = range.getRanges();
+                    if (childRanges.length) {
+                        return Utils.getFirstTargetedCanvasId(childRanges[0]);
+                    }
+                }
+                if (canvasId !== undefined) {
+                    return Manifesto.Utils.normaliseUrl(canvasId);
+                }
+                return undefined;
             };
             Utils.getRangeDuration = function (range) {
                 var start;

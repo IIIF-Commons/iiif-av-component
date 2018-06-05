@@ -38,6 +38,29 @@ namespace IIIFComponents.AVComponentUtils {
             return t;
         }
 
+        public static getFirstTargetedCanvasId(range: Manifesto.IRange): string | undefined {
+            
+            let canvasId: string | undefined;
+
+            if (range.canvases && range.canvases.length) {
+                canvasId = range.canvases[0];
+            } else {
+
+                const childRanges: Manifesto.IRange[] = range.getRanges();
+
+                if (childRanges.length) {
+                    return Utils.getFirstTargetedCanvasId(childRanges[0]);
+                }
+
+            }
+
+            if (canvasId !== undefined) {
+                return Manifesto.Utils.normaliseUrl(canvasId);
+            }
+
+            return undefined;
+        }
+
         public static getRangeDuration(range: Manifesto.IRange): AVComponentObjects.Duration | undefined {
 
             let start: number | undefined;
