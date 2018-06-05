@@ -1,10 +1,13 @@
 namespace IIIFComponents.AVComponentObjects {
+    
+    // todo: consider moving this to manifesto range
     export class CanvasRange {
 
         public rangeId: string | undefined;
         public duration: Duration | undefined;
         public nonav: boolean = false;
         public parentRange: CanvasRange | undefined;
+        public ranges: Manifesto.IRange[];
 
         constructor(range: Manifesto.IRange) {
 
@@ -18,7 +21,9 @@ namespace IIIFComponents.AVComponentObjects {
                 this.parentRange = new CanvasRange(range.parentRange);
             }
 
-            this.duration = AVComponentUtils.Utils.getRangeDuration(range);
+            this.ranges = range.getRanges();
+
+            //this.duration = AVComponentUtils.Utils.getRangeDuration(range);
 
             const behavior: any = range.getProperty('behavior');
 

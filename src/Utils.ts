@@ -27,16 +27,16 @@ namespace IIIFComponents.AVComponentUtils {
             return xywh;
         }
 
-        public static getTemporalComponent(target: string): number[] | null {
-            const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(target);
-            let t: number[] | null = null;
+        // public static getTemporalComponent(target: string): number[] | null {
+        //     const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(target);
+        //     let t: number[] | null = null;
 
-            if (temporal && temporal[1]) {
-                t = <any>temporal[1].split(',');
-            }
+        //     if (temporal && temporal[1]) {
+        //         t = <any>temporal[1].split(',');
+        //     }
 
-            return t;
-        }
+        //     return t;
+        // }
 
         public static getFirstTargetedCanvasId(range: Manifesto.IRange): string | undefined {
             
@@ -61,6 +61,7 @@ namespace IIIFComponents.AVComponentUtils {
             return undefined;
         }
 
+        /*
         public static getRangeDuration(range: Manifesto.IRange): AVComponentObjects.Duration | undefined {
 
             let start: number | undefined;
@@ -110,6 +111,7 @@ namespace IIIFComponents.AVComponentUtils {
             return undefined;
 
         }
+        */
 
         public static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined {
             

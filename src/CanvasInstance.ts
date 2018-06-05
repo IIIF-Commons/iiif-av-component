@@ -405,9 +405,9 @@ namespace IIIFComponents {
                     } else if (this._data.range.duration) {
 
                         // if the range has changed, update the time if not already within the duration span
-                        if (!this._data.range.spans(this._canvasClockTime)) {
+                        //if (!this._data.range.spans(this._canvasClockTime)) {
                             this._setCurrentTime(this._data.range.duration.start);
-                        }
+                        //}
 
                         this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.rangeId);
                         this._play();
@@ -746,10 +746,6 @@ namespace IIIFComponents {
                     range: range
                 });
 
-            } else {
-
-                // no range found. 
-
             }
         }
 
@@ -759,8 +755,22 @@ namespace IIIFComponents {
 
                 const range: AVComponentObjects.CanvasRange = this._ranges[i];
 
+                // drill down to deepest sub range
+                // until child doesn't span the current time
+
                 if (range.spans(this._canvasClockTime)) {
                     
+                    if (range.ranges.length) {
+
+                        let foundSpanningRange: boolean = false;
+
+                        for (let i = 0; i < range.ranges.length; i++) {
+                            const childRange: Manifesto.IRange = range.ranges[i];
+
+                            if ()
+                        }
+                    }
+
                     // if it's a no-nav range. return the parent range
                     if (range.nonav) {
                         return range.parentRange;

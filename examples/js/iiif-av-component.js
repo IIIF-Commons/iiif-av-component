@@ -745,9 +745,9 @@ var IIIFComponents;
                     }
                     else if (this._data.range.duration) {
                         // if the range has changed, update the time if not already within the duration span
-                        if (!this._data.range.spans(this._canvasClockTime)) {
-                            this._setCurrentTime(this._data.range.duration.start);
-                        }
+                        //if (!this._data.range.spans(this._canvasClockTime)) {
+                        this._setCurrentTime(this._data.range.duration.start);
+                        //}
                         this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, this._data.range.rangeId);
                         this._play();
                     }
