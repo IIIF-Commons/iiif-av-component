@@ -38,7 +38,7 @@ namespace IIIFComponents {
         private _lowPriorityFrequency: number = 250;
         private _lowPriorityInterval: number;
         private _mediaSyncMarginSecs: number = 1;
-        private _ranges: AVComponentObjects.CanvasRange[] = [];
+        private _ranges: Manifesto.IRange[] = [];
         private _readyCanvasesCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
@@ -136,7 +136,7 @@ namespace IIIFComponents {
                 }
   
                 ranges.forEach((range: Manifesto.IRange) => {
-                    this._ranges.push(new AVComponentObjects.CanvasRange(range));
+                    this._ranges.push(range);
                 });
             }
 
@@ -230,7 +230,8 @@ namespace IIIFComponents {
 
             this._$rangeTimelineContainer.on("mousemove", (e) => {
                 if (this._data.range) {
-                    this._updateHoverPreview(e, this._$rangeTimelineContainer, this._data.range.duration ? this._data.range.duration.getLength() : 0);
+                    const duration: Manifesto.Duration | undefined = this._data.range.getDuration();
+                    this._updateHoverPreview(e, this._$rangeTimelineContainer, duration ? duration.getLength() : 0);
                 }
             });
 
@@ -302,7 +303,7 @@ namespace IIIFComponents {
                 }
 
                 let xywh: number[] | null = AVComponentUtils.Utils.getSpatialComponent(target);
-                let t: number[] | null = AVComponentUtils.Utils.getTemporalComponent(target);
+                let t: number[] | null = Manifesto.Utils.getTemporalComponent(target);
 
                 if (!xywh) {
                     xywh = [0, 0, this._canvasWidth, this._canvasHeight];
@@ -402,15 +403,20 @@ namespace IIIFComponents {
 
                     if (!this._data.range) {
                         this.fire(AVComponent.Events.RANGE_CHANGED, null);
-                    } else if (this._data.range.duration) {
+                    } else {
 
-                        // if the range has changed, update the time if not already within the duration span
-                        //if (!this._data.range.spans(this._canvasClockTime)) {
-                            this._setCurrentTime(this._data.range.duration.start);
-                        //}
+                        const duration: Manifesto.Duration | undefined = this._data.range.getDuration();
 
-                        this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.rangeId);
-                        this._play();
+                        if (duration) {
+
+                            // if the range has changed, update the time if not already within the duration span
+                            if (!this._data.range.spansTime(this._canvasClockTime)) {
+                                this._setCurrentTime(duration.start);
+                            }
+
+                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);
+                            this._play();
+                        }
                     }
                 }
 
@@ -421,50 +427,56 @@ namespace IIIFComponents {
 
         private _render(): void {
 
-            if (this._data.range && this._data.range.duration) {
+            if (this._data.range) {
 
-                // get the total length in seconds.
-                const totalLength: number = this._canvasClockDuration;
+                const duration: Manifesto.Duration | undefined = this._data.range.getDuration();
 
-                // get the length of the timeline container
-                const timelineLength: number = <number>this._$canvasTimelineContainer.width();
+                if (duration) {
 
-                // get the ratio of seconds to length
-                const ratio: number = timelineLength / totalLength;
-                const start: number = this._data.range.duration.start * ratio;
-                const end: number = this._data.range.duration.end * ratio;
-                const width: number = end - start;
+                    // get the total length in seconds.
+                    const totalLength: number = this._canvasClockDuration;
 
-                this._$durationHighlight.show();
+                    // get the length of the timeline container
+                    const timelineLength: number = <number>this._$canvasTimelineContainer.width();
 
-                // set the start position and width
-                this._$durationHighlight.css({
-                    left: start,
-                    width: width
-                });
+                    // get the ratio of seconds to length
+                    const ratio: number = timelineLength / totalLength;
+                    const start: number = duration.start * ratio;
+                    const end: number = duration.end * ratio;
+                    const width: number = end - start;
 
-                const that = this;
+                    this._$durationHighlight.show();
 
-                this._$rangeTimelineContainer.slider("destroy");
+                    // set the start position and width
+                    this._$durationHighlight.css({
+                        left: start,
+                        width: width
+                    });
 
-                this._$rangeTimelineContainer.slider({
-                    value: this._data.range.duration.start,
-                    step: 0.01,
-                    orientation: "horizontal",
-                    range: "min",
-                    min: this._data.range.duration.start,
-                    max: this._data.range.duration.end,
-                    animate: false,
-                    create: function (evt: any, ui: any) {
-                        // on create
-                    },
-                    slide: function (evt: any, ui: any) {
-                        that._setCurrentTime(ui.value);
-                    },
-                    stop: function (evt: any, ui: any) {
-                        //this._setCurrentTime(ui.value);
-                    }
-                });
+                    const that = this;
+
+                    this._$rangeTimelineContainer.slider("destroy");
+
+                    this._$rangeTimelineContainer.slider({
+                        value: duration.start,
+                        step: 0.01,
+                        orientation: "horizontal",
+                        range: "min",
+                        min: duration.start,
+                        max: duration.end,
+                        animate: false,
+                        create: function (evt: any, ui: any) {
+                            // on create
+                        },
+                        slide: function (evt: any, ui: any) {
+                            that._setCurrentTime(ui.value);
+                        },
+                        stop: function (evt: any, ui: any) {
+                            //this._setCurrentTime(ui.value);
+                        }
+                    });
+
+                }
 
             } else {
                 this._$durationHighlight.hide();
@@ -738,9 +750,9 @@ namespace IIIFComponents {
 
         private _hasRangeChanged(): void {
 
-            const range: AVComponentObjects.CanvasRange | undefined = this._getRangeForCurrentTime();
+            const range: Manifesto.IRange | undefined = this._getRangeForCurrentTime();
 
-            if (range && !this._data.limitToRange && this._data.range && range.rangeId !== this._data.range.rangeId) {
+            if (range && !this._data.limitToRange && this._data.range && range.id !== this._data.range.id) {
 
                 this.set({
                     range: range
@@ -749,30 +761,21 @@ namespace IIIFComponents {
             }
         }
 
-        private _getRangeForCurrentTime(): AVComponentObjects.CanvasRange | undefined {
+        private _getRangeForCurrentTime(): Manifesto.IRange | undefined {
 
             for (let i = 0; i < this._ranges.length; i++) {
 
-                const range: AVComponentObjects.CanvasRange = this._ranges[i];
+                const range: Manifesto.IRange = this._ranges[i];
 
-                // drill down to deepest sub range
-                // until child doesn't span the current time
+                // todo: need to drill down to deepest sub range
+                // then work our way up checking if range spans the current time
 
-                if (range.spans(this._canvasClockTime)) {
+                if (range.spansTime(this._canvasClockTime)) {
                     
-                    if (range.ranges.length) {
-
-                        let foundSpanningRange: boolean = false;
-
-                        for (let i = 0; i < range.ranges.length; i++) {
-                            const childRange: Manifesto.IRange = range.ranges[i];
-
-                            if ()
-                        }
-                    }
-
                     // if it's a no-nav range. return the parent range
-                    if (range.nonav) {
+                    const behavior: Manifesto.Behavior | null = range.getBehavior();
+
+                    if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
                         return range.parentRange;
                     } else {
                         return range;
@@ -785,17 +788,31 @@ namespace IIIFComponents {
         }
 
         private _updateCurrentTimeDisplay(): void {
-            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
-                const rangeClockTime: number = this._canvasClockTime - this._data.range.duration.start;
-                this._$canvasTime.text(AVComponentUtils.Utils.formatTime(rangeClockTime));
+
+            let duration: Manifesto.Duration | undefined;
+
+            if (this._data.range) {
+                duration = this._data.range.getDuration();
+            }
+            
+            if (this._data.limitToRange && duration) {              
+                const rangeClockTime: number = this._canvasClockTime - duration.start;
+                this._$canvasTime.text(AVComponentUtils.Utils.formatTime(rangeClockTime));     
             } else {
                 this._$canvasTime.text(AVComponentUtils.Utils.formatTime(this._canvasClockTime));
             }
         }
 
         private _updateDurationDisplay(): void {
-            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
-                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._data.range.duration.getLength()));
+
+            let duration: Manifesto.Duration | undefined;
+
+            if (this._data.range) {
+                duration = this._data.range.getDuration();
+            }
+            
+            if (this._data.limitToRange && duration) {
+                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(duration.getLength()));
             } else {
                 this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._canvasClockDuration));
             }
@@ -858,8 +875,14 @@ namespace IIIFComponents {
 
             this._pause();
 
-            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
-                this._canvasClockTime = this._data.range.duration.start;
+            let duration: Manifesto.Duration | undefined;
+
+            if (this._data.range) {
+                duration = this._data.range.getDuration();
+            }           
+
+            if (this._data.limitToRange && duration) {
+                this._canvasClockTime = duration.start;
             } else {
                 this._canvasClockTime = 0;
             }
@@ -879,8 +902,14 @@ namespace IIIFComponents {
         // this._data.fastforward = true?
         private _fastforward(): void {
 
-            if (this._data.limitToRange && this._data.range && this._data.range.duration) {
-                this._canvasClockTime = this._data.range.duration.end;
+            let duration: Manifesto.Duration | undefined;
+
+            if (this._data.range) {
+                duration = this._data.range.getDuration();
+            }
+
+            if (this._data.limitToRange && duration) {
+                this._canvasClockTime = duration.end;
             } else {
                 this._canvasClockTime = this._canvasClockDuration;
             }
@@ -893,8 +922,14 @@ namespace IIIFComponents {
         private _play(withoutUpdate?: boolean): void {
             if (this._isPlaying) return;
 
-            if (this._data.limitToRange && this._data.range && this._data.range.duration && this._canvasClockTime >= this._data.range.duration.end) {
-                this._canvasClockTime = this._data.range.duration.start;
+            let duration: Manifesto.Duration | undefined;
+
+            if (this._data.range) {
+                duration = this._data.range.getDuration();
+            }
+
+            if (this._data.limitToRange && duration && this._canvasClockTime >= duration.end) {
+                this._canvasClockTime = duration.start;
             }
 
             if (this._canvasClockTime === this._canvasClockDuration) {
@@ -956,7 +991,13 @@ namespace IIIFComponents {
         private _canvasClockUpdater(): void {
             this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
 
-            if (this._data.limitToRange && this._data.range && this._data.range.duration && this._canvasClockTime >= this._data.range.duration.end) {
+            let duration: Manifesto.Duration | undefined;
+
+            if (this._data.range) {
+                duration = this._data.range.getDuration();
+            }
+
+            if (this._data.limitToRange && duration && this._canvasClockTime >= duration.end) {
                 this._pause();
             }
 

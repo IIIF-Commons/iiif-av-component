@@ -2,7 +2,7 @@ namespace IIIFComponents {
     
     export interface IAVCanvasInstanceData extends IAVComponentData {
         canvas?: Manifesto.ICanvas | AVComponentObjects.VirtualCanvas;
-        range?: AVComponentObjects.CanvasRange;
+        range?: Manifesto.IRange;
         visible?: boolean;
         volume?: number;
     }

@@ -159,18 +159,6 @@ declare namespace IIIFComponents.AVComponentCanvasInstance {
     }
 }
 
-/// <reference types="manifesto.js" />
-declare namespace IIIFComponents.AVComponentObjects {
-    class CanvasRange {
-        rangeId: string | undefined;
-        duration: Duration | undefined;
-        nonav: boolean;
-        parentRange: CanvasRange | undefined;
-        constructor(range: Manifesto.IRange);
-        spans(time: number): boolean;
-    }
-}
-
 declare namespace IIIFComponents.AVComponentObjects {
     class Duration {
         start: number;
@@ -184,7 +172,7 @@ declare namespace IIIFComponents.AVComponentObjects {
 declare namespace IIIFComponents {
     interface IAVCanvasInstanceData extends IAVComponentData {
         canvas?: Manifesto.ICanvas | AVComponentObjects.VirtualCanvas;
-        range?: AVComponentObjects.CanvasRange;
+        range?: Manifesto.IRange;
         visible?: boolean;
         volume?: number;
     }
@@ -233,9 +221,8 @@ declare namespace IIIFComponents.AVComponentUtils {
         private static _compare(a, b);
         static diff(a: any, b: any): string[];
         static getSpatialComponent(target: string): number[] | null;
-        static getTemporalComponent(target: string): number[] | null;
         static getFirstTargetedCanvasId(range: Manifesto.IRange): string | undefined;
-        static getRangeDuration(range: Manifesto.IRange): AVComponentObjects.Duration | undefined;
+        static getTimestamp(): string;
         static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined;
         static formatTime(aNumber: number): string;
         static detectIE(): number | boolean;

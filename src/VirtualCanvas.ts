@@ -6,7 +6,7 @@ namespace IIIFComponents.AVComponentObjects {
 
         constructor() {
             // generate an id
-            this.id = String(new Date().valueOf());
+            this.id = AVComponentUtils.Utils.getTimestamp();
         }
 
         public addCanvas(canvas: Manifesto.ICanvas): void {
@@ -26,7 +26,7 @@ namespace IIIFComponents.AVComponentObjects {
                     const target: string | null = item.getTarget();
 
                     if (target) {
-                        let t: number[] | null = AVComponentUtils.Utils.getTemporalComponent(target);
+                        let t: number[] | null = Manifesto.Utils.getTemporalComponent(target);
                         if (!t) {
                             item.__jsonld.target += '#t=0,' + canvas.getDuration();
                         }

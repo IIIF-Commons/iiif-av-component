@@ -113,9 +113,13 @@ namespace IIIFComponents.AVComponentUtils {
         }
         */
 
+        public static getTimestamp(): string {
+            return String(new Date().valueOf());
+        }
+
         public static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined {
             
-            let t: number[] | null = AVComponentUtils.Utils.getTemporalComponent(target);
+            let t: number[] | null = Manifesto.Utils.getTemporalComponent(target);
 
             if (t) {
 
