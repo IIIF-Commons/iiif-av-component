@@ -1,8 +1,11 @@
 {
-	"@context":"http://iiif.io/api/presentation/3/context.json",
+	"@context": [
+        "http://www.w3.org/ns/anno.jsonld",
+        "http://iiif.io/api/presentation/3/context.json"
+    ],
 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/manifest.json",
 	"type":"Manifest",
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
 	"label":{"en":["C615/70 C615/71 Tamas Vasary piano"]},
 	"metadata": [
 	 	{
@@ -35,6 +38,33 @@
 	 	}
 	],
 	"logo": [{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],    
+    "posterCanvas": {
+        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615/70/poster",
+        "type": "Canvas",
+        "height": 962,
+        "width": 962,
+        "items": [
+            {
+                "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615/70/poster/p1",
+                "type": "AnnotationPage",
+                "items": [
+                    {
+                        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615/70/poster/p1/anno",
+                        "type": "Annotation",
+                        "motivation": "painting",
+                        "target": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615/70/poster",
+                        "body": {
+                            "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/posters/classical.jpg",
+                            "type": "Image",
+                            "format": "image/jpeg",
+                            "width": 962,
+                            "height": 962
+                        }
+                    }                    
+                ]
+            }
+        ]
+    },
 	"requiredStatement": {
         "label": { "en": [ "Attribution" ] },
         "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
