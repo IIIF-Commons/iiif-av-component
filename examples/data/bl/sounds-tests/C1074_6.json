@@ -14,6 +14,33 @@
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"
     }],
+    "posterCanvas": {
+        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1074_6/poster",
+        "type": "Canvas",
+        "height": 962,
+        "width": 962,
+        "items": [
+            {
+                "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1074_6/poster/p1",
+                "type": "AnnotationPage",
+                "items": [
+                    {
+                        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1074_6/poster/p1/anno",
+                        "type": "Annotation",
+                        "motivation": "painting",
+                        "target": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1074_6/poster",
+                        "body": {
+                            "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/posters/oral-history.jpg",
+                            "type": "Image",
+                            "format": "image/jpeg",
+                            "width": 962,
+                            "height": 962
+                        }
+                    }                    
+                ]
+            }
+        ]
+    },
     "metadata": [
         {
             "label": { "en": [ "Identifier" ] },
