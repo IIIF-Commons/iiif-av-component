@@ -175,7 +175,17 @@
 	 	 	 	 	 	],
 	 	 	 	 	 	
 	 	 	 	 	 	"items": [
-								 
+							{
+		                        "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002.nn1",
+		                        "type": "Range",
+		                        "behavior": ["no-nav"],
+		                        "items": [
+		                            {
+		                                "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,31.28",
+		                                "type": "Canvas"
+		                            }
+		                        ]
+		                    },
 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000008",
 	 	 	 	 	 	 	 	"type":"Range",
@@ -293,6 +303,17 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	]
 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	{
+		                        "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000b.nn2",
+		                        "type": "Range",
+		                        "behavior": ["no-nav"],
+		                        "items": [
+		                            {
+		                                "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,15.16",
+		                                "type": "Canvas"
+		                            }
+		                        ]
+		                    },
 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000b",
 	 	 	 	 	 	 	 	"type":"Range",
