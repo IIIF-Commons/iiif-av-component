@@ -119,6 +119,10 @@ declare namespace IIIFComponents {
         isVirtual(): boolean;
         includesVirtualSubCanvas(canvasId: string): boolean;
         set(data: IAVCanvasInstanceData): void;
+        private _hasRangeChanged();
+        private _getRangeForCurrentTime(parentRange?);
+        private _rangeSpansCurrentTime(range);
+        private _rangeNavigable(range);
         private _render();
         getCanvasId(): string | undefined;
         private _updateHoverPreview(e, $container, duration);
@@ -127,9 +131,6 @@ declare namespace IIIFComponents {
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
-        private _hasRangeChanged();
-        private _rangeSpansCurrentTime(range);
-        private _getRangeForCurrentTime(parentRange?);
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
         private _renderSyncIndicator(mediaElementData);

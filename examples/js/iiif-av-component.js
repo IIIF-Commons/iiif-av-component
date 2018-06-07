@@ -746,6 +746,64 @@ var IIIFComponents;
             }
             this._render();
         };
+        CanvasInstance.prototype._hasRangeChanged = function () {
+            var range = this._getRangeForCurrentTime();
+            if (range && !this._data.limitToRange && this._data.range && range.id !== this._data.range.id) {
+                this.set({
+                    range: range
+                });
+            }
+        };
+        CanvasInstance.prototype._getRangeForCurrentTime = function (parentRange) {
+            var ranges;
+            //if (!parentRange) {
+            ranges = this._ranges;
+            //} else {
+            //    ranges = parentRange.getRanges();
+            //}
+            for (var i = 0; i < ranges.length; i++) {
+                var range = ranges[i];
+                if (this._rangeNavigable(range) && this._rangeSpansCurrentTime(range)) {
+                    // if it's a no-nav range. return the parent range
+                    // if (!this._rangeNavigable(range)) {
+                    //     console.log('return parent range');
+                    //     return range.parentRange;
+                    // }
+                    return range;
+                }
+                // recursively drill down to deepest sub range
+                // until child doesn't span the current time
+                // if (this._rangeSpansCurrentTime(range)) {
+                //     let spanningChildRangeFound: boolean = false;
+                //     const childRanges: Manifesto.IRange[] = range.getRanges();
+                //     // if a child range spans the current time, recurse into it
+                //     for (let i = 0; i < childRanges.length; i++) {
+                //         const childRange: Manifesto.IRange = childRanges[i];
+                //         if (this._rangeSpansCurrentTime(childRange)) {
+                //             spanningChildRangeFound = true;
+                //             return this._getRangeForCurrentTime(childRange);
+                //         }
+                //     }
+                //     if (!spanningChildRangeFound) {
+                //         return range;
+                //     }
+                // }
+            }
+            return undefined;
+        };
+        CanvasInstance.prototype._rangeSpansCurrentTime = function (range) {
+            if (range.spansTime(Math.ceil(this._canvasClockTime))) {
+                return true;
+            }
+            return false;
+        };
+        CanvasInstance.prototype._rangeNavigable = function (range) {
+            var behavior = range.getBehavior();
+            if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
+                return false;
+            }
+            return true;
+        };
         CanvasInstance.prototype._render = function () {
             var _this = this;
             if (this._data.range) {
@@ -1016,82 +1074,6 @@ var IIIFComponents;
             }
             this._renderSyncIndicator(data);
         };
-        CanvasInstance.prototype._hasRangeChanged = function () {
-            var range = this._getRangeForCurrentTime();
-            if (range && !this._data.limitToRange && this._data.range && range.id !== this._data.range.id) {
-                this.set({
-                    range: range
-                });
-            }
-        };
-        CanvasInstance.prototype._rangeSpansCurrentTime = function (range) {
-            var behavior = range.getBehavior();
-            var nonav = false;
-            if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
-                nonav = true;
-            }
-            if (!nonav && range.spansTime(this._canvasClockTime)) {
-                return true;
-            }
-            return false;
-        };
-        CanvasInstance.prototype._getRangeForCurrentTime = function (parentRange) {
-            var ranges;
-            if (!parentRange) {
-                ranges = this._ranges;
-            }
-            else {
-                ranges = parentRange.getRanges();
-            }
-            for (var i = 0; i < ranges.length; i++) {
-                var range = ranges[i];
-                // recursively drill down to deepest sub range
-                // until child doesn't span the current time
-                if (this._rangeSpansCurrentTime(range)) {
-                    var spanningChildRangeFound = false;
-                    var childRanges = range.getRanges();
-                    // if a child range spans the current time, recurse into it
-                    for (var i_1 = 0; i_1 < childRanges.length; i_1++) {
-                        var childRange = childRanges[i_1];
-                        if (this._rangeSpansCurrentTime(childRange)) {
-                            spanningChildRangeFound = true;
-                            return this._getRangeForCurrentTime(childRange);
-                        }
-                    }
-                    if (!spanningChildRangeFound) {
-                        return range;
-                    }
-                }
-            }
-            return undefined;
-        };
-        /*
-        private _getRangeForCurrentTime(): Manifesto.IRange | undefined {
-
-            for (let i = 0; i < this._ranges.length; i++) {
-
-                const range: Manifesto.IRange = this._ranges[i];
-
-                // todo: need to drill down to deepest sub range
-                // then work our way up checking if range spans the current time
-
-                if (range.spansTime(this._canvasClockTime)) {
-                    
-                    // if it's a no-nav range. return the parent range
-                    const behavior: Manifesto.Behavior | null = range.getBehavior();
-
-                    if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
-                        return range.parentRange;
-                    } else {
-                        return range;
-                    }
-                    
-                }
-            }
-
-            return undefined;
-        }
-        */
         CanvasInstance.prototype._updateCurrentTimeDisplay = function () {
             var duration;
             if (this._data.range) {
