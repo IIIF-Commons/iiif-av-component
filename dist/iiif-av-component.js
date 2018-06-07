@@ -735,9 +735,9 @@ var IIIFComponents;
                         var duration = this._data.range.getDuration();
                         if (duration) {
                             // if the range has changed, update the time if not already within the duration span
-                            if (!this._data.range.spansTime(this._canvasClockTime)) {
-                                this._setCurrentTime(duration.start);
-                            }
+                            //if (!this._data.range.spansTime(this._canvasClockTime)) {
+                            this._setCurrentTime(duration.start);
+                            //}
                             this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                             this._play();
                         }
@@ -1017,12 +1017,12 @@ var IIIFComponents;
             this._renderSyncIndicator(data);
         };
         CanvasInstance.prototype._hasRangeChanged = function () {
-            var range = this._getRangeForCurrentTime();
-            if (range && !this._data.limitToRange && this._data.range && range.id !== this._data.range.id) {
-                this.set({
-                    range: range
-                });
-            }
+            // const range: Manifesto.IRange | undefined = this._getRangeForCurrentTime();
+            // if (range && !this._data.limitToRange && this._data.range && range.id !== this._data.range.id) {
+            //     this.set({
+            //         range: range
+            //     });
+            // }
         };
         CanvasInstance.prototype._getRangeForCurrentTime = function () {
             for (var i = 0; i < this._ranges.length; i++) {

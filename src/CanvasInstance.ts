@@ -410,9 +410,9 @@ namespace IIIFComponents {
                         if (duration) {
 
                             // if the range has changed, update the time if not already within the duration span
-                            if (!this._data.range.spansTime(this._canvasClockTime)) {
+                            //if (!this._data.range.spansTime(this._canvasClockTime)) {
                                 this._setCurrentTime(duration.start);
-                            }
+                            //}
 
                             this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                             this._play();
