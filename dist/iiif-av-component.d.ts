@@ -108,6 +108,7 @@ declare namespace IIIFComponents {
         private _lowPriorityInterval;
         private _mediaSyncMarginSecs;
         private _ranges;
+        private _rangeSpanPadding;
         private _readyCanvasesCount;
         private _stallRequestedBy;
         private _volume;

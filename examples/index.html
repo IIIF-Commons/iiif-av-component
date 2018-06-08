@@ -128,6 +128,8 @@
                 });
 
                 treecomponent.set({
+                    autoExpand: false,
+                    branchNodesExpandOnClick: false,
                     branchNodesSelectable: true,
                     helper: helper
                 });
@@ -161,6 +163,19 @@
             avcomponent.on('rangechanged', function(rangeid) {
                 helper.rangeId = rangeid;
                 console.log('range changed', rangeid);
+
+                var range = helper.getRangeById(rangeid);
+                let node = null;
+
+                if (range && range.treeNode) {
+                    node = this.treecomponent.getNodeById(range.treeNode.id);
+                }
+
+                if (node) {
+                    this.treecomponent.selectNode(node);
+                } else {
+                    this.treecomponent.deselectCurrentNode();
+                }
             });
 
             treecomponent = new IIIFComponents.TreeComponent({

@@ -449,6 +449,7 @@ var IIIFComponents;
             _this._lowPriorityFrequency = 250;
             _this._mediaSyncMarginSecs = 1;
             _this._ranges = [];
+            _this._rangeSpanPadding = 0.25;
             _this._readyCanvasesCount = 0;
             _this._stallRequestedBy = []; //todo: type
             _this._wasPlaying = false;
@@ -734,10 +735,7 @@ var IIIFComponents;
                     else {
                         var duration = this._data.range.getDuration();
                         if (duration) {
-                            // if the range has changed, update the time if not already within the duration span
-                            //if (!this._data.range.spansTime(this._canvasClockTime)) {
                             this._setCurrentTime(duration.start);
-                            //}
                             this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                             this._play();
                         }
@@ -756,43 +754,37 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._getRangeForCurrentTime = function (parentRange) {
             var ranges;
-            //if (!parentRange) {
-            ranges = this._ranges;
-            //} else {
-            //    ranges = parentRange.getRanges();
-            //}
+            if (!parentRange) {
+                ranges = this._ranges;
+            }
+            else {
+                ranges = parentRange.getRanges();
+            }
             for (var i = 0; i < ranges.length; i++) {
                 var range = ranges[i];
-                if (this._rangeNavigable(range) && this._rangeSpansCurrentTime(range)) {
-                    // if it's a no-nav range. return the parent range
-                    // if (!this._rangeNavigable(range)) {
-                    //     console.log('return parent range');
-                    //     return range.parentRange;
-                    // }
-                    return range;
+                // if the range spans the current time, and is navigable, return it.
+                // otherwise, try to find a navigable child range.
+                if (this._rangeSpansCurrentTime(range)) {
+                    if (this._rangeNavigable(range)) {
+                        return range;
+                    }
+                    var childRanges = range.getRanges();
+                    // if a child range spans the current time, recurse into it
+                    for (var i_1 = 0; i_1 < childRanges.length; i_1++) {
+                        var childRange = childRanges[i_1];
+                        if (this._rangeSpansCurrentTime(childRange)) {
+                            return this._getRangeForCurrentTime(childRange);
+                        }
+                    }
+                    // this range isn't navigable, and couldn't find a navigable child range.
+                    // therefore return the parent range (if any).
+                    return range.parentRange;
                 }
-                // recursively drill down to deepest sub range
-                // until child doesn't span the current time
-                // if (this._rangeSpansCurrentTime(range)) {
-                //     let spanningChildRangeFound: boolean = false;
-                //     const childRanges: Manifesto.IRange[] = range.getRanges();
-                //     // if a child range spans the current time, recurse into it
-                //     for (let i = 0; i < childRanges.length; i++) {
-                //         const childRange: Manifesto.IRange = childRanges[i];
-                //         if (this._rangeSpansCurrentTime(childRange)) {
-                //             spanningChildRangeFound = true;
-                //             return this._getRangeForCurrentTime(childRange);
-                //         }
-                //     }
-                //     if (!spanningChildRangeFound) {
-                //         return range;
-                //     }
-                // }
             }
             return undefined;
         };
         CanvasInstance.prototype._rangeSpansCurrentTime = function (range) {
-            if (range.spansTime(Math.ceil(this._canvasClockTime))) {
+            if (range.spansTime(Math.ceil(this._canvasClockTime) + this._rangeSpanPadding)) {
                 return true;
             }
             return false;
