@@ -22,7 +22,7 @@
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
             "label": { "en": [ "Tape 1 Side 1" ] },
             "type": "Canvas",
-            "duration": 3279.16,
+            "duration": 3441.8,
             "items": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004/anno",
@@ -91,6 +91,17 @@
             "type": "Range",
             "label": { "en": [ "Brian Hayes programme" ] },
             "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000002.nn1",
+                    "type": "Range",
+                    "behavior": ["no-nav"],
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,162.64",
+                            "type": "Canvas"
+                        }
+                    ]
+                },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000006",
                     "type": "Range",
