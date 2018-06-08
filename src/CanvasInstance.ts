@@ -427,7 +427,7 @@ namespace IIIFComponents {
 
             const range: Manifesto.IRange | undefined = this._getRangeForCurrentTime();
 
-            if (range && !this._data.limitToRange && this._data.range && range.id !== this._data.range.id) {
+            if (range && !this._data.limitToRange && (!this._data.range || (this._data.range && range.id !== this._data.range.id))) {
 
                 this.set({
                     range: range

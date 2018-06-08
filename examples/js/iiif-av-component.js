@@ -746,7 +746,7 @@ var IIIFComponents;
         };
         CanvasInstance.prototype._hasRangeChanged = function () {
             var range = this._getRangeForCurrentTime();
-            if (range && !this._data.limitToRange && this._data.range && range.id !== this._data.range.id) {
+            if (range && !this._data.limitToRange && (!this._data.range || (this._data.range && range.id !== this._data.range.id))) {
                 this.set({
                     range: range
                 });
