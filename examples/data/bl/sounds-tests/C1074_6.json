@@ -57,7 +57,7 @@
                     "type": "AnnotationPage"
                 }
             ],
-            "duration": 5991.56,
+            "duration": 3008.062,
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004",
             "label": "Tape 1 Side 1",
             "type": "Canvas"
@@ -90,7 +90,7 @@
                     "type": "AnnotationPage"
                 }
             ],
-            "duration": 60.88,
+            "duration": 60.931,
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000005",
             "label": "Tape 1 Side 2",
             "type": "Canvas"
@@ -105,6 +105,17 @@
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000006",
                     "label": { "en": [ "Ire Ekiti, Ògún festival" ] },
                     "items": [
+                    	{
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000006.nn1",
+                            "type": "Range",
+                            "behavior": ["no-nav"],
+                            "items": [
+                                {
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004#t=0,9.44",
+                                    "type": "Canvas"
+                                }
+                            ]
+                        },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000007",
                             "label": { "en": [ "Ire Ekiti, Ògún festival - Interview with the Onire of Ire Ekiti Ọba Adéyẹyè II" ] },
@@ -145,6 +156,17 @@
                             "type": "Range"
                         },
                         {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000006.nn2",
+                            "type": "Range",
+                            "behavior": ["no-nav"],
+                            "items": [
+                                {
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004#t=2100.32,2105.84",
+                                    "type": "Canvas"
+                                }
+                            ]
+                        },
+                        {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000008",
                             "label": { "en": [ "Ire Ekiti, Ògún festival - Interview with unidentified participant" ] },
                             "items": [
@@ -182,6 +204,17 @@
                                 }
                             ],
                             "type": "Range"
+                        },
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000006.nn3",
+                            "type": "Range",
+                            "behavior": ["no-nav"],
+                            "items": [
+                                {
+                                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004#t=2481.68,2481.72",
+                                    "type": "Canvas"
+                                }
+                            ]
                         },
                         {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000009",
@@ -314,6 +347,17 @@
                         }
                     ],
                     "type": "Range"
+                },
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000006.nn4",
+                    "type": "Range",
+                    "behavior": ["no-nav"],
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100053724382.0x000004#t=60.88,60.931",
+                            "type": "Canvas"
+                        }
+                    ]
                 }
             ],
             "type": "Range"
