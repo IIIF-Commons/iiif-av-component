@@ -942,7 +942,7 @@
                             ],
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002/anno27/node-id-000054",
                             "motivation": "painting",
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002#t=0,1863.044",
                             "timeMode": "trim",
                             "type": "Annotation"
                         },
@@ -961,7 +961,7 @@
                             ],
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002/anno27/node-id-000056",
                             "motivation": "painting",
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002#t=1863.044,3720.96",
                             "timeMode": "trim",
                             "type": "Annotation"
                         }
