@@ -179,7 +179,7 @@ namespace IIIFComponents {
 
                     this._initCanvas(virtualCanvas);
 
-                }
+                }                
 
                 // all canvases need to be individually navigable
                 canvases.forEach((canvas: Manifesto.ICanvas) => {
@@ -209,8 +209,9 @@ namespace IIIFComponents {
 
             canvasInstance.logMessage = this._logMessage.bind(this);   
             this._$element.append(canvasInstance.$playerElement);
+
             canvasInstance.init();
-            this.canvasInstances.push(canvasInstance);
+            this.canvasInstances.push(canvasInstance);      
 
             canvasInstance.on(AVComponent.Events.CANVASREADY, () => {
                 //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
@@ -283,7 +284,6 @@ namespace IIIFComponents {
     
                 const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
                 
-                // commented
                 // if the canvasinstance is virtual
                 // if (canvasInstance.isVirtual()) {
                 //     if (canvasInstance.includesVirtualSubCanvas(canvasId)) {

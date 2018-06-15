@@ -504,15 +504,18 @@ var IIIFComponents;
                     this._data.canvas.canvases.forEach(function (canvas) {
                         if (_this._data && _this._data.helper) {
                             var r = _this._data.helper.getCanvasRanges(canvas);
+                            var cloned_1 = [];
                             // shift the range targets forward by the duration of their previous canvases
                             r.forEach(function (range) {
+                                range = jQuery.extend(true, {}, range);
+                                cloned_1.push(range);
                                 if (range.canvases && range.canvases.length) {
                                     for (var i = 0; i < range.canvases.length; i++) {
                                         range.canvases[i] = IIIFComponents.AVComponentUtils.Utils.retargetTemporalComponent(_this._data.canvas.canvases, range.__jsonld.items[i].id);
                                     }
                                 }
                             });
-                            ranges_1.push.apply(ranges_1, r);
+                            ranges_1.push.apply(ranges_1, cloned_1);
                         }
                     });
                 }
@@ -754,33 +757,34 @@ var IIIFComponents;
             }
         };
         CanvasInstance.prototype._getRangeForCurrentTime = function (parentRange) {
-            // let ranges: Manifesto.IRange[];
-            // if (!parentRange) {
-            //     ranges = this._ranges;
-            // } else {
-            //     ranges = parentRange.getRanges();
-            // }
-            // for (let i = 0; i < ranges.length; i++) {
-            //     const range: Manifesto.IRange = ranges[i];
-            //     // if the range spans the current time, and is navigable, return it.
-            //     // otherwise, try to find a navigable child range.
-            //     if (this._rangeSpansCurrentTime(range)) {
-            //         if (this._rangeNavigable(range)) {
-            //             return range;
-            //         }
-            //         const childRanges: Manifesto.IRange[] = range.getRanges();
-            //         // if a child range spans the current time, recurse into it
-            //         for (let i = 0; i < childRanges.length; i++) {
-            //             const childRange: Manifesto.IRange = childRanges[i];
-            //             if (this._rangeSpansCurrentTime(childRange)) {
-            //                 return this._getRangeForCurrentTime(childRange);
-            //             }
-            //         }
-            //         // this range isn't navigable, and couldn't find a navigable child range.
-            //         // therefore return the parent range (if any).
-            //         return range.parentRange;
-            //     }
-            // }
+            var ranges;
+            if (!parentRange) {
+                ranges = this._ranges;
+            }
+            else {
+                ranges = parentRange.getRanges();
+            }
+            for (var i = 0; i < ranges.length; i++) {
+                var range = ranges[i];
+                // if the range spans the current time, and is navigable, return it.
+                // otherwise, try to find a navigable child range.
+                if (this._rangeSpansCurrentTime(range)) {
+                    if (this._rangeNavigable(range)) {
+                        return range;
+                    }
+                    var childRanges = range.getRanges();
+                    // if a child range spans the current time, recurse into it
+                    for (var i_1 = 0; i_1 < childRanges.length; i_1++) {
+                        var childRange = childRanges[i_1];
+                        if (this._rangeSpansCurrentTime(childRange)) {
+                            return this._getRangeForCurrentTime(childRange);
+                        }
+                    }
+                    // this range isn't navigable, and couldn't find a navigable child range.
+                    // therefore return the parent range (if any).
+                    return range.parentRange;
+                }
+            }
             return undefined;
         };
         CanvasInstance.prototype._rangeSpansCurrentTime = function (range) {
@@ -1169,6 +1173,7 @@ var IIIFComponents;
         // this._data.play = true?
         CanvasInstance.prototype._play = function (withoutUpdate) {
             var _this = this;
+            console.log('playing ', this.getCanvasId());
             if (this._isPlaying)
                 return;
             var duration;
@@ -1645,7 +1650,8 @@ var IIIFComponents;
                 this.id = IIIFComponents.AVComponentUtils.Utils.getTimestamp();
             }
             VirtualCanvas.prototype.addCanvas = function (canvas) {
-                this.canvases.push(canvas);
+                // canvases need to be deep copied including functions
+                this.canvases.push(jQuery.extend(true, {}, canvas));
             };
             VirtualCanvas.prototype.getContent = function () {
                 var _this = this;

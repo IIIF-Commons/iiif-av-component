@@ -116,10 +116,16 @@ namespace IIIFComponents {
                 if (this.isVirtual()) {
                     (<VirtualCanvas>this._data.canvas).canvases.forEach((canvas: Manifesto.ICanvas) => {
                         if (this._data && this._data.helper) {
-                            const r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
+                            let r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
+
+                            let cloned: Manifesto.IRange[] = [];
 
                             // shift the range targets forward by the duration of their previous canvases
                             r.forEach((range: Manifesto.IRange) => {
+
+                                range = jQuery.extend(true, {}, range);
+                                cloned.push(range);
+
                                 if (range.canvases && range.canvases.length) {
                                     
                                     for (let i = 0; i < range.canvases.length; i++) {
@@ -129,7 +135,7 @@ namespace IIIFComponents {
                                 }
                             });
 
-                            ranges.push(...r);
+                            ranges.push(...cloned);
                         }
                     });
                 } else {
@@ -438,44 +444,43 @@ namespace IIIFComponents {
 
         private _getRangeForCurrentTime(parentRange?: Manifesto.IRange): Manifesto.IRange | undefined {
 
-            // commented
-            // let ranges: Manifesto.IRange[];
+            let ranges: Manifesto.IRange[];
 
-            // if (!parentRange) {
-            //     ranges = this._ranges;
-            // } else {
-            //     ranges = parentRange.getRanges();
-            // }
+            if (!parentRange) {
+                ranges = this._ranges;
+            } else {
+                ranges = parentRange.getRanges();
+            }
 
-            // for (let i = 0; i < ranges.length; i++) {
+            for (let i = 0; i < ranges.length; i++) {
 
-            //     const range: Manifesto.IRange = ranges[i];
+                const range: Manifesto.IRange = ranges[i];
 
-            //     // if the range spans the current time, and is navigable, return it.
-            //     // otherwise, try to find a navigable child range.
-            //     if (this._rangeSpansCurrentTime(range)) {
+                // if the range spans the current time, and is navigable, return it.
+                // otherwise, try to find a navigable child range.
+                if (this._rangeSpansCurrentTime(range)) {
                     
-            //         if (this._rangeNavigable(range)) {
-            //             return range;
-            //         }
+                    if (this._rangeNavigable(range)) {
+                        return range;
+                    }
 
-            //         const childRanges: Manifesto.IRange[] = range.getRanges();
+                    const childRanges: Manifesto.IRange[] = range.getRanges();
 
-            //         // if a child range spans the current time, recurse into it
-            //         for (let i = 0; i < childRanges.length; i++) {
-            //             const childRange: Manifesto.IRange = childRanges[i];
+                    // if a child range spans the current time, recurse into it
+                    for (let i = 0; i < childRanges.length; i++) {
+                        const childRange: Manifesto.IRange = childRanges[i];
 
-            //             if (this._rangeSpansCurrentTime(childRange)) {
-            //                 return this._getRangeForCurrentTime(childRange);
-            //             }
-            //         }
+                        if (this._rangeSpansCurrentTime(childRange)) {
+                            return this._getRangeForCurrentTime(childRange);
+                        }
+                    }
 
-            //         // this range isn't navigable, and couldn't find a navigable child range.
-            //         // therefore return the parent range (if any).
-            //         return range.parentRange;
+                    // this range isn't navigable, and couldn't find a navigable child range.
+                    // therefore return the parent range (if any).
+                    return range.parentRange;
                     
-            //     }
-            // }
+                }
+            }
 
             return undefined;
         }
@@ -956,6 +961,9 @@ namespace IIIFComponents {
         // todo: can this be part of the _data state?
         // this._data.play = true?
         private _play(withoutUpdate?: boolean): void {
+
+            console.log('playing ', this.getCanvasId());
+
             if (this._isPlaying) return;
 
             let duration: Manifesto.Duration | undefined;
@@ -1128,6 +1136,7 @@ namespace IIIFComponents {
         }
 
         private _setMediaCurrentTime(media: HTMLMediaElement, time: number): void {
+            
             if (!isNaN(media.duration)) {
                 media.currentTime = time;
             }
