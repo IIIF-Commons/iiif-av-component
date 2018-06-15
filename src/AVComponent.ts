@@ -88,17 +88,23 @@ namespace IIIFComponents {
 
             if (diff.includes('canvasId') && this._data.canvasId) {
 
-                const currentCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
+                const nextCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
 
-                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    if (canvasInstance !== currentCanvasInstance) {
-                        canvasInstance.set({ 
-                            visible: false
-                        });
-                    } else {
-                        canvasInstance.set({ visible: true });
-                    }
-                });
+                if (nextCanvasInstance) {
+                    
+                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
+                        // hide canvases that don't have the same id        
+                        if (canvasInstance.getCanvasId() !== nextCanvasInstance.getCanvasId()) {
+                            canvasInstance.set({ 
+                                visible: false
+                            });
+                        } else {
+                            canvasInstance.set({ visible: true });
+                        }
+                    });
+
+                }
+                
             }
             
             if (diff.includes('range') && this._data.range) {
@@ -157,11 +163,10 @@ namespace IIIFComponents {
 
             this._$element.empty();
 
-            // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
             if (this._data && this._data.helper) {
 
+                // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
                 const behavior: Manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
-
                 const canvases: Manifesto.ICanvas[] = this._getCanvases();
 
                 if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
@@ -174,12 +179,12 @@ namespace IIIFComponents {
 
                     this._initCanvas(virtualCanvas);
 
-                } else {
-
-                    canvases.forEach((canvas: Manifesto.ICanvas) => {
-                        this._initCanvas(canvas);
-                    });
                 }
+
+                // all canvases need to be individually navigable
+                canvases.forEach((canvas: Manifesto.ICanvas) => {
+                    this._initCanvas(canvas);
+                });                
 
                 if (this.canvasInstances.length > 0) {
                     this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
@@ -278,12 +283,13 @@ namespace IIIFComponents {
     
                 const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
                 
-                // if the canvasinstance has a virtual canvas
-                if (canvasInstance.isVirtual()) {
-                    if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
-                        return canvasInstance;
-                    }
-                } else {
+                // commented
+                // if the canvasinstance is virtual
+                // if (canvasInstance.isVirtual()) {
+                //     if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
+                //         return canvasInstance;
+                //     }
+                // } else {
                     const id: string | undefined = canvasInstance.getCanvasId();
 
                     if (id) {
@@ -293,7 +299,7 @@ namespace IIIFComponents {
                             return canvasInstance;
                         }
                     }
-                }
+                //}
             }
     
             return undefined;

@@ -387,11 +387,11 @@ namespace IIIFComponents {
                 if (this._data.canvas) {
                     if (this._data.visible) {
                         this.$playerElement.show();
-                        //console.log('show ' + this._data.canvas.id);
+                        console.log('show ' + this._data.canvas.id);
                     } else {
                         this.$playerElement.hide();
                         this._pause();
-                        //console.log('hide ' + this._data.canvas.id);
+                        console.log('hide ' + this._data.canvas.id);
                     }
 
                     this.resize();
@@ -438,43 +438,44 @@ namespace IIIFComponents {
 
         private _getRangeForCurrentTime(parentRange?: Manifesto.IRange): Manifesto.IRange | undefined {
 
-            let ranges: Manifesto.IRange[];
+            // commented
+            // let ranges: Manifesto.IRange[];
 
-            if (!parentRange) {
-                ranges = this._ranges;
-            } else {
-                ranges = parentRange.getRanges();
-            }
+            // if (!parentRange) {
+            //     ranges = this._ranges;
+            // } else {
+            //     ranges = parentRange.getRanges();
+            // }
 
-            for (let i = 0; i < ranges.length; i++) {
+            // for (let i = 0; i < ranges.length; i++) {
 
-                const range: Manifesto.IRange = ranges[i];
+            //     const range: Manifesto.IRange = ranges[i];
 
-                // if the range spans the current time, and is navigable, return it.
-                // otherwise, try to find a navigable child range.
-                if (this._rangeSpansCurrentTime(range)) {
+            //     // if the range spans the current time, and is navigable, return it.
+            //     // otherwise, try to find a navigable child range.
+            //     if (this._rangeSpansCurrentTime(range)) {
                     
-                    if (this._rangeNavigable(range)) {
-                        return range;
-                    }
+            //         if (this._rangeNavigable(range)) {
+            //             return range;
+            //         }
 
-                    const childRanges: Manifesto.IRange[] = range.getRanges();
+            //         const childRanges: Manifesto.IRange[] = range.getRanges();
 
-                    // if a child range spans the current time, recurse into it
-                    for (let i = 0; i < childRanges.length; i++) {
-                        const childRange: Manifesto.IRange = childRanges[i];
+            //         // if a child range spans the current time, recurse into it
+            //         for (let i = 0; i < childRanges.length; i++) {
+            //             const childRange: Manifesto.IRange = childRanges[i];
 
-                        if (this._rangeSpansCurrentTime(childRange)) {
-                            return this._getRangeForCurrentTime(childRange);
-                        }
-                    }
+            //             if (this._rangeSpansCurrentTime(childRange)) {
+            //                 return this._getRangeForCurrentTime(childRange);
+            //             }
+            //         }
 
-                    // this range isn't navigable, and couldn't find a navigable child range.
-                    // therefore return the parent range (if any).
-                    return range.parentRange;
+            //         // this range isn't navigable, and couldn't find a navigable child range.
+            //         // therefore return the parent range (if any).
+            //         return range.parentRange;
                     
-                }
-            }
+            //     }
+            // }
 
             return undefined;
         }
