@@ -74,7 +74,7 @@
 			"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004",
 			"type":"Canvas",
 			"label":{"en":["Tape 1 Side 1"]},
-			"duration": 6264.04,
+			"duration": 3159.76,
 			"items": [
 				{
 					"type": "AnnotationPage",
@@ -107,7 +107,7 @@
 			"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006",
 			"type":"Canvas",
 			"label":{"en":["Tape 2 Side 1"]},
-			"duration": 7251.2,
+			"duration": 3750.28,
 			"items": [
 				{
 					"type": "AnnotationPage",
@@ -175,7 +175,17 @@
 	 	 	 	 	 	],
 	 	 	 	 	 	
 	 	 	 	 	 	"items": [
-								 
+							{
+		                        "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002.nn1",
+		                        "type": "Range",
+		                        "behavior": ["no-nav"],
+		                        "items": [
+		                            {
+		                                "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,31.28",
+		                                "type": "Canvas"
+		                            }
+		                        ]
+		                    },
 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000008",
 	 	 	 	 	 	 	 	"type":"Range",
@@ -293,6 +303,17 @@
 	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	]
 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	{
+		                        "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000b.nn2",
+		                        "type": "Range",
+		                        "behavior": ["no-nav"],
+		                        "items": [
+		                            {
+		                                "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,15.16",
+		                                "type": "Canvas"
+		                            }
+		                        ]
+		                    },
 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000b",
 	 	 	 	 	 	 	 	"type":"Range",

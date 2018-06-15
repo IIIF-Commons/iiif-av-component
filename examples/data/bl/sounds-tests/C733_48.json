@@ -498,14 +498,6 @@
                     "label": { "en": [ "[Arabic to Soqotri translations]" ] },
                     "items": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007#t=1027,1392.56",
-                            "type": "Canvas"
-                        },
-                        {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008#t=0,821.36",
-                            "type": "Canvas"
-                        },
-                        {
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00001b",
                             "label": { "en": [ "[Single-word translation of Arabic to Soqotri]" ] },
                             "items": [
