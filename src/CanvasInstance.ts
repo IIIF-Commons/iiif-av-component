@@ -39,6 +39,7 @@ namespace IIIFComponents {
         private _lowPriorityInterval: number;
         private _mediaSyncMarginSecs: number = 1;
         private _ranges: Manifesto.IRange[] = [];
+        private _rangeSpanPadding: number = 0.25;
         private _readyCanvasesCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
@@ -409,10 +410,7 @@ namespace IIIFComponents {
 
                         if (duration) {
 
-                            // if the range has changed, update the time if not already within the duration span
-                            if (!this._data.range.spansTime(this._canvasClockTime)) {
-                                this._setCurrentTime(duration.start);
-                            }
+                            this._setCurrentTime(duration.start);
 
                             this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                             this._play();
@@ -423,6 +421,82 @@ namespace IIIFComponents {
             }
 
             this._render();
+        }
+
+        private _hasRangeChanged(): void {
+
+            const range: Manifesto.IRange | undefined = this._getRangeForCurrentTime();
+
+            if (range && !this._data.limitToRange && (!this._data.range || (this._data.range && range.id !== this._data.range.id))) {
+
+                this.set({
+                    range: range
+                });
+
+            }
+        }
+
+        private _getRangeForCurrentTime(parentRange?: Manifesto.IRange): Manifesto.IRange | undefined {
+
+            let ranges: Manifesto.IRange[];
+
+            if (!parentRange) {
+                ranges = this._ranges;
+            } else {
+                ranges = parentRange.getRanges();
+            }
+
+            for (let i = 0; i < ranges.length; i++) {
+
+                const range: Manifesto.IRange = ranges[i];
+
+                // if the range spans the current time, and is navigable, return it.
+                // otherwise, try to find a navigable child range.
+                if (this._rangeSpansCurrentTime(range)) {
+                    
+                    if (this._rangeNavigable(range)) {
+                        return range;
+                    }
+
+                    const childRanges: Manifesto.IRange[] = range.getRanges();
+
+                    // if a child range spans the current time, recurse into it
+                    for (let i = 0; i < childRanges.length; i++) {
+                        const childRange: Manifesto.IRange = childRanges[i];
+
+                        if (this._rangeSpansCurrentTime(childRange)) {
+                            return this._getRangeForCurrentTime(childRange);
+                        }
+                    }
+
+                    // this range isn't navigable, and couldn't find a navigable child range.
+                    // therefore return the parent range (if any).
+                    return range.parentRange;
+                    
+                }
+            }
+
+            return undefined;
+        }
+
+        private _rangeSpansCurrentTime(range: Manifesto.IRange): boolean {
+            
+            if (range.spansTime(Math.ceil(this._canvasClockTime) + this._rangeSpanPadding)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        private _rangeNavigable(range: Manifesto.IRange): boolean {
+            
+            const behavior: Manifesto.Behavior | null = range.getBehavior();
+
+            if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
+                return false;
+            }
+
+            return true;
         }
 
         private _render(): void {
@@ -746,45 +820,6 @@ namespace IIIFComponents {
             }
 
             this._renderSyncIndicator(data);
-        }
-
-        private _hasRangeChanged(): void {
-
-            const range: Manifesto.IRange | undefined = this._getRangeForCurrentTime();
-
-            if (range && !this._data.limitToRange && this._data.range && range.id !== this._data.range.id) {
-
-                this.set({
-                    range: range
-                });
-
-            }
-        }
-
-        private _getRangeForCurrentTime(): Manifesto.IRange | undefined {
-
-            for (let i = 0; i < this._ranges.length; i++) {
-
-                const range: Manifesto.IRange = this._ranges[i];
-
-                // todo: need to drill down to deepest sub range
-                // then work our way up checking if range spans the current time
-
-                if (range.spansTime(this._canvasClockTime)) {
-                    
-                    // if it's a no-nav range. return the parent range
-                    const behavior: Manifesto.Behavior | null = range.getBehavior();
-
-                    if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
-                        return range.parentRange;
-                    } else {
-                        return range;
-                    }
-                    
-                }
-            }
-
-            return undefined;
         }
 
         private _updateCurrentTimeDisplay(): void {

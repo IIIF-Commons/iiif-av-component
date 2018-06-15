@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.48 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.49 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -108,6 +108,7 @@ declare namespace IIIFComponents {
         private _lowPriorityInterval;
         private _mediaSyncMarginSecs;
         private _ranges;
+        private _rangeSpanPadding;
         private _readyCanvasesCount;
         private _stallRequestedBy;
         private _volume;
@@ -119,6 +120,10 @@ declare namespace IIIFComponents {
         isVirtual(): boolean;
         includesVirtualSubCanvas(canvasId: string): boolean;
         set(data: IAVCanvasInstanceData): void;
+        private _hasRangeChanged();
+        private _getRangeForCurrentTime(parentRange?);
+        private _rangeSpansCurrentTime(range);
+        private _rangeNavigable(range);
         private _render();
         getCanvasId(): string | undefined;
         private _updateHoverPreview(e, $container, duration);
@@ -127,8 +132,6 @@ declare namespace IIIFComponents {
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
-        private _hasRangeChanged();
-        private _getRangeForCurrentTime();
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
         private _renderSyncIndicator(mediaElementData);
@@ -156,15 +159,6 @@ declare namespace IIIFComponents.AVComponentCanvasInstance {
         static PAUSECANVAS: string;
         static PLAYCANVAS: string;
         static PREVIOUS_RANGE: string;
-    }
-}
-
-declare namespace IIIFComponents.AVComponentObjects {
-    class Duration {
-        start: number;
-        end: number;
-        constructor(start: number, end: number);
-        getLength(): number;
     }
 }
 

@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.48 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.49 https://github.com/iiif-commons/iiif-av-component#readme
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iiifAvComponent = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 (function (global){
 
@@ -449,6 +449,7 @@ var IIIFComponents;
             _this._lowPriorityFrequency = 250;
             _this._mediaSyncMarginSecs = 1;
             _this._ranges = [];
+            _this._rangeSpanPadding = 0.25;
             _this._readyCanvasesCount = 0;
             _this._stallRequestedBy = []; //todo: type
             _this._wasPlaying = false;
@@ -734,10 +735,7 @@ var IIIFComponents;
                     else {
                         var duration = this._data.range.getDuration();
                         if (duration) {
-                            // if the range has changed, update the time if not already within the duration span
-                            if (!this._data.range.spansTime(this._canvasClockTime)) {
-                                this._setCurrentTime(duration.start);
-                            }
+                            this._setCurrentTime(duration.start);
                             this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                             this._play();
                         }
@@ -745,6 +743,58 @@ var IIIFComponents;
                 }
             }
             this._render();
+        };
+        CanvasInstance.prototype._hasRangeChanged = function () {
+            var range = this._getRangeForCurrentTime();
+            if (range && !this._data.limitToRange && (!this._data.range || (this._data.range && range.id !== this._data.range.id))) {
+                this.set({
+                    range: range
+                });
+            }
+        };
+        CanvasInstance.prototype._getRangeForCurrentTime = function (parentRange) {
+            var ranges;
+            if (!parentRange) {
+                ranges = this._ranges;
+            }
+            else {
+                ranges = parentRange.getRanges();
+            }
+            for (var i = 0; i < ranges.length; i++) {
+                var range = ranges[i];
+                // if the range spans the current time, and is navigable, return it.
+                // otherwise, try to find a navigable child range.
+                if (this._rangeSpansCurrentTime(range)) {
+                    if (this._rangeNavigable(range)) {
+                        return range;
+                    }
+                    var childRanges = range.getRanges();
+                    // if a child range spans the current time, recurse into it
+                    for (var i_1 = 0; i_1 < childRanges.length; i_1++) {
+                        var childRange = childRanges[i_1];
+                        if (this._rangeSpansCurrentTime(childRange)) {
+                            return this._getRangeForCurrentTime(childRange);
+                        }
+                    }
+                    // this range isn't navigable, and couldn't find a navigable child range.
+                    // therefore return the parent range (if any).
+                    return range.parentRange;
+                }
+            }
+            return undefined;
+        };
+        CanvasInstance.prototype._rangeSpansCurrentTime = function (range) {
+            if (range.spansTime(Math.ceil(this._canvasClockTime) + this._rangeSpanPadding)) {
+                return true;
+            }
+            return false;
+        };
+        CanvasInstance.prototype._rangeNavigable = function (range) {
+            var behavior = range.getBehavior();
+            if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
+                return false;
+            }
+            return true;
         };
         CanvasInstance.prototype._render = function () {
             var _this = this;
@@ -1015,32 +1065,6 @@ var IIIFComponents;
                 $mediaElement.get(0).load(); // todo: type
             }
             this._renderSyncIndicator(data);
-        };
-        CanvasInstance.prototype._hasRangeChanged = function () {
-            var range = this._getRangeForCurrentTime();
-            if (range && !this._data.limitToRange && this._data.range && range.id !== this._data.range.id) {
-                this.set({
-                    range: range
-                });
-            }
-        };
-        CanvasInstance.prototype._getRangeForCurrentTime = function () {
-            for (var i = 0; i < this._ranges.length; i++) {
-                var range = this._ranges[i];
-                // todo: need to drill down to deepest sub range
-                // then work our way up checking if range spans the current time
-                if (range.spansTime(this._canvasClockTime)) {
-                    // if it's a no-nav range. return the parent range
-                    var behavior = range.getBehavior();
-                    if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
-                        return range.parentRange;
-                    }
-                    else {
-                        return range;
-                    }
-                }
-            }
-            return undefined;
         };
         CanvasInstance.prototype._updateCurrentTimeDisplay = function () {
             var duration;
@@ -1398,24 +1422,6 @@ var IIIFComponents;
         }());
         AVComponentCanvasInstance.Events = Events;
     })(AVComponentCanvasInstance = IIIFComponents.AVComponentCanvasInstance || (IIIFComponents.AVComponentCanvasInstance = {}));
-})(IIIFComponents || (IIIFComponents = {}));
-
-var IIIFComponents;
-(function (IIIFComponents) {
-    var AVComponentObjects;
-    (function (AVComponentObjects) {
-        var Duration = /** @class */ (function () {
-            function Duration(start, end) {
-                this.start = start;
-                this.end = end;
-            }
-            Duration.prototype.getLength = function () {
-                return this.end - this.start;
-            };
-            return Duration;
-        }());
-        AVComponentObjects.Duration = Duration;
-    })(AVComponentObjects = IIIFComponents.AVComponentObjects || (IIIFComponents.AVComponentObjects = {}));
 })(IIIFComponents || (IIIFComponents = {}));
 
 
