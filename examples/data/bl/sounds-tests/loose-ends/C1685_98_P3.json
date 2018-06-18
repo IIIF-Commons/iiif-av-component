@@ -72,6 +72,14 @@
                                         }
                                     ]
                                 }
+                            ],
+                            "seeAlso": [
+                                {
+                                    "id": "https://edsilv.github.io/peaksjs-test/vdc_100052359795.0x000018.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
+                                }
                             ]
                         }
                     ]
@@ -104,6 +112,14 @@
                                             "type": "Audio"
                                         }
                                     ]
+                                }
+                            ],
+                            "seeAlso": [
+                                {
+                                    "id": "https://edsilv.github.io/peaksjs-test/vdc_100052359795.0x00001a.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
                                 }
                             ]
                         }
