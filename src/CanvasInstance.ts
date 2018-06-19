@@ -89,6 +89,10 @@ namespace IIIFComponents {
             this._$canvasTime = this._$timeDisplay.find('.canvas-time');
             this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
 
+            if(this.isVirtual()) {
+                this.$playerElement.addClass('virtual');
+            }
+
             const $volume: JQuery = $('<div class="volume"></div>');
             this._volume = new AVVolumeControl({
                 target: $volume[0],
@@ -118,24 +122,24 @@ namespace IIIFComponents {
                         if (this._data && this._data.helper) {
                             let r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
 
-                            let cloned: Manifesto.IRange[] = [];
+                            let clonedRanges: Manifesto.IRange[] = [];
 
                             // shift the range targets forward by the duration of their previous canvases
                             r.forEach((range: Manifesto.IRange) => {
 
-                                range = jQuery.extend(true, {}, range);
-                                cloned.push(range);
+                                const clonedRange = jQuery.extend(true, {}, range);
+                                clonedRanges.push(clonedRange);
 
-                                if (range.canvases && range.canvases.length) {
+                                if (clonedRange.canvases && clonedRange.canvases.length) {
                                     
-                                    for (let i = 0; i < range.canvases.length; i++) {
-                                        range.canvases[i] = <string>AVComponentUtils.Utils.retargetTemporalComponent((<VirtualCanvas>this._data.canvas).canvases, range.__jsonld.items[i].id);
+                                    for (let i = 0; i < clonedRange.canvases.length; i++) {
+                                        clonedRange.canvases[i] = <string>AVComponentUtils.Utils.retargetTemporalComponent((<VirtualCanvas>this._data.canvas).canvases, clonedRange.__jsonld.items[i].id);
                                     }
 
                                 }
                             });
 
-                            ranges.push(...cloned);
+                            ranges.push(...clonedRanges);
                         }
                     });
                 } else {

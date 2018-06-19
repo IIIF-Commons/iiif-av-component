@@ -200,6 +200,7 @@ declare namespace IIIFComponents {
         helper?: Manifold.IHelper;
         limitToRange?: boolean;
         rangeId?: string;
+        virtualCanvasEnabled?: boolean;
     }
 }
 

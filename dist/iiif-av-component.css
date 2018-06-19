@@ -2,6 +2,9 @@
   position: relative;
   overflow: hidden;
 }
+.iiif-av-component .player.virtual {
+  border: 1px solid blue;
+}
 .iiif-av-component .canvas-container {
   position: relative;
   background: #000000;

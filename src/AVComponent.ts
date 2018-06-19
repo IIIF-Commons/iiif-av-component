@@ -30,6 +30,7 @@ namespace IIIFComponents {
                 defaultAspectRatio: 0.56,
                 doubleClickMS: 350,
                 limitToRange: false,
+                virtualCanvasEnabled: true,
                 content: <IAVComponentContent>{
                     currentTime: "Current Time",
                     duration: "Duration",
@@ -106,6 +107,22 @@ namespace IIIFComponents {
                 }
                 
             }
+
+            if (diff.includes('virtualCanvasEnabled') && this._data.virtualCanvasEnabled) {
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
+                    if (canvasInstance.isVirtual() && this._data.canvasId && canvasInstance.includesVirtualSubCanvas(this._data.canvasId)) {
+                        canvasInstance.set({ 
+                            visible: true
+                        });
+                    } else {
+                        canvasInstance.set({ 
+                            visible: false
+                        });
+                    }
+                });
+
+            }
             
             if (diff.includes('range') && this._data.range) {
 
@@ -115,7 +132,7 @@ namespace IIIFComponents {
                     console.warn('range not found');
                 } else {
 
-                    const canvasId: string | undefined = AVComponentUtils.Utils.getFirstTargetedCanvasId(range);
+                    let canvasId: string | undefined = AVComponentUtils.Utils.getFirstTargetedCanvasId(range);
 
                     if (canvasId) {
 
@@ -123,9 +140,16 @@ namespace IIIFComponents {
                         const canvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(canvasId);
                         
                         if (canvasInstance) {
-    
-                            // if not using the correct canvasinstance, switch to it
-                            if (this._data.canvasId && Manifesto.Utils.normaliseUrl(this._data.canvasId) !== canvasId) {
+                            
+                            if (canvasInstance.isVirtual() && this._data.virtualCanvasEnabled) {                                
+                                if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
+                                    canvasId = canvasInstance.getCanvasId();
+                                }
+                            }
+
+                            // if not using the correct canvasinstance, switch to it                    
+                            if (this._data.canvasId && 
+                                ((this._data.canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(this._data.canvasId) : this._data.canvasId) !== canvasId) {
 
                                 this.set({
                                     canvasId: canvasId,
@@ -139,6 +163,7 @@ namespace IIIFComponents {
                                 });
     
                             }
+                            
                         }
                     }
                 }
@@ -169,7 +194,7 @@ namespace IIIFComponents {
                 const behavior: Manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
                 const canvases: Manifesto.ICanvas[] = this._getCanvases();
 
-                if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
+                if (this._data.virtualCanvasEnabled && behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
 
                     const virtualCanvas: AVComponentObjects.VirtualCanvas = new AVComponentObjects.VirtualCanvas();
 
@@ -278,18 +303,25 @@ namespace IIIFComponents {
 
         private _getCanvasInstanceById(canvasId: string): CanvasInstance | undefined {
             
-            canvasId = Manifesto.Utils.normaliseUrl(canvasId);
+            canvasId = (canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(canvasId) : canvasId;
     
-            for (let i = 0; i < this.canvasInstances.length; i++) {
+            // if virtual canvas is enabled, check for that first
+            if (this._data.virtualCanvasEnabled) {
+
+                for (let i = 0; i < this.canvasInstances.length; i++) {
     
-                const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
-                
-                // if the canvasinstance is virtual
-                // if (canvasInstance.isVirtual()) {
-                //     if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
-                //         return canvasInstance;
-                //     }
-                // } else {
+                    const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
+                    
+                    if (canvasInstance.isVirtual() && canvasInstance.includesVirtualSubCanvas(canvasId)) {
+                        return canvasInstance;
+                    }
+                }
+
+            } else {
+
+                for (let i = 0; i < this.canvasInstances.length; i++) {
+
+                    const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
                     const id: string | undefined = canvasInstance.getCanvasId();
 
                     if (id) {
@@ -299,8 +331,10 @@ namespace IIIFComponents {
                             return canvasInstance;
                         }
                     }
-                //}
+                }
             }
+
+            
     
             return undefined;
         }

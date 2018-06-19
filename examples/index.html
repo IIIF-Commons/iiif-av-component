@@ -78,6 +78,7 @@
         <input id="limitToRangeCheckbox" type="checkbox"><label for="limitToRangeCheckbox">Limit to Range</label>
         <input id="constrainNavigationToRangeCheckbox" type="checkbox"><label for="constrainNavigationToRangeCheckbox">Constrain Navigation To Range</label>
         <input id="autoSelectRangeCheckbox" type="checkbox"><label for="autoSelectRangeCheckbox">Auto Select Range</label>
+        <input id="virtualCanvasCheckbox" type="checkbox"><label for="virtualCanvasCheckbox">Virtual Canvas</label>
     </div>
 
     <div id="tree" class="iiif-tree-component"></div>
@@ -95,7 +96,8 @@
         var state = {
             limitToRange: true,
             autoSelectRange: true,
-            constrainNavigationToRange: true
+            constrainNavigationToRange: true,
+            virtualCanvasEnabled: false
         }
 
         function resize() {
@@ -124,7 +126,8 @@
                     helper: helper,
                     limitToRange: state.limitToRange,
                     autoSelectRange: state.autoSelectRange,
-                    constrainNavigationToRange: state.constrainNavigationToRange
+                    constrainNavigationToRange: state.constrainNavigationToRange,
+                    virtualCanvasEnabled: state.virtualCanvasEnabled
                 });
 
                 treecomponent.set({
@@ -307,6 +310,15 @@
                 state.constrainNavigationToRange = this.checked;
                 avcomponent.set({
                     constrainNavigationToRange: state.constrainNavigationToRange
+                });
+            });
+
+            $('#virtualCanvasCheckbox').prop('checked', state.virtualCanvasEnabled);
+
+            $('#virtualCanvasCheckbox').change(function() {
+                state.virtualCanvasEnabled = this.checked;
+                avcomponent.set({
+                    virtualCanvasEnabled: state.virtualCanvasEnabled
                 });
             });
 

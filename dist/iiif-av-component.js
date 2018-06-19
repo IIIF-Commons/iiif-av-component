@@ -38,6 +38,7 @@ var IIIFComponents;
                 defaultAspectRatio: 0.56,
                 doubleClickMS: 350,
                 limitToRange: false,
+                virtualCanvasEnabled: true,
                 content: {
                     currentTime: "Current Time",
                     duration: "Duration",
@@ -100,6 +101,20 @@ var IIIFComponents;
                     });
                 }
             }
+            if (diff.includes('virtualCanvasEnabled') && this._data.virtualCanvasEnabled) {
+                this.canvasInstances.forEach(function (canvasInstance) {
+                    if (canvasInstance.isVirtual() && _this._data.canvasId && canvasInstance.includesVirtualSubCanvas(_this._data.canvasId)) {
+                        canvasInstance.set({
+                            visible: true
+                        });
+                    }
+                    else {
+                        canvasInstance.set({
+                            visible: false
+                        });
+                    }
+                });
+            }
             if (diff.includes('range') && this._data.range) {
                 var range = this._data.helper.getRangeById(this._data.range.id);
                 if (!range) {
@@ -111,8 +126,14 @@ var IIIFComponents;
                         // get canvas by normalised id (without temporal part)
                         var canvasInstance = this._getCanvasInstanceById(canvasId);
                         if (canvasInstance) {
-                            // if not using the correct canvasinstance, switch to it
-                            if (this._data.canvasId && Manifesto.Utils.normaliseUrl(this._data.canvasId) !== canvasId) {
+                            if (canvasInstance.isVirtual() && this._data.virtualCanvasEnabled) {
+                                if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
+                                    canvasId = canvasInstance.getCanvasId();
+                                }
+                            }
+                            // if not using the correct canvasinstance, switch to it                    
+                            if (this._data.canvasId &&
+                                ((this._data.canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(this._data.canvasId) : this._data.canvasId) !== canvasId) {
                                 this.set({
                                     canvasId: canvasId,
                                     range: Object.assign({}, range) // force diff
@@ -143,7 +164,7 @@ var IIIFComponents;
                 // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
                 var behavior = this._data.helper.manifest.getBehavior();
                 var canvases = this._getCanvases();
-                if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
+                if (this._data.virtualCanvasEnabled && behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
                     var virtualCanvas_1 = new IIIFComponents.AVComponentObjects.VirtualCanvas();
                     canvases.forEach(function (canvas) {
                         virtualCanvas_1.addCanvas(canvas);
@@ -226,23 +247,27 @@ var IIIFComponents;
             });
         };
         AVComponent.prototype._getCanvasInstanceById = function (canvasId) {
-            canvasId = Manifesto.Utils.normaliseUrl(canvasId);
-            for (var i = 0; i < this.canvasInstances.length; i++) {
-                var canvasInstance = this.canvasInstances[i];
-                // if the canvasinstance is virtual
-                // if (canvasInstance.isVirtual()) {
-                //     if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
-                //         return canvasInstance;
-                //     }
-                // } else {
-                var id = canvasInstance.getCanvasId();
-                if (id) {
-                    var canvasInstanceId = Manifesto.Utils.normaliseUrl(id);
-                    if (canvasInstanceId === canvasId) {
+            canvasId = (canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(canvasId) : canvasId;
+            // if virtual canvas is enabled, check for that first
+            if (this._data.virtualCanvasEnabled) {
+                for (var i = 0; i < this.canvasInstances.length; i++) {
+                    var canvasInstance = this.canvasInstances[i];
+                    if (canvasInstance.isVirtual() && canvasInstance.includesVirtualSubCanvas(canvasId)) {
                         return canvasInstance;
                     }
                 }
-                //}
+            }
+            else {
+                for (var i = 0; i < this.canvasInstances.length; i++) {
+                    var canvasInstance = this.canvasInstances[i];
+                    var id = canvasInstance.getCanvasId();
+                    if (id) {
+                        var canvasInstanceId = Manifesto.Utils.normaliseUrl(id);
+                        if (canvasInstanceId === canvasId) {
+                            return canvasInstance;
+                        }
+                    }
+                }
             }
             return undefined;
         };
@@ -482,6 +507,9 @@ var IIIFComponents;
             this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
             this._$canvasTime = this._$timeDisplay.find('.canvas-time');
             this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
+            if (this.isVirtual()) {
+                this.$playerElement.addClass('virtual');
+            }
             var $volume = $('<div class="volume"></div>');
             this._volume = new IIIFComponents.AVVolumeControl({
                 target: $volume[0],
@@ -504,18 +532,18 @@ var IIIFComponents;
                     this._data.canvas.canvases.forEach(function (canvas) {
                         if (_this._data && _this._data.helper) {
                             var r = _this._data.helper.getCanvasRanges(canvas);
-                            var cloned_1 = [];
+                            var clonedRanges_1 = [];
                             // shift the range targets forward by the duration of their previous canvases
                             r.forEach(function (range) {
-                                range = jQuery.extend(true, {}, range);
-                                cloned_1.push(range);
-                                if (range.canvases && range.canvases.length) {
-                                    for (var i = 0; i < range.canvases.length; i++) {
-                                        range.canvases[i] = IIIFComponents.AVComponentUtils.Utils.retargetTemporalComponent(_this._data.canvas.canvases, range.__jsonld.items[i].id);
+                                var clonedRange = jQuery.extend(true, {}, range);
+                                clonedRanges_1.push(clonedRange);
+                                if (clonedRange.canvases && clonedRange.canvases.length) {
+                                    for (var i = 0; i < clonedRange.canvases.length; i++) {
+                                        clonedRange.canvases[i] = IIIFComponents.AVComponentUtils.Utils.retargetTemporalComponent(_this._data.canvas.canvases, clonedRange.__jsonld.items[i].id);
                                     }
                                 }
                             });
-                            ranges_1.push.apply(ranges_1, cloned_1);
+                            ranges_1.push.apply(ranges_1, clonedRanges_1);
                         }
                     });
                 }
