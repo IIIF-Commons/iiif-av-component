@@ -101,19 +101,59 @@ var IIIFComponents;
                     });
                 }
             }
-            if (diff.includes('virtualCanvasEnabled') && this._data.virtualCanvasEnabled) {
-                this.canvasInstances.forEach(function (canvasInstance) {
-                    if (canvasInstance.isVirtual() && _this._data.canvasId && canvasInstance.includesVirtualSubCanvas(_this._data.canvasId)) {
-                        canvasInstance.set({
-                            visible: true
-                        });
-                    }
-                    else {
-                        canvasInstance.set({
-                            visible: false
-                        });
-                    }
+            if (diff.includes('virtualCanvasEnabled')) {
+                this.set({
+                    range: undefined
                 });
+                if (this._data.virtualCanvasEnabled) {
+                    // find the virtual canvas and show it.
+                    // hide all other canvases.
+                    this.canvasInstances.forEach(function (canvasInstance) {
+                        if (canvasInstance.isVirtual()) {
+                            canvasInstance.set({
+                                visible: true,
+                                range: undefined
+                            });
+                        }
+                        else {
+                            canvasInstance.set({
+                                visible: false,
+                                range: undefined
+                            });
+                        }
+                    });
+                }
+                else {
+                    // find the virtual canvas and hide it.                    
+                    this.canvasInstances.forEach(function (canvasInstance) {
+                        if (canvasInstance.isVirtual()) {
+                            canvasInstance.set({
+                                visible: false,
+                                range: undefined
+                            });
+                        }
+                        else {
+                            canvasInstance.set({
+                                range: undefined
+                            });
+                        }
+                    });
+                    // show first non-virtual canvas.
+                    for (var i = 0; i < this.canvasInstances.length; i++) {
+                        var canvasInstance = this.canvasInstances[i];
+                        if (!canvasInstance.isVirtual()) {
+                            canvasInstance.set({
+                                visible: true,
+                                range: undefined
+                            });
+                        }
+                        else {
+                            canvasInstance.set({
+                                range: undefined
+                            });
+                        }
+                    }
+                }
             }
             if (diff.includes('range') && this._data.range) {
                 var range = this._data.helper.getRangeById(this._data.range.id);
@@ -129,6 +169,14 @@ var IIIFComponents;
                             if (canvasInstance.isVirtual() && this._data.virtualCanvasEnabled) {
                                 if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
                                     canvasId = canvasInstance.getCanvasId();
+                                    // use the retargeted range
+                                    for (var i = 0; i < canvasInstance.ranges.length; i++) {
+                                        var r = canvasInstance.ranges[i];
+                                        if (r.id === range.id) {
+                                            range = r;
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                             // if not using the correct canvasinstance, switch to it                    
@@ -164,7 +212,7 @@ var IIIFComponents;
                 // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
                 var behavior = this._data.helper.manifest.getBehavior();
                 var canvases = this._getCanvases();
-                if (this._data.virtualCanvasEnabled && behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
+                if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
                     var virtualCanvas_1 = new IIIFComponents.AVComponentObjects.VirtualCanvas();
                     canvases.forEach(function (canvas) {
                         virtualCanvas_1.addCanvas(canvas);
@@ -474,11 +522,11 @@ var IIIFComponents;
             _this._isStalled = false;
             _this._lowPriorityFrequency = 250;
             _this._mediaSyncMarginSecs = 1;
-            _this._ranges = [];
             _this._rangeSpanPadding = 0.25;
             _this._readyCanvasesCount = 0;
             _this._stallRequestedBy = []; //todo: type
             _this._wasPlaying = false;
+            _this.ranges = [];
             _this._data = _this.options.data;
             _this.$playerElement = $('<div class="player"></div>');
             return _this;
@@ -551,7 +599,7 @@ var IIIFComponents;
                     ranges_1 = ranges_1.concat(this._data.helper.getCanvasRanges(this._data.canvas));
                 }
                 ranges_1.forEach(function (range) {
-                    _this._ranges.push(range);
+                    _this.ranges.push(range);
                 });
             }
             this._canvasClockDuration = this._data.canvas.getDuration();
@@ -787,7 +835,7 @@ var IIIFComponents;
         CanvasInstance.prototype._getRangeForCurrentTime = function (parentRange) {
             var ranges;
             if (!parentRange) {
-                ranges = this._ranges;
+                ranges = this.ranges;
             }
             else {
                 ranges = parentRange.getRanges();

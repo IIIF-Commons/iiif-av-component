@@ -38,12 +38,12 @@ namespace IIIFComponents {
         private _lowPriorityFrequency: number = 250;
         private _lowPriorityInterval: number;
         private _mediaSyncMarginSecs: number = 1;
-        private _ranges: Manifesto.IRange[] = [];
         private _rangeSpanPadding: number = 0.25;
         private _readyCanvasesCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
         private _wasPlaying: boolean = false;
+        public ranges: Manifesto.IRange[] = [];
 
         public $playerElement: JQuery;
         public logMessage: (message: string) => void;
@@ -147,7 +147,7 @@ namespace IIIFComponents {
                 }
   
                 ranges.forEach((range: Manifesto.IRange) => {
-                    this._ranges.push(range);
+                    this.ranges.push(range);
                 });
             }
 
@@ -451,7 +451,7 @@ namespace IIIFComponents {
             let ranges: Manifesto.IRange[];
 
             if (!parentRange) {
-                ranges = this._ranges;
+                ranges = this.ranges;
             } else {
                 ranges = parentRange.getRanges();
             }

@@ -108,25 +108,67 @@ namespace IIIFComponents {
                 
             }
 
-            if (diff.includes('virtualCanvasEnabled') && this._data.virtualCanvasEnabled) {
+            if (diff.includes('virtualCanvasEnabled')) {
 
-                this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
-                    if (canvasInstance.isVirtual() && this._data.canvasId && canvasInstance.includesVirtualSubCanvas(this._data.canvasId)) {
-                        canvasInstance.set({ 
-                            visible: true
-                        });
-                    } else {
-                        canvasInstance.set({ 
-                            visible: false
-                        });
-                    }
+                this.set({
+                    range: undefined
                 });
+
+                if (this._data.virtualCanvasEnabled) {
+                    // find the virtual canvas and show it.
+                    // hide all other canvases.
+                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
+                        if (canvasInstance.isVirtual()) {
+                            canvasInstance.set({ 
+                                visible: true,
+                                range: undefined
+                            });
+                        } else {
+                            canvasInstance.set({ 
+                                visible: false,
+                                range: undefined
+                            });
+                        }
+                    });
+                } else {
+
+                    // find the virtual canvas and hide it.                    
+                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
+                        if (canvasInstance.isVirtual()) {
+                            canvasInstance.set({ 
+                                visible: false,
+                                range: undefined
+                            });
+                        } else {
+                            canvasInstance.set({ 
+                                range: undefined
+                            });
+                        }
+                    });
+
+                    // show first non-virtual canvas.
+                    for (let i = 0; i < this.canvasInstances.length; i++) {
+                        const canvasInstance: CanvasInstance = this.canvasInstances[i];
+
+                        if (!canvasInstance.isVirtual()) {
+                            canvasInstance.set({ 
+                                visible: true,
+                                range: undefined
+                            });
+                        } else {
+                            canvasInstance.set({ 
+                                range: undefined
+                            });
+                        }
+                    }
+                    
+                }               
 
             }
             
             if (diff.includes('range') && this._data.range) {
 
-                const range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.range.id);
+                let range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.range.id);
 
                 if (!range) {
                     console.warn('range not found');
@@ -144,6 +186,16 @@ namespace IIIFComponents {
                             if (canvasInstance.isVirtual() && this._data.virtualCanvasEnabled) {                                
                                 if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
                                     canvasId = canvasInstance.getCanvasId();
+
+                                    // use the retargeted range
+                                    for (let i = 0; i < canvasInstance.ranges.length; i++) {
+                                        const r: Manifesto.IRange = canvasInstance.ranges[i];
+
+                                        if (r.id === range.id) {
+                                            range = r;
+                                            break;
+                                        }
+                                    }
                                 }
                             }
 
@@ -194,7 +246,7 @@ namespace IIIFComponents {
                 const behavior: Manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
                 const canvases: Manifesto.ICanvas[] = this._getCanvases();
 
-                if (this._data.virtualCanvasEnabled && behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
+                if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
 
                     const virtualCanvas: AVComponentObjects.VirtualCanvas = new AVComponentObjects.VirtualCanvas();
 

@@ -69,6 +69,7 @@ declare namespace IIIFComponents.AVVolumeControl {
 }
 
 /// <reference types="base-component" />
+/// <reference types="manifesto.js" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
 declare namespace IIIFComponents {
@@ -107,12 +108,12 @@ declare namespace IIIFComponents {
         private _lowPriorityFrequency;
         private _lowPriorityInterval;
         private _mediaSyncMarginSecs;
-        private _ranges;
         private _rangeSpanPadding;
         private _readyCanvasesCount;
         private _stallRequestedBy;
         private _volume;
         private _wasPlaying;
+        ranges: Manifesto.IRange[];
         $playerElement: JQuery;
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
