@@ -97,7 +97,7 @@
                     "behavior": ["no-nav"],
                     "items": [
                         {
-                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,162.64",
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004#t=0,162.64",
                             "type": "Canvas"
                         }
                     ]
