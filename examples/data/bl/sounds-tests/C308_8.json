@@ -1,5 +1,8 @@
 {
-    "@context": "http://iiif.io/api/presentation/3/context.json",
+    "@context": [
+        "http://www.w3.org/ns/anno.jsonld",
+        "http://iiif.io/api/presentation/3/context.json"
+    ],
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8.json",
     "type": "Manifest",
     "label": { "en": [ "C308/8 Brian Hayes programme" ] },
@@ -13,13 +16,13 @@
             "value": { "en": [ "Brian Hayes programme" ] }
         }
     ],
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
     "items": [
         {
             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004",
             "label": { "en": [ "Tape 1 Side 1" ] },
             "type": "Canvas",
-            "duration": 3279.16,
+            "duration": 3441.8,
             "items": [
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004/anno",
@@ -88,6 +91,17 @@
             "type": "Range",
             "label": { "en": [ "Brian Hayes programme" ] },
             "items": [
+                {
+                    "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000002.nn1",
+                    "type": "Range",
+                    "behavior": ["no-nav"],
+                    "items": [
+                        {
+                            "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000004#t=0,162.64",
+                            "type": "Canvas"
+                        }
+                    ]
+                },
                 {
                     "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100050889733.0x000006",
                     "type": "Range",

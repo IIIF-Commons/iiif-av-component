@@ -1,16 +1,46 @@
 {
-    "@context": "http://iiif.io/api/presentation/3/context.json",
+    "@context": [
+        "http://www.w3.org/ns/anno.jsonld",
+        "http://iiif.io/api/presentation/3/context.json"
+    ],
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C465_13.json",
     "requiredStatement": {
         "label": { "en": [ "Attribution" ] },
         "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
     },
-    "behavior": "auto-advance",
+    "behavior": [ "auto-advance" ],
     "label": { "en": [ "C465/13/01-14 F5574 F5575 F5576 F5577 F5578 F5579 F5580 F5581 F5582 F5583 F5584 F5585 F5586 F5587 Jocelyn Herbert interviewed by Cathy Courtney" ] },
     "logo": [{
         "id": "https://www.bl.uk/images/bl_logo_100.gif",
         "type": "Image"
     }],
+    "posterCanvas": {
+        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C465_13/poster",
+        "type": "Canvas",
+        "height": 962,
+        "width": 962,
+        "items": [
+            {
+                "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C465_13/poster/p1",
+                "type": "AnnotationPage",
+                "items": [
+                    {
+                        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C465_13/poster/p1/anno",
+                        "type": "Annotation",
+                        "motivation": "painting",
+                        "target": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C465_13/poster",
+                        "body": {
+                            "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/posters/world.jpg",
+                            "type": "Image",
+                            "format": "image/jpeg",
+                            "width": 962,
+                            "height": 962
+                        }
+                    }                    
+                ]
+            }
+        ]
+    },
     "metadata": [
         {
             "label": { "en": [ "Identifier" ] },
@@ -912,7 +942,7 @@
                             ],
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002/anno27/node-id-000054",
                             "motivation": "painting",
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002#t=0,1863.044",
                             "timeMode": "trim",
                             "type": "Annotation"
                         },
@@ -931,7 +961,7 @@
                             ],
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002/anno27/node-id-000056",
                             "motivation": "painting",
-                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002",
+                            "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100054464130.0x000002#t=1863.044,3720.96",
                             "timeMode": "trim",
                             "type": "Annotation"
                         }
