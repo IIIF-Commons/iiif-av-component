@@ -397,11 +397,11 @@ namespace IIIFComponents {
                 if (this._data.canvas) {
                     if (this._data.visible) {
                         this.$playerElement.show();
-                        console.log('show ' + this._data.canvas.id);
+                        //console.log('show ' + this._data.canvas.id);
                     } else {
                         this.$playerElement.hide();
                         this._pause();
-                        console.log('hide ' + this._data.canvas.id);
+                        //console.log('hide ' + this._data.canvas.id);
                     }
 
                     this.resize();
@@ -419,11 +419,9 @@ namespace IIIFComponents {
                         const duration: Manifesto.Duration | undefined = this._data.range.getDuration();
 
                         if (duration) {
-
                             this._setCurrentTime(duration.start);
-
-                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                             this._play();
+                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);                          
                         }
                     }
                 }
@@ -526,8 +524,16 @@ namespace IIIFComponents {
                     // get the ratio of seconds to length
                     const ratio: number = timelineLength / totalLength;
                     const start: number = duration.start * ratio;
-                    const end: number = duration.end * ratio;
+                    let end: number = duration.end * ratio;
+
+                    // if the end is on the next canvas
+                    if (end > totalLength || end < start) {
+                        end = totalLength;
+                    }
+
                     const width: number = end - start;
+
+                    //console.log(width);
 
                     this._$durationHighlight.show();
 
@@ -966,7 +972,7 @@ namespace IIIFComponents {
         // this._data.play = true?
         private _play(withoutUpdate?: boolean): void {
 
-            console.log('playing ', this.getCanvasId());
+            //console.log('playing ', this.getCanvasId());
 
             if (this._isPlaying) return;
 

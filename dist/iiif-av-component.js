@@ -96,7 +96,10 @@ var IIIFComponents;
                             });
                         }
                         else {
-                            canvasInstance.set({ visible: true });
+                            canvasInstance.set({
+                                visible: true,
+                                range: _this._data.range
+                            });
                         }
                     });
                 }
@@ -184,12 +187,12 @@ var IIIFComponents;
                                 ((this._data.canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(this._data.canvasId) : this._data.canvasId) !== canvasId) {
                                 this.set({
                                     canvasId: canvasId,
-                                    range: Object.assign({}, range) // force diff
+                                    range: jQuery.extend(true, {}, range) // force diff
                                 });
                             }
                             else {
                                 canvasInstance.set({
-                                    range: range
+                                    range: jQuery.extend(true, {}, range)
                                 });
                             }
                         }
@@ -343,7 +346,7 @@ var IIIFComponents;
             var range = this._data.helper.getRangeById(rangeId);
             if (range) {
                 this.set({
-                    range: range
+                    range: jQuery.extend(true, {}, range)
                 });
             }
         };
@@ -797,12 +800,12 @@ var IIIFComponents;
                 if (this._data.canvas) {
                     if (this._data.visible) {
                         this.$playerElement.show();
-                        console.log('show ' + this._data.canvas.id);
+                        //console.log('show ' + this._data.canvas.id);
                     }
                     else {
                         this.$playerElement.hide();
                         this._pause();
-                        console.log('hide ' + this._data.canvas.id);
+                        //console.log('hide ' + this._data.canvas.id);
                     }
                     this.resize();
                 }
@@ -816,8 +819,8 @@ var IIIFComponents;
                         var duration = this._data.range.getDuration();
                         if (duration) {
                             this._setCurrentTime(duration.start);
-                            this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                             this._play();
+                            this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                         }
                     }
                 }
@@ -889,7 +892,12 @@ var IIIFComponents;
                     var ratio = timelineLength / totalLength;
                     var start = duration.start * ratio;
                     var end = duration.end * ratio;
+                    // if the end is on the next canvas
+                    if (end > totalLength || end < start) {
+                        end = totalLength;
+                    }
                     var width = end - start;
+                    //console.log(width);
                     this._$durationHighlight.show();
                     // set the start position and width
                     this._$durationHighlight.css({
@@ -1248,8 +1256,8 @@ var IIIFComponents;
         // todo: can this be part of the _data state?
         // this._data.play = true?
         CanvasInstance.prototype._play = function (withoutUpdate) {
+            //console.log('playing ', this.getCanvasId());
             var _this = this;
-            console.log('playing ', this.getCanvasId());
             if (this._isPlaying)
                 return;
             var duration;

@@ -100,7 +100,10 @@ namespace IIIFComponents {
                                 visible: false
                             });
                         } else {
-                            canvasInstance.set({ visible: true });
+                            canvasInstance.set({ 
+                                visible: true,
+                                range: this._data.range
+                             });
                         }
                     });
 
@@ -205,13 +208,13 @@ namespace IIIFComponents {
 
                                 this.set({
                                     canvasId: canvasId,
-                                    range: Object.assign({}, range) // force diff
+                                    range: jQuery.extend(true, {}, range) // force diff
                                 });
 
                             } else {
 
                                 canvasInstance.set({
-                                    range: range
+                                    range: jQuery.extend(true, {}, range)
                                 });
     
                             }
@@ -424,7 +427,7 @@ namespace IIIFComponents {
 
             if (range) {
                 this.set({
-                    range: range
+                    range: jQuery.extend(true, {}, range)
                 });
             }
         }
