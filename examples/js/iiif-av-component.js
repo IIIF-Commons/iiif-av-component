@@ -98,7 +98,7 @@ var IIIFComponents;
                         else {
                             canvasInstance.set({
                                 visible: true,
-                                range: _this._data.range
+                                range: _this._data.range ? jQuery.extend(true, {}, _this._data.range) : undefined
                             });
                         }
                     });

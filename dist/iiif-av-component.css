@@ -2,9 +2,6 @@
   position: relative;
   overflow: hidden;
 }
-.iiif-av-component .player.virtual {
-  border: 1px solid blue;
-}
 .iiif-av-component .canvas-container {
   position: relative;
   background: #000000;
@@ -106,6 +103,7 @@
   border-radius: 0;
 }
 .iiif-av-component .canvas-timeline-container .ui-slider-handle {
+  width: 1px;
   top: 0px;
   height: 100%;
   width: 16px;

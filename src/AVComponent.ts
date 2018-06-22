@@ -102,7 +102,7 @@ namespace IIIFComponents {
                         } else {
                             canvasInstance.set({ 
                                 visible: true,
-                                range: this._data.range
+                                range: this._data.range ? jQuery.extend(true, {}, this._data.range) : undefined
                              });
                         }
                     });
