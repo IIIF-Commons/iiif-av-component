@@ -100,10 +100,18 @@ namespace IIIFComponents {
                                 visible: false
                             });
                         } else {
-                            canvasInstance.set({ 
-                                visible: true,
-                                range: this._data.range ? jQuery.extend(true, {}, this._data.range) : undefined
-                             });
+
+                            if (diff.includes('range')) {
+                                canvasInstance.set({ 
+                                    visible: true,
+                                    range: this._data.range ? jQuery.extend(true, {}, this._data.range) : undefined
+                                });
+                            } else {
+                                canvasInstance.set({ 
+                                    visible: true
+                                });
+                            }
+                            
                         }
                     });
 
