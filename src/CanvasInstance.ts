@@ -396,6 +396,7 @@ namespace IIIFComponents {
 
                 if (this._data.canvas) {
                     if (this._data.visible) {
+                        this._rewind();
                         this.$playerElement.show();
                         //console.log('show ' + this._data.canvas.id);
                     } else {
