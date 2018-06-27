@@ -12,6 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsviews/0.9.76/jsviews.min.js"></script>
+    <script src="https://unpkg.com/proxy-observe@0.0.21/browser/proxy-observe.min.js"></script>
 
     <script src="js/base-component.js"></script>
     <script src="js/iiif-av-component.js"></script>
@@ -93,12 +94,26 @@
 
         var helper, avcomponent, treecomponent;
 
+        function updateOptions() {
+            $('#limitToRangeCheckbox').prop('checked', state.limitToRange);
+            $('#autoSelectRangeCheckbox').prop('checked', state.autoSelectRange);
+            $('#constrainNavigationToRangeCheckbox').prop('checked', state.constrainNavigationToRange);
+            $('#virtualCanvasCheckbox').prop('checked', state.virtualCanvasEnabled);
+        }
+
         var state = {
-            limitToRange: true,
+            limitToRange: false,
             autoSelectRange: true,
             constrainNavigationToRange: true,
             virtualCanvasEnabled: false
         }
+
+        state = Object.observe(state, function(changeset) {
+            console.log(changeset);
+            updateOptions();
+        });
+
+        updateOptions();
 
         function resize() {
             var $playerContainer = $('.playerContainer');
@@ -195,6 +210,12 @@
                     var canvasNavigationButton = $('<button class="canvasNavigationButton" data-canvas-id="'+ canvases[i].id +'">Canvas '+ canvasLabel +'</button>');
                     
                     canvasNavigationButton.click(function() {
+
+                        state.virtualCanvasEnabled = false;
+                        avcomponent.set({
+                            virtualCanvasEnabled: state.virtualCanvasEnabled
+                        });
+
                         avcomponent.showCanvas($(this).attr('data-canvas-id'));
                     });
 
@@ -286,16 +307,12 @@
 
             });
 
-            $('#limitToRangeCheckbox').prop('checked', state.limitToRange);
-
             $('#limitToRangeCheckbox').change(function() {
                 state.limitToRange = this.checked;
                 avcomponent.set({
                     limitToRange: state.limitToRange
                 });
             });
-
-            $('#autoSelectRangeCheckbox').prop('checked', state.autoSelectRange);
 
             $('#autoSelectRangeCheckbox').change(function() {
                 state.autoSelectRange = this.checked;
@@ -304,16 +321,12 @@
                 });
             });
 
-            $('#constrainNavigationToRangeCheckbox').prop('checked', state.constrainNavigationToRange);
-
             $('#constrainNavigationToRangeCheckbox').change(function() {
                 state.constrainNavigationToRange = this.checked;
                 avcomponent.set({
                     constrainNavigationToRange: state.constrainNavigationToRange
                 });
             });
-
-            $('#virtualCanvasCheckbox').prop('checked', state.virtualCanvasEnabled);
 
             $('#virtualCanvasCheckbox').change(function() {
                 state.virtualCanvasEnabled = this.checked;

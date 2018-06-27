@@ -156,23 +156,8 @@ namespace IIIFComponents {
                             });
                         }
                     });
-
-                    // show first non-virtual canvas.
-                    for (let i = 0; i < this.canvasInstances.length; i++) {
-                        const canvasInstance: CanvasInstance = this.canvasInstances[i];
-
-                        if (!canvasInstance.isVirtual()) {
-                            canvasInstance.set({ 
-                                visible: true,
-                                range: undefined
-                            });
-                        } else {
-                            canvasInstance.set({ 
-                                range: undefined
-                            });
-                        }
-                    }
-                    
+        
+                    // it's the responsibility of the containing app to now specify which canvas to show
                 }               
 
             }
