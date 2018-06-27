@@ -49,6 +49,12 @@ namespace IIIFComponents {
             this._data = Object.assign(this._data, data);
             const diff: string[] = AVComponentUtils.Utils.diff(oldData, this._data);
 
+            // canvasid may have been passed to make that canvas visible,
+            // but if it's not different, nothing will happen.
+            // happens because toggling between virtualcanvas.
+            // is canvasid being set to 123456 when toggling virtual canvas?
+
+
             // changing any of these data properties forces a reload.
             if (diff.includes('helper')) {
                 // create canvases
@@ -125,40 +131,55 @@ namespace IIIFComponents {
                     range: undefined
                 });
 
+                // as you don't know the id of virtual canvases, you can only
+                // toggle them on, not off.
+                // toggle off, then call showCanvas to show which canvas you _do_ know the id of
                 if (this._data.virtualCanvasEnabled) {
+
+                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
+                        if (canvasInstance.isVirtual()) {
+                            this.set({
+                                canvasId: canvasInstance.getCanvasId(),
+                                range: undefined
+                            });
+                        }
+                    });
+
+                }
+
                     // find the virtual canvas and show it.
                     // hide all other canvases.
-                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
-                        if (canvasInstance.isVirtual()) {
-                            canvasInstance.set({ 
-                                visible: true,
-                                range: undefined
-                            });
-                        } else {
-                            canvasInstance.set({ 
-                                visible: false,
-                                range: undefined
-                            });
-                        }
-                    });
-                } else {
+                    // this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
+                    //     if (canvasInstance.isVirtual()) {
+                    //         canvasInstance.set({ 
+                    //             visible: true,
+                    //             range: undefined
+                    //         });
+                    //     } else {
+                    //         canvasInstance.set({ 
+                    //             visible: false,
+                    //             range: undefined
+                    //         });
+                    //     }
+                    // });
+                //} else {
 
-                    // find the virtual canvas and hide it.                    
-                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
-                        if (canvasInstance.isVirtual()) {
-                            canvasInstance.set({ 
-                                visible: false,
-                                range: undefined
-                            });
-                        } else {
-                            canvasInstance.set({ 
-                                range: undefined
-                            });
-                        }
-                    });
+                    // // find the virtual canvas and hide it.                    
+                    // this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
+                    //     if (canvasInstance.isVirtual()) {
+                    //         canvasInstance.set({ 
+                    //             visible: false,
+                    //             range: undefined
+                    //         });
+                    //     } else {
+                    //         canvasInstance.set({ 
+                    //             range: undefined
+                    //         });
+                    //     }
+                    // });
         
                     // it's the responsibility of the containing app to now specify which canvas to show
-                }               
+                //}               
 
             }
             
@@ -360,7 +381,7 @@ namespace IIIFComponents {
     
                     const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
                     
-                    if (canvasInstance.isVirtual() && canvasInstance.includesVirtualSubCanvas(canvasId)) {
+                    if (canvasInstance.isVirtual() && canvasInstance.getCanvasId() === canvasId || canvasInstance.includesVirtualSubCanvas(canvasId)) {
                         return canvasInstance;
                     }
                 }
