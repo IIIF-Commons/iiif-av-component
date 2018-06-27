@@ -60,8 +60,34 @@ namespace IIIFComponents {
                 return;
             }
 
-            // always respond to canvasId whether it has changed or not.
-            if (this._data.canvasId) {
+            if (diff.includes('limitToRange') && this._data.canvasId) {
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                    canvasInstance.set({ 
+                        limitToRange: this._data.limitToRange
+                    });
+                });
+            }
+
+            if (diff.includes('constrainNavigationToRange') && this._data.canvasId) {
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                    canvasInstance.set({ 
+                        constrainNavigationToRange: this._data.constrainNavigationToRange
+                    });
+                });
+            }
+
+            if (diff.includes('autoSelectRange') && this._data.canvasId) {
+
+                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+                    canvasInstance.set({ 
+                        autoSelectRange: this._data.autoSelectRange
+                    });
+                });
+            }
+
+            if (diff.includes('canvasId') && this._data.canvasId) {
 
                 const nextCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
 
@@ -91,33 +117,6 @@ namespace IIIFComponents {
 
                 }
                 
-            }
-
-            if (diff.includes('limitToRange') && this._data.canvasId) {
-
-                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({ 
-                        limitToRange: this._data.limitToRange
-                    });
-                });
-            }
-
-            if (diff.includes('constrainNavigationToRange') && this._data.canvasId) {
-
-                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({ 
-                        constrainNavigationToRange: this._data.constrainNavigationToRange
-                    });
-                });
-            }
-
-            if (diff.includes('autoSelectRange') && this._data.canvasId) {
-
-                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({ 
-                        autoSelectRange: this._data.autoSelectRange
-                    });
-                });
             }
 
             if (diff.includes('virtualCanvasEnabled')) {
