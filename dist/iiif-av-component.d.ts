@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.57 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.58 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -20,12 +20,15 @@ declare namespace IIIFComponents {
         private _data;
         options: _Components.IBaseComponentOptions;
         canvasInstances: CanvasInstance[];
+        private _checkAllCanvasesReadyInterval;
+        private _readyCanvases;
         constructor(options: _Components.IBaseComponentOptions);
         protected _init(): boolean;
         data(): IAVComponentData;
         set(data: IAVComponentData): void;
         private _render();
         private _reset();
+        private _checkAllCanvasesReady();
         private _getCanvases();
         private _initCanvas(canvas);
         private _prevRange();
@@ -109,7 +112,7 @@ declare namespace IIIFComponents {
         private _lowPriorityInterval;
         private _mediaSyncMarginSecs;
         private _rangeSpanPadding;
-        private _readyCanvasesCount;
+        private _readyMediaCount;
         private _stallRequestedBy;
         private _volume;
         private _wasPlaying;

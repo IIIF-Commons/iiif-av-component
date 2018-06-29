@@ -94,6 +94,8 @@
 
         var helper, avcomponent, treecomponent;
 
+        var canvasready = false;
+
         function updateOptions() {
             $('#limitToRangeCheckbox').prop('checked', state.limitToRange);
             $('#autoSelectRangeCheckbox').prop('checked', state.autoSelectRange);
@@ -102,16 +104,18 @@
         }
 
         var state = {
-            limitToRange: true,
+            limitToRange: false,
             autoSelectRange: true,
             constrainNavigationToRange: true,
             virtualCanvasEnabled: true
         }
 
-        state = Object.observe(state, function(changeset) {
-            console.log(changeset);
-            updateOptions();
-        });
+        if (Object.observe) {
+            state = Object.observe(state, function(changeset) {
+                console.log(changeset);
+                updateOptions();
+            });
+        }
 
         updateOptions();
 
@@ -172,7 +176,9 @@
             });
 
             avcomponent.on('canvasready', function() {
+                if (canvasready) return;
                 console.log('canvas ready');
+                canvasready = true;
                 avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000013');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000015');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000011');

@@ -5,6 +5,8 @@ namespace IIIFComponents {
         private _data: IAVComponentData = this.data();
         public options: _Components.IBaseComponentOptions;
         public canvasInstances: CanvasInstance[] = [];
+        private _checkAllCanvasesReadyInterval: any;
+        private _readyCanvases: number = 0;
 
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
@@ -242,6 +244,18 @@ namespace IIIFComponents {
                 if (this.canvasInstances.length > 0) {
                     this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
                 }
+
+                this._checkAllCanvasesReadyInterval = setInterval(this._checkAllCanvasesReady.bind(this), 100);
+            }
+        }
+
+        private _checkAllCanvasesReady(): void {
+            console.log('loading media');
+            if (this._readyCanvases === this.canvasInstances.length) {
+                console.log('media ready');
+                clearInterval(this._checkAllCanvasesReadyInterval);
+                //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
+                this.fire(AVComponent.Events.CANVASREADY);
             }
         }
 
@@ -267,8 +281,7 @@ namespace IIIFComponents {
             this.canvasInstances.push(canvasInstance);      
 
             canvasInstance.on(AVComponent.Events.CANVASREADY, () => {
-                //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
-                this.fire(AVComponent.Events.CANVASREADY);
+                this._readyCanvases++;
             }, false);
 
             // canvasInstance.on(AVComponent.Events.RESETCANVAS, () => {

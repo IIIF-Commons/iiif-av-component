@@ -39,7 +39,7 @@ namespace IIIFComponents {
         private _lowPriorityInterval: number;
         private _mediaSyncMarginSecs: number = 1;
         private _rangeSpanPadding: number = 0.25;
-        private _readyCanvasesCount: number = 0;
+        private _readyMediaCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
         private _wasPlaying: boolean = false;
@@ -817,9 +817,9 @@ namespace IIIFComponents {
                 });
 
                 $mediaElement.on('loadedmetadata', () => {
-                    this._readyCanvasesCount++;
+                    this._readyMediaCount++;
 
-                    if (this._readyCanvasesCount === this._contentAnnotations.length) {
+                    if (this._readyMediaCount === this._contentAnnotations.length) {
 
                         //if (!this._data.range) {
                         this._setCurrentTime(0);
