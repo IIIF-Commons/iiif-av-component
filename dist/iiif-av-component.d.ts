@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.56 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.57 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -119,6 +119,7 @@ declare namespace IIIFComponents {
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
         isVirtual(): boolean;
+        isVisible(): boolean;
         includesVirtualSubCanvas(canvasId: string): boolean;
         set(data: IAVCanvasInstanceData): void;
         private _hasRangeChanged();

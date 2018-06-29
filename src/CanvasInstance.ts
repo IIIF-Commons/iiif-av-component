@@ -373,6 +373,10 @@ namespace IIIFComponents {
             return this._data.canvas instanceof AVComponentObjects.VirtualCanvas;
         }
 
+        public isVisible(): boolean {
+            return !!this._data.visible;
+        }
+
         public includesVirtualSubCanvas(canvasId: string): boolean {
             if (this.isVirtual() && this._data.canvas && (<VirtualCanvas>this._data.canvas).canvases) {
                 for (let i = 0; i < (<VirtualCanvas>this._data.canvas).canvases.length; i++) {
