@@ -323,17 +323,16 @@ var IIIFComponents;
         AVComponent.prototype.showCanvas = function (canvasId) {
             // if the passed canvas id is already the current canvas id, but the canvas isn't visible
             // (switching from virtual canvas)
-            var currentCanvas = this._getCurrentCanvas();
-            if (currentCanvas && currentCanvas.getCanvasId() === canvasId && !currentCanvas.isVisible()) {
-                currentCanvas.set({
-                    visible: true
-                });
-            }
-            else {
-                this.set({
-                    canvasId: canvasId
-                });
-            }
+            //const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
+            // if (currentCanvas && currentCanvas.getCanvasId() === canvasId && !currentCanvas.isVisible()) {
+            //     currentCanvas.set({
+            //         visible: true
+            //     });
+            // } else {
+            this.set({
+                canvasId: canvasId
+            });
+            // }
         };
         AVComponent.prototype._logMessage = function (message) {
             this.fire(AVComponent.Events.LOG, message);

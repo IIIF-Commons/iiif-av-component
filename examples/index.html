@@ -102,10 +102,10 @@
         }
 
         var state = {
-            limitToRange: false,
+            limitToRange: true,
             autoSelectRange: true,
             constrainNavigationToRange: true,
-            virtualCanvasEnabled: false
+            virtualCanvasEnabled: true
         }
 
         state = Object.observe(state, function(changeset) {
@@ -173,6 +173,7 @@
 
             avcomponent.on('canvasready', function() {
                 console.log('canvas ready');
+                avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000013');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000015');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000011');
                 //avcomponent.playRange("https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007");
