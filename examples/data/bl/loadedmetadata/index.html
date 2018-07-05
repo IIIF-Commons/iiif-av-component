@@ -25,6 +25,12 @@
         <option value="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_P3.json">Loose Ends (Digirati)</option>
         <option value="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C465_13.json">Jocelyn Herbert (Digirati)</option>
     </select>
+    Preload: 
+    <select id="preload">
+        <option value="auto">auto</option>
+        <option value="metadata">metadata</option>
+        <option value="none">none</option>
+    </select>
     <hr/>
     <div id="audioEls">
 
@@ -43,6 +49,7 @@
             $("#manifestList").change(function(){
                 var callbacks = document.getElementById("callbacks");
                 var audioELs = document.getElementById("audioEls");
+                var preload = $("#preload").val();
                 callbacks.innerHTML = "";
                 audioELs.innerHTML = "";
                 var counter = 1;
@@ -64,7 +71,7 @@
                                         audioElement.id       = "ae" + idcpt;
                                         audioElement.controls = 'controls';
                                         audioElement.src      = audioBody.id;
-                                        audioElement.preload = "metadata";
+                                        audioElement.preload = preload;
                                         audioElement.onloadedmetadata = function(){
                                         pae.style.cssText = "color: green";
                                         };
