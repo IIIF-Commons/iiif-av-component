@@ -1,6 +1,6 @@
 .iiif-av-component {
 
-    @highlight-color: #00b5b5;
+    @highlight-color: #14a4c3;
 
     position: relative;
     overflow: hidden;
@@ -129,13 +129,7 @@
     }
 
     .canvas-timeline-container .ui-slider-handle {
-        width: 16px;
-        height: 16px;
-        margin-left: -8px;
-        margin-top: -2px;
-        border: none;
-        border-radius: 8px;
-        background-color: @highlight-color;
+        .circular-slider-handle();
     }
 
     .range-timeline-container .ui-slider-range {
@@ -143,7 +137,7 @@
     }
 
     .range-timeline-container .ui-slider-handle {
-        .ui-slider-handle-hidden();
+        .circular-slider-handle();
     }
 
     // .ui-slider-handle:after {
@@ -197,7 +191,7 @@
     .controls-container .volume .volume-slider {
 
         float: left;
-        margin-top: 13px;
+        margin-top: 12px;
         width: 64px;
         height: 6px;
         border: none;
@@ -272,6 +266,16 @@
     border-radius: 0;
     //border-right: 2px solid #000000;
     //.opacity(.6);
+}
+
+.circular-slider-handle() {
+    width: 16px;
+    height: 16px;
+    margin-left: -8px;
+    margin-top: -2px;
+    border: none;
+    border-radius: 8px;
+    background-color: @highlight-color;
 }
 
 .ui-slider-handle-hidden() {
