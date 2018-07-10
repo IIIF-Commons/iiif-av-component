@@ -150,7 +150,12 @@
     // }
 
     .controls-container {
+        overflow: hidden;
         margin-top: 10px;
+    }
+
+    .controls-container .btn{
+        float: left;
     }
 
     .controls-container .pause-button {
@@ -158,11 +163,12 @@
     }
 
     .controls-container .time-display {
-        display: inline-block;
+        float: left;
+        padding: 8px 8px 0 8px;
     }
 
     .controls-container .volume {
-        float: right;
+        float: left;
         overflow: hidden;
         width: 160px;
     }

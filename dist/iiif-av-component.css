@@ -133,16 +133,21 @@
   outline: none;
 }
 .iiif-av-component .controls-container {
+  overflow: hidden;
   margin-top: 10px;
+}
+.iiif-av-component .controls-container .btn {
+  float: left;
 }
 .iiif-av-component .controls-container .pause-button {
   margin-right: 14px;
 }
 .iiif-av-component .controls-container .time-display {
-  display: inline-block;
+  float: left;
+  padding: 8px 8px 0 8px;
 }
 .iiif-av-component .controls-container .volume {
-  float: right;
+  float: left;
   overflow: hidden;
   width: 160px;
 }

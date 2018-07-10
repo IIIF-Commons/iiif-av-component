@@ -121,6 +121,7 @@ declare namespace IIIFComponents {
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
+        data(): IAVCanvasInstanceData;
         isVirtual(): boolean;
         isVisible(): boolean;
         includesVirtualSubCanvas(canvasId: string): boolean;

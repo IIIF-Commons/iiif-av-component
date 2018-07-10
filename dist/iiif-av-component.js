@@ -768,6 +768,11 @@ var IIIFComponents;
                 this._renderMediaElement(itemData);
             }
         };
+        CanvasInstance.prototype.data = function () {
+            return {
+                volume: 1
+            };
+        };
         CanvasInstance.prototype.isVirtual = function () {
             return this._data.canvas instanceof IIIFComponents.AVComponentObjects.VirtualCanvas;
         };

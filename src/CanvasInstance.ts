@@ -369,6 +369,12 @@ namespace IIIFComponents {
             }
         }
 
+        public data(): IAVCanvasInstanceData {
+            return <IAVCanvasInstanceData> {
+                volume: 1
+            }
+        }
+
         public isVirtual(): boolean {
             return this._data.canvas instanceof AVComponentObjects.VirtualCanvas;
         }
