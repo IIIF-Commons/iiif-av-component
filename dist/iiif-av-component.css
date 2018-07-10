@@ -30,14 +30,14 @@
   color: #fff;
 }
 .iiif-av-component .range-timeline-container {
-  background: chartreuse;
-  height: 20px;
+  background: #00b5b5;
+  height: 4px;
   border: none;
   border-radius: 0;
 }
 .iiif-av-component .canvas-timeline-container {
   background: #AFAFAF;
-  height: 20px;
+  height: 4px;
   width: 0px;
   border: none;
 }
@@ -65,15 +65,15 @@
 .iiif-av-component .hover-highlight {
   position: absolute;
   background: #e2e2e2;
-  height: 20px;
+  height: 4px;
 }
 .iiif-av-component .canvas-timeline-container {
   border-radius: 0;
 }
 .iiif-av-component .canvas-timeline-container .duration-highlight {
   position: absolute;
-  background: chartreuse;
-  height: 20px;
+  background: #00b5b5;
+  height: 4px;
 }
 .iiif-av-component .timeline-item-container {
   position: relative;
@@ -103,17 +103,13 @@
   border-radius: 0;
 }
 .iiif-av-component .canvas-timeline-container .ui-slider-handle {
-  width: 1px;
-  top: 0px;
-  height: 100%;
   width: 16px;
+  height: 16px;
   margin-left: -8px;
-  background: transparent;
+  margin-top: -2px;
   border: none;
-  z-index: 1;
-}
-.iiif-av-component .canvas-timeline-container .ui-slider-handle:focus {
-  outline: none;
+  border-radius: 8px;
+  background-color: #00b5b5;
 }
 .iiif-av-component .range-timeline-container .ui-slider-range {
   background: rgba(66, 66, 66, 0.5);
@@ -123,7 +119,7 @@
 .iiif-av-component .range-timeline-container .ui-slider-handle {
   top: 0px;
   height: 100%;
-  width: 16px;
+  width: 1px;
   margin-left: -8px;
   background: transparent;
   border: none;
@@ -134,7 +130,8 @@
 }
 .iiif-av-component .controls-container {
   overflow: hidden;
-  margin-top: 10px;
+  margin-top: 5px;
+  height: 36px;
 }
 .iiif-av-component .controls-container .btn {
   float: left;
@@ -144,7 +141,13 @@
 }
 .iiif-av-component .controls-container .time-display {
   float: left;
-  padding: 8px 8px 0 8px;
+  padding: 8px 0px 0 10px;
+  color: rgba(255, 255, 255, 0.5);
+  min-width: 140px;
+  font-size: 14px;
+}
+.iiif-av-component .controls-container .time-display .canvas-time {
+  color: #fff;
 }
 .iiif-av-component .controls-container .volume {
   float: left;
@@ -153,11 +156,35 @@
 }
 .iiif-av-component .controls-container .volume .volume-mute {
   float: left;
+  padding-left: 0px;
+  padding-right: 2px;
 }
 .iiif-av-component .controls-container .volume .volume-slider {
   float: left;
-  margin-top: 10px;
-  width: 100px;
+  margin-top: 13px;
+  width: 64px;
+  height: 6px;
+  border: none;
+  border-radius: 0;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+.iiif-av-component .controls-container .volume .volume-slider .ui-slider-handle {
+  top: 0px;
+  height: 100%;
+  width: 1px;
+  margin-left: -8px;
+  background: transparent;
+  border: none;
+  z-index: 1;
+}
+.iiif-av-component .controls-container .volume .volume-slider .ui-slider-handle:focus {
+  outline: none;
+}
+.iiif-av-component .controls-container .volume .volume-slider .ui-slider-range {
+  background: rgba(66, 66, 66, 0.5);
+  box-sizing: border-box;
+  border-radius: 0;
+  background-color: #fff;
 }
 .iiif-av-component .btn {
   font-size: 0;

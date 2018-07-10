@@ -432,6 +432,7 @@ var IIIFComponents;
                 value: that._data.volume,
                 step: 0.1,
                 orientation: "horizontal",
+                range: "min",
                 min: 0,
                 max: 1,
                 animate: false,

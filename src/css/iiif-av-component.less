@@ -1,5 +1,7 @@
 .iiif-av-component {
 
+    @highlight-color: #00b5b5;
+
     position: relative;
     overflow: hidden;
 
@@ -42,15 +44,15 @@
     }
 
     .range-timeline-container {
-        background: chartreuse;
-        height: 20px;
+        background: @highlight-color;
+        height: 4px;
         border: none;
         border-radius: 0;
     }
 
     .canvas-timeline-container {
         background: #AFAFAF;
-        height: 20px;
+        height: 4px;
         width: 0px;
         border: none;
     }
@@ -83,7 +85,7 @@
     .hover-highlight {
         position: absolute;
         background: rgb(226, 226, 226);
-        height: 20px;
+        height: 4px;
     }
 
     .canvas-timeline-container {
@@ -92,8 +94,8 @@
 
     .canvas-timeline-container .duration-highlight {
         position: absolute;
-        background: chartreuse;
-        height: 20px;
+        background: @highlight-color;
+        height: 4px;
     }
 
     .timeline-item-container {
@@ -127,8 +129,13 @@
     }
 
     .canvas-timeline-container .ui-slider-handle {
-        width: 1px;
-        .ui-slider-handle-hidden();
+        width: 16px;
+        height: 16px;
+        margin-left: -8px;
+        margin-top: -2px;
+        border: none;
+        border-radius: 8px;
+        background-color: @highlight-color;
     }
 
     .range-timeline-container .ui-slider-range {
@@ -151,7 +158,8 @@
 
     .controls-container {
         overflow: hidden;
-        margin-top: 10px;
+        margin-top: 5px;
+        height: 36px;
     }
 
     .controls-container .btn{
@@ -164,7 +172,14 @@
 
     .controls-container .time-display {
         float: left;
-        padding: 8px 8px 0 8px;
+        padding: 8px 0px 0 10px;
+        color: rgba(255, 255, 255, 0.5);
+        min-width: 140px;
+        font-size: 14px;
+
+        .canvas-time {
+            color: #fff;
+        }
     }
 
     .controls-container .volume {
@@ -175,23 +190,30 @@
 
     .controls-container .volume .volume-mute {
         float: left;
+        padding-left: 0px;
+        padding-right: 2px;
     }
 
     .controls-container .volume .volume-slider {
 
         float: left;
-        margin-top: 10px;
-        width: 100px;
-        // height: 40px;
-        // display: inline-block;
+        margin-top: 13px;
+        width: 64px;
+        height: 6px;
+        border: none;
+        border-radius: 0;
+        background-color: rgba(255, 255, 255, 0.25);
+        
+        .ui-slider-handle {
+            width: 1px;
+            .ui-slider-handle-hidden();
+        }
 
-        // .volume-slider {
-        //     width: 100px;
-        // }
-
-        // .wrap {
-        //     display: inline-block;
-        // }
+        .ui-slider-range {
+            .ui-slider-range-scrub();
+            background-color: #fff;
+        }
+    
     }
 
     .btn {
@@ -255,7 +277,7 @@
 .ui-slider-handle-hidden() {
     top: 0px;
     height: 100%;
-    width: 16px;
+    width: 1px;
     margin-left: -8px;
     background: transparent;
     border: none;
