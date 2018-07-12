@@ -430,7 +430,11 @@ namespace IIIFComponents {
                         const duration: Manifesto.Duration | undefined = this._data.range.getDuration();
 
                         if (duration) {
-                            this._setCurrentTime(duration.start);
+
+                            if (!(<any>this._data.range).autoChanged) {
+                                this._setCurrentTime(duration.start);
+                            }
+                            
                             this._play();
                             this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);                          
                         }
@@ -449,7 +453,7 @@ namespace IIIFComponents {
             if (range && !this._data.limitToRange && (!this._data.range || (this._data.range && range.id !== this._data.range.id))) {
 
                 this.set({
-                    range: range
+                    range: jQuery.extend(true, { autoChanged: true }, range)
                 });
 
             }

@@ -4,7 +4,6 @@
 }
 .iiif-av-component .canvas-container {
   position: relative;
-  background: #000000;
   width: 100%;
 }
 .iiif-av-component .canvas-container .working-indicator {

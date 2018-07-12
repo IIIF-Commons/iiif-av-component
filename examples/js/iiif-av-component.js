@@ -818,7 +818,10 @@ var IIIFComponents;
                     else {
                         var duration = this._data.range.getDuration();
                         if (duration) {
-                            this._setCurrentTime(duration.start);
+                            // this should only set to the start 
+                            if (!this._data.range.autoChanged) {
+                                this._setCurrentTime(duration.start);
+                            }
                             this._play();
                             this.fire(IIIFComponents.AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                         }
@@ -831,7 +834,7 @@ var IIIFComponents;
             var range = this._getRangeForCurrentTime();
             if (range && !this._data.limitToRange && (!this._data.range || (this._data.range && range.id !== this._data.range.id))) {
                 this.set({
-                    range: range
+                    range: jQuery.extend(true, { autoChanged: true }, range)
                 });
             }
         };
