@@ -21,6 +21,7 @@ var IIIFComponents;
             _this._data = _this.data();
             _this.canvasInstances = [];
             _this._readyCanvases = 0;
+            _this._posterImageExpanded = false;
             _this._init();
             _this._resize();
             return _this;
@@ -42,7 +43,9 @@ var IIIFComponents;
                 virtualCanvasEnabled: true,
                 content: {
                     currentTime: "Current Time",
+                    collapse: "Collapse",
                     duration: "Duration",
+                    expand: "Expand",
                     mute: "Mute",
                     next: "Next",
                     pause: "Pause",
@@ -201,6 +204,32 @@ var IIIFComponents;
                     this._data.canvasId = this.canvasInstances[0].getCanvasId();
                 }
                 this._checkAllCanvasesReadyInterval = setInterval(this._checkAllCanvasesReady.bind(this), 100);
+                this._$posterContainer = $('<div class="poster-container"></div>');
+                this._$element.append(this._$posterContainer);
+                this._$posterImage = $('<div class="poster-image"></div>');
+                this._$posterExpandButton = $("\n                    <button class=\"btn\" title=\"" + (this._data && this._data.content ? this._data.content.expand : '') + "\">\n                        <i class=\"av-icon-expand expand\" aria-hidden=\"true\"></i><span>" + (this._data && this._data.content ? this._data.content.expand : '') + "</span>\n                    </button>\n                ");
+                this._$posterImage.append(this._$posterExpandButton);
+                this._$posterImage.on('click', function () {
+                    var target = _this._getPosterImageCss(!_this._posterImageExpanded);
+                    _this._$posterImage.animate(target);
+                    _this._posterImageExpanded = !_this._posterImageExpanded;
+                    if (_this._posterImageExpanded) {
+                        _this._$posterExpandButton.find('i').switchClass('expand', 'collapse');
+                    }
+                    else {
+                        _this._$posterExpandButton.find('i').switchClass('collapse', 'expand');
+                    }
+                });
+                // poster canvas
+                var posterImage = this._data.helper.getPosterImage();
+                if (posterImage) {
+                    this._$posterContainer.append(this._$posterImage);
+                    var css = this._getPosterImageCss(this._posterImageExpanded);
+                    css = Object.assign({}, css, {
+                        'background-image': 'url(' + posterImage + ')'
+                    });
+                    this._$posterImage.css(css);
+                }
             }
         };
         AVComponent.prototype._checkAllCanvasesReady = function () {
@@ -210,6 +239,7 @@ var IIIFComponents;
                 clearInterval(this._checkAllCanvasesReadyInterval);
                 //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
                 this.fire(AVComponent.Events.CANVASREADY);
+                this.resize();
             }
         };
         AVComponent.prototype._getCanvases = function () {
@@ -348,10 +378,47 @@ var IIIFComponents;
         AVComponent.prototype._logMessage = function (message) {
             this.fire(AVComponent.Events.LOG, message);
         };
+        AVComponent.prototype._getPosterImageCss = function (expanded) {
+            var currentCanvas = this._getCurrentCanvas();
+            if (currentCanvas) {
+                var $options = currentCanvas.$playerElement.find('.options-container');
+                var width = currentCanvas.$playerElement.parent().width();
+                var height = currentCanvas.$playerElement.parent().height() - $options.height();
+                if (expanded) {
+                    return {
+                        'top': 0,
+                        'left': 0,
+                        'width': width,
+                        'height': height
+                    };
+                }
+                else {
+                    return {
+                        'top': (height / 3) * 2,
+                        'left': (width / 3) * 2,
+                        'width': width / 3,
+                        'height': height / 3
+                    };
+                }
+            }
+            return null;
+        };
         AVComponent.prototype.resize = function () {
             this.canvasInstances.forEach(function (canvasInstance) {
                 canvasInstance.resize();
             });
+            // get the visible player and align the poster to it
+            var currentCanvas = this._getCurrentCanvas();
+            if (currentCanvas) {
+                if (this._$posterImage && this._$posterImage.is(':visible')) {
+                    if (this._posterImageExpanded) {
+                        this._$posterImage.css(this._getPosterImageCss(true));
+                    }
+                    else {
+                        this._$posterImage.css(this._getPosterImageCss(false));
+                    }
+                }
+            }
         };
         return AVComponent;
     }(_Components.BaseComponent));
@@ -818,7 +885,6 @@ var IIIFComponents;
                     else {
                         var duration = this._data.range.getDuration();
                         if (duration) {
-                            // this should only set to the start 
                             if (!this._data.range.autoChanged) {
                                 this._setCurrentTime(duration.start);
                             }
@@ -1063,27 +1129,27 @@ var IIIFComponents;
                 default:
                     return;
             }
-            var video = $mediaElement[0];
+            var media = $mediaElement[0];
             if (data.format && data.format.toString() === 'application/dash+xml') {
                 // dash
                 $mediaElement.attr('data-dashjs-player', '');
                 var player = dashjs.MediaPlayer().create();
-                player.initialize(video, data.source);
+                player.initialize(media, data.source);
             }
             else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
                 // hls
                 if (Hls.isSupported()) {
                     var hls = new Hls();
                     hls.loadSource(data.source);
-                    hls.attachMedia(video);
+                    hls.attachMedia(media);
                     //hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                    //video.play();
+                    //media.play();
                     //});
                 }
-                else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                    video.src = data.source;
-                    //video.addEventListener('canplay', function () {
-                    //video.play();
+                else if (media.canPlayType('application/vnd.apple.mpegurl')) {
+                    media.src = data.source;
+                    //media.addEventListener('canplay', function () {
+                    //media.play();
                     //});
                 }
             }
@@ -1129,11 +1195,11 @@ var IIIFComponents;
             if (type === 'video' || type === 'audio') {
                 $mediaElement.on('loadstart', function () {
                     //console.log('loadstart');
-                    data.checkForStall();
+                    //data.checkForStall();
                 });
                 $mediaElement.on('waiting', function () {
                     //console.log('waiting');
-                    data.checkForStall();
+                    //data.checkForStall();
                 });
                 $mediaElement.on('seeking', function () {
                     //console.log('seeking');
@@ -1153,7 +1219,7 @@ var IIIFComponents;
                     }
                 });
                 $mediaElement.attr('preload', 'auto');
-                $mediaElement.get(0).load(); // todo: type
+                $mediaElement.get(0).load();
             }
             this._renderSyncIndicator(data);
         };

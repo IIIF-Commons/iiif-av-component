@@ -2,6 +2,15 @@
   position: relative;
   overflow: hidden;
 }
+.iiif-av-component .poster-container {
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
+.iiif-av-component .poster-container .poster-image {
+  position: absolute;
+  background-size: cover;
+}
 .iiif-av-component .canvas-container {
   position: relative;
   width: 100%;
@@ -42,6 +51,7 @@
 }
 .iiif-av-component .hover-preview {
   position: absolute;
+  padding-bottom: 7px;
 }
 .iiif-av-component .hover-preview .label {
   background: rgba(66, 66, 66, 0.85);
@@ -212,4 +222,10 @@
 }
 .iiif-av-component .av-icon-next {
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gcJDCkVePEB1wAAAKJJREFUSMftlbENwjAQRb8iqqSgRFHEBEiswRw0TJI2K7ANJR1LQJU0gISUR+MKSJTCOhzpXuPirHu2zz5LjuNYAtRAPhIvgSdwjS0GOAHLgXgV5jxii7uQ+AKsY4izqe4wbiSdgZ1VjVu+OVgc9S8xQBPiK2sxwBHYAj1wn5pzEWFde0mFpJekPvkdz7LG5rf69vmOZ9W5ku/V//mdHMdJmjdBx46OkJJ4sAAAAABJRU5ErkJggg==");
+}
+.iiif-av-component .av-icon-expand.expand {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gcNEh4HgpXJhgAAARtJREFUSMftlTFKA0EYRt/EjSL2egsvYJdSELEJ0T4XENEr6BHEXnALsVArCwtLTyAoS8AmlYqVIs9mwBCimWSTFLKv+vcfZt5+PzssVFRUzAq1o76ob/5wFNcO/Z3ir3OzBPcKMB/rA6ADPMTnHHgcsKcBtMomflc/YorjxD2bqmXFqvvqSazv1KUhe9rDxLVE/1MIoQ3cAmtArtbLBEoR3wOfsd4AboB14FpdmOVXPqdexbGfq2GcUaeIdtXVvt6iehnlF2o2DbHq3oB+UPO4ftabPEWcJfpf+xshBNVtoA40gZraDCEkJc3KTCOE8AVsqafAc6q0tLjnBXamcZ0AuiOe251U4pa6PIK4MYl7WzgeRfVvr6j433wDPBUmI7XqRNEAAAAASUVORK5CYII=");
+}
+.iiif-av-component .av-icon-expand.collapse {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gcNEh4df/cw/AAAARtJREFUSMftlTFKA1EQhr9ZDQER7KzFwgN4AvECa2EkYu1dFE8g9lEstLIxoJWV6A2E4AlEBEHBz+YVi4Rk111TyP7lzP9m/pk38x60aNHiX0Md+TuMpsWOKYkFzoCbCno3gX5ERJ2KVfOKZ/IkeCKyErGWK+otxc8qVnOkDpqYn6xC0gBWgF31Up2bSeKIENgBzoEt4DSJ+YmlMvHmq6iMCNU9oAv0gAW1FxHvBdo18FV3j1X3x7VdvUj+q7ptL504+brqMHGG6mJhne7/LHHyd1LFqrfJtt3UHk+68880cHfAhnoCrDbV6rwk9zjxP9S3Jqa6r457jR4i4lFdB9aAp2TvANateNLvdJA4hwXbq/qiPrd/e4sWM8M31F0ly6GgcJoAAAAASUVORK5CYII=");
 }

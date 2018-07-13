@@ -8,6 +8,12 @@ namespace IIIFComponents {
         private _checkAllCanvasesReadyInterval: any;
         private _readyCanvases: number = 0;
 
+        private _$posterContainer: JQuery;
+        private _$posterImage: JQuery;
+        private _$posterExpandButton: JQuery;
+
+        private _posterImageExpanded: boolean = false;
+
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
 
@@ -35,7 +41,9 @@ namespace IIIFComponents {
                 virtualCanvasEnabled: true,
                 content: <IAVComponentContent>{
                     currentTime: "Current Time",
+                    collapse: "Collapse",
                     duration: "Duration",
+                    expand: "Expand",
                     mute: "Mute",
                     next: "Next",
                     pause: "Pause",
@@ -246,7 +254,46 @@ namespace IIIFComponents {
                 }
 
                 this._checkAllCanvasesReadyInterval = setInterval(this._checkAllCanvasesReady.bind(this), 100);
+
+                this._$posterContainer = $('<div class="poster-container"></div>');
+                this._$element.append(this._$posterContainer);
+
+                this._$posterImage = $('<div class="poster-image"></div>');
+                this._$posterExpandButton = $(`
+                    <button class="btn" title="${this._data && this._data.content ? this._data.content.expand : ''}">
+                        <i class="av-icon-expand expand" aria-hidden="true"></i><span>${this._data && this._data.content ? this._data.content.expand : ''}</span>
+                    </button>
+                `);
+                this._$posterImage.append(this._$posterExpandButton);
+
+                this._$posterImage.on('click', () => {                    
+                    const target: any = this._getPosterImageCss(!this._posterImageExpanded);
+                    this._$posterImage.animate(target);
+                    this._posterImageExpanded = !this._posterImageExpanded;
+
+                    if (this._posterImageExpanded) {
+                        this._$posterExpandButton.find('i').switchClass('expand', 'collapse');
+                    } else {
+                        this._$posterExpandButton.find('i').switchClass('collapse', 'expand');
+                    }
+                    
+                });
+
+                // poster canvas
+                const posterImage: string | null = this._data.helper.getPosterImage();
+
+                if (posterImage) {
+                    this._$posterContainer.append(this._$posterImage);
+
+                    let css: any = this._getPosterImageCss(this._posterImageExpanded);
+                    css = Object.assign({}, css, {
+                        'background-image': 'url(' + posterImage + ')'
+                    });
+
+                    this._$posterImage.css(css);
+                }
             }
+
         }
 
         private _checkAllCanvasesReady(): void {
@@ -256,6 +303,7 @@ namespace IIIFComponents {
                 clearInterval(this._checkAllCanvasesReadyInterval);
                 //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
                 this.fire(AVComponent.Events.CANVASREADY);
+                this.resize();
             }
         }
 
@@ -375,8 +423,6 @@ namespace IIIFComponents {
                 }
             }
 
-            
-    
             return undefined;
         }
 
@@ -441,10 +487,52 @@ namespace IIIFComponents {
             this.fire(AVComponent.Events.LOG, message);
         }
 
+        private _getPosterImageCss(expanded: boolean): any {
+            
+            const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
+
+            if (currentCanvas) {
+                const $options: JQuery = currentCanvas.$playerElement.find('.options-container');
+                const width: number = <number>currentCanvas.$playerElement.parent().width();
+                const height: number = <number>currentCanvas.$playerElement.parent().height() - <number>$options.height();
+                
+                if (expanded) {
+                    return {
+                        'top': 0,
+                        'left': 0,
+                        'width': width,
+                        'height': height
+                    }
+                } else {
+                    return {
+                        'top': (height / 3) * 2,
+                        'left': (width / 3) * 2,
+                        'width': width / 3,
+                        'height': height / 3
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public resize(): void {
             this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
                 canvasInstance.resize();
             });
+
+            // get the visible player and align the poster to it
+            const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
+
+            if (currentCanvas) {
+                if (this._$posterImage && this._$posterImage.is(':visible')) {
+                    if (this._posterImageExpanded) {
+                        this._$posterImage.css(this._getPosterImageCss(true));
+                    } else {
+                        this._$posterImage.css(this._getPosterImageCss(false));
+                    }
+                }
+            }
         }
     }
 }

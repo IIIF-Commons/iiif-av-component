@@ -22,6 +22,10 @@ declare namespace IIIFComponents {
         canvasInstances: CanvasInstance[];
         private _checkAllCanvasesReadyInterval;
         private _readyCanvases;
+        private _$posterContainer;
+        private _$posterImage;
+        private _$posterExpandButton;
+        private _posterImageExpanded;
         constructor(options: _Components.IBaseComponentOptions);
         protected _init(): boolean;
         data(): IAVComponentData;
@@ -40,6 +44,7 @@ declare namespace IIIFComponents {
         playRange(rangeId: string): void;
         showCanvas(canvasId: string): void;
         private _logMessage(message);
+        private _getPosterImageCss(expanded);
         resize(): void;
     }
 }
@@ -187,7 +192,9 @@ declare namespace IIIFComponents {
 declare namespace IIIFComponents {
     interface IAVComponentContent {
         currentTime: string;
+        collapse: string;
         duration: string;
+        expand: string;
         mute: string;
         next: string;
         pause: string;

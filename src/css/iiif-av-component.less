@@ -5,17 +5,25 @@
     position: relative;
     overflow: hidden;
 
-    // todo: put colours in variables.less
-
     // .player {
     //     &.virtual {
     //         border: 1px solid blue;
     //     }
     // }
 
+    .poster-container {
+        position: absolute;
+        width: 100%;
+        top: 0;
+
+        .poster-image {
+            position: absolute;
+            background-size: cover;
+        }
+    }
+
     .canvas-container {
         position: relative;
-        //background: #000000;
         width: 100%;
     }
 
@@ -59,6 +67,7 @@
 
     .hover-preview {
         position: absolute;
+        padding-bottom: 7px;
 
         .label {
             background: rgba(66, 66, 66, 0.85);
@@ -254,6 +263,18 @@
 
     .av-icon-next {
         background-image: data-uri('@{img-path}next.png');
+    }
+
+    .av-icon-expand {
+
+        &.expand {
+            background-image: data-uri('@{img-path}expand.png');
+        }
+
+        &.collapse {
+            background-image: data-uri('@{img-path}collapse.png');
+        }
+        
     }
 
 }
