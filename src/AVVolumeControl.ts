@@ -99,8 +99,12 @@ namespace IIIFComponents {
                 });
     
                 if (this._data.volume === 0) {
+                    const label: string = this.options.data.content.unmute;
+                    this._$volumeMute.prop('title', label);
                     this._$volumeMute.find('i').switchClass('on', 'off');                
                 } else {
+                    const label: string = this.options.data.content.mute;
+                    this._$volumeMute.prop('title', label);
                     this._$volumeMute.find('i').switchClass('off', 'on');
                 }
             }            

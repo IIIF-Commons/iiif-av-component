@@ -1028,6 +1028,8 @@ namespace IIIFComponents {
                 this._synchronizeMedia();
             }
 
+            const label: string = (this._data && this._data.content) ? this._data.content.pause : '';
+            this._$playButton.prop('title', label);
             this._$playButton.find('i').switchClass('play', 'pause');
 
             this.fire(AVComponentCanvasInstance.Events.PLAYCANVAS);
@@ -1050,6 +1052,8 @@ namespace IIIFComponents {
                 this._synchronizeMedia();
             }
 
+            const label: string = (this._data && this._data.content) ? this._data.content.play : '';
+            this._$playButton.prop('title', label);
             this._$playButton.find('i').switchClass('pause', 'play');
 
             this.fire(AVComponentCanvasInstance.Events.PAUSECANVAS);

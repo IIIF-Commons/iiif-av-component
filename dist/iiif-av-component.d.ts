@@ -200,6 +200,7 @@ declare namespace IIIFComponents {
         pause: string;
         play: string;
         previous: string;
+        unmute: string;
     }
     interface IAVComponentData {
         [key: string]: any;

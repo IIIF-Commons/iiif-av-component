@@ -50,7 +50,8 @@ var IIIFComponents;
                     next: "Next",
                     pause: "Pause",
                     play: "Play",
-                    previous: "Previous"
+                    previous: "Previous",
+                    unmute: "Unmute"
                 }
             };
         };
@@ -215,9 +216,13 @@ var IIIFComponents;
                     _this._$posterImage.animate(target);
                     _this._posterImageExpanded = !_this._posterImageExpanded;
                     if (_this._posterImageExpanded) {
+                        var label = _this.options.data.content.collapse;
+                        _this._$posterExpandButton.prop('title', label);
                         _this._$posterExpandButton.find('i').switchClass('expand', 'collapse');
                     }
                     else {
+                        var label = _this.options.data.content.expand;
+                        _this._$posterExpandButton.prop('title', label);
                         _this._$posterExpandButton.find('i').switchClass('collapse', 'expand');
                     }
                 });
@@ -533,9 +538,13 @@ var IIIFComponents;
                     value: this._data.volume
                 });
                 if (this._data.volume === 0) {
+                    var label = this.options.data.content.unmute;
+                    this._$volumeMute.prop('title', label);
                     this._$volumeMute.find('i').switchClass('on', 'off');
                 }
                 else {
+                    var label = this.options.data.content.mute;
+                    this._$volumeMute.prop('title', label);
                     this._$volumeMute.find('i').switchClass('off', 'on');
                 }
             }
@@ -1361,6 +1370,8 @@ var IIIFComponents;
             if (!withoutUpdate) {
                 this._synchronizeMedia();
             }
+            var label = (this._data && this._data.content) ? this._data.content.pause : '';
+            this._$playButton.prop('title', label);
             this._$playButton.find('i').switchClass('play', 'pause');
             this.fire(IIIFComponents.AVComponentCanvasInstance.Events.PLAYCANVAS);
             this.logMessage('PLAY canvas');
@@ -1377,6 +1388,8 @@ var IIIFComponents;
                 this._lowPriorityUpdater();
                 this._synchronizeMedia();
             }
+            var label = (this._data && this._data.content) ? this._data.content.play : '';
+            this._$playButton.prop('title', label);
             this._$playButton.find('i').switchClass('pause', 'play');
             this.fire(IIIFComponents.AVComponentCanvasInstance.Events.PAUSECANVAS);
             this.logMessage('PAUSE canvas');

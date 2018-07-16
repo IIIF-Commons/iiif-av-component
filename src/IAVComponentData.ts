@@ -10,6 +10,7 @@ namespace IIIFComponents {
         pause: string;
         play: string;
         previous: string;
+        unmute: string;
     }
     
     export interface IAVComponentData {

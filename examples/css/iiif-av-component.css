@@ -10,6 +10,7 @@
 .iiif-av-component .poster-container .poster-image {
   position: absolute;
   background-size: cover;
+  cursor: pointer;
 }
 .iiif-av-component .poster-container .poster-image .btn {
   position: absolute;
