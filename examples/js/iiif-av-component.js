@@ -211,6 +211,7 @@ var IIIFComponents;
                 this._$posterImage.append(this._$posterExpandButton);
                 this._$posterImage.on('click', function () {
                     var target = _this._getPosterImageCss(!_this._posterImageExpanded);
+                    //this._$posterImage.animate(target,"fast", "easein");
                     _this._$posterImage.animate(target);
                     _this._posterImageExpanded = !_this._posterImageExpanded;
                     if (_this._posterImageExpanded) {
@@ -394,7 +395,7 @@ var IIIFComponents;
                 }
                 else {
                     return {
-                        'top': (height / 3) * 2,
+                        'top': 0,
                         'left': (width / 3) * 2,
                         'width': width / 3,
                         'height': height / 3
@@ -417,6 +418,9 @@ var IIIFComponents;
                     else {
                         this._$posterImage.css(this._getPosterImageCss(false));
                     }
+                    // this._$posterExpandButton.css({
+                    //     top: <number>this._$posterImage.height() - <number>this._$posterExpandButton.outerHeight()
+                    // });
                 }
             }
         };

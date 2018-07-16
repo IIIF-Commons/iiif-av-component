@@ -268,6 +268,7 @@ namespace IIIFComponents {
 
                 this._$posterImage.on('click', () => {                    
                     const target: any = this._getPosterImageCss(!this._posterImageExpanded);
+                    //this._$posterImage.animate(target,"fast", "easein");
                     this._$posterImage.animate(target);
                     this._posterImageExpanded = !this._posterImageExpanded;
 
@@ -505,7 +506,7 @@ namespace IIIFComponents {
                     }
                 } else {
                     return {
-                        'top': (height / 3) * 2,
+                        'top': 0,
                         'left': (width / 3) * 2,
                         'width': width / 3,
                         'height': height / 3
@@ -531,6 +532,10 @@ namespace IIIFComponents {
                     } else {
                         this._$posterImage.css(this._getPosterImageCss(false));
                     }
+
+                    // this._$posterExpandButton.css({
+                    //     top: <number>this._$posterImage.height() - <number>this._$posterExpandButton.outerHeight()
+                    // });
                 }
             }
         }
