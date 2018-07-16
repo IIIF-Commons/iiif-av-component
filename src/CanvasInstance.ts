@@ -443,7 +443,18 @@ namespace IIIFComponents {
 
             }
 
-            this._render();
+            if (diff.includes('volume')) {
+                this._contentAnnotations.forEach(($mediaElement: any) => {
+                    $($mediaElement.element).prop("volume", this._data.volume);
+    
+                    this._volume.set({
+                        volume: this._data.volume
+                    });
+                });
+            } else {
+                this._render();
+            }
+
         }
 
         private _hasRangeChanged(): void {
@@ -586,14 +597,6 @@ namespace IIIFComponents {
             } else {
                 this._$durationHighlight.hide();
             }
-
-            this._contentAnnotations.forEach(($mediaElement: any) => {
-                $($mediaElement.element).prop("volume", this._data.volume);
-
-                this._volume.set({
-                    volume: this._data.volume
-                });
-            });
 
             if (this._data.limitToRange && this._data.range) {
                 this._$canvasTimelineContainer.hide();

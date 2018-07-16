@@ -863,6 +863,7 @@ var IIIFComponents;
             return false;
         };
         CanvasInstance.prototype.set = function (data) {
+            var _this = this;
             var oldData = Object.assign({}, this._data);
             this._data = Object.assign(this._data, data);
             var diff = IIIFComponents.AVComponentUtils.Utils.diff(oldData, this._data);
@@ -898,7 +899,17 @@ var IIIFComponents;
                     }
                 }
             }
-            this._render();
+            if (diff.includes('volume')) {
+                this._contentAnnotations.forEach(function ($mediaElement) {
+                    $($mediaElement.element).prop("volume", _this._data.volume);
+                    _this._volume.set({
+                        volume: _this._data.volume
+                    });
+                });
+            }
+            else {
+                this._render();
+            }
         };
         CanvasInstance.prototype._hasRangeChanged = function () {
             var range = this._getRangeForCurrentTime();
@@ -953,7 +964,6 @@ var IIIFComponents;
             return true;
         };
         CanvasInstance.prototype._render = function () {
-            var _this = this;
             if (this._data.range) {
                 var duration = this._data.range.getDuration();
                 if (duration) {
@@ -1002,12 +1012,6 @@ var IIIFComponents;
             else {
                 this._$durationHighlight.hide();
             }
-            this._contentAnnotations.forEach(function ($mediaElement) {
-                $($mediaElement.element).prop("volume", _this._data.volume);
-                _this._volume.set({
-                    volume: _this._data.volume
-                });
-            });
             if (this._data.limitToRange && this._data.range) {
                 this._$canvasTimelineContainer.hide();
                 this._$rangeTimelineContainer.show();
