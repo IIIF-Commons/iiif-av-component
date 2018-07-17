@@ -63,6 +63,7 @@
         height: 4px;
         border: none;
         border-radius: 0;
+        cursor: pointer;
     }
 
     .canvas-timeline-container {
@@ -70,6 +71,7 @@
         height: 4px;
         width: 0px;
         border: none;
+        cursor: pointer;
     }
 
     .hover-preview {
@@ -195,7 +197,7 @@
     .controls-container .volume {
         float: left;
         overflow: hidden;
-        width: 160px;
+        width: 180px;
     }
 
     .controls-container .volume .volume-mute {
@@ -208,7 +210,7 @@
 
         float: left;
         margin-top: 12px;
-        width: 64px;
+        width: 84px;
         height: 6px;
         border: none;
         border-radius: 0;
@@ -292,6 +294,7 @@
     background: rgba(66, 66, 66, 0.5);
     box-sizing: border-box;
     border-radius: 0;
+    cursor: pointer;
     //border-right: 2px solid #000000;
     //.opacity(.6);
 }
@@ -304,6 +307,13 @@
     border: none;
     border-radius: 8px;
     background-color: @highlight-color;
+    z-index: 1;
+
+    cursor: pointer;
+
+    &:focus {
+        outline-width: 0;
+    }
 }
 
 .ui-slider-handle-hidden() {
@@ -314,6 +324,8 @@
     background: transparent;
     border: none;
     z-index: 1;
+
+    cursor: pointer;
 
     &:focus {
         outline: none;
