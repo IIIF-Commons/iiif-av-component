@@ -87,7 +87,15 @@
                             "motivation": "painting",
                             "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048002902.0x000004",
                             "timeMode": "trim",
-                            "type": "Annotation"
+                            "type": "Annotation",
+                            "seeAlso": [
+                                {
+                                    "id": "https://edsilv.github.io/peaksjs-test/vdc_100048002902.0x000009.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
+                                }
+                            ]
                         }
                     ],
                     "type": "AnnotationPage"
