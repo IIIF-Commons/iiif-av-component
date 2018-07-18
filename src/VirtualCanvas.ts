@@ -10,7 +10,8 @@ namespace IIIFComponents.AVComponentObjects {
         }
 
         public addCanvas(canvas: Manifesto.ICanvas): void {
-            this.canvases.push(canvas);
+            // canvases need to be deep copied including functions
+            this.canvases.push(jQuery.extend(true, {}, canvas));
         }
 
         public getContent(): Manifesto.IAnnotation[] {

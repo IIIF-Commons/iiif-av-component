@@ -12,16 +12,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsviews/0.9.76/jsviews.min.js"></script>
+    <script src="https://unpkg.com/proxy-observe@0.0.21/browser/proxy-observe.min.js"></script>
 
     <script src="js/base-component.js"></script>
     <script src="js/iiif-av-component.js"></script>
     <script src="https://rawgit.com/iiif-commons/iiif-tree-component/master/dist/iiif-tree-component.js"></script>
 
     <script src="https://unpkg.com/manifesto.js/dist/client/manifesto.bundle.js"></script>
-    <script src="https://unpkg.com/@iiif/manifold/dist/manifold.js"></script>    
+    <script src="https://unpkg.com/@iiif/manifold/dist/manifold.js"></script>
 
-    <!-- <script src="https://rawgit.com/iiif-commons/manifesto/master/dist/client/manifesto.bundle.js"></script> -->
-    <!-- <script src="https://rawgit.com/iiif-commons/manifold/normalise/dist/manifold.js"></script> -->
+    <!-- <script src="https://rawgit.com/iiif-commons/manifesto/end-before-start/dist/client/manifesto.bundle.js"></script>
+    <script src="https://rawgit.com/iiif-commons/manifold/master/dist/manifold.js"></script> -->
 
     <script src="https://unpkg.com/dashjs@2.6.6/dist/dash.all.min.js"></script>
 
@@ -29,7 +30,11 @@
 
     <style>
         .playerContainer {
-            background: lightgrey;
+            background: #333333;
+        }
+
+        #options {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -57,6 +62,7 @@
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C1685_98_hls.json">HLS</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C733_48.json">Arabic/Soqotri</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/DA.json">Winter Hymn</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C465_13.json">Jocelyn Herbert</button>
     </div>
     
     <input type="text" name="manifestInput" id="manifestInput"/>
@@ -78,6 +84,7 @@
         <input id="limitToRangeCheckbox" type="checkbox"><label for="limitToRangeCheckbox">Limit to Range</label>
         <input id="constrainNavigationToRangeCheckbox" type="checkbox"><label for="constrainNavigationToRangeCheckbox">Constrain Navigation To Range</label>
         <input id="autoSelectRangeCheckbox" type="checkbox"><label for="autoSelectRangeCheckbox">Auto Select Range</label>
+        <input id="virtualCanvasCheckbox" type="checkbox"><label for="virtualCanvasCheckbox">Virtual Canvas</label>
     </div>
 
     <div id="tree" class="iiif-tree-component"></div>
@@ -92,11 +99,30 @@
 
         var helper, avcomponent, treecomponent;
 
-        var state = {
-            limitToRange: true,
-            autoSelectRange: true,
-            constrainNavigationToRange: true
+        var canvasready = false;
+
+        function updateOptions() {
+            $('#limitToRangeCheckbox').prop('checked', state.limitToRange);
+            $('#autoSelectRangeCheckbox').prop('checked', state.autoSelectRange);
+            $('#constrainNavigationToRangeCheckbox').prop('checked', state.constrainNavigationToRange);
+            $('#virtualCanvasCheckbox').prop('checked', state.virtualCanvasEnabled);
         }
+
+        var state = {
+            limitToRange: false,
+            autoSelectRange: true,
+            constrainNavigationToRange: true,
+            virtualCanvasEnabled: true
+        }
+
+        if (Object.observe) {
+            state = Object.observe(state, function(changeset) {
+                console.log(changeset);
+                updateOptions();
+            });
+        }
+
+        updateOptions();
 
         function resize() {
             var $playerContainer = $('.playerContainer');
@@ -124,7 +150,8 @@
                     helper: helper,
                     limitToRange: state.limitToRange,
                     autoSelectRange: state.autoSelectRange,
-                    constrainNavigationToRange: state.constrainNavigationToRange
+                    constrainNavigationToRange: state.constrainNavigationToRange,
+                    virtualCanvasEnabled: state.virtualCanvasEnabled
                 });
 
                 treecomponent.set({
@@ -154,7 +181,10 @@
             });
 
             avcomponent.on('canvasready', function() {
+                if (canvasready) return;
                 console.log('canvas ready');
+                canvasready = true;
+                //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000013');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000015');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000011');
                 //avcomponent.playRange("https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007");
@@ -192,6 +222,12 @@
                     var canvasNavigationButton = $('<button class="canvasNavigationButton" data-canvas-id="'+ canvases[i].id +'">Canvas '+ canvasLabel +'</button>');
                     
                     canvasNavigationButton.click(function() {
+
+                        state.virtualCanvasEnabled = false;
+                        avcomponent.set({
+                            virtualCanvasEnabled: state.virtualCanvasEnabled
+                        });
+
                         avcomponent.showCanvas($(this).attr('data-canvas-id'));
                     });
 
@@ -283,16 +319,12 @@
 
             });
 
-            $('#limitToRangeCheckbox').prop('checked', state.limitToRange);
-
             $('#limitToRangeCheckbox').change(function() {
                 state.limitToRange = this.checked;
                 avcomponent.set({
                     limitToRange: state.limitToRange
                 });
             });
-
-            $('#autoSelectRangeCheckbox').prop('checked', state.autoSelectRange);
 
             $('#autoSelectRangeCheckbox').change(function() {
                 state.autoSelectRange = this.checked;
@@ -301,12 +333,17 @@
                 });
             });
 
-            $('#constrainNavigationToRangeCheckbox').prop('checked', state.constrainNavigationToRange);
-
             $('#constrainNavigationToRangeCheckbox').change(function() {
                 state.constrainNavigationToRange = this.checked;
                 avcomponent.set({
                     constrainNavigationToRange: state.constrainNavigationToRange
+                });
+            });
+
+            $('#virtualCanvasCheckbox').change(function() {
+                state.virtualCanvasEnabled = this.checked;
+                avcomponent.set({
+                    virtualCanvasEnabled: state.virtualCanvasEnabled
                 });
             });
 

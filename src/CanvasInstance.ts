@@ -38,12 +38,12 @@ namespace IIIFComponents {
         private _lowPriorityFrequency: number = 250;
         private _lowPriorityInterval: number;
         private _mediaSyncMarginSecs: number = 1;
-        private _ranges: Manifesto.IRange[] = [];
         private _rangeSpanPadding: number = 0.25;
-        private _readyCanvasesCount: number = 0;
+        private _readyMediaCount: number = 0;
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
         private _wasPlaying: boolean = false;
+        public ranges: Manifesto.IRange[] = [];
 
         public $playerElement: JQuery;
         public logMessage: (message: string) => void;
@@ -89,6 +89,10 @@ namespace IIIFComponents {
             this._$canvasTime = this._$timeDisplay.find('.canvas-time');
             this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
 
+            if(this.isVirtual()) {
+                this.$playerElement.addClass('virtual');
+            }
+
             const $volume: JQuery = $('<div class="volume"></div>');
             this._volume = new AVVolumeControl({
                 target: $volume[0],
@@ -116,20 +120,26 @@ namespace IIIFComponents {
                 if (this.isVirtual()) {
                     (<VirtualCanvas>this._data.canvas).canvases.forEach((canvas: Manifesto.ICanvas) => {
                         if (this._data && this._data.helper) {
-                            const r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
+                            let r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
+
+                            let clonedRanges: Manifesto.IRange[] = [];
 
                             // shift the range targets forward by the duration of their previous canvases
                             r.forEach((range: Manifesto.IRange) => {
-                                if (range.canvases && range.canvases.length) {
+
+                                const clonedRange = jQuery.extend(true, {}, range);
+                                clonedRanges.push(clonedRange);
+
+                                if (clonedRange.canvases && clonedRange.canvases.length) {
                                     
-                                    for (let i = 0; i < range.canvases.length; i++) {
-                                        range.canvases[i] = <string>AVComponentUtils.Utils.retargetTemporalComponent((<VirtualCanvas>this._data.canvas).canvases, range.__jsonld.items[i].id);
+                                    for (let i = 0; i < clonedRange.canvases.length; i++) {
+                                        clonedRange.canvases[i] = <string>AVComponentUtils.Utils.retargetTemporalComponent((<VirtualCanvas>this._data.canvas).canvases, clonedRange.__jsonld.items[i].id);
                                     }
 
                                 }
                             });
 
-                            ranges.push(...r);
+                            ranges.push(...clonedRanges);
                         }
                     });
                 } else {
@@ -137,7 +147,7 @@ namespace IIIFComponents {
                 }
   
                 ranges.forEach((range: Manifesto.IRange) => {
-                    this._ranges.push(range);
+                    this.ranges.push(range);
                 });
             }
 
@@ -359,8 +369,18 @@ namespace IIIFComponents {
             }
         }
 
+        public data(): IAVCanvasInstanceData {
+            return <IAVCanvasInstanceData> {
+                volume: 1
+            }
+        }
+
         public isVirtual(): boolean {
             return this._data.canvas instanceof AVComponentObjects.VirtualCanvas;
+        }
+
+        public isVisible(): boolean {
+            return !!this._data.visible;
         }
 
         public includesVirtualSubCanvas(canvasId: string): boolean {
@@ -386,6 +406,7 @@ namespace IIIFComponents {
 
                 if (this._data.canvas) {
                     if (this._data.visible) {
+                        this._rewind();
                         this.$playerElement.show();
                         //console.log('show ' + this._data.canvas.id);
                     } else {
@@ -410,17 +431,30 @@ namespace IIIFComponents {
 
                         if (duration) {
 
-                            this._setCurrentTime(duration.start);
-
-                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);
+                            if (!(<any>this._data.range).autoChanged) {
+                                this._setCurrentTime(duration.start);
+                            }
+                            
                             this._play();
+                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);                          
                         }
                     }
                 }
 
             }
 
-            this._render();
+            if (diff.includes('volume')) {
+                this._contentAnnotations.forEach(($mediaElement: any) => {
+                    $($mediaElement.element).prop("volume", this._data.volume);
+    
+                    this._volume.set({
+                        volume: this._data.volume
+                    });
+                });
+            } else {
+                this._render();
+            }
+
         }
 
         private _hasRangeChanged(): void {
@@ -430,7 +464,7 @@ namespace IIIFComponents {
             if (range && !this._data.limitToRange && (!this._data.range || (this._data.range && range.id !== this._data.range.id))) {
 
                 this.set({
-                    range: range
+                    range: jQuery.extend(true, { autoChanged: true }, range)
                 });
 
             }
@@ -441,7 +475,7 @@ namespace IIIFComponents {
             let ranges: Manifesto.IRange[];
 
             if (!parentRange) {
-                ranges = this._ranges;
+                ranges = this.ranges;
             } else {
                 ranges = parentRange.getRanges();
             }
@@ -516,8 +550,16 @@ namespace IIIFComponents {
                     // get the ratio of seconds to length
                     const ratio: number = timelineLength / totalLength;
                     const start: number = duration.start * ratio;
-                    const end: number = duration.end * ratio;
+                    let end: number = duration.end * ratio;
+
+                    // if the end is on the next canvas
+                    if (end > totalLength || end < start) {
+                        end = totalLength;
+                    }
+
                     const width: number = end - start;
+
+                    //console.log(width);
 
                     this._$durationHighlight.show();
 
@@ -555,14 +597,6 @@ namespace IIIFComponents {
             } else {
                 this._$durationHighlight.hide();
             }
-
-            this._contentAnnotations.forEach(($mediaElement: any) => {
-                $($mediaElement.element).prop("volume", this._data.volume);
-
-                this._volume.set({
-                    volume: this._data.volume
-                });
-            });
 
             if (this._data.limitToRange && this._data.range) {
                 this._$canvasTimelineContainer.hide();
@@ -702,30 +736,30 @@ namespace IIIFComponents {
                     return;
             }
 
-            const video: HTMLMediaElement = $mediaElement[0] as HTMLMediaElement;
+            const media: HTMLMediaElement = $mediaElement[0] as HTMLMediaElement;
 
             if (data.format && data.format.toString() === 'application/dash+xml') {
                 // dash
                 $mediaElement.attr('data-dashjs-player', '');
                 const player = dashjs.MediaPlayer().create();
-                player.initialize(video, data.source);
+                player.initialize(media, data.source);
             } else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
                 // hls
                 if (Hls.isSupported()) {
-                    var hls = new Hls();
+                    const hls = new Hls();
                     hls.loadSource(data.source);
-                    hls.attachMedia(video);
+                    hls.attachMedia(media);
                     //hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                        //video.play();
+                        //media.play();
                     //});
                 }
                 // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
                 // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
                 // This is using the built-in support of the plain video element, without using hls.js.
-                else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                    video.src = data.source;
-                    //video.addEventListener('canplay', function () {
-                        //video.play();
+                else if (media.canPlayType('application/vnd.apple.mpegurl')) {
+                    media.src = data.source;
+                    //media.addEventListener('canplay', function () {
+                        //media.play();
                     //});
                 }
             } else {
@@ -782,12 +816,12 @@ namespace IIIFComponents {
 
                 $mediaElement.on('loadstart', () => {
                     //console.log('loadstart');
-                    data.checkForStall();
+                    //data.checkForStall();
                 });
 
                 $mediaElement.on('waiting', () => {
                     //console.log('waiting');
-                    data.checkForStall();
+                    //data.checkForStall();
                 });
 
                 $mediaElement.on('seeking', () => {
@@ -796,9 +830,9 @@ namespace IIIFComponents {
                 });
 
                 $mediaElement.on('loadedmetadata', () => {
-                    this._readyCanvasesCount++;
+                    this._readyMediaCount++;
 
-                    if (this._readyCanvasesCount === this._contentAnnotations.length) {
+                    if (this._readyMediaCount === this._contentAnnotations.length) {
 
                         //if (!this._data.range) {
                         this._setCurrentTime(0);
@@ -816,7 +850,7 @@ namespace IIIFComponents {
 
                 $mediaElement.attr('preload', 'auto');
 
-                (<any>$mediaElement.get(0)).load(); // todo: type
+                (<any>$mediaElement.get(0)).load();
             }
 
             this._renderSyncIndicator(data);
@@ -955,6 +989,9 @@ namespace IIIFComponents {
         // todo: can this be part of the _data state?
         // this._data.play = true?
         private _play(withoutUpdate?: boolean): void {
+
+            //console.log('playing ', this.getCanvasId());
+
             if (this._isPlaying) return;
 
             let duration: Manifesto.Duration | undefined;
@@ -991,6 +1028,8 @@ namespace IIIFComponents {
                 this._synchronizeMedia();
             }
 
+            const label: string = (this._data && this._data.content) ? this._data.content.pause : '';
+            this._$playButton.prop('title', label);
             this._$playButton.find('i').switchClass('play', 'pause');
 
             this.fire(AVComponentCanvasInstance.Events.PLAYCANVAS);
@@ -1013,6 +1052,8 @@ namespace IIIFComponents {
                 this._synchronizeMedia();
             }
 
+            const label: string = (this._data && this._data.content) ? this._data.content.play : '';
+            this._$playButton.prop('title', label);
             this._$playButton.find('i').switchClass('pause', 'play');
 
             this.fire(AVComponentCanvasInstance.Events.PAUSECANVAS);
@@ -1127,6 +1168,7 @@ namespace IIIFComponents {
         }
 
         private _setMediaCurrentTime(media: HTMLMediaElement, time: number): void {
+            
             if (!isNaN(media.duration)) {
                 media.currentTime = time;
             }

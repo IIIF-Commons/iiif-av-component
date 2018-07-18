@@ -5,6 +5,14 @@ namespace IIIFComponents {
         private _data: IAVComponentData = this.data();
         public options: _Components.IBaseComponentOptions;
         public canvasInstances: CanvasInstance[] = [];
+        private _checkAllCanvasesReadyInterval: any;
+        private _readyCanvases: number = 0;
+
+        private _$posterContainer: JQuery;
+        private _$posterImage: JQuery;
+        private _$posterExpandButton: JQuery;
+
+        private _posterImageExpanded: boolean = false;
 
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
@@ -30,14 +38,18 @@ namespace IIIFComponents {
                 defaultAspectRatio: 0.56,
                 doubleClickMS: 350,
                 limitToRange: false,
+                virtualCanvasEnabled: true,
                 content: <IAVComponentContent>{
                     currentTime: "Current Time",
+                    collapse: "Collapse",
                     duration: "Duration",
+                    expand: "Expand",
                     mute: "Mute",
                     next: "Next",
                     pause: "Pause",
                     play: "Play",
-                    previous: "Previous"
+                    previous: "Previous",
+                    unmute: "Unmute"
                 }
             }
         }
@@ -88,28 +100,68 @@ namespace IIIFComponents {
 
             if (diff.includes('canvasId') && this._data.canvasId) {
 
-                const currentCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
+                const nextCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
 
-                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    if (canvasInstance !== currentCanvasInstance) {
-                        canvasInstance.set({ 
-                            visible: false
-                        });
-                    } else {
-                        canvasInstance.set({ visible: true });
-                    }
+                if (nextCanvasInstance) {
+                    
+                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
+                        // hide canvases that don't have the same id        
+                        if (canvasInstance.getCanvasId() !== nextCanvasInstance.getCanvasId()) {
+                            canvasInstance.set({ 
+                                visible: false
+                            });
+                        } else {
+
+                            if (diff.includes('range')) {
+                                canvasInstance.set({ 
+                                    visible: true,
+                                    range: this._data.range ? jQuery.extend(true, {}, this._data.range) : undefined
+                                });
+                            } else {
+                                canvasInstance.set({ 
+                                    visible: true
+                                });
+                            }
+                            
+                        }
+                    });
+
+                }
+                
+            }
+
+            if (diff.includes('virtualCanvasEnabled')) {
+
+                this.set({
+                    range: undefined
                 });
+
+                // as you don't know the id of virtual canvases, you can toggle them on
+                // but when toggling off, you must call showCanvas to show the next canvas
+                if (this._data.virtualCanvasEnabled) {
+
+                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
+                        if (canvasInstance.isVirtual()) {
+                            this.set({
+                                canvasId: canvasInstance.getCanvasId(),
+                                range: undefined
+                            });
+                        }
+                    });
+
+                }            
+
             }
             
             if (diff.includes('range') && this._data.range) {
 
-                const range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.range.id);
+                let range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.range.id);
 
                 if (!range) {
                     console.warn('range not found');
                 } else {
 
-                    const canvasId: string | undefined = AVComponentUtils.Utils.getFirstTargetedCanvasId(range);
+                    let canvasId: string | undefined = AVComponentUtils.Utils.getFirstTargetedCanvasId(range);
 
                     if (canvasId) {
 
@@ -117,22 +169,40 @@ namespace IIIFComponents {
                         const canvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(canvasId);
                         
                         if (canvasInstance) {
-    
-                            // if not using the correct canvasinstance, switch to it
-                            if (this._data.canvasId && Manifesto.Utils.normaliseUrl(this._data.canvasId) !== canvasId) {
+                            
+                            if (canvasInstance.isVirtual() && this._data.virtualCanvasEnabled) {                                
+                                if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
+                                    canvasId = canvasInstance.getCanvasId();
+
+                                    // use the retargeted range
+                                    for (let i = 0; i < canvasInstance.ranges.length; i++) {
+                                        const r: Manifesto.IRange = canvasInstance.ranges[i];
+
+                                        if (r.id === range.id) {
+                                            range = r;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            // if not using the correct canvasinstance, switch to it                    
+                            if (this._data.canvasId && 
+                                ((this._data.canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(this._data.canvasId) : this._data.canvasId) !== canvasId) {
 
                                 this.set({
                                     canvasId: canvasId,
-                                    range: Object.assign({}, range) // force diff
+                                    range: jQuery.extend(true, {}, range) // force diff
                                 });
 
                             } else {
 
                                 canvasInstance.set({
-                                    range: range
+                                    range: jQuery.extend(true, {}, range)
                                 });
     
                             }
+                            
                         }
                     }
                 }
@@ -157,11 +227,10 @@ namespace IIIFComponents {
 
             this._$element.empty();
 
-            // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
             if (this._data && this._data.helper) {
 
+                // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
                 const behavior: Manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
-
                 const canvases: Manifesto.ICanvas[] = this._getCanvases();
 
                 if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
@@ -174,16 +243,73 @@ namespace IIIFComponents {
 
                     this._initCanvas(virtualCanvas);
 
-                } else {
+                }                
 
-                    canvases.forEach((canvas: Manifesto.ICanvas) => {
-                        this._initCanvas(canvas);
-                    });
-                }
+                // all canvases need to be individually navigable
+                canvases.forEach((canvas: Manifesto.ICanvas) => {
+                    this._initCanvas(canvas);
+                });                
 
                 if (this.canvasInstances.length > 0) {
                     this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
                 }
+
+                this._checkAllCanvasesReadyInterval = setInterval(this._checkAllCanvasesReady.bind(this), 100);
+
+                this._$posterContainer = $('<div class="poster-container"></div>');
+                this._$element.append(this._$posterContainer);
+
+                this._$posterImage = $('<div class="poster-image"></div>');
+                this._$posterExpandButton = $(`
+                    <button class="btn" title="${this._data && this._data.content ? this._data.content.expand : ''}">
+                        <i class="av-icon-expand expand" aria-hidden="true"></i><span>${this._data && this._data.content ? this._data.content.expand : ''}</span>
+                    </button>
+                `);
+                this._$posterImage.append(this._$posterExpandButton);
+
+                this._$posterImage.on('click', () => {                    
+                    const target: any = this._getPosterImageCss(!this._posterImageExpanded);
+                    //this._$posterImage.animate(target,"fast", "easein");
+                    this._$posterImage.animate(target);
+                    this._posterImageExpanded = !this._posterImageExpanded;
+
+                    if (this._posterImageExpanded) {
+                        const label: string = this.options.data.content.collapse;
+                        this._$posterExpandButton.prop('title', label);
+                        this._$posterExpandButton.find('i').switchClass('expand', 'collapse');
+                    } else {
+                        const label: string = this.options.data.content.expand;
+                        this._$posterExpandButton.prop('title', label);
+                        this._$posterExpandButton.find('i').switchClass('collapse', 'expand');
+                    }
+                    
+                });
+
+                // poster canvas
+                const posterImage: string | null = this._data.helper.getPosterImage();
+
+                if (posterImage) {
+                    this._$posterContainer.append(this._$posterImage);
+
+                    let css: any = this._getPosterImageCss(this._posterImageExpanded);
+                    css = Object.assign({}, css, {
+                        'background-image': 'url(' + posterImage + ')'
+                    });
+
+                    this._$posterImage.css(css);
+                }
+            }
+
+        }
+
+        private _checkAllCanvasesReady(): void {
+            console.log('loading media');
+            if (this._readyCanvases === this.canvasInstances.length) {
+                console.log('media ready');
+                clearInterval(this._checkAllCanvasesReadyInterval);
+                //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
+                this.fire(AVComponent.Events.CANVASREADY);
+                this.resize();
             }
         }
 
@@ -204,12 +330,12 @@ namespace IIIFComponents {
 
             canvasInstance.logMessage = this._logMessage.bind(this);   
             this._$element.append(canvasInstance.$playerElement);
+
             canvasInstance.init();
-            this.canvasInstances.push(canvasInstance);
+            this.canvasInstances.push(canvasInstance);      
 
             canvasInstance.on(AVComponent.Events.CANVASREADY, () => {
-                //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
-                this.fire(AVComponent.Events.CANVASREADY);
+                this._readyCanvases++;
             }, false);
 
             // canvasInstance.on(AVComponent.Events.RESETCANVAS, () => {
@@ -272,18 +398,25 @@ namespace IIIFComponents {
 
         private _getCanvasInstanceById(canvasId: string): CanvasInstance | undefined {
             
-            canvasId = Manifesto.Utils.normaliseUrl(canvasId);
+            canvasId = (canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(canvasId) : canvasId;
     
-            for (let i = 0; i < this.canvasInstances.length; i++) {
+            // if virtual canvas is enabled, check for that first
+            if (this._data.virtualCanvasEnabled) {
+
+                for (let i = 0; i < this.canvasInstances.length; i++) {
     
-                const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
-                
-                // if the canvasinstance has a virtual canvas
-                if (canvasInstance.isVirtual()) {
-                    if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
+                    const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
+                    
+                    if (canvasInstance.isVirtual() && canvasInstance.getCanvasId() === canvasId || canvasInstance.includesVirtualSubCanvas(canvasId)) {
                         return canvasInstance;
                     }
-                } else {
+                }
+
+            } else {
+
+                for (let i = 0; i < this.canvasInstances.length; i++) {
+
+                    const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
                     const id: string | undefined = canvasInstance.getCanvasId();
 
                     if (id) {
@@ -295,7 +428,7 @@ namespace IIIFComponents {
                     }
                 }
             }
-    
+
             return undefined;
         }
 
@@ -332,25 +465,84 @@ namespace IIIFComponents {
 
             if (range) {
                 this.set({
-                    range: range
+                    range: jQuery.extend(true, {}, range)
                 });
             }
         }
 
         public showCanvas(canvasId: string): void {
-            this.set({
-                canvasId: canvasId
-            });
+            
+            // if the passed canvas id is already the current canvas id, but the canvas isn't visible
+            // (switching from virtual canvas)
+
+            const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
+
+            if (currentCanvas && currentCanvas.getCanvasId() === canvasId && !currentCanvas.isVisible()) {
+                currentCanvas.set({
+                    visible: true
+                });
+            } else {
+                this.set({
+                    canvasId: canvasId
+                });
+            }
+
         }
 
         private _logMessage(message: string): void {
             this.fire(AVComponent.Events.LOG, message);
         }
 
+        private _getPosterImageCss(expanded: boolean): any {
+            
+            const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
+
+            if (currentCanvas) {
+                const $options: JQuery = currentCanvas.$playerElement.find('.options-container');
+                const width: number = <number>currentCanvas.$playerElement.parent().width();
+                const height: number = <number>currentCanvas.$playerElement.parent().height() - <number>$options.height();
+                
+                if (expanded) {
+                    return {
+                        'top': 0,
+                        'left': 0,
+                        'width': width,
+                        'height': height
+                    }
+                } else {
+                    return {
+                        'top': 0,
+                        'left': (width / 3) * 2,
+                        'width': width / 3,
+                        'height': height / 3
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public resize(): void {
             this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
                 canvasInstance.resize();
             });
+
+            // get the visible player and align the poster to it
+            const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
+
+            if (currentCanvas) {
+                if (this._$posterImage && this._$posterImage.is(':visible')) {
+                    if (this._posterImageExpanded) {
+                        this._$posterImage.css(this._getPosterImageCss(true));
+                    } else {
+                        this._$posterImage.css(this._getPosterImageCss(false));
+                    }
+
+                    // this._$posterExpandButton.css({
+                    //     top: <number>this._$posterImage.height() - <number>this._$posterExpandButton.outerHeight()
+                    // });
+                }
+            }
         }
     }
 }

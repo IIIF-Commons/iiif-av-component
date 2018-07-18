@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.49 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.60 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -20,12 +20,19 @@ declare namespace IIIFComponents {
         private _data;
         options: _Components.IBaseComponentOptions;
         canvasInstances: CanvasInstance[];
+        private _checkAllCanvasesReadyInterval;
+        private _readyCanvases;
+        private _$posterContainer;
+        private _$posterImage;
+        private _$posterExpandButton;
+        private _posterImageExpanded;
         constructor(options: _Components.IBaseComponentOptions);
         protected _init(): boolean;
         data(): IAVComponentData;
         set(data: IAVComponentData): void;
         private _render();
         private _reset();
+        private _checkAllCanvasesReady();
         private _getCanvases();
         private _initCanvas(canvas);
         private _prevRange();
@@ -37,6 +44,7 @@ declare namespace IIIFComponents {
         playRange(rangeId: string): void;
         showCanvas(canvasId: string): void;
         private _logMessage(message);
+        private _getPosterImageCss(expanded);
         resize(): void;
     }
 }
@@ -69,6 +77,7 @@ declare namespace IIIFComponents.AVVolumeControl {
 }
 
 /// <reference types="base-component" />
+/// <reference types="manifesto.js" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
 declare namespace IIIFComponents {
@@ -107,17 +116,19 @@ declare namespace IIIFComponents {
         private _lowPriorityFrequency;
         private _lowPriorityInterval;
         private _mediaSyncMarginSecs;
-        private _ranges;
         private _rangeSpanPadding;
-        private _readyCanvasesCount;
+        private _readyMediaCount;
         private _stallRequestedBy;
         private _volume;
         private _wasPlaying;
+        ranges: Manifesto.IRange[];
         $playerElement: JQuery;
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
+        data(): IAVCanvasInstanceData;
         isVirtual(): boolean;
+        isVisible(): boolean;
         includesVirtualSubCanvas(canvasId: string): boolean;
         set(data: IAVCanvasInstanceData): void;
         private _hasRangeChanged();
@@ -181,12 +192,15 @@ declare namespace IIIFComponents {
 declare namespace IIIFComponents {
     interface IAVComponentContent {
         currentTime: string;
+        collapse: string;
         duration: string;
+        expand: string;
         mute: string;
         next: string;
         pause: string;
         play: string;
         previous: string;
+        unmute: string;
     }
     interface IAVComponentData {
         [key: string]: any;
@@ -200,6 +214,7 @@ declare namespace IIIFComponents {
         helper?: Manifold.IHelper;
         limitToRange?: boolean;
         rangeId?: string;
+        virtualCanvasEnabled?: boolean;
     }
 }
 

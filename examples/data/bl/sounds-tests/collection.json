@@ -40,7 +40,12 @@
         {
             "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_P3.json",
             "type": "Manifest",
-            "label": { "en": [ "C1685/98 Loose ends 17/7/99" ] }
+            "label": { "en": [ "Loose ends" ] }
+        },
+        {
+            "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_P3_no_autoadvance.json?asdf",
+            "type": "Manifest",
+            "label": { "en": [ "Loose ends no autoadvance" ] }
         },
         {
             "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/DA.json",
