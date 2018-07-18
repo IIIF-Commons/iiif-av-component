@@ -6,15 +6,37 @@
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/WS0003.json",
     "label": { "en": [ "WS0003 Aburria aburri r1" ] },
     "metadata": [
-        {
-            "label": { "en": [ "Identifier" ] },
-            "value": { "en": [ "WS0003" ] }
-        },
-        {
-            "label": { "en": [ "Title" ] },
-            "value": { "en": [ "Aburria aburri r1" ] }
-        }
-    ],
+            {
+                "label":{"en":["Full Title"]},
+                "value":{"en":["[No Title]"]}
+            },
+            {
+                "label":{"en":["Collection"]},
+                "value":{"en":["Wildlife species reels"]}
+            },
+            {
+                "label":{"en":["Format"]},
+                "value":{"en":["1 tape reel 18 cm mono"]}
+            },
+            {
+                "label":{"en":["Identifier"]},
+                "value":{"en":["WS0003"]}
+            },
+            {
+                "label":{"en":["Digitisation funded by"]},
+                "value":{"en":["Heritage Lottery Fund"]}
+            },
+            {
+                "label":{"en":["Digitised by"]},
+                "value":{"en":["The British Library, 2017"]}
+            }
+        ],
+    "logo":[{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],
+	"rights":"https://creativecommons.org/licenses/by/4.0",
+	"requiredStatement": {
+	 	"label":{"en":["Usage Terms"]},
+	 	"value":{"en":["<span> Creative Commons Attribution licence<br/><br/><img src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/></span>"]}
+	},
     "posterCanvas": {
         "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/WS0003/poster",
         "type": "Canvas",
@@ -91,28 +113,44 @@
                             "type": "Canvas"
                         }
                     ],
-                    "metadata": [
-                        {
-                            "label": { "en": [ "Identifier" ] },
-                            "value": { "en": [ "WS0003" ] }
-                        },
-                        {
-                            "label": { "en": [ "Title" ] },
-                            "value": { "en": [ "Aburria aburri : Wattled Guan - Cracidae" ] }
-                        },
-                        {
-                            "label": { "en": [ "Place" ] },
-                            "value": { "en": [ "Peru" ] }
-                        },
-                        {
-                            "label": { "en": [ "Contributor" ] },
-                            "value": { "en": [ "Krabbe, Niels (sound recordist)" ] }
-                        },
-                        {
-                            "label": { "en": [ "Date" ] },
-                            "value": { "en": [ "1983-09-09" ] }
-                        }
-                    ],
+	 	 	 	 	"metadata": [
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Full Title"]},
+	 	 	 	 	 	 	"value":{"en":["Aburria aburri : Wattled Guan - Cracidae"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	"value":{"en":["Krabbe, Niels (sound recordist)"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	"value":{"en":["1983-09-09 (recorded)"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Place of creation"]},
+	 	 	 	 	 	 	"value":{"en":["Peru San Martin Yurimaguas Road 21Km E of Tarapoto Altitude 1050 (recorded)"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	"value":{"en":["0 min. 12 sec."]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	"value":{"en":["Wildlife species reels"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Wildlife Sound Category"]},
+	 	 	 	 	 	 	"value":{"en":["calls"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	"value":{"en":["copy or original: third generation copy"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	"value":{"en":["WS0003"]}
+	 	 	 	 	 	}
+	 	 	 	 	],
                     "type": "Range"
                 }
             ],
