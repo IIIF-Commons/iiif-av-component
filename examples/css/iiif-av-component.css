@@ -48,12 +48,14 @@
   height: 4px;
   border: none;
   border-radius: 0;
+  cursor: pointer;
 }
 .iiif-av-component .canvas-timeline-container {
   background: #AFAFAF;
   height: 4px;
   width: 0px;
   border: none;
+  cursor: pointer;
 }
 .iiif-av-component .hover-preview {
   position: absolute;
@@ -116,6 +118,7 @@
   background: rgba(66, 66, 66, 0.5);
   box-sizing: border-box;
   border-radius: 0;
+  cursor: pointer;
 }
 .iiif-av-component .canvas-timeline-container .ui-slider-handle {
   width: 16px;
@@ -125,11 +128,17 @@
   border: none;
   border-radius: 8px;
   background-color: #14a4c3;
+  z-index: 1;
+  cursor: pointer;
+}
+.iiif-av-component .canvas-timeline-container .ui-slider-handle:focus {
+  outline-width: 0;
 }
 .iiif-av-component .range-timeline-container .ui-slider-range {
   background: rgba(66, 66, 66, 0.5);
   box-sizing: border-box;
   border-radius: 0;
+  cursor: pointer;
 }
 .iiif-av-component .range-timeline-container .ui-slider-handle {
   width: 16px;
@@ -139,6 +148,11 @@
   border: none;
   border-radius: 8px;
   background-color: #14a4c3;
+  z-index: 1;
+  cursor: pointer;
+}
+.iiif-av-component .range-timeline-container .ui-slider-handle:focus {
+  outline-width: 0;
 }
 .iiif-av-component .controls-container {
   overflow: hidden;
@@ -164,7 +178,7 @@
 .iiif-av-component .controls-container .volume {
   float: left;
   overflow: hidden;
-  width: 160px;
+  width: 180px;
 }
 .iiif-av-component .controls-container .volume .volume-mute {
   float: left;
@@ -174,7 +188,7 @@
 .iiif-av-component .controls-container .volume .volume-slider {
   float: left;
   margin-top: 12px;
-  width: 64px;
+  width: 84px;
   height: 6px;
   border: none;
   border-radius: 0;
@@ -188,6 +202,7 @@
   background: transparent;
   border: none;
   z-index: 1;
+  cursor: pointer;
 }
 .iiif-av-component .controls-container .volume .volume-slider .ui-slider-handle:focus {
   outline: none;
@@ -196,6 +211,7 @@
   background: rgba(66, 66, 66, 0.5);
   box-sizing: border-box;
   border-radius: 0;
+  cursor: pointer;
   background-color: #fff;
 }
 .iiif-av-component .btn {

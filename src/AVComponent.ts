@@ -455,6 +455,22 @@ namespace IIIFComponents {
             }
         }
 
+        public play(): void {
+            const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
+
+            if (currentCanvas) {
+                currentCanvas.play();
+            }
+        }
+
+        public pause(): void {
+            const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
+
+            if (currentCanvas) {
+                currentCanvas.pause();
+            }
+        }
+
         public playRange(rangeId: string): void {
 
             if (!this._data.helper) {

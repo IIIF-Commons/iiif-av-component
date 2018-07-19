@@ -197,9 +197,9 @@ namespace IIIFComponents {
 
             this._$playButton.on('click', () => {
                 if (this._isPlaying) {
-                    this._pause();
+                    this.pause();
                 } else {
-                    this._play();
+                    this.play();
                 }
             });
 
@@ -411,7 +411,7 @@ namespace IIIFComponents {
                         //console.log('show ' + this._data.canvas.id);
                     } else {
                         this.$playerElement.hide();
-                        this._pause();
+                        this.pause();
                         //console.log('hide ' + this._data.canvas.id);
                     }
 
@@ -435,7 +435,7 @@ namespace IIIFComponents {
                                 this._setCurrentTime(duration.start);
                             }
                             
-                            this._play();
+                            this.play();
                             this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);                          
                         }
                     }
@@ -839,7 +839,7 @@ namespace IIIFComponents {
                         //}                        
 
                         if (this.options.data.autoPlay) {
-                            this._play();
+                            this.play();
                         }
 
                         this._updateDurationDisplay();
@@ -942,7 +942,7 @@ namespace IIIFComponents {
         // this._data.rewind = true?
         private _rewind(withoutUpdate?: boolean): void {
 
-            this._pause();
+            this.pause();
 
             let duration: Manifesto.Duration | undefined;
 
@@ -964,7 +964,7 @@ namespace IIIFComponents {
                 }
             }
 
-            this._play();
+            this.play();
         }
 
         // todo: can this be part of the _data state?
@@ -983,12 +983,12 @@ namespace IIIFComponents {
                 this._canvasClockTime = this._canvasClockDuration;
             }
 
-            this._pause();
+            this.pause();
         }
 
         // todo: can this be part of the _data state?
         // this._data.play = true?
-        private _play(withoutUpdate?: boolean): void {
+        public play(withoutUpdate?: boolean): void {
 
             //console.log('playing ', this.getCanvasId());
 
@@ -1038,7 +1038,7 @@ namespace IIIFComponents {
 
         // todo: can this be part of the _data state?
         // this._data.play = false?
-        private _pause(withoutUpdate?: boolean): void {
+        public pause(withoutUpdate?: boolean): void {
 
             window.clearInterval(this._highPriorityInterval);
             window.clearInterval(this._lowPriorityInterval);
@@ -1074,12 +1074,12 @@ namespace IIIFComponents {
             }
 
             if (this._data.limitToRange && duration && this._canvasClockTime >= duration.end) {
-                this._pause();
+                this.pause();
             }
 
             if (this._canvasClockTime >= this._canvasClockDuration) {
                 this._canvasClockTime = this._canvasClockDuration;
-                this._pause();
+                this.pause();
             }
         }
 
@@ -1262,7 +1262,7 @@ namespace IIIFComponents {
                     }
 
                     this._wasPlaying = this._isPlaying;
-                    this._pause(true);
+                    this.pause(true);
                     this._isStalled = aBoolean;
                 }
 
@@ -1279,7 +1279,7 @@ namespace IIIFComponents {
                     //this._hideWorkingIndicator();
 
                     if (this._isStalled && this._wasPlaying) {
-                        this._play(true);
+                        this.play(true);
                     }
 
                     this._isStalled = aBoolean;

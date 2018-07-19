@@ -81,6 +81,8 @@
     </div>
 
     <div id="options">
+        <button id="play">Play</button>
+        <button id="pause">Pause</button>
         <input id="limitToRangeCheckbox" type="checkbox"><label for="limitToRangeCheckbox">Limit to Range</label>
         <input id="constrainNavigationToRangeCheckbox" type="checkbox"><label for="constrainNavigationToRangeCheckbox">Constrain Navigation To Range</label>
         <input id="autoSelectRangeCheckbox" type="checkbox"><label for="autoSelectRangeCheckbox">Auto Select Range</label>
@@ -280,6 +282,14 @@
             $('.testFixture').click(function() {
                 $('#manifestInput').val( $(this).data('json') );
                 $('#parseManifestButton').click();
+            });
+
+            $('#play').click(function() {
+                avcomponent.play();
+            });
+
+            $('#pause').click(function() {
+                avcomponent.pause();
             });
 
             $('#viewManifestButton').click(function() {

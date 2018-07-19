@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.60 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.61 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -41,6 +41,8 @@ declare namespace IIIFComponents {
         private _getCanvasInstanceById(canvasId);
         private _getCurrentCanvas();
         private _rewind();
+        play(): void;
+        pause(): void;
         playRange(rangeId: string): void;
         showCanvas(canvasId: string): void;
         private _logMessage(message);
@@ -149,8 +151,8 @@ declare namespace IIIFComponents {
         private _setCurrentTime(seconds);
         private _rewind(withoutUpdate?);
         private _fastforward();
-        private _play(withoutUpdate?);
-        private _pause(withoutUpdate?);
+        play(withoutUpdate?: boolean): void;
+        pause(withoutUpdate?: boolean): void;
         private _isNavigationConstrainedToRange();
         private _canvasClockUpdater();
         private _highPriorityUpdater();
