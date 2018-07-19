@@ -32,7 +32,7 @@
 	 	},
 	 	{
 	 	 	"label":{"en":["Digitisation funded by"]},
-	 	 	"value":{"en":["Heritage Lottery Fund"]}
+	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
 	 	},
 	 	{
 	 	 	"label":{"en":["Identifier"]},
@@ -168,7 +168,7 @@
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
-	 	 	 	 	 	 	"value":{"en":["Heritage Lottery Fund"]}
+	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
