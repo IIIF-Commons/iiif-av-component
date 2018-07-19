@@ -8,7 +8,7 @@
 	"metadata": [
 	 	{
 	 	 	"label":{"en":["Full Title"]},
-	 	 	"value":{"en":["[No Title]"]}
+	 	 	"value":{"en":["Aburria aburri r1"]}
 	 	},
 	 	{
 	 	 	"label":{"en":["Collection"]},
@@ -19,24 +19,32 @@
 	 	 	"value":{"en":["1 tape reel 18 cm mono"]}
 	 	},
 	 	{
-	 	 	"label":{"en":["Identifier"]},
-	 	 	"value":{"en":["WS0003"]}
-	 	},
-	 	{
 	 	 	"label":{"en":["Usage"]},
 	 	 	"value":{"en":["<span>Creative Commons Attribution licence<br/><br/><img src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/></span>"]}
 	 	},
 	 	{
-	 	 	"label":{"en":["Digitisation funded by"]},
-	 	 	"value":{"en":["Heritage Lottery Fund"]}
+	 	 	"label":{"en":["Held by"]},
+	 	 	"value":{"en":["The British Library"]}
 	 	},
 	 	{
 	 	 	"label":{"en":["Digitised by"]},
 	 	 	"value":{"en":["The British Library, 2017"]}
 	 	},
 	 	{
-	 	 	"label":{"en":["Held by"]},
-	 	 	"value":{"en":["The British Library"]}
+	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	"value":{"en":["Heritage Lottery Fund"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Identifier"]},
+	 	 	"value":{"en":["WS0003"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Shelfmark"]},
+	 	 	"value":{"en":["WS0003"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	"value":{"en":["http://explore.bl.uk/primo_library/libweb/action/dlDisplay.do?vid=BLVU1&search_scope=LSCOP-ALL&docId=BLLSA4968576"]}
 	 	}
 	],
     "logo":[{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],
@@ -147,12 +155,36 @@
 	 	 	 	 	 	 	"value":{"en":["calls"]}
 	 	 	 	 	 	},
 	 	 	 	 	 	{
-	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	"value":{"en":["copy or original: third generation copy"]}
+	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	"value":{"en":["<span>Creative Commons Attribution licence<br/><br/><img src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/></span>"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	"value":{"en":["The British Library, 2017"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	"value":{"en":["Heritage Lottery Fund"]}
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	"value":{"en":["WS0003 C1"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
 	 	 	 	 	 	 	"value":{"en":["WS0003"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	"value":{"en":["http://explore.bl.uk/primo_library/libweb/action/dlDisplay.do?vid=BLVU1&search_scope=LSCOP-ALL&docId=BLLSA4999240"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	"value":{"en":["copy or original: third generation copy"]}
 	 	 	 	 	 	}
 	 	 	 	 	],
                     "type": "Range"
