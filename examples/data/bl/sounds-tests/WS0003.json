@@ -44,7 +44,7 @@
 	 	},
 	 	{
 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	"value":{"en":["http://explore.bl.uk/primo_library/libweb/action/dlDisplay.do?vid=BLVU1&search_scope=LSCOP-ALL&docId=BLLSA4968576"]}
+	 	 	"value":{"en":["<a href=&quot;http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA4968576&quot;>View the catalogue record</a>"]}
 	 	}
 	],
     "logo":[{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],
@@ -180,7 +180,7 @@
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	"value":{"en":["http://explore.bl.uk/primo_library/libweb/action/dlDisplay.do?vid=BLVU1&search_scope=LSCOP-ALL&docId=BLLSA4999240"]}
+	 	 	 	 	 	 	"value":{"en":["<a href=&quot;http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA4999240&quot;>View the catalogue record</a>"]}
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Description"]},
