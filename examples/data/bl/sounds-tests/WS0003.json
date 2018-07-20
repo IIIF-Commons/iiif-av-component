@@ -5,38 +5,50 @@
     ],
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/WS0003.json",
     "label": { "en": [ "WS0003 Aburria aburri r1" ] },
-    "metadata": [
-            {
-                "label":{"en":["Full Title"]},
-                "value":{"en":["[No Title]"]}
-            },
-            {
-                "label":{"en":["Collection"]},
-                "value":{"en":["Wildlife species reels"]}
-            },
-            {
-                "label":{"en":["Format"]},
-                "value":{"en":["1 tape reel 18 cm mono"]}
-            },
-            {
-                "label":{"en":["Identifier"]},
-                "value":{"en":["WS0003"]}
-            },
-            {
-                "label":{"en":["Digitisation funded by"]},
-                "value":{"en":["Heritage Lottery Fund"]}
-            },
-            {
-                "label":{"en":["Digitised by"]},
-                "value":{"en":["The British Library, 2017"]}
-            }
-        ],
+	"metadata": [
+	 	{
+	 	 	"label":{"en":["Full Title"]},
+	 	 	"value":{"en":["Aburria aburri r1"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Collection"]},
+	 	 	"value":{"en":["Wildlife species reels"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Format"]},
+	 	 	"value":{"en":["1 tape reel 18 cm mono"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Usage"]},
+	 	 	"value":{"en":["<span>Creative Commons Attribution licence<br/><br/><img src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/></span>"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Held by"]},
+	 	 	"value":{"en":["The British Library"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Digitised by"]},
+	 	 	"value":{"en":["The British Library, 2017"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Identifier"]},
+	 	 	"value":{"en":["WS0003"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Shelfmark"]},
+	 	 	"value":{"en":["WS0003"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	"value":{"en":["<a href='http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA4968576'>View the catalogue record</a>"]}
+	 	}
+	],
     "logo":[{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],
 	"rights":"https://creativecommons.org/licenses/by/4.0",
-	"requiredStatement": {
-	 	"label":{"en":["Usage Terms"]},
-	 	"value":{"en":["<span> Creative Commons Attribution licence<br/><br/><img src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/></span>"]}
-	},
     "posterCanvas": {
         "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/WS0003/poster",
         "type": "Canvas",
@@ -151,12 +163,36 @@
 	 	 	 	 	 	 	"value":{"en":["calls"]}
 	 	 	 	 	 	},
 	 	 	 	 	 	{
-	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	"value":{"en":["copy or original: third generation copy"]}
+	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	"value":{"en":["<span>Creative Commons Attribution licence<br/><br/><img src=\"https://i.creativecommons.org/l/by/4.0/88x31.png\"/></span>"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	"value":{"en":["The British Library, 2017"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	"value":{"en":["WS0003 C1"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
 	 	 	 	 	 	 	"value":{"en":["WS0003"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	"value":{"en":["<a href='http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA4999240'>View the catalogue record</a>"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	"value":{"en":["copy or original: third generation copy"]}
 	 	 	 	 	 	}
 	 	 	 	 	],
                     "type": "Range"
