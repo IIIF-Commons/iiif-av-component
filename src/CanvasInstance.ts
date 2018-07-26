@@ -75,15 +75,15 @@ namespace IIIFComponents {
             this._$controlsContainer = $('<div class="controls-container"></div>');
             this._$prevButton = $(`
                                 <button class="btn" title="${this._data.content.previous}">
-                                    <i class="av-icon-previous" aria-hidden="true"></i>${this._data.content.previous}
+                                    <i class="av-icon av-icon-previous" aria-hidden="true"></i>${this._data.content.previous}
                                 </button>`);
             this._$playButton = $(`
                                 <button class="btn" title="${this._data.content.play}">
-                                    <i class="av-icon-play play" aria-hidden="true"></i>${this._data.content.play}
+                                    <i class="av-icon av-icon-play play" aria-hidden="true"></i>${this._data.content.play}
                                 </button>`);
             this._$nextButton = $(`
                                 <button class="btn" title="${this._data.content.next}">
-                                    <i class="av-icon-next" aria-hidden="true"></i>${this._data.content.next}
+                                    <i class="av-icon av-icon-next" aria-hidden="true"></i>${this._data.content.next}
                                 </button>`);
             this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
             this._$canvasTime = this._$timeDisplay.find('.canvas-time');

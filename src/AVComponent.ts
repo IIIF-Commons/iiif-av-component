@@ -262,7 +262,7 @@ namespace IIIFComponents {
                 this._$posterImage = $('<div class="poster-image"></div>');
                 this._$posterExpandButton = $(`
                     <button class="btn" title="${this._data && this._data.content ? this._data.content.expand : ''}">
-                        <i class="av-icon-expand expand" aria-hidden="true"></i><span>${this._data && this._data.content ? this._data.content.expand : ''}</span>
+                        <i class="av-icon  av-icon-expand expand" aria-hidden="true"></i><span>${this._data && this._data.content ? this._data.content.expand : ''}</span>
                     </button>
                 `);
                 this._$posterImage.append(this._$posterExpandButton);
