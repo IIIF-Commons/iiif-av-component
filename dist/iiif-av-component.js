@@ -859,6 +859,11 @@ var IIIFComponents;
                     'width': percentageWidth
                 };
                 this._renderMediaElement(itemData);
+                // waveform
+                var seeAlso = body.getProperty('seeAlso');
+                if (seeAlso) {
+                    console.log(seeAlso);
+                }
             }
         };
         CanvasInstance.prototype.data = function () {

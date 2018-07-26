@@ -366,6 +366,14 @@ namespace IIIFComponents {
                 }
 
                 this._renderMediaElement(itemData);
+
+                // waveform
+                const seeAlso: any = body.getProperty('seeAlso');
+
+                if (seeAlso) {
+                    console.log(seeAlso);
+                }
+
             }
         }
 
