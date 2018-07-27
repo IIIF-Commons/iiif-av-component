@@ -43,6 +43,10 @@ namespace IIIFComponents {
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
         private _wasPlaying: boolean = false;
+        private _waveforms: string[] = [];
+        private _waveformCanvas: HTMLCanvasElement | null;
+        private _waveformCtx: CanvasRenderingContext2D | null;
+        private _compositeWaveform: AVComponentObjects.CompositeWaveform;
         public ranges: Manifesto.IRange[] = [];
 
         public $playerElement: JQuery;
@@ -368,17 +372,26 @@ namespace IIIFComponents {
                 this._renderMediaElement(itemData);
 
                 // waveform
-                const seeAlso: any = body.getProperty('seeAlso');
 
-                if (seeAlso) {
-                    console.log(seeAlso);
+                // todo: create annotation.getSeeAlso
+                const seeAlso: any = item.getProperty('seeAlso');
+
+                if (seeAlso && seeAlso.length) {
+                    const dat: string = seeAlso[0].id;
+                    this._waveforms.push(dat);
                 }
 
             }
+
+            
+            this._renderWaveform();
         }
 
         public data(): IAVCanvasInstanceData {
             return <IAVCanvasInstanceData> {
+                waveformColor: "#fff",
+                waveformBarSpacing: 4,
+                waveformBarWidth: 2,
                 volume: 1
             }
         }
@@ -453,13 +466,17 @@ namespace IIIFComponents {
 
             if (diff.includes('volume')) {
                 this._contentAnnotations.forEach(($mediaElement: any) => {
-                    $($mediaElement.element).prop("volume", this._data.volume);
+                    $($mediaElement.element).prop('volume', this._data.volume);
     
                     this._volume.set({
                         volume: this._data.volume
                     });
                 });
             } else {
+                this._render();
+            }
+
+            if (diff.includes('limitToRange')) {
                 this._render();
             }
 
@@ -616,6 +633,7 @@ namespace IIIFComponents {
 
             this._updateCurrentTimeDisplay();
             this._updateDurationDisplay();
+            this._drawWaveform();
         }
 
         public getCanvasId(): string | undefined {
@@ -862,6 +880,111 @@ namespace IIIFComponents {
             }
 
             this._renderSyncIndicator(data);
+        }
+
+        private _getWaveformData(url: string): Promise<any> {
+            return new Promise(function (resolve, reject) {
+                const xhr = new XMLHttpRequest();
+                xhr.responseType = 'arraybuffer';
+                xhr.open('GET', url);
+                xhr.addEventListener('load', (progressEvent: any) => {
+                    if (xhr.status == 200) {
+                        resolve(WaveformData.create(progressEvent.target.response));
+                    } else {
+                        reject(new Error(xhr.statusText));
+                    }
+                });
+                xhr.onerror = function () {
+                    reject(new Error("Network Error"));
+                };
+                xhr.send();
+            });
+        }
+
+        private _renderWaveform(): void {
+
+            if (!this._waveforms.length) return;
+
+            const promises = this._waveforms.map((url) => {
+                return this._getWaveformData(url);
+            });
+
+            Promise.all(promises).then((waveforms) => {
+
+                this._waveformCanvas = document.createElement('canvas');
+                this._waveformCanvas.classList.add('waveform');
+                this._$canvasContainer.append(this._waveformCanvas);
+                this._waveformCtx = this._waveformCanvas.getContext('2d');
+
+                if (this._waveformCtx) {
+                    this._waveformCtx.fillStyle = this.options.data.waveformColor;
+                    this._compositeWaveform = new AVComponentObjects.CompositeWaveform(waveforms);
+                    this._resize();
+                }
+                
+            });
+        }
+
+        private _drawWaveform(): void {
+
+            if (!this._waveformCtx) return;
+
+            let duration: Manifesto.Duration | undefined;
+            let start: number = 0;
+            let end: number = this._compositeWaveform.length;
+
+            if (this._data.range) {
+                duration = this._data.range.getDuration();
+            }
+
+            if (this._data.limitToRange && duration) {
+                start = duration.start * this._compositeWaveform.pixelsPerSecond;
+                end = duration.end * this._compositeWaveform.pixelsPerSecond;
+            }
+
+            const canvasWidth: number = this._waveformCtx.canvas.width;
+            const canvasHeight: number = this._waveformCtx.canvas.height;
+            const barSpacing: number = this.options.data.waveformBarSpacing;
+            const barWidth: number = this.options.data.waveformBarWidth;
+            const increment: number = Math.floor(((end - start) / canvasWidth) * barSpacing);
+            const sampleSpacing: number = (canvasWidth / barSpacing);
+
+            this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+            this._waveformCtx.fillStyle = this.options.data.waveformColor;
+
+            for (let x = start; x < end; x += increment) {
+
+                const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
+                const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
+                const ypos = (canvasHeight - height) / 2;
+                const xpos = canvasWidth * AVComponentUtils.Utils.normalise(x, start, end);
+
+                this._waveformCtx.fillRect(xpos, ypos, barWidth, height);
+            }
+        }
+
+        private _scaleY = (amplitude: number, height: number) => {
+            const range = 256;
+            return Math.max(this.options.data.waveformBarWidth, (amplitude * height / range));
+        };
+
+        private _getWaveformMaxAndMin(waveform: AVComponentObjects.CompositeWaveform, index: number, sampleSpacing: number): IMaxMin {
+            
+            let max: number = -127;
+            let min: number = 128;
+
+            for (let x = index; x < index + sampleSpacing; x++) {
+                
+                if (waveform.max(x) > max) {
+                    max = waveform.max(x);
+                }
+
+                if (waveform.min(x) < min) {
+                    min = waveform.min(x);
+                }
+            }
+
+            return { max, min };
         }
 
         private _updateCurrentTimeDisplay(): void {
@@ -1321,6 +1444,11 @@ namespace IIIFComponents {
 
                     const $options: JQuery = this.$playerElement.find('.options-container');
                     this._$canvasContainer.height(<number>this.$playerElement.parent().height() - <number>$options.height());
+                }
+
+                if (this._waveformCanvas) {
+                    this._waveformCanvas.width = <number>this._$canvasContainer.width();
+                    this._waveformCanvas.height = <number>this._$canvasContainer.height();
                 }
 
                 this._render();

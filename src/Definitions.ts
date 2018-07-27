@@ -15,3 +15,4 @@ interface Window {
 
 declare var dashjs: any;
 declare var Hls: any;
+declare var WaveformData: any;

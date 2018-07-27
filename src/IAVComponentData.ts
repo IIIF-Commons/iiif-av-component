@@ -26,5 +26,8 @@ namespace IIIFComponents {
         limitToRange?: boolean;
         rangeId?: string;
         virtualCanvasEnabled?: boolean;
+        waveformBarSpacing?: number; 
+        waveformBarWidth?: number;
+        waveformColor?: string;
     }
 }

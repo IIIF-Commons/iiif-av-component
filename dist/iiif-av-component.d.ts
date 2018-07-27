@@ -13,6 +13,7 @@ interface Window {
 }
 declare var dashjs: any;
 declare var Hls: any;
+declare var WaveformData: any;
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -123,6 +124,10 @@ declare namespace IIIFComponents {
         private _stallRequestedBy;
         private _volume;
         private _wasPlaying;
+        private _waveforms;
+        private _waveformCanvas;
+        private _waveformCtx;
+        private _compositeWaveform;
         ranges: Manifesto.IRange[];
         $playerElement: JQuery;
         logMessage: (message: string) => void;
@@ -145,6 +150,11 @@ declare namespace IIIFComponents {
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
+        private _getWaveformData(url);
+        private _renderWaveform();
+        private _drawWaveform();
+        private _scaleY;
+        private _getWaveformMaxAndMin(waveform, index, sampleSpacing);
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
         private _renderSyncIndicator(mediaElementData);
@@ -175,6 +185,19 @@ declare namespace IIIFComponents.AVComponentCanvasInstance {
     }
 }
 
+declare namespace IIIFComponents.AVComponentObjects {
+    class CompositeWaveform {
+        private _waveforms;
+        length: number;
+        pixelsPerSecond: number;
+        secondsPerPixel: number;
+        constructor(waveforms: any[]);
+        min(index: number): any;
+        max(index: number): any;
+        _find(index: number): Waveform | null;
+    }
+}
+
 /// <reference types="manifesto.js" />
 declare namespace IIIFComponents {
     interface IAVCanvasInstanceData extends IAVComponentData {
@@ -182,11 +205,6 @@ declare namespace IIIFComponents {
         range?: Manifesto.IRange;
         visible?: boolean;
         volume?: number;
-    }
-}
-
-declare namespace IIIFComponents {
-    interface IAVComponent extends _Components.IBaseComponent {
     }
 }
 
@@ -217,12 +235,22 @@ declare namespace IIIFComponents {
         limitToRange?: boolean;
         rangeId?: string;
         virtualCanvasEnabled?: boolean;
+        waveformBarSpacing?: number;
+        waveformBarWidth?: number;
+        waveformColor?: string;
     }
 }
 
 declare namespace IIIFComponents {
     interface IAVVolumeControlState {
         volume?: number;
+    }
+}
+
+declare namespace IIIFComponents {
+    interface IMaxMin {
+        max: number;
+        min: number;
     }
 }
 
@@ -238,6 +266,7 @@ declare namespace IIIFComponents.AVComponentUtils {
         static formatTime(aNumber: number): string;
         static detectIE(): number | boolean;
         static debounce(fn: any, debounceDuration: number): any;
+        static normalise(num: number, min: number, max: number): number;
     }
 }
 
@@ -252,5 +281,13 @@ declare namespace IIIFComponents.AVComponentObjects {
         getDuration(): number | null;
         getWidth(): number;
         getHeight(): number;
+    }
+}
+
+declare namespace IIIFComponents.AVComponentObjects {
+    class Waveform {
+        start: number;
+        end: number;
+        waveform: any;
     }
 }

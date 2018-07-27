@@ -27,17 +27,6 @@ namespace IIIFComponents.AVComponentUtils {
             return xywh;
         }
 
-        // public static getTemporalComponent(target: string): number[] | null {
-        //     const temporal: RegExpExecArray | null = /t=([^&]+)/g.exec(target);
-        //     let t: number[] | null = null;
-
-        //     if (temporal && temporal[1]) {
-        //         t = <any>temporal[1].split(',');
-        //     }
-
-        //     return t;
-        // }
-
         public static getFirstTargetedCanvasId(range: Manifesto.IRange): string | undefined {
             
             let canvasId: string | undefined;
@@ -60,58 +49,6 @@ namespace IIIFComponents.AVComponentUtils {
 
             return undefined;
         }
-
-        /*
-        public static getRangeDuration(range: Manifesto.IRange): AVComponentObjects.Duration | undefined {
-
-            let start: number | undefined;
-            let end: number | undefined;
-
-            if (range.canvases && range.canvases.length) {
-                for (let i = 0; i < range.canvases.length; i++) {
-                    const canvas: string = range.canvases[i];
-                    let temporal: number[] | null = Utils.getTemporalComponent(canvas);
-                    if (temporal && temporal.length > 1) {
-                        if (i === 0) {
-                            start = Number(temporal[0]);
-                        }
-    
-                        if (i === range.canvases.length - 1) {
-                            end = Number(temporal[1]);
-                        }
-                    }
-                }
-            } else {
-
-                // get child ranges and calculate the start and end based on them
-                const childRanges: Manifesto.IRange[] = range.getRanges();
-
-                for (let i = 0; i < childRanges.length; i++) {
-                    const childRange: Manifesto.IRange = childRanges[i];
-
-                    const duration: AVComponentObjects.Duration | undefined = Utils.getRangeDuration(childRange);
-
-                    if (duration) {
-                        if (i === 0) {
-                            start = duration.start;
-                        }
-    
-                        if (i === childRanges.length - 1) {
-                            end = duration.end;
-                        }
-                    }
-                }
-
-            }
-
-            if (start !== undefined && end !== undefined) {
-                return new AVComponentObjects.Duration(start, end);
-            }
-
-            return undefined;
-
-        }
-        */
 
         public static getTimestamp(): string {
             return String(new Date().valueOf());
@@ -234,6 +171,10 @@ namespace IIIFComponents.AVComponentUtils {
 
                 return fn.lastReturnVal;
             }
+        }
+
+        public static normalise(num: number, min: number, max: number): number {
+            return (num - min) / (max - min);
         }
     }
 }
