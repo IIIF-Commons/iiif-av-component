@@ -1,0 +1,394 @@
+{
+    "@context": [
+        "http://www.w3.org/ns/anno.jsonld",
+        "http://iiif.io/api/presentation/3/context.json"
+    ],
+    "id": "http://localhost:58982/arkis!T0000296/manifest",
+    "type": "Manifest",
+    "label": {
+        "sv": [
+            "Riksarkivet Audio With Poster"
+        ]
+    },
+    "metadata": [
+        {
+            "label": {
+                "sv": [
+                    "Titel"
+                ],
+                "en-GB": [
+                    "Title"
+                ]
+            },
+            "value": {
+                "sv": [
+                    "Ljud med omslag"
+                ]
+            }
+        },
+        {
+            "label": {
+                "sv": [
+                    "Innehåll"
+                ],
+                "en-GB": [
+                    "Content"
+                ]
+            },
+            "value": {
+                "sv": [
+                    "The Polish Ambassadors musik."
+                ]
+            }
+        },
+        {
+            "label": {
+                "sv": [
+                    "Arkiv"
+                ],
+                "en-GB": [
+                    "Archive"
+                ]
+            },
+            "value": {
+                "sv": [
+                    "Test DIANA"
+                ]
+            }
+        },
+        {
+            "label": {
+                "sv": [
+                    "Serie"
+                ],
+                "en-GB": [
+                    "Serie"
+                ]
+            },
+            "value": {
+                "sv": [
+                    "Video/ljud med dokumentation"
+                ]
+            }
+        },
+        {
+            "label": {
+                "sv": [
+                    "Referenskod"
+                ],
+                "en-GB": [
+                    "Reference Code"
+                ]
+            },
+            "value": {
+                "sv": [
+                    "SE/RA/919191919/XVAD/1"
+                ]
+            }
+        },
+        {
+            "label": {
+                "sv": [
+                    "Datering"
+                ],
+                "en-GB": [
+                    "Date"
+                ]
+            },
+            "value": {
+                "sv": [
+                    "2017"
+                ]
+            }
+        },
+        {
+            "label": {
+                "sv": [
+                    "Anmärkning"
+                ],
+                "en-GB": [
+                    "Remark"
+                ]
+            },
+            "value": {
+                "sv": [
+                    null
+                ]
+            }
+        },
+        {
+            "label": {
+                "sv": [
+                    "Källhänvisning"
+                ],
+                "en-GB": [
+                    "Source Reference"
+                ]
+            },
+            "value": {
+                "sv": [
+                    "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017)"
+                ]
+            }
+        },
+        {
+            "label": {
+                "sv": [
+                    "Skannade omslag"
+                ],
+                "en-GB": [
+                    "Scanned covers"
+                ]
+            },
+            "value": {
+                "sv": [
+                    "<a href =http://localhost:58982//api/AudioVideo/T0000296_00001.pdf> skiva-omslag.pdf</a><br>"
+                ]
+            }
+        },
+        {
+            "label": {
+                "sv": [
+                    "Övrig dokumentation"
+                ],
+                "en-GB": [
+                    "Additional documentation"
+                ]
+            },
+            "value": {
+                "sv": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "summary": {
+        "sv": [
+            null
+        ]
+    },
+    "posterCanvas": {
+        "id": "http://localhost:58982/canvas/audio-poster",
+        "type": "Canvas",
+        "items": [
+            {
+                "id": "http://localhost:58982/iiif!generic-audio-cover/annotationpage/audio-poster",
+                "type": "AnnotationPage",
+                "items": [
+                    {
+                        "id": "http://localhost:58982/iiif!generic-audio-cover/annotation/audio-poster",
+                        "type": "Annotation",
+                        "motivation": "painting",
+                        "target": "http://localhost:58982/canvas/audio-poster",
+                        "body": {
+                            "id": "https://revo2lutionrunning.com/wp-content/uploads/AmbassadorTag.jpg.0ec98838.jpg",
+                            "type": "Image",
+                            "format": "image/jpeg"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "items": [
+        {
+            "id": "http://localhost:58982/canvas/T0000296_00002.mp3",
+            "type": "Canvas",
+            "label": {
+                "sv": [
+                    "The_Polish_Ambassador_-_01_-_I_Feel_ya_Ophelia.mp3"
+                ]
+            },
+            "metadata": [
+                {
+                    "label": {
+                        "sv": [
+                            "Källhänvisning"
+                        ],
+                        "en-GB": [
+                            "Source Reference"
+                        ]
+                    },
+                    "value": {
+                        "sv": [
+                            "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017)"
+                        ]
+                    }
+                }
+            ],
+            "duration": 343.222,
+            "items": [
+                {
+                    "id": "http://localhost:58982/arkis!T0000296/annotationpage/T0000296_00002.mp3",
+                    "type": "AnnotationPage",
+                    "items": [
+                        {
+                            "id": "http://localhost:58982/arkis!T0000296/annotation/T0000296_00002.mp3",
+                            "type": "Annotation",
+                            "motivation": "painting",
+                            "target": "http://localhost:58982/canvas/T0000296_00002.mp3",
+                            "body": {
+                                "id": "https://www.bensound.com/bensound-music/bensound-summer.mp3",
+                                "type": "Audio",
+                                "format": "audio/mp3"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "http://localhost:58982/canvas/T0000296_00003.mp3",
+            "type": "Canvas",
+            "label": {
+                "sv": [
+                    "The_Polish_Ambassador_-_02_-_Angelita_ft_Nitty_Scott_Ryan_Herr.mp3"
+                ]
+            },
+            "metadata": [
+                {
+                    "label": {
+                        "sv": [
+                            "Källhänvisning"
+                        ],
+                        "en-GB": [
+                            "Source Reference"
+                        ]
+                    },
+                    "value": {
+                        "sv": [
+                            "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017)"
+                        ]
+                    }
+                }
+            ],
+            "duration": 264.986,
+            "items": [
+                {
+                    "id": "http://localhost:58982/arkis!T0000296/annotationpage/T0000296_00003.mp3",
+                    "type": "AnnotationPage",
+                    "items": [
+                        {
+                            "id": "http://localhost:58982/arkis!T0000296/annotation/T0000296_00003.mp3",
+                            "type": "Annotation",
+                            "motivation": "painting",
+                            "target": "http://localhost:58982/canvas/T0000296_00003.mp3",
+                            "body": {
+                                "id": "https://www.bensound.com/bensound-music/bensound-anewbeginning.mp3",
+                                "type": "Audio",
+                                "format": "audio/mp3"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "http://localhost:58982/canvas/T0000296_00004.mp3",
+            "type": "Canvas",
+            "label": {
+                "sv": [
+                    "The_Polish_Ambassador_-_03_-_Perfectly_Imperfect_ft_The_Grouch_Scott_Nice.mp3"
+                ]
+            },
+            "metadata": [
+                {
+                    "label": {
+                        "sv": [
+                            "Källhänvisning"
+                        ],
+                        "en-GB": [
+                            "Source Reference"
+                        ]
+                    },
+                    "value": {
+                        "sv": [
+                            "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017)"
+                        ]
+                    }
+                }
+            ],
+            "duration": 234.527,
+            "items": [
+                {
+                    "id": "http://localhost:58982/arkis!T0000296/annotationpage/T0000296_00004.mp3",
+                    "type": "AnnotationPage",
+                    "items": [
+                        {
+                            "id": "http://localhost:58982/arkis!T0000296/annotation/T0000296_00004.mp3",
+                            "type": "Annotation",
+                            "motivation": "painting",
+                            "target": "http://localhost:58982/canvas/T0000296_00004.mp3",
+                            "body": {
+                                "id": "https://www.bensound.com/bensound-music/bensound-creativeminds.mp3",
+                                "type": "Audio",
+                                "format": "audio/mp3"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "structures": [
+        {
+            "id": "http://localhost:58982/arkis!T0000296/range/top",
+            "type": "Range",
+            "label": {
+                "en": [
+                    "Table of Content"
+                ],
+                "sv": [
+                    "Innehållsförteckning"
+                ]
+            },
+            "items": [
+                {
+                    "id": "http://localhost:58982/range/T0000296_00002.mp3",
+                    "type": "Range",
+                    "label": {
+                        "@none": [
+                            "The_Polish_Ambassador_-_01_-_I_Feel_ya_Ophelia.mp3"
+                        ]
+                    },
+                    "items": [
+                        {
+                            "id": "http://localhost:58982/canvas/T0000296_00002.mp3",
+                            "type": "canvas"
+                        }
+                    ]
+                },
+                {
+                    "id": "http://localhost:58982/range/T0000296_00003.mp3",
+                    "type": "Range",
+                    "label": {
+                        "@none": [
+                            "The_Polish_Ambassador_-_02_-_Angelita_ft_Nitty_Scott_Ryan_Herr.mp3"
+                        ]
+                    },
+                    "items": [
+                        {
+                            "id": "http://localhost:58982/canvas/T0000296_00003.mp3",
+                            "type": "canvas"
+                        }
+                    ]
+                },
+                {
+                    "id": "http://localhost:58982/range/T0000296_00004.mp3",
+                    "type": "Range",
+                    "label": {
+                        "@none": [
+                            "The_Polish_Ambassador_-_03_-_Perfectly_Imperfect_ft_The_Grouch_Scott_Nice.mp3"
+                        ]
+                    },
+                    "items": [
+                        {
+                            "id": "http://localhost:58982/canvas/T0000296_00004.mp3",
+                            "type": "canvas"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
