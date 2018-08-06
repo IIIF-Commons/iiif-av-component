@@ -3,14 +3,13 @@ namespace IIIFComponents.AVComponentObjects {
     export class CompositeWaveform {
 
         private _waveforms: Waveform[];
-        public length: number;
+        public length: number = 0;
+        public duration: number = 0;
         public pixelsPerSecond: number = Number.MAX_VALUE;
         public secondsPerPixel: number = Number.MAX_VALUE;
 
         constructor(waveforms: any[]) {
             this._waveforms = [];
-
-            this.length = 0;
 
             waveforms.forEach((waveform) => {
                 this._waveforms.push({
@@ -20,6 +19,7 @@ namespace IIIFComponents.AVComponentObjects {
                 });
 
                 this.length += waveform.adapter.length;
+                this.duration += waveform.duration;
                 this.pixelsPerSecond = Math.min(this.pixelsPerSecond, waveform.pixels_per_second);
                 this.secondsPerPixel = Math.min(this.secondsPerPixel, waveform.seconds_per_pixel);
             });

@@ -189,6 +189,7 @@ declare namespace IIIFComponents.AVComponentObjects {
     class CompositeWaveform {
         private _waveforms;
         length: number;
+        duration: number;
         pixelsPerSecond: number;
         secondsPerPixel: number;
         constructor(waveforms: any[]);

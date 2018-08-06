@@ -1315,27 +1315,29 @@ var IIIFComponents;
                 return;
             var duration;
             var start = 0;
-            var end = this._compositeWaveform.length;
+            var end = this._compositeWaveform.duration;
             if (this._data.range) {
                 duration = this._data.range.getDuration();
             }
             if (this._data.limitToRange && duration) {
-                start = duration.start * this._compositeWaveform.pixelsPerSecond;
-                end = duration.end * this._compositeWaveform.pixelsPerSecond;
+                start = duration.start;
+                end = duration.end;
             }
+            var startpx = start * this._compositeWaveform.pixelsPerSecond;
+            var endpx = end * this._compositeWaveform.pixelsPerSecond;
             var canvasWidth = this._waveformCtx.canvas.width;
             var canvasHeight = this._waveformCtx.canvas.height;
             var barSpacing = this.options.data.waveformBarSpacing;
             var barWidth = this.options.data.waveformBarWidth;
-            var increment = Math.floor(((end - start) / canvasWidth) * barSpacing);
+            var increment = Math.floor(((endpx - startpx) / canvasWidth) * barSpacing);
             var sampleSpacing = (canvasWidth / barSpacing);
             this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
             this._waveformCtx.fillStyle = this.options.data.waveformColor;
-            for (var x = start; x < end; x += increment) {
+            for (var x = startpx; x < endpx; x += increment) {
                 var maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
                 var height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
                 var ypos = (canvasHeight - height) / 2;
-                var xpos = canvasWidth * IIIFComponents.AVComponentUtils.Utils.normalise(x, start, end);
+                var xpos = canvasWidth * IIIFComponents.AVComponentUtils.Utils.normalise(x, startpx, endpx);
                 this._waveformCtx.fillRect(xpos, ypos, barWidth, height);
             }
         };
@@ -1726,10 +1728,11 @@ var IIIFComponents;
         var CompositeWaveform = /** @class */ (function () {
             function CompositeWaveform(waveforms) {
                 var _this = this;
+                this.length = 0;
+                this.duration = 0;
                 this.pixelsPerSecond = Number.MAX_VALUE;
                 this.secondsPerPixel = Number.MAX_VALUE;
                 this._waveforms = [];
-                this.length = 0;
                 waveforms.forEach(function (waveform) {
                     _this._waveforms.push({
                         start: _this.length,
@@ -1737,6 +1740,7 @@ var IIIFComponents;
                         waveform: waveform
                     });
                     _this.length += waveform.adapter.length;
+                    _this.duration += waveform.duration;
                     _this.pixelsPerSecond = Math.min(_this.pixelsPerSecond, waveform.pixels_per_second);
                     _this.secondsPerPixel = Math.min(_this.secondsPerPixel, waveform.seconds_per_pixel);
                 });

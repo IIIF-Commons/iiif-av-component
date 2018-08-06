@@ -931,33 +931,35 @@ namespace IIIFComponents {
 
             let duration: Manifesto.Duration | undefined;
             let start: number = 0;
-            let end: number = this._compositeWaveform.length;
+            let end: number = this._compositeWaveform.duration;
 
             if (this._data.range) {
                 duration = this._data.range.getDuration();
             }
 
             if (this._data.limitToRange && duration) {
-                start = duration.start * this._compositeWaveform.pixelsPerSecond;
-                end = duration.end * this._compositeWaveform.pixelsPerSecond;
+                start = duration.start;
+                end = duration.end;
             }
 
+            const startpx = start * this._compositeWaveform.pixelsPerSecond;
+            const endpx = end * this._compositeWaveform.pixelsPerSecond;
             const canvasWidth: number = this._waveformCtx.canvas.width;
             const canvasHeight: number = this._waveformCtx.canvas.height;
             const barSpacing: number = this.options.data.waveformBarSpacing;
             const barWidth: number = this.options.data.waveformBarWidth;
-            const increment: number = Math.floor(((end - start) / canvasWidth) * barSpacing);
+            const increment: number = Math.floor(((endpx - startpx) / canvasWidth) * barSpacing);
             const sampleSpacing: number = (canvasWidth / barSpacing);
 
             this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
             this._waveformCtx.fillStyle = this.options.data.waveformColor;
 
-            for (let x = start; x < end; x += increment) {
+            for (let x = startpx; x < endpx; x += increment) {
 
                 const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
                 const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
                 const ypos = (canvasHeight - height) / 2;
-                const xpos = canvasWidth * AVComponentUtils.Utils.normalise(x, start, end);
+                const xpos = canvasWidth * AVComponentUtils.Utils.normalise(x, startpx, endpx);
 
                 this._waveformCtx.fillRect(xpos, ypos, barWidth, height);
             }
