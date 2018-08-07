@@ -7,6 +7,8 @@ namespace IIIFComponents {
         public canvasInstances: CanvasInstance[] = [];
         private _checkAllCanvasesReadyInterval: any;
         private _readyCanvases: number = 0;
+        private _posterCanvasWidth: number = 0;
+        private _posterCanvasHeight: number = 0;
 
         private _$posterContainer: JQuery;
         private _$posterImage: JQuery;
@@ -286,18 +288,27 @@ namespace IIIFComponents {
                 });
 
                 // poster canvas
-                const posterImage: string | null = this._data.helper.getPosterImage();
+                const posterCanvas: Manifesto.ICanvas | null = this._data.helper.getPosterCanvas();
 
-                if (posterImage) {
-                    this._$posterContainer.append(this._$posterImage);
+                if (posterCanvas) {
 
-                    let css: any = this._getPosterImageCss(this._posterImageExpanded);
-                    css = Object.assign({}, css, {
-                        'background-image': 'url(' + posterImage + ')'
-                    });
+                    this._posterCanvasWidth = posterCanvas.getWidth();
+                    this._posterCanvasHeight = posterCanvas.getHeight();
 
-                    this._$posterImage.css(css);
+                    const posterImage: string | null = this._data.helper.getPosterImage();
+
+                    if (posterImage) {
+                        this._$posterContainer.append(this._$posterImage);
+
+                        let css: any = this._getPosterImageCss(this._posterImageExpanded);
+                        css = Object.assign({}, css, {
+                            'background-image': 'url(' + posterImage + ')'
+                        });
+
+                        this._$posterImage.css(css);
+                    }
                 }
+
             }
 
         }
@@ -514,23 +525,41 @@ namespace IIIFComponents {
             const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
 
             if (currentCanvas) {
+
                 const $options: JQuery = currentCanvas.$playerElement.find('.options-container');
-                const width: number = <number>currentCanvas.$playerElement.parent().width();
-                const height: number = <number>currentCanvas.$playerElement.parent().height() - <number>$options.height();
-                
+                const containerWidth: number = <number>currentCanvas.$playerElement.parent().width();
+                const containerHeight: number = <number>currentCanvas.$playerElement.parent().height() - <number>$options.height();
+
                 if (expanded) {
                     return {
                         'top': 0,
                         'left': 0,
-                        'width': width,
-                        'height': height
+                        'width': containerWidth,
+                        'height': containerHeight
                     }
                 } else {
+
+                    // get the longer edge of the poster canvas and make that a third of the container height/width.
+                    // scale the shorter edge proportionally.
+                    let ratio: number;
+                    let width: number;
+                    let height: number;
+
+                    if (this._posterCanvasWidth > this._posterCanvasHeight) {
+                        ratio = this._posterCanvasHeight / this._posterCanvasWidth;
+                        width = containerWidth / 3;
+                        height = width * ratio;
+                    } else { // either height is greater, or width and height are equal
+                        ratio = this._posterCanvasWidth / this._posterCanvasHeight;
+                        height = containerHeight / 3;
+                        width = height * ratio;
+                    }
+
                     return {
                         'top': 0,
-                        'left': (width / 3) * 2,
-                        'width': width / 3,
-                        'height': height / 3
+                        'left': containerWidth - width,
+                        'width': width,
+                        'height': height
                     }
                 }
             }

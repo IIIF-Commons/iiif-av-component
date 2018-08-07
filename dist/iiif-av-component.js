@@ -21,6 +21,8 @@ var IIIFComponents;
             _this._data = _this.data();
             _this.canvasInstances = [];
             _this._readyCanvases = 0;
+            _this._posterCanvasWidth = 0;
+            _this._posterCanvasHeight = 0;
             _this._posterImageExpanded = false;
             _this._init();
             _this._resize();
@@ -227,14 +229,19 @@ var IIIFComponents;
                     }
                 });
                 // poster canvas
-                var posterImage = this._data.helper.getPosterImage();
-                if (posterImage) {
-                    this._$posterContainer.append(this._$posterImage);
-                    var css = this._getPosterImageCss(this._posterImageExpanded);
-                    css = Object.assign({}, css, {
-                        'background-image': 'url(' + posterImage + ')'
-                    });
-                    this._$posterImage.css(css);
+                var posterCanvas = this._data.helper.getPosterCanvas();
+                if (posterCanvas) {
+                    this._posterCanvasWidth = posterCanvas.getWidth();
+                    this._posterCanvasHeight = posterCanvas.getHeight();
+                    var posterImage = this._data.helper.getPosterImage();
+                    if (posterImage) {
+                        this._$posterContainer.append(this._$posterImage);
+                        var css = this._getPosterImageCss(this._posterImageExpanded);
+                        css = Object.assign({}, css, {
+                            'background-image': 'url(' + posterImage + ')'
+                        });
+                        this._$posterImage.css(css);
+                    }
                 }
             }
         };
@@ -400,22 +407,37 @@ var IIIFComponents;
             var currentCanvas = this._getCurrentCanvas();
             if (currentCanvas) {
                 var $options = currentCanvas.$playerElement.find('.options-container');
-                var width = currentCanvas.$playerElement.parent().width();
-                var height = currentCanvas.$playerElement.parent().height() - $options.height();
+                var containerWidth = currentCanvas.$playerElement.parent().width();
+                var containerHeight = currentCanvas.$playerElement.parent().height() - $options.height();
                 if (expanded) {
                     return {
                         'top': 0,
                         'left': 0,
-                        'width': width,
-                        'height': height
+                        'width': containerWidth,
+                        'height': containerHeight
                     };
                 }
                 else {
+                    // get the longer edge of the poster canvas and make that a third of the container height/width.
+                    // scale the shorter edge proportionally.
+                    var ratio = void 0;
+                    var width = void 0;
+                    var height = void 0;
+                    if (this._posterCanvasWidth > this._posterCanvasHeight) {
+                        ratio = this._posterCanvasHeight / this._posterCanvasWidth;
+                        width = containerWidth / 3;
+                        height = width * ratio;
+                    }
+                    else {
+                        ratio = this._posterCanvasWidth / this._posterCanvasHeight;
+                        height = containerHeight / 3;
+                        width = height * ratio;
+                    }
                     return {
                         'top': 0,
-                        'left': (width / 3) * 2,
-                        'width': width / 3,
-                        'height': height / 3
+                        'left': containerWidth - width,
+                        'width': width,
+                        'height': height
                     };
                 }
             }

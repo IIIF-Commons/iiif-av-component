@@ -23,6 +23,8 @@ declare namespace IIIFComponents {
         canvasInstances: CanvasInstance[];
         private _checkAllCanvasesReadyInterval;
         private _readyCanvases;
+        private _posterCanvasWidth;
+        private _posterCanvasHeight;
         private _$posterContainer;
         private _$posterImage;
         private _$posterExpandButton;
