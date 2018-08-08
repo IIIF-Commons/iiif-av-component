@@ -102,7 +102,7 @@
                             "type": "Annotation",
                             "seeAlso": [
                                 {
-                                    "id": "https://edsilv.github.io/peaksjs-test/vdc_100048002902.0x000009.dat",
+                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100048002902.0x000008.dat",
                                     "type": "Dataset",
                                     "format": "application/octet-stream",
                                     "profile": "http://waveform.prototyping.bbc.co.uk"
