@@ -72,7 +72,7 @@
                             ],
 				 "seeAlso": [
                                 {
-                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000032.dat",
+                                    "id": "https://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000032.dat",
                                     "type": "Dataset",
                                     "format": "application/octet-stream",
                                     "profile": "http://waveform.prototyping.bbc.co.uk"
@@ -113,7 +113,7 @@
                             ],
 				"seeAlso": [
                                 {
-                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000034.dat",
+                                    "id": "https://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000034.dat",
                                     "type": "Dataset",
                                     "format": "application/octet-stream",
                                     "profile": "http://waveform.prototyping.bbc.co.uk"
@@ -154,7 +154,7 @@
                             ],
 				"seeAlso": [
                                 {
-                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000036.dat",
+                                    "id": "https://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000036.dat",
                                     "type": "Dataset",
                                     "format": "application/octet-stream",
                                     "profile": "http://waveform.prototyping.bbc.co.uk"
@@ -195,7 +195,7 @@
                             ],
 				"seeAlso": [
                                 {
-                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000038.dat",
+                                    "id": "https://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000038.dat",
                                     "type": "Dataset",
                                     "format": "application/octet-stream",
                                     "profile": "http://waveform.prototyping.bbc.co.uk"
@@ -236,7 +236,7 @@
                             ],
 				"seeAlso": [
                                 {
-                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x00003a.dat",
+                                    "id": "https://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x00003a.dat",
                                     "type": "Dataset",
                                     "format": "application/octet-stream",
                                     "profile": "http://waveform.prototyping.bbc.co.uk"
@@ -277,7 +277,7 @@
                             ],
 				"seeAlso": [
                                 {
-                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x00003c.dat",
+                                    "id": "https://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x00003c.dat",
                                     "type": "Dataset",
                                     "format": "application/octet-stream",
                                     "profile": "http://waveform.prototyping.bbc.co.uk"
