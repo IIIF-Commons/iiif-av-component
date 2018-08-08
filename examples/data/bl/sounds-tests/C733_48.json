@@ -70,6 +70,14 @@
                                     "type": "Choice"
                                 }
                             ],
+				 "seeAlso": [
+                                {
+                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000032.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
+                                }
+				 ],
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004/anno/",
                             "motivation": "painting",
                             "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000004",
@@ -103,6 +111,14 @@
                                     "type": "Choice"
                                 }
                             ],
+				"seeAlso": [
+                                {
+                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000034.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
+                                }
+				 ],
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005/anno/",
                             "motivation": "painting",
                             "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000005",
@@ -136,6 +152,14 @@
                                     "type": "Choice"
                                 }
                             ],
+				"seeAlso": [
+                                {
+                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000036.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
+                                }
+				 ],
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007/anno/",
                             "motivation": "painting",
                             "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000007",
@@ -169,6 +193,14 @@
                                     "type": "Choice"
                                 }
                             ],
+				"seeAlso": [
+                                {
+                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x000038.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
+                                }
+				 ],
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008/anno/",
                             "motivation": "painting",
                             "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x000008",
@@ -202,6 +234,14 @@
                                     "type": "Choice"
                                 }
                             ],
+				"seeAlso": [
+                                {
+                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x00003a.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
+                                }
+				 ],
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a/anno/",
                             "motivation": "painting",
                             "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000a",
@@ -235,6 +275,14 @@
                                     "type": "Choice"
                                 }
                             ],
+				"seeAlso": [
+                                {
+                                    "id": "http://iiif-waveforms.s3.amazonaws.com/vdc_100052320369.0x00003c.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
+                                }
+				 ],
                             "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b/anno/",
                             "motivation": "painting",
                             "target": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052320369.0x00000b",
