@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.63 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.64 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -112,12 +112,15 @@ declare namespace IIIFComponents {
         private _canvasClockTime;
         private _canvasHeight;
         private _canvasWidth;
+        private _compositeWaveform;
         private _contentAnnotations;
         private _data;
         private _highPriorityFrequency;
         private _highPriorityInterval;
         private _isPlaying;
         private _isStalled;
+        private _lastCanvasHeight;
+        private _lastCanvasWidth;
         private _lowPriorityFrequency;
         private _lowPriorityInterval;
         private _mediaSyncMarginSecs;
@@ -126,10 +129,9 @@ declare namespace IIIFComponents {
         private _stallRequestedBy;
         private _volume;
         private _wasPlaying;
-        private _waveforms;
         private _waveformCanvas;
         private _waveformCtx;
-        private _compositeWaveform;
+        private _waveforms;
         ranges: Manifesto.IRange[];
         $playerElement: JQuery;
         logMessage: (message: string) => void;

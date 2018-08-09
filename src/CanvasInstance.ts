@@ -29,12 +29,15 @@ namespace IIIFComponents {
         private _canvasClockTime: number = 0;
         private _canvasHeight: number = 0;
         private _canvasWidth: number = 0;
+        private _compositeWaveform: AVComponentObjects.CompositeWaveform;
         private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
         private _data: IAVCanvasInstanceData = this.data();
         private _highPriorityFrequency: number = 25;
         private _highPriorityInterval: number;
         private _isPlaying: boolean = false;
         private _isStalled: boolean = false;
+        private _lastCanvasHeight: number | undefined;
+        private _lastCanvasWidth: number | undefined;
         private _lowPriorityFrequency: number = 250;
         private _lowPriorityInterval: number;
         private _mediaSyncMarginSecs: number = 1;
@@ -43,10 +46,9 @@ namespace IIIFComponents {
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
         private _wasPlaying: boolean = false;
-        private _waveforms: string[] = [];
         private _waveformCanvas: HTMLCanvasElement | null;
         private _waveformCtx: CanvasRenderingContext2D | null;
-        private _compositeWaveform: AVComponentObjects.CompositeWaveform;
+        private _waveforms: string[] = [];
         public ranges: Manifesto.IRange[] = [];
 
         public $playerElement: JQuery;
@@ -1449,8 +1451,14 @@ namespace IIIFComponents {
                 }
 
                 if (this._waveformCanvas) {
-                    this._waveformCanvas.width = <number>this._$canvasContainer.width();
-                    this._waveformCanvas.height = <number>this._$canvasContainer.height();
+                    const canvasWidth: number = <number>this._$canvasContainer.width();
+                    const canvasHeight: number = <number>this._$canvasContainer.height();
+
+                    if (canvasWidth !== this._lastCanvasWidth || canvasHeight !== this._lastCanvasHeight) {
+                        this._waveformCanvas.width = this._lastCanvasWidth = canvasWidth;
+                        this._waveformCanvas.height = this._lastCanvasHeight = canvasHeight;
+                    }
+                    
                 }
 
                 this._render();
