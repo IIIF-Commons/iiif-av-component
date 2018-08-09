@@ -49,6 +49,7 @@ namespace IIIFComponents {
         private _waveformCanvas: HTMLCanvasElement | null;
         private _waveformCtx: CanvasRenderingContext2D | null;
         private _waveforms: string[] = [];
+        private _waveformNeedsRedraw: boolean = false;
         public ranges: Manifesto.IRange[] = [];
 
         public $playerElement: JQuery;
@@ -929,7 +930,7 @@ namespace IIIFComponents {
 
         private _drawWaveform(): void {
 
-            if (!this._waveformCtx) return;
+            if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
 
             let duration: Manifesto.Duration | undefined;
             let start: number = 0;
@@ -1457,6 +1458,9 @@ namespace IIIFComponents {
                     if (canvasWidth !== this._lastCanvasWidth || canvasHeight !== this._lastCanvasHeight) {
                         this._waveformCanvas.width = this._lastCanvasWidth = canvasWidth;
                         this._waveformCanvas.height = this._lastCanvasHeight = canvasHeight;
+                        this._waveformNeedsRedraw = true;
+                    } else {
+                        this._waveformNeedsRedraw = false;
                     }
                     
                 }
