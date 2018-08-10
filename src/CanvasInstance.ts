@@ -49,7 +49,7 @@ namespace IIIFComponents {
         private _waveformCanvas: HTMLCanvasElement | null;
         private _waveformCtx: CanvasRenderingContext2D | null;
         private _waveforms: string[] = [];
-        private _waveformNeedsRedraw: boolean = false;
+        private _waveformNeedsRedraw: boolean = true;
         public ranges: Manifesto.IRange[] = [];
 
         public $playerElement: JQuery;
@@ -180,7 +180,7 @@ namespace IIIFComponents {
             let prevClicks: number = 0;
             let prevTimeout: number = 0;
 
-            this._$prevButton.on('click', () => {
+            this._$prevButton.on('touchstart click', () => {
 
                 prevClicks++;
 
@@ -202,7 +202,7 @@ namespace IIIFComponents {
                 }
             });
 
-            this._$playButton.on('click', () => {
+            this._$playButton.on('touchstart click', () => {
                 if (this._isPlaying) {
                     this.pause();
                 } else {
@@ -210,7 +210,7 @@ namespace IIIFComponents {
                 }
             });
 
-            this._$nextButton.on('click', () => {
+            this._$nextButton.on('touchstart click', () => {
                 this._next();
             });
 

@@ -212,7 +212,7 @@ var IIIFComponents;
                 this._$posterImage = $('<div class="poster-image"></div>');
                 this._$posterExpandButton = $("\n                    <button class=\"btn\" title=\"" + (this._data && this._data.content ? this._data.content.expand : '') + "\">\n                        <i class=\"av-icon  av-icon-expand expand\" aria-hidden=\"true\"></i><span>" + (this._data && this._data.content ? this._data.content.expand : '') + "</span>\n                    </button>\n                ");
                 this._$posterImage.append(this._$posterExpandButton);
-                this._$posterImage.on('click', function () {
+                this._$posterImage.on('touchstart click', function () {
                     var target = _this._getPosterImageCss(!_this._posterImageExpanded);
                     //this._$posterImage.animate(target,"fast", "easein");
                     _this._$posterImage.animate(target);
@@ -524,7 +524,7 @@ var IIIFComponents;
             this._$volumeSlider = $('<div class="volume-slider"></div>');
             this._$element.append(this._$volumeMute, this._$volumeSlider);
             var that = this;
-            this._$volumeMute.on('click', function () {
+            this._$volumeMute.on('touchstart click', function () {
                 // start reducer
                 if (_this._data.volume !== 0) {
                     // mute
@@ -635,7 +635,7 @@ var IIIFComponents;
             _this._stallRequestedBy = []; //todo: type
             _this._wasPlaying = false;
             _this._waveforms = [];
-            _this._waveformNeedsRedraw = false;
+            _this._waveformNeedsRedraw = true;
             _this.ranges = [];
             _this._scaleY = function (amplitude, height) {
                 var range = 256;
@@ -734,7 +734,7 @@ var IIIFComponents;
             var that = this;
             var prevClicks = 0;
             var prevTimeout = 0;
-            this._$prevButton.on('click', function () {
+            this._$prevButton.on('touchstart click', function () {
                 prevClicks++;
                 if (prevClicks === 1) {
                     // single click
@@ -754,7 +754,7 @@ var IIIFComponents;
                     prevTimeout = 0;
                 }
             });
-            this._$playButton.on('click', function () {
+            this._$playButton.on('touchstart click', function () {
                 if (_this._isPlaying) {
                     _this.pause();
                 }
@@ -762,7 +762,7 @@ var IIIFComponents;
                     _this.play();
                 }
             });
-            this._$nextButton.on('click', function () {
+            this._$nextButton.on('touchstart click', function () {
                 _this._next();
             });
             this._$canvasTimelineContainer.slider({
