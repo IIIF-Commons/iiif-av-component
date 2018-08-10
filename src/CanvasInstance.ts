@@ -467,7 +467,10 @@ namespace IIIFComponents {
                                 this._setCurrentTime(duration.start);
                             }
                             
-                            this.play();
+                            if (this._data.autoPlay) {
+                                this.play();
+                            }
+                            
                             this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);                          
                         }
                     }
