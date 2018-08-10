@@ -269,7 +269,10 @@ namespace IIIFComponents {
                 `);
                 this._$posterImage.append(this._$posterExpandButton);
 
-                this._$posterImage.on('touchstart click', () => {                    
+                this._$posterImage.on('touchstart click', (e) => {    
+                    
+                    e.preventDefault();
+                    
                     const target: any = this._getPosterImageCss(!this._posterImageExpanded);
                     //this._$posterImage.animate(target,"fast", "easein");
                     this._$posterImage.animate(target);

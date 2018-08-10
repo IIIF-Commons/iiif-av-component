@@ -212,7 +212,8 @@ var IIIFComponents;
                 this._$posterImage = $('<div class="poster-image"></div>');
                 this._$posterExpandButton = $("\n                    <button class=\"btn\" title=\"" + (this._data && this._data.content ? this._data.content.expand : '') + "\">\n                        <i class=\"av-icon  av-icon-expand expand\" aria-hidden=\"true\"></i><span>" + (this._data && this._data.content ? this._data.content.expand : '') + "</span>\n                    </button>\n                ");
                 this._$posterImage.append(this._$posterExpandButton);
-                this._$posterImage.on('touchstart click', function () {
+                this._$posterImage.on('touchstart click', function (e) {
+                    e.preventDefault();
                     var target = _this._getPosterImageCss(!_this._posterImageExpanded);
                     //this._$posterImage.animate(target,"fast", "easein");
                     _this._$posterImage.animate(target);
@@ -639,7 +640,7 @@ var IIIFComponents;
             _this.ranges = [];
             _this._scaleY = function (amplitude, height) {
                 var range = 256;
-                return Math.max(_this.options.data.waveformBarWidth, (amplitude * height / range));
+                return Math.max(_this._data.waveformBarWidth, (amplitude * height / range));
             };
             _this._data = _this.options.data;
             _this.$playerElement = $('<div class="player"></div>');
@@ -734,7 +735,8 @@ var IIIFComponents;
             var that = this;
             var prevClicks = 0;
             var prevTimeout = 0;
-            this._$prevButton.on('touchstart click', function () {
+            this._$prevButton.on('touchstart click', function (e) {
+                e.preventDefault();
                 prevClicks++;
                 if (prevClicks === 1) {
                     // single click
@@ -754,7 +756,8 @@ var IIIFComponents;
                     prevTimeout = 0;
                 }
             });
-            this._$playButton.on('touchstart click', function () {
+            this._$playButton.on('touchstart click', function (e) {
+                e.preventDefault();
                 if (_this._isPlaying) {
                     _this.pause();
                 }
@@ -762,7 +765,8 @@ var IIIFComponents;
                     _this.play();
                 }
             });
-            this._$nextButton.on('touchstart click', function () {
+            this._$nextButton.on('touchstart click', function (e) {
+                e.preventDefault();
                 _this._next();
             });
             this._$canvasTimelineContainer.slider({
@@ -1283,7 +1287,7 @@ var IIIFComponents;
                         //if (!this._data.range) {
                         _this._setCurrentTime(0);
                         //}                        
-                        if (_this.options.data.autoPlay) {
+                        if (_this._data.autoPlay) {
                             _this.play();
                         }
                         _this._updateDurationDisplay();
@@ -1327,7 +1331,7 @@ var IIIFComponents;
                 _this._$canvasContainer.append(_this._waveformCanvas);
                 _this._waveformCtx = _this._waveformCanvas.getContext('2d');
                 if (_this._waveformCtx) {
-                    _this._waveformCtx.fillStyle = _this.options.data.waveformColor;
+                    _this._waveformCtx.fillStyle = _this._data.waveformColor;
                     _this._compositeWaveform = new IIIFComponents.AVComponentObjects.CompositeWaveform(waveforms);
                     _this._resize();
                 }
@@ -1350,12 +1354,12 @@ var IIIFComponents;
             var endpx = end * this._compositeWaveform.pixelsPerSecond;
             var canvasWidth = this._waveformCtx.canvas.width;
             var canvasHeight = this._waveformCtx.canvas.height;
-            var barSpacing = this.options.data.waveformBarSpacing;
-            var barWidth = this.options.data.waveformBarWidth;
+            var barSpacing = this._data.waveformBarSpacing;
+            var barWidth = this._data.waveformBarWidth;
             var increment = Math.floor(((endpx - startpx) / canvasWidth) * barSpacing);
             var sampleSpacing = (canvasWidth / barSpacing);
             this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
-            this._waveformCtx.fillStyle = this.options.data.waveformColor;
+            this._waveformCtx.fillStyle = this._data.waveformColor;
             for (var x = startpx; x < endpx; x += increment) {
                 var maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
                 var height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
@@ -1438,8 +1442,6 @@ var IIIFComponents;
             this._lowPriorityUpdater();
             this._synchronizeMedia();
         };
-        // todo: can this be part of the _data state?
-        // this._data.rewind = true?
         CanvasInstance.prototype._rewind = function (withoutUpdate) {
             this.pause();
             var duration;
@@ -1459,10 +1461,7 @@ var IIIFComponents;
                     });
                 }
             }
-            this.play();
         };
-        // todo: can this be part of the _data state?
-        // this._data.fastforward = true?
         CanvasInstance.prototype._fastforward = function () {
             var duration;
             if (this._data.range) {

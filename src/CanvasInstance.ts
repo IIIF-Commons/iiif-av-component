@@ -180,7 +180,9 @@ namespace IIIFComponents {
             let prevClicks: number = 0;
             let prevTimeout: number = 0;
 
-            this._$prevButton.on('touchstart click', () => {
+            this._$prevButton.on('touchstart click', (e) => {
+
+                e.preventDefault();
 
                 prevClicks++;
 
@@ -202,7 +204,10 @@ namespace IIIFComponents {
                 }
             });
 
-            this._$playButton.on('touchstart click', () => {
+            this._$playButton.on('touchstart click', (e) => {
+
+                e.preventDefault();
+
                 if (this._isPlaying) {
                     this.pause();
                 } else {
@@ -210,7 +215,10 @@ namespace IIIFComponents {
                 }
             });
 
-            this._$nextButton.on('touchstart click', () => {
+            this._$nextButton.on('touchstart click', (e) => {
+
+                e.preventDefault();
+
                 this._next();
             });
 
@@ -867,7 +875,7 @@ namespace IIIFComponents {
                         this._setCurrentTime(0);
                         //}                        
 
-                        if (this.options.data.autoPlay) {
+                        if (this._data.autoPlay) {
                             this.play();
                         }
 
@@ -920,7 +928,7 @@ namespace IIIFComponents {
                 this._waveformCtx = this._waveformCanvas.getContext('2d');
 
                 if (this._waveformCtx) {
-                    this._waveformCtx.fillStyle = this.options.data.waveformColor;
+                    this._waveformCtx.fillStyle = <string>this._data.waveformColor;
                     this._compositeWaveform = new AVComponentObjects.CompositeWaveform(waveforms);
                     this._resize();
                 }
@@ -949,13 +957,13 @@ namespace IIIFComponents {
             const endpx = end * this._compositeWaveform.pixelsPerSecond;
             const canvasWidth: number = this._waveformCtx.canvas.width;
             const canvasHeight: number = this._waveformCtx.canvas.height;
-            const barSpacing: number = this.options.data.waveformBarSpacing;
-            const barWidth: number = this.options.data.waveformBarWidth;
+            const barSpacing: number = <number>this._data.waveformBarSpacing;
+            const barWidth: number = <number>this._data.waveformBarWidth;
             const increment: number = Math.floor(((endpx - startpx) / canvasWidth) * barSpacing);
             const sampleSpacing: number = (canvasWidth / barSpacing);
 
             this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
-            this._waveformCtx.fillStyle = this.options.data.waveformColor;
+            this._waveformCtx.fillStyle = <string>this._data.waveformColor;
 
             for (let x = startpx; x < endpx; x += increment) {
 
@@ -970,7 +978,7 @@ namespace IIIFComponents {
 
         private _scaleY = (amplitude: number, height: number) => {
             const range = 256;
-            return Math.max(this.options.data.waveformBarWidth, (amplitude * height / range));
+            return Math.max(<number>this._data.waveformBarWidth, (amplitude * height / range));
         };
 
         private _getWaveformMaxAndMin(waveform: AVComponentObjects.CompositeWaveform, index: number, sampleSpacing: number): IMaxMin {
@@ -1074,8 +1082,6 @@ namespace IIIFComponents {
             this._synchronizeMedia();
         }
 
-        // todo: can this be part of the _data state?
-        // this._data.rewind = true?
         private _rewind(withoutUpdate?: boolean): void {
 
             this.pause();
@@ -1099,12 +1105,8 @@ namespace IIIFComponents {
                     });
                 }
             }
-
-            this.play();
         }
 
-        // todo: can this be part of the _data state?
-        // this._data.fastforward = true?
         private _fastforward(): void {
 
             let duration: Manifesto.Duration | undefined;
