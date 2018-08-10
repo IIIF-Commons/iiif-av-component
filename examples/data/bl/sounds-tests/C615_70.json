@@ -9,7 +9,7 @@
 	"label":{"en":["C615/70 C615/71 Tamas Vasary piano"]},
 	"metadata": [
 	 	{
-	 	 	"label":{"en":["Title"]},
+	 	 	"label":{"en":["Full title"]},
 	 	 	"value":{"en":["Tamas Vasary piano"]}
 	 	},
 	 	{
@@ -21,20 +21,36 @@
 	 	 	"value":{"en":["2 tape reels 25 cm 19 cm/sec stereo"]}
 	 	},
 	 	{
-	 	 	"label":{"en":["Description"]},
-	 	 	"value":{"en":["Beethoven and Mozart recital"]}
+	 	 	"label":{"en":["Usage"]},
+	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
 	 	},
 	 	{
-	 	 	"label":{"en":["Identifier"]},
-	 	 	"value":{"en":["C615/70"]}
-	 	},
-	 	{
-	 	 	"label":{"en":["Digitisation funded by"]},
-	 	 	"value":{"en":["Heritage Lottery Fund"]}
+	 	 	"label":{"en":["Held by"]},
+	 	 	"value":{"en":["The British Library"]}
 	 	},
 	 	{
 	 	 	"label":{"en":["Digitised by"]},
 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Identifier"]},
+	 	 	"value":{"en":["C615/70-C615/71"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Shelfmark"]},
+	 	 	"value":{"en":["C615/70"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA5898224>View the catalogue record</a>"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Contents"]},
+	 	 	"value":{"en":["Beethoven and Mozart recital"]}
 	 	}
 	],
 	"logo": [{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],    
@@ -97,6 +113,14 @@
 									]
 								}
 							],
+							"seeAlso": [
+                                {
+                                    "id": "https://iiif-waveforms.s3.eu-west-2.amazonaws.com/vdc_100055540263.0x000023.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
+                                }
+],
 							"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004"
 						}
 					]
@@ -130,6 +154,14 @@
 									]
 								}
 							],
+							"seeAlso": [
+                                {
+                                    "id": "https://iiif-waveforms.s3.eu-west-2.amazonaws.com/vdc_100055540263.0x000025.dat",
+                                    "type": "Dataset",
+                                    "format": "application/octet-stream",
+                                    "profile": "http://waveform.prototyping.bbc.co.uk"
+                                }
+],
 							"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006"
 						}
 					]
@@ -149,29 +181,57 @@
 	 	 	 	 	 	"label":{"en":["[No Title]"]},
 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	"value":{"en":["[No Title]"]}
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
-	 	 	 	 	 	 	}
+	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	"value":{"en":["[No Title]"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	"value":{"en":["1 hr. 50 min."]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	"value":{"en":["C615/70 C1-3; C615/71 C1-8"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	"value":{"en":["C615/70"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA8055177>View the catalogue record</a>"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	"value":{"en":["Live performance Concert recital. Items performed catalogued separately"]}
+	 	 	 	 	 	}
 	 	 	 	 	 	],
 	 	 	 	 	 	
 	 	 	 	 	 	"items": [
@@ -192,29 +252,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Fantasien, piano, K475/Mozart"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Fantasien, piano, K475/Mozart"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Fantasien, piano, K475/Mozart"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["14 min."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70 C1"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264038>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
@@ -231,29 +319,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Sonatas, piano, K457/Mozart"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, K457/Mozart"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, K457/Mozart"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["20 min. 20 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70 C2"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264039>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
@@ -270,29 +386,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Sonatas, piano, no.6, op.10, no.2/Beethoven"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, no.6, op.10, no.2/Beethoven"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, no.6, op.10, no.2/Beethoven"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["17 min. 32 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70 C3"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264041>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
@@ -320,29 +464,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Sonata, piano, B minor/Liszt"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Sonata, piano, B minor/Liszt"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Sonata, piano, B minor/Liszt"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["29 min.42 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C1"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6261427>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
@@ -359,29 +531,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Etudes, piano, op.25. No.12/Chopin"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Etudes, piano, op.25. No.12/Chopin"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Etudes, piano, op.25. No.12/Chopin"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["3 min. 36 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C2"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6261428>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
@@ -398,29 +598,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Etudes, piano, op.10. No.12/Chopin"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Etudes, piano, op.10. No.12/Chopin"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Etudes, piano, op.10. No.12/Chopin"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["3 min. 27 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C3"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264043>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
@@ -437,29 +665,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Feux d'artifice/Debussy"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Feux d'artifice/Debussy"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Feux d'artifice/Debussy"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["4 min. 51 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C4"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264044>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
@@ -476,29 +732,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Sonatas, piano, no.18, op.31, no.3/Beethoven"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, no.18, op.31, no.3/Beethoven"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance Scherzo only"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, no.18, op.31, no.3/Beethoven"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["6 min. 11 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C5"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264045>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance Scherzo only"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
@@ -515,29 +799,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Campanella/Liszt"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Campanella/Liszt"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Campanella/Liszt"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["6 min. 22 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C6"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264048>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
@@ -554,29 +866,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Mazurkas, piano, op.68, no.2/Chopin"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Mazurkas, piano, op.68, no.2/Chopin"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Mazurkas, piano, op.68, no.2/Chopin"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["3 min. 16 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C7"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264097>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
@@ -593,29 +933,57 @@
 	 	 	 	 	 	 	 	"label":{"en":["Preludes, piano, op.28, no.3/Chopin"]},
 	 	 	 	 	 	 	 	"metadata": [
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Preludes, piano, op.28, no.3/Chopin"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Preludes, piano, op.28, no.3/Chopin"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1 min. 17 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C8"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264098>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	 	
 	 	 	 	 	 	 	 	"items": [
