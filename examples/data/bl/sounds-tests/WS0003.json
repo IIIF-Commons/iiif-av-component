@@ -195,6 +195,7 @@
 	 	 	 	 	 	 	"value":{"en":["copy or original: third generation copy"]}
 	 	 	 	 	 	}
 	 	 	 	 	],
+			"logo":[{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],
                     "type": "Range"
                 }
             ],
