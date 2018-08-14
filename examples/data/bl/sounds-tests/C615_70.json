@@ -88,7 +88,7 @@
 	"items": [{
 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004",
 	 	 	"type":"Canvas",
-	 	 	"label":{"en":["[No Title]"]},
+	 	 	"label":{"en":["Tape 1 Side 1"]},
 	 	 	"duration":3166.84,
 	 	 	"items": [
 	 	 	 	{
@@ -130,7 +130,7 @@
 	 	},{
 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006",
 	 	 	"type":"Canvas",
-	 	 	"label":{"en":["[No Title]"]},
+	 	 	"label":{"en":["Tape 2 Side 1"]},
 	 	 	"duration":3750.28,
 	 	 	"items": [
 	 	 	 	{
