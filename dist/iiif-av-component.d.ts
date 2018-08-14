@@ -147,7 +147,7 @@ declare namespace IIIFComponents {
         private _getRangeForCurrentTime(parentRange?);
         private _rangeSpansCurrentTime(range);
         private _rangeNavigable(range);
-        private _render();
+        private _render(forceWaveformRedraw?);
         getCanvasId(): string | undefined;
         private _updateHoverPreview(e, $container, duration);
         private _previous(isDouble);
@@ -157,7 +157,7 @@ declare namespace IIIFComponents {
         private _renderMediaElement(data);
         private _getWaveformData(url);
         private _renderWaveform();
-        private _drawWaveform();
+        private _drawWaveform(forceWaveformRedraw?);
         private _scaleY;
         private _getWaveformMaxAndMin(waveform, index, sampleSpacing);
         private _updateCurrentTimeDisplay();

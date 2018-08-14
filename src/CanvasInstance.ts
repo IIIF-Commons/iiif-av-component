@@ -491,7 +491,7 @@ namespace IIIFComponents {
             }
 
             if (diff.includes('limitToRange')) {
-                this._render();
+                this._render(true);
             }
 
         }
@@ -572,7 +572,7 @@ namespace IIIFComponents {
             return true;
         }
 
-        private _render(): void {
+        private _render(forceWaveformRedraw: boolean = false): void {
 
             if (this._data.range) {
 
@@ -647,7 +647,7 @@ namespace IIIFComponents {
 
             this._updateCurrentTimeDisplay();
             this._updateDurationDisplay();
-            this._drawWaveform();
+            this._drawWaveform(forceWaveformRedraw);
         }
 
         public getCanvasId(): string | undefined {
@@ -939,9 +939,9 @@ namespace IIIFComponents {
             });
         }
 
-        private _drawWaveform(): void {
+        private _drawWaveform(forceWaveformRedraw: boolean = false): void {
 
-            if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
+            if (!this._waveformCtx || (!this._waveformNeedsRedraw && !forceWaveformRedraw)) return;
 
             let duration: Manifesto.Duration | undefined;
             let start: number = 0;
