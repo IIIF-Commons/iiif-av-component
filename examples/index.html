@@ -114,7 +114,7 @@
         }
 
         var state = {
-            limitToRange: false,
+            limitToRange: true,
             autoSelectRange: true,
             constrainNavigationToRange: true,
             virtualCanvasEnabled: true
@@ -192,7 +192,8 @@
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000013');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000015');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000011');
-                //avcomponent.playRange("https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007");
+                //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007');
+                avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000011');
             });
 
             avcomponent.on('rangechanged', function(rangeid) {

@@ -572,7 +572,7 @@ namespace IIIFComponents {
             return true;
         }
 
-        private _render(forceWaveformRedraw: boolean = false): void {
+        private _render(): void {
 
             if (this._data.range) {
 
@@ -939,9 +939,9 @@ namespace IIIFComponents {
             });
         }
 
-        private _drawWaveform(forceWaveformRedraw: boolean = false): void {
+        private _drawWaveform(): void {
 
-            if (!this._waveformCtx || (!this._waveformNeedsRedraw && !forceWaveformRedraw)) return;
+            if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
 
             let duration: Manifesto.Duration | undefined;
             let start: number = 0;
