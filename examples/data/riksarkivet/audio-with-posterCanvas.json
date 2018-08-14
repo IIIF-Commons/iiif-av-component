@@ -3,7 +3,7 @@
         "http://www.w3.org/ns/anno.jsonld",
         "http://iiif.io/api/presentation/3/context.json"
     ],
-    "id": "http://localhost:58982/arkis!T0000296/manifest",
+    "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296/manifest",
     "type": "Manifest",
     "label": {
         "sv": [
@@ -37,7 +37,7 @@
             },
             "value": {
                 "sv": [
-                    "The Polish Ambassadors musik."
+                    "Test-musik."
                 ]
             }
         },
@@ -104,21 +104,6 @@
         {
             "label": {
                 "sv": [
-                    "Anmärkning"
-                ],
-                "en-GB": [
-                    "Remark"
-                ]
-            },
-            "value": {
-                "sv": [
-                    null
-                ]
-            }
-        },
-        {
-            "label": {
-                "sv": [
                     "Källhänvisning"
                 ],
                 "en-GB": [
@@ -130,36 +115,6 @@
                     "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017)"
                 ]
             }
-        },
-        {
-            "label": {
-                "sv": [
-                    "Skannade omslag"
-                ],
-                "en-GB": [
-                    "Scanned covers"
-                ]
-            },
-            "value": {
-                "sv": [
-                    "<a href =http://localhost:58982//api/AudioVideo/T0000296_00001.pdf> skiva-omslag.pdf</a><br>"
-                ]
-            }
-        },
-        {
-            "label": {
-                "sv": [
-                    "Övrig dokumentation"
-                ],
-                "en-GB": [
-                    "Additional documentation"
-                ]
-            },
-            "value": {
-                "sv": [
-                    ""
-                ]
-            }
         }
     ],
     "summary": {
@@ -168,20 +123,20 @@
         ]
     },
     "posterCanvas": {
-        "id": "http://localhost:58982/canvas/audio-poster",
+        "id": "https://github.com/Riksarkivet/test-media/iiif!generic-audio-cover/canvas",
         "type": "Canvas",
         "items": [
             {
-                "id": "http://localhost:58982/iiif!generic-audio-cover/annotationpage/audio-poster",
+                "id": "https://github.com/Riksarkivet/test-media/iiif!generic-audio-cover/annotationpage",
                 "type": "AnnotationPage",
                 "items": [
                     {
-                        "id": "http://localhost:58982/iiif!generic-audio-cover/annotation/audio-poster",
+                        "id": "https://github.com/Riksarkivet/test-media/iiif!generic-audio-cover/annotation",
                         "type": "Annotation",
                         "motivation": "painting",
-                        "target": "http://localhost:58982/canvas/audio-poster",
+                        "target": "https://github.com/Riksarkivet/test-media/iiif!generic-audio-cover/canvas",
                         "body": {
-                            "id": "https://revo2lutionrunning.com/wp-content/uploads/AmbassadorTag.jpg.0ec98838.jpg",
+                            "id": "https://raw.githubusercontent.com/Riksarkivet/test-media/master/img/c60-tape.jpg",
                             "type": "Image",
                             "format": "image/jpeg"
                         }
@@ -192,14 +147,29 @@
     },
     "items": [
         {
-            "id": "http://localhost:58982/canvas/T0000296_00002.mp3",
+            "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00002/canvas",
             "type": "Canvas",
             "label": {
                 "sv": [
-                    "The_Polish_Ambassador_-_01_-_I_Feel_ya_Ophelia.mp3"
+                    "Sound 1"
                 ]
             },
             "metadata": [
+                {
+                    "label": {
+                        "sv": [
+                            "filid"
+                        ],
+                        "en-GB": [
+                            "file id"
+                        ]
+                    },
+                    "value": {
+                        "sv": [
+                            "T0000296_00002"
+                        ]
+                    }
+                },
                 {
                     "label": {
                         "sv": [
@@ -211,7 +181,7 @@
                     },
                     "value": {
                         "sv": [
-                            "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017)"
+                            "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017) , videoid: T0000296_00002"
                         ]
                     }
                 }
@@ -219,16 +189,16 @@
             "duration": 343.222,
             "items": [
                 {
-                    "id": "http://localhost:58982/arkis!T0000296/annotationpage/T0000296_00002.mp3",
+                    "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00002/annotationpage",
                     "type": "AnnotationPage",
                     "items": [
                         {
-                            "id": "http://localhost:58982/arkis!T0000296/annotation/T0000296_00002.mp3",
+                            "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00002/annotation",
                             "type": "Annotation",
                             "motivation": "painting",
-                            "target": "http://localhost:58982/canvas/T0000296_00002.mp3",
+                            "target": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00002/canvas",
                             "body": {
-                                "id": "https://www.bensound.com/bensound-music/bensound-summer.mp3",
+                                "id": "https://raw.githubusercontent.com/Riksarkivet/test-media/master/audio/bensound-anewbeginning.mp3",
                                 "type": "Audio",
                                 "format": "audio/mp3"
                             }
@@ -238,14 +208,29 @@
             ]
         },
         {
-            "id": "http://localhost:58982/canvas/T0000296_00003.mp3",
+            "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00003/canvas",
             "type": "Canvas",
             "label": {
                 "sv": [
-                    "The_Polish_Ambassador_-_02_-_Angelita_ft_Nitty_Scott_Ryan_Herr.mp3"
+                    "Sound 2"
                 ]
             },
             "metadata": [
+                {
+                    "label": {
+                        "sv": [
+                            "filid"
+                        ],
+                        "en-GB": [
+                            "file id"
+                        ]
+                    },
+                    "value": {
+                        "sv": [
+                            "T0000296_00003"
+                        ]
+                    }
+                },
                 {
                     "label": {
                         "sv": [
@@ -257,7 +242,7 @@
                     },
                     "value": {
                         "sv": [
-                            "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017)"
+                            "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017) , videoid: T0000296_00003"
                         ]
                     }
                 }
@@ -265,16 +250,16 @@
             "duration": 264.986,
             "items": [
                 {
-                    "id": "http://localhost:58982/arkis!T0000296/annotationpage/T0000296_00003.mp3",
+                    "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00003/annotationpage",
                     "type": "AnnotationPage",
                     "items": [
                         {
-                            "id": "http://localhost:58982/arkis!T0000296/annotation/T0000296_00003.mp3",
+                            "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00003/annotation",
                             "type": "Annotation",
                             "motivation": "painting",
-                            "target": "http://localhost:58982/canvas/T0000296_00003.mp3",
+                            "target": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00003/canvas",
                             "body": {
-                                "id": "https://www.bensound.com/bensound-music/bensound-anewbeginning.mp3",
+                                "id": "https://raw.githubusercontent.com/Riksarkivet/test-media/master/audio/bensound-creativeminds.mp3",
                                 "type": "Audio",
                                 "format": "audio/mp3"
                             }
@@ -284,14 +269,29 @@
             ]
         },
         {
-            "id": "http://localhost:58982/canvas/T0000296_00004.mp3",
+            "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00004/canvas",
             "type": "Canvas",
             "label": {
                 "sv": [
-                    "The_Polish_Ambassador_-_03_-_Perfectly_Imperfect_ft_The_Grouch_Scott_Nice.mp3"
+                    "Sound 3"
                 ]
             },
             "metadata": [
+                {
+                    "label": {
+                        "sv": [
+                            "filid"
+                        ],
+                        "en-GB": [
+                            "file id"
+                        ]
+                    },
+                    "value": {
+                        "sv": [
+                            "T0000296_00004"
+                        ]
+                    }
+                },
                 {
                     "label": {
                         "sv": [
@@ -303,7 +303,7 @@
                     },
                     "value": {
                         "sv": [
-                            "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017)"
+                            "Test DIANA, Video/ljud med dokumentation, SE/RA/919191919/XVAD/1 (2017) , videoid: T0000296_00004"
                         ]
                     }
                 }
@@ -311,16 +311,16 @@
             "duration": 234.527,
             "items": [
                 {
-                    "id": "http://localhost:58982/arkis!T0000296/annotationpage/T0000296_00004.mp3",
+                    "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00004/annotationpage",
                     "type": "AnnotationPage",
                     "items": [
                         {
-                            "id": "http://localhost:58982/arkis!T0000296/annotation/T0000296_00004.mp3",
+                            "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00004/annotation",
                             "type": "Annotation",
                             "motivation": "painting",
-                            "target": "http://localhost:58982/canvas/T0000296_00004.mp3",
+                            "target": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00004/canvas",
                             "body": {
-                                "id": "https://www.bensound.com/bensound-music/bensound-creativeminds.mp3",
+                                "id": "https://raw.githubusercontent.com/Riksarkivet/test-media/master/audio/bensound-summer.mp3",
                                 "type": "Audio",
                                 "format": "audio/mp3"
                             }
@@ -332,61 +332,47 @@
     ],
     "structures": [
         {
-            "id": "http://localhost:58982/arkis!T0000296/range/top",
+            "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00002/range",
             "type": "Range",
             "label": {
-                "en": [
-                    "Table of Content"
-                ],
-                "sv": [
-                    "Innehållsförteckning"
+                "@none": [
+                    "Sound 1"
                 ]
             },
             "items": [
                 {
-                    "id": "http://localhost:58982/range/T0000296_00002.mp3",
-                    "type": "Range",
-                    "label": {
-                        "@none": [
-                            "The_Polish_Ambassador_-_01_-_I_Feel_ya_Ophelia.mp3"
-                        ]
-                    },
-                    "items": [
-                        {
-                            "id": "http://localhost:58982/canvas/T0000296_00002.mp3",
-                            "type": "canvas"
-                        }
-                    ]
-                },
+                    "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00002/canvas",
+                    "type": "Canvas"
+                }
+            ]
+        },
+        {
+            "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00003/range",
+            "type": "Range",
+            "label": {
+                "@none": [
+                    "Sound 2"
+                ]
+            },
+            "items": [
                 {
-                    "id": "http://localhost:58982/range/T0000296_00003.mp3",
-                    "type": "Range",
-                    "label": {
-                        "@none": [
-                            "The_Polish_Ambassador_-_02_-_Angelita_ft_Nitty_Scott_Ryan_Herr.mp3"
-                        ]
-                    },
-                    "items": [
-                        {
-                            "id": "http://localhost:58982/canvas/T0000296_00003.mp3",
-                            "type": "canvas"
-                        }
-                    ]
-                },
+                    "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00003/canvas",
+                    "type": "Canvas"
+                }
+            ]
+        },
+        {
+            "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00004/range",
+            "type": "Range",
+            "label": {
+                "@none": [
+                    "Sound 3"
+                ]
+            },
+            "items": [
                 {
-                    "id": "http://localhost:58982/range/T0000296_00004.mp3",
-                    "type": "Range",
-                    "label": {
-                        "@none": [
-                            "The_Polish_Ambassador_-_03_-_Perfectly_Imperfect_ft_The_Grouch_Scott_Nice.mp3"
-                        ]
-                    },
-                    "items": [
-                        {
-                            "id": "http://localhost:58982/canvas/T0000296_00004.mp3",
-                            "type": "canvas"
-                        }
-                    ]
+                    "id": "https://github.com/Riksarkivet/test-media/arkis!T0000296_00004/canvas",
+                    "type": "Canvas"
                 }
             ]
         }
