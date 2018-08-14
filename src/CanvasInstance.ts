@@ -962,7 +962,7 @@ namespace IIIFComponents {
             const canvasHeight: number = this._waveformCtx.canvas.height;
             const barSpacing: number = <number>this._data.waveformBarSpacing;
             const barWidth: number = <number>this._data.waveformBarWidth;
-            const increment: number = Math.floor(((endpx - startpx) / canvasWidth) * barSpacing);
+            const increment: number = ((endpx - startpx) / canvasWidth) * barSpacing;
             const sampleSpacing: number = (canvasWidth / barSpacing);
 
             this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -973,7 +973,7 @@ namespace IIIFComponents {
                 const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
                 const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
                 const ypos = (canvasHeight - height) / 2;
-                const xpos = canvasWidth * AVComponentUtils.Utils.normalise(x, startpx, endpx);
+                const xpos = Math.floor(canvasWidth * AVComponentUtils.Utils.normalise(x, startpx, endpx));
 
                 this._waveformCtx.fillRect(xpos, ypos, barWidth, height);
             }

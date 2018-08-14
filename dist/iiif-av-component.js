@@ -1358,7 +1358,7 @@ var IIIFComponents;
             var canvasHeight = this._waveformCtx.canvas.height;
             var barSpacing = this._data.waveformBarSpacing;
             var barWidth = this._data.waveformBarWidth;
-            var increment = Math.floor(((endpx - startpx) / canvasWidth) * barSpacing);
+            var increment = ((endpx - startpx) / canvasWidth) * barSpacing;
             var sampleSpacing = (canvasWidth / barSpacing);
             this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
             this._waveformCtx.fillStyle = this._data.waveformColor;
@@ -1366,7 +1366,7 @@ var IIIFComponents;
                 var maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
                 var height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
                 var ypos = (canvasHeight - height) / 2;
-                var xpos = canvasWidth * IIIFComponents.AVComponentUtils.Utils.normalise(x, startpx, endpx);
+                var xpos = Math.floor(canvasWidth * IIIFComponents.AVComponentUtils.Utils.normalise(x, startpx, endpx));
                 this._waveformCtx.fillRect(xpos, ypos, barWidth, height);
             }
         };
