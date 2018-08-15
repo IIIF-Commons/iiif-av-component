@@ -100,10 +100,15 @@
 	 	 	 	 	 	 	 	"type":"Choice",
 	 	 	 	 	 	 	 	"items":[
 	 	 	 	 	 	 	 	 	{
-                                            "id": "https://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
-                                            "type": "Audio",
-                                            "format": "audio/mp4"
-}
+	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x000019/manifest.mpd",
+	 	 	 	 	 	 	 	 	 	"format":"application/dash+xml",
+	 	 	 	 	 	 	 	 	 	"type":"Audio"
+	 	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x000019/index.m3u8",
+	 	 	 	 	 	 	 	 	 	"format":"vnd.apple.mpegURL",
+	 	 	 	 	 	 	 	 	 	"type":"Audio"
+	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	]
 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	"seeAlso": [
@@ -137,10 +142,15 @@
 	 	 	 	 	 	 	 	"type":"Choice",
 	 	 	 	 	 	 	 	"items":[
 	 	 	 	 	 	 	 	 	{
-                                            "id": "https://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
-                                            "type": "Audio",
-                                            "format": "audio/mp4"
-}
+	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x00001b/manifest.mpd",
+	 	 	 	 	 	 	 	 	 	"format":"application/dash+xml",
+	 	 	 	 	 	 	 	 	 	"type":"Audio"
+	 	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x00001b/index.m3u8",
+	 	 	 	 	 	 	 	 	 	"format":"vnd.apple.mpegURL",
+	 	 	 	 	 	 	 	 	 	"type":"Audio"
+	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	]
 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	"seeAlso": [
@@ -427,6 +437,18 @@
 	 	 	 	 	 	 	"items":[
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1700.36,1914.84",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000006/nn2",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"behavior":["no-nav"],
+	 	 	 	 	 	 	
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=1914.84,2504.64",
 	 	 	 	 	 	 	 	 	"type":"Canvas"
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	]
