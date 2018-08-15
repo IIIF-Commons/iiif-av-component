@@ -456,18 +456,6 @@
 	 	 	 	 	]
 	 	 	 	},
 	 	 	 	{
-	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/top/nn2",
-	 	 	 	 	"type":"Range",
-	 	 	 	 	"behavior":["no-nav"],
-	 	 	 	 	
-	 	 	 	 	"items":[
-	 	 	 	 	 	{
-	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000004#t=0,2504.64",
-	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	}
-	 	 	 	 	]
-	 	 	 	},
-	 	 	 	{
 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x00000c",
 	 	 	 	 	"type":"Range",
 	 	 	 	 	"label":{"en":["[News May 2001]"]},
