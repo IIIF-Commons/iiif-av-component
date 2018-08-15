@@ -49,7 +49,7 @@
 	"posterCanvas": {
 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/c/poster",
 	 	"type":"Canvas",
-	 	"label":{"en":["pop"]},
+	 	"label":{"en":["world"]},
 	 	"width":962,
 	 	"height":962,
 	 	"items": [
@@ -63,7 +63,7 @@
 	 	 	 	 	 	"motivation":"painting",
 	 	 	 	 	 	"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/c/poster",
 	 	 	 	 	 	"body": {
-	 	 	 	 	 	 	"id":"https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/posters/pop.jpg",
+	 	 	 	 	 	 	"id":"https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/posters/world.jpg",
 	 	 	 	 	 	 	"type":"Image",
 	 	 	 	 	 	 	"width":962,
 	 	 	 	 	 	 	"height":962,
@@ -100,15 +100,10 @@
 	 	 	 	 	 	 	 	"type":"Choice",
 	 	 	 	 	 	 	 	"items":[
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x000019/manifest.mpd",
-	 	 	 	 	 	 	 	 	 	"format":"application/dash+xml",
-	 	 	 	 	 	 	 	 	 	"type":"Audio"
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x000019/index.m3u8",
-	 	 	 	 	 	 	 	 	 	"format":"vnd.apple.mpegURL",
-	 	 	 	 	 	 	 	 	 	"type":"Audio"
-	 	 	 	 	 	 	 	 	}
+                                            "id": "https://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x000019.mp4",
+                                            "type": "Audio",
+                                            "format": "audio/mp4"
+}
 	 	 	 	 	 	 	 	]
 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	"seeAlso": [
@@ -142,15 +137,10 @@
 	 	 	 	 	 	 	 	"type":"Choice",
 	 	 	 	 	 	 	 	"items":[
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x00001b/manifest.mpd",
-	 	 	 	 	 	 	 	 	 	"format":"application/dash+xml",
-	 	 	 	 	 	 	 	 	 	"type":"Audio"
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100052359795.0x00001b/index.m3u8",
-	 	 	 	 	 	 	 	 	 	"format":"vnd.apple.mpegURL",
-	 	 	 	 	 	 	 	 	 	"type":"Audio"
-	 	 	 	 	 	 	 	 	}
+                                            "id": "https://resources.digirati.com/bl/C1685_98/vdc_100052359795.0x00001b.mp4",
+                                            "type": "Audio",
+                                            "format": "audio/mp4"
+}
 	 	 	 	 	 	 	 	]
 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	"seeAlso": [
@@ -218,7 +208,7 @@
 	 	 	"rendering": [
 	 	 	 	{
 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100052359795.0x000002/ark:/81055/vdc_100052359795.0x000002/top",
-	 	 	 	 	"type":"Sound",
+	 	 	 	 	"type":"Audio",
 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	}
@@ -281,7 +271,7 @@
 	 	 	 	 	"rendering": [
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100052359795.0x000002/ark:/81055/vdc_100052359795.0x000006",
-	 	 	 	 	 	 	"type":"Sound",
+	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	}
@@ -352,7 +342,7 @@
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100052359795.0x000002/ark:/81055/vdc_100052359795.0x000007",
-	 	 	 	 	 	 	 	 	"type":"Sound",
+	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	 	 	}
@@ -429,7 +419,7 @@
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100052359795.0x000002/ark:/81055/vdc_100052359795.0x000008",
-	 	 	 	 	 	 	 	 	"type":"Sound",
+	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	 	 	}
@@ -508,7 +498,7 @@
 	 	 	 	 	"rendering": [
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100052359795.0x000002/ark:/81055/vdc_100052359795.0x00000c",
-	 	 	 	 	 	 	"type":"Sound",
+	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	}
@@ -573,7 +563,7 @@
 	 	 	 	 	"rendering": [
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100052359795.0x000002/ark:/81055/vdc_100052359795.0x00000e",
-	 	 	 	 	 	 	"type":"Sound",
+	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	}
@@ -642,7 +632,7 @@
 	 	 	 	 	"rendering": [
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100052359795.0x000002/ark:/81055/vdc_100052359795.0x000011",
-	 	 	 	 	 	 	"type":"Sound",
+	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	}
@@ -707,7 +697,7 @@
 	 	 	 	 	"rendering": [
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100052359795.0x000002/ark:/81055/vdc_100052359795.0x000013",
-	 	 	 	 	 	 	"type":"Sound",
+	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	}
@@ -772,7 +762,7 @@
 	 	 	 	 	"rendering": [
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100052359795.0x000002/ark:/81055/vdc_100052359795.0x000015",
-	 	 	 	 	 	 	"type":"Sound",
+	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	}
