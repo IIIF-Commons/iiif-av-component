@@ -104,15 +104,10 @@
 	 	 	 	 	 	 	 	"type":"Choice",
 	 	 	 	 	 	 	 	"items":[
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100055540263.0x000024/manifest.mpd",
-	 	 	 	 	 	 	 	 	 	"format":"application/dash+xml",
-	 	 	 	 	 	 	 	 	 	"type":"Audio"
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100055540263.0x000024/index.m3u8",
-	 	 	 	 	 	 	 	 	 	"format":"vnd.apple.mpegURL",
-	 	 	 	 	 	 	 	 	 	"type":"Audio"
-	 	 	 	 	 	 	 	 	}
+											"id":"https://resources.digirati.com/bl/C615_70/vdc_100055540263.0x000024.mp4",
+											"type":"Audio",
+											"format":"audio/mp4"
+}
 	 	 	 	 	 	 	 	]
 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	"seeAlso": [
@@ -146,15 +141,10 @@
 	 	 	 	 	 	 	 	"type":"Choice",
 	 	 	 	 	 	 	 	"items":[
 	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100055540263.0x000026/manifest.mpd",
-	 	 	 	 	 	 	 	 	 	"format":"application/dash+xml",
-	 	 	 	 	 	 	 	 	 	"type":"Audio"
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100055540263.0x000026/index.m3u8",
-	 	 	 	 	 	 	 	 	 	"format":"vnd.apple.mpegURL",
-	 	 	 	 	 	 	 	 	 	"type":"Audio"
-	 	 	 	 	 	 	 	 	}
+											"id":"https://resources.digirati.com/bl/C615_70/vdc_100055540263.0x000026.mp4",
+											"type":"Audio",
+											"format":"audio/mp4"
+}
 	 	 	 	 	 	 	 	]
 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	"seeAlso": [
