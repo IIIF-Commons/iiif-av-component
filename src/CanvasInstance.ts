@@ -48,9 +48,9 @@ namespace IIIFComponents {
         private _wasPlaying: boolean = false;
         private _waveformCanvas: HTMLCanvasElement | null;
         private _waveformCtx: CanvasRenderingContext2D | null;
-        private _waveforms: string[] = [];
-        private _waveformNeedsRedraw: boolean = true;
+        //private _waveformNeedsRedraw: boolean = true;
         public ranges: Manifesto.IRange[] = [];
+        public waveforms: string[] = [];
 
         public $playerElement: JQuery;
         public logMessage: (message: string) => void;
@@ -389,12 +389,11 @@ namespace IIIFComponents {
 
                 if (seeAlso && seeAlso.length) {
                     const dat: string = seeAlso[0].id;
-                    this._waveforms.push(dat);
+                    this.waveforms.push(dat);
                 }
 
             }
 
-            
             this._renderWaveform();
         }
 
@@ -491,7 +490,7 @@ namespace IIIFComponents {
             }
 
             if (diff.includes('limitToRange')) {
-                this._render(true);
+                this._render();
             }
 
         }
@@ -647,7 +646,7 @@ namespace IIIFComponents {
 
             this._updateCurrentTimeDisplay();
             this._updateDurationDisplay();
-            this._drawWaveform(forceWaveformRedraw);
+            this._drawWaveform();
         }
 
         public getCanvasId(): string | undefined {
@@ -884,7 +883,7 @@ namespace IIIFComponents {
 
                         this._updateDurationDisplay();
 
-                        this.fire(AVComponent.Events.CANVASREADY);
+                        this.fire(AVComponent.Events.MEDIA_READY);
                     }
                 });
 
@@ -917,9 +916,9 @@ namespace IIIFComponents {
 
         private _renderWaveform(): void {
 
-            if (!this._waveforms.length) return;
+            if (!this.waveforms.length) return;
 
-            const promises = this._waveforms.map((url) => {
+            const promises = this.waveforms.map((url) => {
                 return this._getWaveformData(url);
             });
 
@@ -933,7 +932,8 @@ namespace IIIFComponents {
                 if (this._waveformCtx) {
                     this._waveformCtx.fillStyle = <string>this._data.waveformColor;
                     this._compositeWaveform = new AVComponentObjects.CompositeWaveform(waveforms);
-                    this._resize();
+                    //this._resize();
+                    this.fire(AVComponent.Events.WAVEFORM_READY);
                 }
                 
             });
@@ -941,7 +941,8 @@ namespace IIIFComponents {
 
         private _drawWaveform(): void {
 
-            if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
+            //if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
+            if (!this._waveformCtx) return;
 
             let duration: Manifesto.Duration | undefined;
             let start: number = 0;
@@ -1460,13 +1461,13 @@ namespace IIIFComponents {
                     const canvasWidth: number = <number>this._$canvasContainer.width();
                     const canvasHeight: number = <number>this._$canvasContainer.height();
 
-                    if (canvasWidth !== this._lastCanvasWidth || canvasHeight !== this._lastCanvasHeight) {
+                    //if (canvasWidth !== this._lastCanvasWidth || canvasHeight !== this._lastCanvasHeight) {
                         this._waveformCanvas.width = this._lastCanvasWidth = canvasWidth;
                         this._waveformCanvas.height = this._lastCanvasHeight = canvasHeight;
-                        this._waveformNeedsRedraw = true;
-                    } else {
-                        this._waveformNeedsRedraw = false;
-                    }
+                    //     this._waveformNeedsRedraw = true;
+                    // } else {
+                    //     this._waveformNeedsRedraw = false;
+                    // }
                     
                 }
 

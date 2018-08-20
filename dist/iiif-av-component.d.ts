@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.69 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.70 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -21,8 +21,10 @@ declare namespace IIIFComponents {
         private _data;
         options: _Components.IBaseComponentOptions;
         canvasInstances: CanvasInstance[];
-        private _checkAllCanvasesReadyInterval;
-        private _readyCanvases;
+        private _checkAllMediaReadyInterval;
+        private _checkAllWaveformsReadyInterval;
+        private _readyMedia;
+        private _readyWaveforms;
         private _posterCanvasWidth;
         private _posterCanvasHeight;
         private _$posterContainer;
@@ -35,7 +37,9 @@ declare namespace IIIFComponents {
         set(data: IAVComponentData): void;
         private _render();
         private _reset();
-        private _checkAllCanvasesReady();
+        private _checkAllMediaReady();
+        private _checkAllWaveformsReady();
+        private _getCanvasInstancesWithWaveforms();
         private _getCanvases();
         private _initCanvas(canvas);
         private _prevRange();
@@ -55,9 +59,11 @@ declare namespace IIIFComponents {
 }
 declare namespace IIIFComponents.AVComponent {
     class Events {
-        static CANVASREADY: string;
+        static MEDIA_READY: string;
         static LOG: string;
         static RANGE_CHANGED: string;
+        static WAVEFORM_READY: string;
+        static WAVEFORMS_READY: string;
     }
 }
 
@@ -131,9 +137,8 @@ declare namespace IIIFComponents {
         private _wasPlaying;
         private _waveformCanvas;
         private _waveformCtx;
-        private _waveforms;
-        private _waveformNeedsRedraw;
         ranges: Manifesto.IRange[];
+        waveforms: string[];
         $playerElement: JQuery;
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);

@@ -5,8 +5,10 @@ namespace IIIFComponents {
         private _data: IAVComponentData = this.data();
         public options: _Components.IBaseComponentOptions;
         public canvasInstances: CanvasInstance[] = [];
-        private _checkAllCanvasesReadyInterval: any;
-        private _readyCanvases: number = 0;
+        private _checkAllMediaReadyInterval: any;
+        private _checkAllWaveformsReadyInterval: any;
+        private _readyMedia: number = 0;
+        private _readyWaveforms: number = 0;
         private _posterCanvasWidth: number = 0;
         private _posterCanvasHeight: number = 0;
 
@@ -256,7 +258,8 @@ namespace IIIFComponents {
                     this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
                 }
 
-                this._checkAllCanvasesReadyInterval = setInterval(this._checkAllCanvasesReady.bind(this), 100);
+                this._checkAllMediaReadyInterval = setInterval(this._checkAllMediaReady.bind(this), 100);
+                this._checkAllWaveformsReadyInterval = setInterval(this._checkAllWaveformsReady.bind(this), 100);
 
                 this._$posterContainer = $('<div class="poster-container"></div>');
                 this._$element.append(this._$posterContainer);
@@ -316,15 +319,31 @@ namespace IIIFComponents {
 
         }
 
-        private _checkAllCanvasesReady(): void {
+        private _checkAllMediaReady(): void {
             console.log('loading media');
-            if (this._readyCanvases === this.canvasInstances.length) {
-                console.log('media ready');
-                clearInterval(this._checkAllCanvasesReadyInterval);
+            if (this._readyMedia === this.canvasInstances.length) {
+                console.log('all media ready');
+                clearInterval(this._checkAllMediaReadyInterval);
                 //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
-                this.fire(AVComponent.Events.CANVASREADY);
+                this.fire(AVComponent.Events.MEDIA_READY);
                 this.resize();
             }
+        }
+
+        private _checkAllWaveformsReady(): void {
+            console.log('loading waveforms');
+            if (this._readyWaveforms === this._getCanvasInstancesWithWaveforms().length) {
+                console.log('waveforms ready');
+                clearInterval(this._checkAllWaveformsReadyInterval);
+                this.fire(AVComponent.Events.WAVEFORMS_READY);
+                this.resize();
+            }
+        }
+
+        private _getCanvasInstancesWithWaveforms(): CanvasInstance[] {
+            return this.canvasInstances.filter((c) => {
+                return c.waveforms.length > 0;
+            });
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {
@@ -348,8 +367,12 @@ namespace IIIFComponents {
             canvasInstance.init();
             this.canvasInstances.push(canvasInstance);      
 
-            canvasInstance.on(AVComponent.Events.CANVASREADY, () => {
-                this._readyCanvases++;
+            canvasInstance.on(AVComponent.Events.MEDIA_READY, () => {
+                this._readyMedia++;
+            }, false);
+
+            canvasInstance.on(AVComponent.Events.WAVEFORM_READY, () => {
+                this._readyWaveforms++;
             }, false);
 
             // canvasInstance.on(AVComponent.Events.RESETCANVAS, () => {
@@ -597,9 +620,11 @@ namespace IIIFComponents {
 
 namespace IIIFComponents.AVComponent {
     export class Events {
-        static CANVASREADY: string = 'canvasready';
+        static MEDIA_READY: string = 'mediaready';
         static LOG: string = 'log';
         static RANGE_CHANGED: string = 'rangechanged';
+        static WAVEFORM_READY: string = 'waveformready';
+        static WAVEFORMS_READY: string = 'waveformsready';
     }
 }
 
