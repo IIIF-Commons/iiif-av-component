@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.70 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.71 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -10,6 +10,7 @@ interface Array<T> {
 interface Window {
     MediaSource: any;
     WebKitMediaSource: any;
+    jQuery: any;
 }
 declare var dashjs: any;
 declare var Hls: any;

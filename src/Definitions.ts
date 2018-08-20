@@ -11,6 +11,7 @@ interface Array<T> {
 interface Window {
     MediaSource: any;
     WebKitMediaSource: any;
+    jQuery: any;
 }
 
 declare var dashjs: any;

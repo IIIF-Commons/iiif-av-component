@@ -896,21 +896,39 @@ namespace IIIFComponents {
         }
 
         private _getWaveformData(url: string): Promise<any> {
+
+            // return new Promise(function (resolve, reject) {
+            //     const xhr = new XMLHttpRequest();
+            //     xhr.responseType = 'arraybuffer';
+            //     xhr.open('GET', url);
+            //     xhr.addEventListener('load', (progressEvent: any) => {
+            //         if (xhr.status == 200) {
+            //             resolve(WaveformData.create(progressEvent.target.response));
+            //         } else {
+            //             reject(new Error(xhr.statusText));
+            //         }
+            //     });
+            //     xhr.onerror = function () {
+            //         reject(new Error("Network Error"));
+            //     };
+            //     xhr.send();
+            // });
+
+            // must use this for IE11
             return new Promise(function (resolve, reject) {
-                const xhr = new XMLHttpRequest();
-                xhr.responseType = 'arraybuffer';
-                xhr.open('GET', url);
-                xhr.addEventListener('load', (progressEvent: any) => {
-                    if (xhr.status == 200) {
-                        resolve(WaveformData.create(progressEvent.target.response));
-                    } else {
-                        reject(new Error(xhr.statusText));
-                    }
+
+                $.ajax(<any>{
+                    url: url,
+                    type: 'GET',
+                    dataType: 'binary',
+                    responseType: 'arraybuffer',
+                    processData: false
+                }).done(function(data) {
+                    resolve(WaveformData.create(data));
+                }).fail(function(err) {
+                    reject(new Error('Network Error'));
                 });
-                xhr.onerror = function () {
-                    reject(new Error("Network Error"));
-                };
-                xhr.send();
+
             });
         }
 
