@@ -45,6 +45,10 @@
 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA8030616>View the catalogue record</a>"]}
 	 	}
 	],
+	"requiredStatement": {
+		"label": { "en": [ "Please read this" ] },
+		"value": { "en": [ "<p>I am a required statement. I can have some HTML in me</p>" ] }
+	},
 	"logo":[{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],
 	"posterCanvas": {
 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/c/poster",
