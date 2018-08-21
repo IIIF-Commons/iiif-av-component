@@ -1072,12 +1072,17 @@ var IIIFComponents;
                     }
                     var width = end - start;
                     //console.log(width);
-                    this._$durationHighlight.show();
-                    // set the start position and width
-                    this._$durationHighlight.css({
-                        left: start,
-                        width: width
-                    });
+                    if (this.isVirtual()) {
+                        this._$durationHighlight.show();
+                        // set the start position and width
+                        this._$durationHighlight.css({
+                            left: start,
+                            width: width
+                        });
+                    }
+                    else {
+                        this._$durationHighlight.hide();
+                    }
                     var that_1 = this;
                     this._$rangeTimelineContainer.slider("destroy");
                     this._$rangeTimelineContainer.slider({
