@@ -46,8 +46,8 @@
 	 	}
 	],
 	"requiredStatement": {
-		"label": { "en": [ "Please read this" ] },
-		"value": { "en": [ "<p>I am a required statement. I can have some HTML in me</p>" ] }
+		"label": { "en": [ "Important information" ] },
+		"value": { "en": [ "<p>Please read the <a href='https://bl.uk'>full information</a> about this object.</p>" ] }
 	},
 	"logo":[{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],
 	"posterCanvas": {
