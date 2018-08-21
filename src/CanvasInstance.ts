@@ -1263,7 +1263,7 @@ namespace IIIFComponents {
         private _lowPriorityUpdater(): void {
             this._updateMediaActiveStates();
 
-            if (this._isPlaying && this._data.autoSelectRange) {
+            if (this._isPlaying && this._data.autoSelectRange && this.isVirtual()) {
                 this._hasRangeChanged();
             }
 
