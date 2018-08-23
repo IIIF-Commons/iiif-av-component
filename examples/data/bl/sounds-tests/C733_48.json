@@ -4,9 +4,9 @@
         "http://iiif.io/api/presentation/3/context.json"
     ],
 	"requiredStatement": {
-        "label": { "en": [ "Attribution" ] },
-        "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
-    },
+		"label": { "en": [ "" ] },
+		"value": { "en": [ "<p>Please read the <a href='https://bl.uk'>full information</a> about this object. Please read our Ethical Terms of Use.</p>" ] }
+	},
     "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C733_48.json",
     "label": { "en": [ "C733/48 C733/49 C733/50 [Recordings in Soqotri / 'Survey' recordings in English]" ] },
     "logo": [{
