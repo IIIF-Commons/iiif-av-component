@@ -24,6 +24,7 @@ namespace IIIFComponents {
         doubleClickMS?: number;
         helper?: Manifold.IHelper;
         limitToRange?: boolean;
+        posterImageRatio?: number;
         rangeId?: string;
         virtualCanvasEnabled?: boolean;
         waveformBarSpacing?: number; 

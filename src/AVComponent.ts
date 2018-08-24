@@ -42,6 +42,7 @@ namespace IIIFComponents {
                 defaultAspectRatio: 0.56,
                 doubleClickMS: 350,
                 limitToRange: false,
+                posterImageRatio: 0.3,
                 virtualCanvasEnabled: true,
                 content: <IAVComponentContent>{
                     currentTime: "Current Time",
@@ -573,11 +574,11 @@ namespace IIIFComponents {
 
                     if (this._posterCanvasWidth > this._posterCanvasHeight) {
                         ratio = this._posterCanvasHeight / this._posterCanvasWidth;
-                        width = containerWidth / 3;
+                        width = containerWidth * this.options.data.posterImageRatio;
                         height = width * ratio;
                     } else { // either height is greater, or width and height are equal
                         ratio = this._posterCanvasWidth / this._posterCanvasHeight;
-                        height = containerHeight / 3;
+                        height = containerHeight * this.options.data.posterImageRatio;
                         width = height * ratio;
                     }
 
