@@ -439,7 +439,7 @@ var IIIFComponents;
                     };
                 }
                 else {
-                    // get the longer edge of the poster canvas and make that a third of the container height/width.
+                    // get the longer edge of the poster canvas and make that a ratio of the container height/width.
                     // scale the shorter edge proportionally.
                     var ratio = void 0;
                     var width = void 0;

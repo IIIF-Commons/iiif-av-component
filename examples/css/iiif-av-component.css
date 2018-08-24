@@ -9,7 +9,10 @@
 }
 .iiif-av-component .poster-container .poster-image {
   position: absolute;
-  background-size: cover;
+  background-color: #000;
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
   cursor: pointer;
 }
 .iiif-av-component .poster-container .poster-image .btn {

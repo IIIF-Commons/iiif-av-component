@@ -566,7 +566,7 @@ namespace IIIFComponents {
                     }
                 } else {
 
-                    // get the longer edge of the poster canvas and make that a third of the container height/width.
+                    // get the longer edge of the poster canvas and make that a ratio of the container height/width.
                     // scale the shorter edge proportionally.
                     let ratio: number;
                     let width: number;
