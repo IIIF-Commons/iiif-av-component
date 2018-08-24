@@ -574,11 +574,11 @@ namespace IIIFComponents {
 
                     if (this._posterCanvasWidth > this._posterCanvasHeight) {
                         ratio = this._posterCanvasHeight / this._posterCanvasWidth;
-                        width = containerWidth * this.options.data.posterImageRatio;
+                        width = containerWidth * <number>this._data.posterImageRatio;
                         height = width * ratio;
                     } else { // either height is greater, or width and height are equal
                         ratio = this._posterCanvasWidth / this._posterCanvasHeight;
-                        height = containerHeight * this.options.data.posterImageRatio;
+                        height = containerHeight * <number>this._data.posterImageRatio;
                         width = height * ratio;
                     }
 
