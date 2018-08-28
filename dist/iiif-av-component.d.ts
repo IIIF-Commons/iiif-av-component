@@ -112,7 +112,6 @@ declare namespace IIIFComponents {
         private _$rangeTimelineContainer;
         private _$timeDisplay;
         private _$timelineItemContainer;
-        private _canvasClockDuration;
         private _canvasClockFrequency;
         private _canvasClockInterval;
         private _canvasClockStartDate;
@@ -144,6 +143,7 @@ declare namespace IIIFComponents {
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
+        private _getDuration();
         data(): IAVCanvasInstanceData;
         isVirtual(): boolean;
         isVisible(): boolean;

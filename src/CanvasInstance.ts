@@ -22,7 +22,6 @@ namespace IIIFComponents {
         private _$rangeTimelineContainer: JQuery;
         private _$timeDisplay: JQuery;
         private _$timelineItemContainer: JQuery;
-        private _canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
         private _canvasClockFrequency: number = 25;
         private _canvasClockInterval: number;
         private _canvasClockStartDate: number = 0;
@@ -158,8 +157,6 @@ namespace IIIFComponents {
                 });
             }
 
-            this._canvasClockDuration = <number>this._data.canvas.getDuration();
-
             const canvasWidth: number = this._data.canvas.getWidth();
             const canvasHeight: number = this._data.canvas.getHeight();
 
@@ -227,7 +224,7 @@ namespace IIIFComponents {
                 step: 0.01,
                 orientation: "horizontal",
                 range: "min",
-                max: that._canvasClockDuration,
+                max: that._getDuration(),
                 animate: false,
                 create: function (evt: any, ui: any) {
                     // on create
@@ -251,7 +248,7 @@ namespace IIIFComponents {
             });
 
             this._$canvasTimelineContainer.on("mousemove", (e) => {
-                this._updateHoverPreview(e, this._$canvasTimelineContainer, this._canvasClockDuration);
+                this._updateHoverPreview(e, this._$canvasTimelineContainer, this._getDuration());
             });
 
             this._$rangeTimelineContainer.on("mousemove", (e) => {
@@ -336,7 +333,7 @@ namespace IIIFComponents {
                 }
 
                 if (!t) {
-                    t = [0, this._canvasClockDuration];
+                    t = [0, this._getDuration()];
                 }
 
                 const positionLeft = parseInt(String(xywh[0])),
@@ -395,6 +392,14 @@ namespace IIIFComponents {
             }
 
             this._renderWaveform();
+        }
+
+        private _getDuration(): number {
+            if (this._data && this._data.canvas) {
+                return <number>this._data.canvas.getDuration();
+            }
+            
+            return 0;
         }
 
         public data(): IAVCanvasInstanceData {
@@ -580,7 +585,7 @@ namespace IIIFComponents {
                 if (duration) {
 
                     // get the total length in seconds.
-                    const totalLength: number = this._canvasClockDuration;
+                    const totalLength: number = this._getDuration();
 
                     // get the length of the timeline container
                     const timelineLength: number = <number>this._$canvasTimelineContainer.width();
@@ -1052,7 +1057,7 @@ namespace IIIFComponents {
             if (this._data.limitToRange && duration) {
                 this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(duration.getLength()));
             } else {
-                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._canvasClockDuration));
+                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._getDuration()));
             }
         }
 
@@ -1067,8 +1072,8 @@ namespace IIIFComponents {
 
         private _renderSyncIndicator(mediaElementData: any) {
 
-            const leftPercent: number = this._convertToPercentage(mediaElementData.start, this._canvasClockDuration);
-            const widthPercent: number = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this._canvasClockDuration);
+            const leftPercent: number = this._convertToPercentage(mediaElementData.start, this._getDuration());
+            const widthPercent: number = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this._getDuration());
 
             const $timelineItem: JQuery = $('<div class="timeline-item" title="' + mediaElementData.source + '" data-start="' + mediaElementData.start + '" data-end="' + mediaElementData.end + '"></div>');
 
@@ -1143,7 +1148,7 @@ namespace IIIFComponents {
             if (this._data.limitToRange && duration) {
                 this._canvasClockTime = duration.end;
             } else {
-                this._canvasClockTime = this._canvasClockDuration;
+                this._canvasClockTime = this._getDuration();
             }
 
             this.pause();
@@ -1167,7 +1172,7 @@ namespace IIIFComponents {
                 this._canvasClockTime = duration.start;
             }
 
-            if (this._canvasClockTime === this._canvasClockDuration) {
+            if (this._canvasClockTime === this._getDuration()) {
                 this._canvasClockTime = 0;
             }
 
@@ -1240,8 +1245,8 @@ namespace IIIFComponents {
                 this.pause();
             }
 
-            if (this._canvasClockTime >= this._canvasClockDuration) {
-                this._canvasClockTime = this._canvasClockDuration;
+            if (this._canvasClockTime >= this._getDuration()) {
+                this._canvasClockTime = this._getDuration();
                 this.pause();
             }
         }
