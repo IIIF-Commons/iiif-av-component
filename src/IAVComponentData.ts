@@ -23,6 +23,7 @@ namespace IIIFComponents {
         defaultAspectRatio?: number;
         doubleClickMS?: number;
         helper?: Manifold.IHelper;
+        halveAtWidth?: number;
         limitToRange?: boolean;
         posterImageRatio?: number;
         rangeId?: string;

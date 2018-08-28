@@ -41,6 +41,7 @@ namespace IIIFComponents {
                 constrainNavigationToRange: false,
                 defaultAspectRatio: 0.56,
                 doubleClickMS: 350,
+                halveAtWidth: 200,
                 limitToRange: false,
                 posterImageRatio: 0.3,
                 virtualCanvasEnabled: true,

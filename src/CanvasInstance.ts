@@ -1483,7 +1483,7 @@ namespace IIIFComponents {
 
                     // if in the watch metric, make sure the canvasContainer isn't more than half the height to allow
                     // room between buttons
-                    if (<number>this.$playerElement.parent().width() < 200) {
+                    if (this._data.halveAtWidth !== undefined && <number>this.$playerElement.parent().width() < this._data.halveAtWidth) {
                         this._$canvasContainer.height(<number>this.$playerElement.parent().height() / 2);
                     } else {
                         this._$canvasContainer.height(<number>this.$playerElement.parent().height() - <number>$options.height());
