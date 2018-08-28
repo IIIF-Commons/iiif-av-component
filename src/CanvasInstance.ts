@@ -1475,7 +1475,14 @@ namespace IIIFComponents {
                     //$canvasContainer.height(this.canvasHeight * resizeFactorY);
 
                     const $options: JQuery = this.$playerElement.find('.options-container');
-                    this._$canvasContainer.height(<number>this.$playerElement.parent().height() - <number>$options.height());
+
+                    // if in the watch metric, make sure the canvasContainer isn't more than half the height to allow
+                    // room between buttons
+                    if (<number>this.$playerElement.parent().width() < 200) {
+                        this._$canvasContainer.height(<number>this.$playerElement.parent().height() / 2);
+                    } else {
+                        this._$canvasContainer.height(<number>this.$playerElement.parent().height() - <number>$options.height());
+                    }
                 }
 
                 if (this._waveformCanvas) {
