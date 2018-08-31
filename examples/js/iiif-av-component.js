@@ -2060,6 +2060,7 @@ var IIIFComponents;
             Utils.hlsMimeTypes = [
                 // Apple santioned
                 'application/vnd.apple.mpegurl',
+                'vnd.apple.mpegurl',
                 // Apple sanctioned for backwards compatibility
                 'audio/mpegurl',
                 // Very common
