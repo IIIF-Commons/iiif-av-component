@@ -147,6 +147,13 @@ namespace IIIFComponents.AVComponentUtils {
             return false;
         }
 
+        public static isSafari() {
+            // https://stackoverflow.com/questions/7944460/detect-safari-browser?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+            var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            console.log('isSafari', isSafari);
+            return isSafari;
+        }
+
         public static debounce(fn: any, debounceDuration: number): any {
             // summary:
             //      Returns a debounced function that will make sure the given
@@ -173,8 +180,42 @@ namespace IIIFComponents.AVComponentUtils {
             }
         }
 
+        public static hlsMimeTypes = [
+            // Apple santioned
+            'application/vnd.apple.mpegurl',
+            // Apple sanctioned for backwards compatibility
+            'audio/mpegurl',
+            // Very common
+            'audio/x-mpegurl',
+            // Very common
+            'application/x-mpegurl',
+            // Included for completeness
+            'video/x-mpegurl',
+            'video/mpegurl',
+            'application/mpegurl'
+        ];
+
         public static normalise(num: number, min: number, max: number): number {
             return (num - min) / (max - min);
         }
+    
+        public static isHLSFormat(format: Manifesto.MediaType) {
+            return this.hlsMimeTypes.includes(format.toString());
+        }
+    
+        public static isMpegDashFormat(format: Manifesto.MediaType) {
+            return format.toString() === 'application/dash+xml';
+        }
+
+        public static canPlayHls() {
+            var doc = typeof document === 'object' && document,
+            videoelem = doc && doc.createElement('video'),
+            isvideosupport = Boolean(videoelem && videoelem.canPlayType);
+
+            return isvideosupport && this.hlsMimeTypes.some(function (canItPlay) {
+                return /maybe|probably/i.test((<any>videoelem).canPlayType(canItPlay));
+            });
+        }
+
     }
 }

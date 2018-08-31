@@ -287,7 +287,14 @@ namespace IIIFComponents {
                     return;
                 }
 
-                const body: Manifesto.IAnnotationBody = bodies[0];
+                const body: Manifesto.IAnnotationBody | null = this._getBody(bodies);
+
+                if (!body) {
+                    // if no suitable format was found for the current browser, skip this item.
+                    console.warn('unable to find suitable format for', item.id);
+                    continue;
+                }
+
                 const type: Manifesto.ResourceType | null = body.getType();
                 const format: Manifesto.MediaType | null = body.getFormat();
 
@@ -392,6 +399,48 @@ namespace IIIFComponents {
             }
 
             this._renderWaveform();
+        }
+
+        private _getBody(bodies: Manifesto.IAnnotationBody[]): Manifesto.IAnnotationBody | null {
+            
+            // if there's an HLS format and HLS is supported in this browser
+            for (let i = 0; i < bodies.length; i++) {
+                const body: Manifesto.IAnnotationBody = bodies[i];
+                const format: Manifesto.MediaType | null = body.getFormat();
+                
+                if (format) {
+                    if (AVComponentUtils.Utils.isHLSFormat(format) && AVComponentUtils.Utils.canPlayHls()) {
+                        return body;
+                    }
+                }
+            }
+
+            // if there's a Dash format and the browser isn't Safari
+            for (let i = 0; i < bodies.length; i++) {
+                const body: Manifesto.IAnnotationBody = bodies[i];
+                const format: Manifesto.MediaType | null = body.getFormat();
+                
+                if (format) {
+                    if (AVComponentUtils.Utils.isMpegDashFormat(format) && !AVComponentUtils.Utils.isSafari()) {
+                        return body;        
+                    }
+                }
+            }
+
+            // otherwise, return the first format that isn't HLS or Dash
+            for (let i = 0; i < bodies.length; i++) {
+                const body: Manifesto.IAnnotationBody = bodies[i];
+                const format: Manifesto.MediaType | null = body.getFormat();
+                
+                if (format) {
+                    if (!AVComponentUtils.Utils.isHLSFormat(format) && !AVComponentUtils.Utils.isMpegDashFormat(format)) {
+                        return body;        
+                    }
+                }
+            }
+
+            // couldn't find a suitable format
+            return null;
         }
 
         private _getDuration(): number {

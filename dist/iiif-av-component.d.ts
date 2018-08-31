@@ -1,4 +1,3 @@
-// iiif-av-component v0.0.75 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -143,6 +142,7 @@ declare namespace IIIFComponents {
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
+        private _getBody(bodies);
         private _getDuration();
         data(): IAVCanvasInstanceData;
         isVirtual(): boolean;
@@ -279,8 +279,13 @@ declare namespace IIIFComponents.AVComponentUtils {
         static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined;
         static formatTime(aNumber: number): string;
         static detectIE(): number | boolean;
+        static isSafari(): boolean;
         static debounce(fn: any, debounceDuration: number): any;
+        static hlsMimeTypes: string[];
         static normalise(num: number, min: number, max: number): number;
+        static isHLSFormat(format: Manifesto.MediaType): boolean;
+        static isMpegDashFormat(format: Manifesto.MediaType): boolean;
+        static canPlayHls(): boolean;
     }
 }
 
