@@ -666,7 +666,10 @@ namespace IIIFComponents {
 
                     const that = this;
 
-                    this._$rangeTimelineContainer.slider("destroy");
+                    // try to destroy existing rangeTimelineContainer
+                    if (this._$rangeTimelineContainer.data("ui-sortable")) {
+                        this._$rangeTimelineContainer.slider("destroy");
+                    }                  
 
                     this._$rangeTimelineContainer.slider({
                         value: duration.start,

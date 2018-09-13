@@ -229,6 +229,9 @@ namespace IIIFComponents {
 
         private _reset(): void {
 
+            clearInterval(this._checkAllMediaReadyInterval);
+            clearInterval(this._checkAllWaveformsReadyInterval);
+
             this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
                 canvasInstance.destroy();
             });
