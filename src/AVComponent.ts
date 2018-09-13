@@ -229,10 +229,15 @@ namespace IIIFComponents {
 
         private _reset(): void {
 
+            this._readyMedia = 0;
+            this._readyWaveforms = 0;
+            this._posterCanvasWidth = 0;
+            this._posterCanvasHeight = 0;
+
             clearInterval(this._checkAllMediaReadyInterval);
             clearInterval(this._checkAllWaveformsReadyInterval);
 
-            this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+            this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
                 canvasInstance.destroy();
             });
 
@@ -370,7 +375,8 @@ namespace IIIFComponents {
                 data: Object.assign({}, { canvas: canvas }, this._data)
             });
 
-            canvasInstance.logMessage = this._logMessage.bind(this);   
+            canvasInstance.logMessage = this._logMessage.bind(this);
+            canvasInstance.isOnlyCanvasInstance = this._getCanvases().length === 1;
             this._$element.append(canvasInstance.$playerElement);
 
             canvasInstance.init();
@@ -463,7 +469,8 @@ namespace IIIFComponents {
 
                         currentCanvasId = this._getNormaliseCanvasId(currentCanvasId);
 
-                        if (canvasInstance.isVirtual() && currentCanvasId === canvasId || canvasInstance.includesVirtualSubCanvas(canvasId)) {
+                        if ((canvasInstance.isVirtual() || this.canvasInstances.length === 1) && currentCanvasId === canvasId || 
+                            canvasInstance.includesVirtualSubCanvas(canvasId)) {
                             return canvasInstance;
                         }
 

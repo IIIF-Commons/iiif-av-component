@@ -52,6 +52,7 @@ namespace IIIFComponents {
         public waveforms: string[] = [];
 
         public $playerElement: JQuery;
+        public isOnlyCanvasInstance: boolean = false;
         public logMessage: (message: string) => void;
 
         constructor(options: _Components.IBaseComponentOptions) {
@@ -653,7 +654,7 @@ namespace IIIFComponents {
 
                     //console.log(width);
 
-                    if (this.isVirtual()) {
+                    if (this.isVirtual() || this.isOnlyCanvasInstance) {
                         this._$durationHighlight.show();
                         // set the start position and width
                         this._$durationHighlight.css({

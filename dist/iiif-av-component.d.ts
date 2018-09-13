@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.80 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.81 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -142,6 +142,7 @@ declare namespace IIIFComponents {
         ranges: Manifesto.IRange[];
         waveforms: string[];
         $playerElement: JQuery;
+        isOnlyCanvasInstance: boolean;
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
