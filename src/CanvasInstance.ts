@@ -838,6 +838,7 @@ namespace IIIFComponents {
                 // dash
                 $mediaElement.attr('data-dashjs-player', '');
                 const player = dashjs.MediaPlayer().create();
+                player.getDebug().setLogToBrowserConsole(false);
                 player.initialize(media, data.source);
             } else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
                 // hls
