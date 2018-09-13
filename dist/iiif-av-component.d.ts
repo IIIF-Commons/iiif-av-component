@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.79 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.80 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -47,6 +47,7 @@ declare namespace IIIFComponents {
         private _prevRange();
         private _nextRange();
         private _setCanvasInstanceVolumes(volume);
+        private _getNormaliseCanvasId(canvasId);
         private _getCanvasInstanceById(canvasId);
         private _getCurrentCanvas();
         private _rewind();

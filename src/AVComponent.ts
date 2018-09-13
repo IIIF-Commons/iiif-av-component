@@ -442,9 +442,13 @@ namespace IIIFComponents {
             });
         }
 
+        private _getNormaliseCanvasId(canvasId: string): string {
+            return (canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(canvasId) : canvasId;
+        }
+
         private _getCanvasInstanceById(canvasId: string): CanvasInstance | undefined {
             
-            canvasId = (canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(canvasId) : canvasId;
+            canvasId = this._getNormaliseCanvasId(canvasId);
     
             // if virtual canvas is enabled, check for that first
             if (this._data.virtualCanvasEnabled) {
@@ -453,9 +457,18 @@ namespace IIIFComponents {
     
                     const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
                     
-                    if (canvasInstance.isVirtual() && canvasInstance.getCanvasId() === canvasId || canvasInstance.includesVirtualSubCanvas(canvasId)) {
-                        return canvasInstance;
+                    let currentCanvasId: string | undefined = canvasInstance.getCanvasId();
+
+                    if (currentCanvasId) {
+
+                        currentCanvasId = this._getNormaliseCanvasId(currentCanvasId);
+
+                        if (canvasInstance.isVirtual() && currentCanvasId === canvasId || canvasInstance.includesVirtualSubCanvas(canvasId)) {
+                            return canvasInstance;
+                        }
+
                     }
+
                 }
 
             } else {
