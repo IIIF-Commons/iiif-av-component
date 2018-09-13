@@ -223,6 +223,10 @@ namespace IIIFComponents {
             
         }
 
+        public reset(): void {
+            this._reset();
+        }
+
         private _reset(): void {
 
             this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {

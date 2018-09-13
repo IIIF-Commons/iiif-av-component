@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.76 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.77 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -37,6 +37,7 @@ declare namespace IIIFComponents {
         data(): IAVComponentData;
         set(data: IAVComponentData): void;
         private _render();
+        reset(): void;
         private _reset();
         private _checkAllMediaReady();
         private _checkAllWaveformsReady();
