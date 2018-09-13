@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.62 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.77 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -10,9 +10,11 @@ interface Array<T> {
 interface Window {
     MediaSource: any;
     WebKitMediaSource: any;
+    jQuery: any;
 }
 declare var dashjs: any;
 declare var Hls: any;
+declare var WaveformData: any;
 
 /// <reference types="base-component" />
 declare namespace IIIFComponents {
@@ -20,8 +22,12 @@ declare namespace IIIFComponents {
         private _data;
         options: _Components.IBaseComponentOptions;
         canvasInstances: CanvasInstance[];
-        private _checkAllCanvasesReadyInterval;
-        private _readyCanvases;
+        private _checkAllMediaReadyInterval;
+        private _checkAllWaveformsReadyInterval;
+        private _readyMedia;
+        private _readyWaveforms;
+        private _posterCanvasWidth;
+        private _posterCanvasHeight;
         private _$posterContainer;
         private _$posterImage;
         private _$posterExpandButton;
@@ -31,8 +37,11 @@ declare namespace IIIFComponents {
         data(): IAVComponentData;
         set(data: IAVComponentData): void;
         private _render();
+        reset(): void;
         private _reset();
-        private _checkAllCanvasesReady();
+        private _checkAllMediaReady();
+        private _checkAllWaveformsReady();
+        private _getCanvasInstancesWithWaveforms();
         private _getCanvases();
         private _initCanvas(canvas);
         private _prevRange();
@@ -52,9 +61,11 @@ declare namespace IIIFComponents {
 }
 declare namespace IIIFComponents.AVComponent {
     class Events {
-        static CANVASREADY: string;
+        static MEDIA_READY: string;
         static LOG: string;
         static RANGE_CHANGED: string;
+        static WAVEFORM_READY: string;
+        static WAVEFORMS_READY: string;
     }
 }
 
@@ -102,19 +113,21 @@ declare namespace IIIFComponents {
         private _$rangeTimelineContainer;
         private _$timeDisplay;
         private _$timelineItemContainer;
-        private _canvasClockDuration;
         private _canvasClockFrequency;
         private _canvasClockInterval;
         private _canvasClockStartDate;
         private _canvasClockTime;
         private _canvasHeight;
         private _canvasWidth;
+        private _compositeWaveform;
         private _contentAnnotations;
         private _data;
         private _highPriorityFrequency;
         private _highPriorityInterval;
         private _isPlaying;
         private _isStalled;
+        private _lastCanvasHeight;
+        private _lastCanvasWidth;
         private _lowPriorityFrequency;
         private _lowPriorityInterval;
         private _mediaSyncMarginSecs;
@@ -123,11 +136,16 @@ declare namespace IIIFComponents {
         private _stallRequestedBy;
         private _volume;
         private _wasPlaying;
+        private _waveformCanvas;
+        private _waveformCtx;
         ranges: Manifesto.IRange[];
+        waveforms: string[];
         $playerElement: JQuery;
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
+        private _getBody(bodies);
+        private _getDuration();
         data(): IAVCanvasInstanceData;
         isVirtual(): boolean;
         isVisible(): boolean;
@@ -145,6 +163,11 @@ declare namespace IIIFComponents {
         destroy(): void;
         private _convertToPercentage(pixelValue, maxValue);
         private _renderMediaElement(data);
+        private _getWaveformData(url);
+        private _renderWaveform();
+        private _drawWaveform();
+        private _scaleY;
+        private _getWaveformMaxAndMin(waveform, index, sampleSpacing);
         private _updateCurrentTimeDisplay();
         private _updateDurationDisplay();
         private _renderSyncIndicator(mediaElementData);
@@ -175,6 +198,20 @@ declare namespace IIIFComponents.AVComponentCanvasInstance {
     }
 }
 
+declare namespace IIIFComponents.AVComponentObjects {
+    class CompositeWaveform {
+        private _waveforms;
+        length: number;
+        duration: number;
+        pixelsPerSecond: number;
+        secondsPerPixel: number;
+        constructor(waveforms: any[]);
+        min(index: number): any;
+        max(index: number): any;
+        _find(index: number): Waveform | null;
+    }
+}
+
 /// <reference types="manifesto.js" />
 declare namespace IIIFComponents {
     interface IAVCanvasInstanceData extends IAVComponentData {
@@ -182,11 +219,6 @@ declare namespace IIIFComponents {
         range?: Manifesto.IRange;
         visible?: boolean;
         volume?: number;
-    }
-}
-
-declare namespace IIIFComponents {
-    interface IAVComponent extends _Components.IBaseComponent {
     }
 }
 
@@ -214,15 +246,27 @@ declare namespace IIIFComponents {
         defaultAspectRatio?: number;
         doubleClickMS?: number;
         helper?: Manifold.IHelper;
+        halveAtWidth?: number;
         limitToRange?: boolean;
+        posterImageRatio?: number;
         rangeId?: string;
         virtualCanvasEnabled?: boolean;
+        waveformBarSpacing?: number;
+        waveformBarWidth?: number;
+        waveformColor?: string;
     }
 }
 
 declare namespace IIIFComponents {
     interface IAVVolumeControlState {
         volume?: number;
+    }
+}
+
+declare namespace IIIFComponents {
+    interface IMaxMin {
+        max: number;
+        min: number;
     }
 }
 
@@ -237,7 +281,13 @@ declare namespace IIIFComponents.AVComponentUtils {
         static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined;
         static formatTime(aNumber: number): string;
         static detectIE(): number | boolean;
+        static isSafari(): boolean;
         static debounce(fn: any, debounceDuration: number): any;
+        static hlsMimeTypes: string[];
+        static normalise(num: number, min: number, max: number): number;
+        static isHLSFormat(format: Manifesto.MediaType): boolean;
+        static isMpegDashFormat(format: Manifesto.MediaType): boolean;
+        static canPlayHls(): boolean;
     }
 }
 
@@ -252,5 +302,13 @@ declare namespace IIIFComponents.AVComponentObjects {
         getDuration(): number | null;
         getWidth(): number;
         getHeight(): number;
+    }
+}
+
+declare namespace IIIFComponents.AVComponentObjects {
+    class Waveform {
+        start: number;
+        end: number;
+        waveform: any;
     }
 }

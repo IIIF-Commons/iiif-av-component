@@ -5,8 +5,12 @@ namespace IIIFComponents {
         private _data: IAVComponentData = this.data();
         public options: _Components.IBaseComponentOptions;
         public canvasInstances: CanvasInstance[] = [];
-        private _checkAllCanvasesReadyInterval: any;
-        private _readyCanvases: number = 0;
+        private _checkAllMediaReadyInterval: any;
+        private _checkAllWaveformsReadyInterval: any;
+        private _readyMedia: number = 0;
+        private _readyWaveforms: number = 0;
+        private _posterCanvasWidth: number = 0;
+        private _posterCanvasHeight: number = 0;
 
         private _$posterContainer: JQuery;
         private _$posterImage: JQuery;
@@ -37,7 +41,9 @@ namespace IIIFComponents {
                 constrainNavigationToRange: false,
                 defaultAspectRatio: 0.56,
                 doubleClickMS: 350,
+                halveAtWidth: 200,
                 limitToRange: false,
+                posterImageRatio: 0.3,
                 virtualCanvasEnabled: true,
                 content: <IAVComponentContent>{
                     currentTime: "Current Time",
@@ -217,6 +223,10 @@ namespace IIIFComponents {
             
         }
 
+        public reset(): void {
+            this._reset();
+        }
+
         private _reset(): void {
 
             this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
@@ -254,7 +264,8 @@ namespace IIIFComponents {
                     this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
                 }
 
-                this._checkAllCanvasesReadyInterval = setInterval(this._checkAllCanvasesReady.bind(this), 100);
+                this._checkAllMediaReadyInterval = setInterval(this._checkAllMediaReady.bind(this), 100);
+                this._checkAllWaveformsReadyInterval = setInterval(this._checkAllWaveformsReady.bind(this), 100);
 
                 this._$posterContainer = $('<div class="poster-container"></div>');
                 this._$element.append(this._$posterContainer);
@@ -267,7 +278,10 @@ namespace IIIFComponents {
                 `);
                 this._$posterImage.append(this._$posterExpandButton);
 
-                this._$posterImage.on('click', () => {                    
+                this._$posterImage.on('touchstart click', (e) => {    
+                    
+                    e.preventDefault();
+                    
                     const target: any = this._getPosterImageCss(!this._posterImageExpanded);
                     //this._$posterImage.animate(target,"fast", "easein");
                     this._$posterImage.animate(target);
@@ -286,31 +300,56 @@ namespace IIIFComponents {
                 });
 
                 // poster canvas
-                const posterImage: string | null = this._data.helper.getPosterImage();
+                const posterCanvas: Manifesto.ICanvas | null = this._data.helper.getPosterCanvas();
 
-                if (posterImage) {
-                    this._$posterContainer.append(this._$posterImage);
+                if (posterCanvas) {
 
-                    let css: any = this._getPosterImageCss(this._posterImageExpanded);
-                    css = Object.assign({}, css, {
-                        'background-image': 'url(' + posterImage + ')'
-                    });
+                    this._posterCanvasWidth = posterCanvas.getWidth();
+                    this._posterCanvasHeight = posterCanvas.getHeight();
 
-                    this._$posterImage.css(css);
+                    const posterImage: string | null = this._data.helper.getPosterImage();
+
+                    if (posterImage) {
+                        this._$posterContainer.append(this._$posterImage);
+
+                        let css: any = this._getPosterImageCss(this._posterImageExpanded);
+                        css = Object.assign({}, css, {
+                            'background-image': 'url(' + posterImage + ')'
+                        });
+
+                        this._$posterImage.css(css);
+                    }
                 }
+
             }
 
         }
 
-        private _checkAllCanvasesReady(): void {
+        private _checkAllMediaReady(): void {
             console.log('loading media');
-            if (this._readyCanvases === this.canvasInstances.length) {
-                console.log('media ready');
-                clearInterval(this._checkAllCanvasesReadyInterval);
+            if (this._readyMedia === this.canvasInstances.length) {
+                console.log('all media ready');
+                clearInterval(this._checkAllMediaReadyInterval);
                 //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
-                this.fire(AVComponent.Events.CANVASREADY);
+                this.fire(AVComponent.Events.MEDIA_READY);
                 this.resize();
             }
+        }
+
+        private _checkAllWaveformsReady(): void {
+            console.log('loading waveforms');
+            if (this._readyWaveforms === this._getCanvasInstancesWithWaveforms().length) {
+                console.log('waveforms ready');
+                clearInterval(this._checkAllWaveformsReadyInterval);
+                this.fire(AVComponent.Events.WAVEFORMS_READY);
+                this.resize();
+            }
+        }
+
+        private _getCanvasInstancesWithWaveforms(): CanvasInstance[] {
+            return this.canvasInstances.filter((c) => {
+                return c.waveforms.length > 0;
+            });
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {
@@ -334,8 +373,12 @@ namespace IIIFComponents {
             canvasInstance.init();
             this.canvasInstances.push(canvasInstance);      
 
-            canvasInstance.on(AVComponent.Events.CANVASREADY, () => {
-                this._readyCanvases++;
+            canvasInstance.on(AVComponent.Events.MEDIA_READY, () => {
+                this._readyMedia++;
+            }, false);
+
+            canvasInstance.on(AVComponent.Events.WAVEFORM_READY, () => {
+                this._readyWaveforms++;
             }, false);
 
             // canvasInstance.on(AVComponent.Events.RESETCANVAS, () => {
@@ -514,23 +557,41 @@ namespace IIIFComponents {
             const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
 
             if (currentCanvas) {
+
                 const $options: JQuery = currentCanvas.$playerElement.find('.options-container');
-                const width: number = <number>currentCanvas.$playerElement.parent().width();
-                const height: number = <number>currentCanvas.$playerElement.parent().height() - <number>$options.height();
-                
+                const containerWidth: number = <number>currentCanvas.$playerElement.parent().width();
+                const containerHeight: number = <number>currentCanvas.$playerElement.parent().height() - <number>$options.height();
+
                 if (expanded) {
                     return {
                         'top': 0,
                         'left': 0,
-                        'width': width,
-                        'height': height
+                        'width': containerWidth,
+                        'height': containerHeight
                     }
                 } else {
+
+                    // get the longer edge of the poster canvas and make that a ratio of the container height/width.
+                    // scale the shorter edge proportionally.
+                    let ratio: number;
+                    let width: number;
+                    let height: number;
+
+                    if (this._posterCanvasWidth > this._posterCanvasHeight) {
+                        ratio = this._posterCanvasHeight / this._posterCanvasWidth;
+                        width = containerWidth * <number>this._data.posterImageRatio;
+                        height = width * ratio;
+                    } else { // either height is greater, or width and height are equal
+                        ratio = this._posterCanvasWidth / this._posterCanvasHeight;
+                        height = containerHeight * <number>this._data.posterImageRatio;
+                        width = height * ratio;
+                    }
+
                     return {
                         'top': 0,
-                        'left': (width / 3) * 2,
-                        'width': width / 3,
-                        'height': height / 3
+                        'left': containerWidth - width,
+                        'width': width,
+                        'height': height
                     }
                 }
             }
@@ -565,9 +626,11 @@ namespace IIIFComponents {
 
 namespace IIIFComponents.AVComponent {
     export class Events {
-        static CANVASREADY: string = 'canvasready';
+        static MEDIA_READY: string = 'mediaready';
         static LOG: string = 'log';
         static RANGE_CHANGED: string = 'rangechanged';
+        static WAVEFORM_READY: string = 'waveformready';
+        static WAVEFORMS_READY: string = 'waveformsready';
     }
 }
 

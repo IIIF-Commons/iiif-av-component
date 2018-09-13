@@ -1,15 +1,11 @@
 {
-	"@context": [
-        "http://www.w3.org/ns/anno.jsonld",
-        "http://iiif.io/api/presentation/3/context.json"
-    ],
+	"@context":["http://www.w3.org/ns/anno.jsonld","http://iiif.io/api/presentation/3/context.json"],
 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/manifest.json",
 	"type":"Manifest",
-    "behavior": [ "auto-advance" ],
 	"label":{"en":["C615/70 C615/71 Tamas Vasary piano"]},
 	"metadata": [
 	 	{
-	 	 	"label":{"en":["Title"]},
+	 	 	"label":{"en":["Full title"]},
 	 	 	"value":{"en":["Tamas Vasary piano"]}
 	 	},
 	 	{
@@ -21,614 +17,1000 @@
 	 	 	"value":{"en":["2 tape reels 25 cm 19 cm/sec stereo"]}
 	 	},
 	 	{
-	 	 	"label":{"en":["Description"]},
-	 	 	"value":{"en":["Beethoven and Mozart recital"]}
+	 	 	"label":{"en":["Usage"]},
+	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
 	 	},
 	 	{
-	 	 	"label":{"en":["Identifier"]},
-	 	 	"value":{"en":["C615/70"]}
-	 	},
-	 	{
-	 	 	"label":{"en":["Digitisation funded by"]},
-	 	 	"value":{"en":["Heritage Lottery Fund"]}
+	 	 	"label":{"en":["Held by"]},
+	 	 	"value":{"en":["The British Library"]}
 	 	},
 	 	{
 	 	 	"label":{"en":["Digitised by"]},
 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Identifier"]},
+	 	 	"value":{"en":["C615/70-C615/71"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Shelfmark"]},
+	 	 	"value":{"en":["C615/70"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA5898224>View the catalogue record</a>"]}
+	 	},
+	 	{
+	 	 	"label":{"en":["Contents"]},
+	 	 	"value":{"en":["Beethoven and Mozart recital"]}
 	 	}
 	],
-	"logo": [{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],    
-    "posterCanvas": {
-        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615/70/poster",
-        "type": "Canvas",
-        "height": 962,
-        "width": 962,
-        "items": [
-            {
-                "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615/70/poster/p1",
-                "type": "AnnotationPage",
-                "items": [
-                    {
-                        "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615/70/poster/p1/anno",
-                        "type": "Annotation",
-                        "motivation": "painting",
-                        "target": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615/70/poster",
-                        "body": {
-                            "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/posters/classical.jpg",
-                            "type": "Image",
-                            "format": "image/jpeg",
-                            "width": 962,
-                            "height": 962
-                        }
-                    }                    
-                ]
-            }
-        ]
-    },
-	"requiredStatement": {
-        "label": { "en": [ "Attribution" ] },
-        "value": { "en": [ "<span>Rights unassigned - staff access only</span>" ] }
-    },
-	"items" : [
-		{
-			"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004",
-			"type":"Canvas",
-			"label":{"en":["Tape 1 Side 1"]},
-			"duration": 3159.76,
-			"items": [
-				{
-					"type": "AnnotationPage",
-					"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004/anno1",
-					"items": [
-						{
-							"type":"Annotation",
-							"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004/anno1/1",
-							"motivation":"painting",
-							"timeMode":"trim",
-							"body": [
-								{
-									"type":"Choice",
-									"items": [
-										{
+	"logo":[{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],
+	"posterCanvas": {
+	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/c/poster",
+	 	"type":"Canvas",
+	 	"label":{"en":["world"]},
+	 	"width":962,
+	 	"height":962,
+	 	"items": [
+	 	 	{
+	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/c/poster/p1",
+	 	 	 	"type":"AnnotationPage",
+	 	 	 	"items": [
+	 	 	 	 	{
+	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/c/poster/p1/a1",
+	 	 	 	 	 	"type":"Annotation",
+	 	 	 	 	 	"motivation":"painting",
+	 	 	 	 	 	"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/c/poster",
+	 	 	 	 	 	"body": {
+	 	 	 	 	 	 	"id":"https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/posters/world.jpg",
+	 	 	 	 	 	 	"type":"Image",
+	 	 	 	 	 	 	"width":962,
+	 	 	 	 	 	 	"height":962,
+	 	 	 	 	 	 	"format":"image/jpeg"
+	 	 	 	 	 	}
+	 	 	 	 	}
+	 	 	 	]
+	 	 	}
+	 	]
+	},
+	"homepage": {
+		"id":"http://access.bl.uk/item/viewer/ark:/81055/vdc_100055540263.0x000002",
+		"type":"Text",
+		"label":{"en":["View at the British Library"]},
+		"format":"text/html"
+	},
+	"behavior":["auto-advance"],
+	"items": [{
+	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004",
+	 	 	"type":"Canvas",
+	 	 	"label":{"en":["Tape 1 Side 1"]},
+	 	 	"duration":3166.84,
+	 	 	"items": [
+	 	 	 	{
+	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004/anno1",
+	 	 	 	 	"type":"AnnotationPage",
+	 	 	 	 	"items": [
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004/anno1/1",
+	 	 	 	 	 	 	"type":"Annotation",
+	 	 	 	 	 	 	"motivation":"painting",
+	 	 	 	 	 	 	"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,3166.84",
+	 	 	 	 	 	 	"body": {
+	 	 	 	 	 	 	 	"type":"Choice",
+	 	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	 	{
 											"id":"https://resources.digirati.com/bl/C615_70/vdc_100055540263.0x000024.mp4",
 											"type":"Audio",
 											"format":"audio/mp4"
-										}
-									]
-								}
-							],
-							"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004"
-						}
-					]
-				}
-			]
-		},
-		{
-			"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006",
-			"type":"Canvas",
-			"label":{"en":["Tape 2 Side 1"]},
-			"duration": 3750.28,
-			"items": [
-				{
-					"type": "AnnotationPage",
-					"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006/anno2",
-					"items": [
-						{
-							"type":"Annotation",
-							"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006/anno2/1",
-							"motivation":"painting",
-							"timeMode":"trim",
-							"body": [
-								{
-									"type":"Choice",
-									"items": [
-										{
+}
+	 	 	 	 	 	 	 	]
+	 	 	 	 	 	 	},
+	 	 	 	 	 	 	"seeAlso": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://iiif-waveforms.s3.eu-west-2.amazonaws.com/vdc_100055540263.0x000023.dat",
+	 	 	 	 	 	 	 	 	"type":"Dataset",
+	 	 	 	 	 	 	 	 	"format":"application/octet-stream",
+	 	 	 	 	 	 	 	 	"profile":"http://waveform.prototyping.bbc.co.uk"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	}
+	 	 	 	 	]
+	 	 	 	}
+	 	 	]
+	 	},{
+	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006",
+	 	 	"type":"Canvas",
+	 	 	"label":{"en":["Tape 2 Side 1"]},
+	 	 	"duration":3750.28,
+	 	 	"items": [
+	 	 	 	{
+	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006/anno2",
+	 	 	 	 	"type":"AnnotationPage",
+	 	 	 	 	"items": [
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006/anno2/1",
+	 	 	 	 	 	 	"type":"Annotation",
+	 	 	 	 	 	 	"motivation":"painting",
+	 	 	 	 	 	 	"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=0,3750.28",
+	 	 	 	 	 	 	"body": {
+	 	 	 	 	 	 	 	"type":"Choice",
+	 	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	 	{
 											"id":"https://resources.digirati.com/bl/C615_70/vdc_100055540263.0x000026.mp4",
 											"type":"Audio",
 											"format":"audio/mp4"
-										}
-									]
-								}
-							],
-							"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006"
-						}
-					]
-				}
-			]
-		}
+}
+	 	 	 	 	 	 	 	]
+	 	 	 	 	 	 	},
+	 	 	 	 	 	 	"seeAlso": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://iiif-waveforms.s3.eu-west-2.amazonaws.com/vdc_100055540263.0x000025.dat",
+	 	 	 	 	 	 	 	 	"type":"Dataset",
+	 	 	 	 	 	 	 	 	"format":"application/octet-stream",
+	 	 	 	 	 	 	 	 	"profile":"http://waveform.prototyping.bbc.co.uk"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	}
+	 	 	 	 	]
+	 	 	 	}
+	 	 	]
+	 	}
 	],
 	"structures": [
-		{
-			"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/top",
-			"label":{"en":["Tamas Vasary piano"]},
-			"type":"Range",
-			"items": [
-	 	 	 	 	{
-	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000007",
-	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	"label":{"en":["[No Title]"]},
-	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	"value":{"en":["[No Title]"]}
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
-	 	 	 	 	 	 	}
-	 	 	 	 	 	],
-	 	 	 	 	 	
-	 	 	 	 	 	"items": [
-							{
-		                        "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002.nn1",
-		                        "type": "Range",
-		                        "behavior": ["no-nav"],
-		                        "items": [
-		                            {
-		                                "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,31.28",
-		                                "type": "Canvas"
-		                            }
-		                        ]
-		                    },
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000008",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Fantasien, piano, K475/Mozart"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Fantasien, piano, K475/Mozart"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=31.28,888.8",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000009",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Sonatas, piano, K457/Mozart"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, K457/Mozart"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=888.8,2109",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000a",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Sonatas, piano, no.6, op.10, no.2/Beethoven"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, no.6, op.10, no.2/Beethoven"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=2109,3159.76",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-		                        "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000b.nn2",
-		                        "type": "Range",
-		                        "behavior": ["no-nav"],
-		                        "items": [
-		                            {
-		                                "id": "https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,15.16",
-		                                "type": "Canvas"
-		                            }
-		                        ]
-		                    },
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000b",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Sonata, piano, B minor/Liszt"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Sonata, piano, B minor/Liszt"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=15.16,1821.36",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000c",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Etudes, piano, op.25. No.12/Chopin"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Etudes, piano, op.25. No.12/Chopin"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=1821.36,2037.88",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000d",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Etudes, piano, op.10. No.12/Chopin"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Etudes, piano, op.10. No.12/Chopin"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2037.88,2244.68",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000e",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Feux d'artifice/Debussy"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Feux d'artifice/Debussy"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2244.68,2536.12",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000f",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Sonatas, piano, no.18, op.31, no.3/Beethoven"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, no.18, op.31, no.3/Beethoven"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance Scherzo only"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2536.12,2908.2",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000010",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Campanella/Liszt"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Campanella/Liszt"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2908.2,3286.28",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000011",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Mazurkas, piano, op.68, no.2/Chopin"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Mazurkas, piano, op.68, no.2/Chopin"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=3298.6,3524.6",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	},
-	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000012",
-	 	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	 	"label":{"en":["Preludes, piano, op.28, no.3/Chopin"]},
-	 	 	 	 	 	 	 	"metadata": [
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Title"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Preludes, piano, op.28, no.3/Chopin"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
-	 	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
-	 	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	],
-	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	"items": [
-	 	 	 	 	 	 	 	 	
-	 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=3621.8,3750.28",
-	 	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	 	]
-	 	 	 	 	 	 	}
-	 	 	 	 	 	]
-	 	 	 	 	}
-			]
-		}
+		
+	 	{
+	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/top",
+	 	 	"type":"Range",
+	 	 	"label":{"en":["Tamas Vasary piano"]},
+	 	 	"metadata": [
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	"value":{"en":["Tamas Vasary piano"]}
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Format"]},
+	 	 	 	 	"value":{"en":["2 tape reels 25 cm 19 cm/sec stereo"]}
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Usage"]},
+	 	 	 	 	"value":{"en":["<span>Rights unassigned - staff access only</span>"]}
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Digitised by"]},
+	 	 	 	 	"value":{"en":["The British Library, 2018"]}
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Digitisation funded by"]},
+	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	"value":{"en":["C615/70-C615/71"]}
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	"value":{"en":["C615/70"]}
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA5898224>View the catalogue record</a>"]}
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"label":{"en":["Contents"]},
+	 	 	 	 	"value":{"en":["Beethoven and Mozart recital"]}
+	 	 	 	}
+	 	 	],
+	 	 	"rendering": [
+	 	 	 	{
+	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000002/top",
+	 	 	 	 	"type":"Audio",
+	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	"format":"audio/mp4"
+	 	 	 	}
+	 	 	],
+	 	 	"items":[
+	 	 	 	{
+	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/top/nn1",
+	 	 	 	 	"type":"Range",
+	 	 	 	 	"behavior":["no-nav"],
+	 	 	 	 	
+	 	 	 	 	"items":[
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,15.16",
+	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	}
+	 	 	 	 	]
+	 	 	 	},
+	 	 	 	{
+	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000007",
+	 	 	 	 	"type":"Range",
+	 	 	 	 	"label":{"en":["[No Title]"]},
+	 	 	 	 	"metadata": [
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	"value":{"en":["[No Title]"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	"value":{"en":["1 hr. 50 min."]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	"value":{"en":["C615/70 C1-3; C615/71 C1-8"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	"value":{"en":["C615/70"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA8055177>View the catalogue record</a>"]}
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	"value":{"en":["Live performance Concert recital. Items performed catalogued separately"]}
+	 	 	 	 	 	}
+	 	 	 	 	],
+	 	 	 	 	"rendering": [
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000007",
+	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	}
+	 	 	 	 	],
+	 	 	 	 	"items":[
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000007/nn1",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"behavior":["no-nav"],
+	 	 	 	 	 	 	
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=15.16,31.28",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000008",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Fantasien, piano, K475/Mozart"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Fantasien, piano, K475/Mozart"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["14 min."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70 C1"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264038>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000008",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=31.28,888.8",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000009",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Sonatas, piano, K457/Mozart"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, K457/Mozart"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["20 min. 20 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70 C2"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264039>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000009",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=888.8,2109",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000a",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Sonatas, piano, no.6, op.10, no.2/Beethoven"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, no.6, op.10, no.2/Beethoven"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["17 min. 32 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70 C3"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/70"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264041>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000a",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=2109,3159.76",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000007/nn4",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"behavior":["no-nav"],
+	 	 	 	 	 	 	
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=0,15.16",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000b",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Sonata, piano, B minor/Liszt"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Sonata, piano, B minor/Liszt"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["29 min.42 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C1"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6261427>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000b",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=15.16,1821.36",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000c",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Etudes, piano, op.25. No.12/Chopin"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Etudes, piano, op.25. No.12/Chopin"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["3 min. 36 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C2"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6261428>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000c",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=1821.36,2037.88",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000d",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Etudes, piano, op.10. No.12/Chopin"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Etudes, piano, op.10. No.12/Chopin"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["3 min. 27 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C3"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264043>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000d",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2037.88,2244.68",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000e",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Feux d'artifice/Debussy"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Feux d'artifice/Debussy"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["4 min. 51 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C4"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264044>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000e",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2244.68,2536.12",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x00000f",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Sonatas, piano, no.18, op.31, no.3/Beethoven"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Sonatas, piano, no.18, op.31, no.3/Beethoven"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["6 min. 11 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C5"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264045>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance Scherzo only"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000f",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2536.12,2908.2",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000010",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Campanella/Liszt"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Campanella/Liszt"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["6 min. 22 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C6"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264048>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000010",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=2908.2,3286.28",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000010/nn10",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"behavior":["no-nav"],
+	 	 	 	 	 	 	
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=3286.28,3298.6",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000011",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Mazurkas, piano, op.68, no.2/Chopin"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Mazurkas, piano, op.68, no.2/Chopin"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["3 min. 16 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C7"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264097>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000011",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=3298.6,3524.6",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000011/nn11",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"behavior":["no-nav"],
+	 	 	 	 	 	 	
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=3524.6,3621.8",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000012",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"label":{"en":["Preludes, piano, op.28, no.3/Chopin"]},
+	 	 	 	 	 	 	"metadata": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Full title"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Preludes, piano, op.28, no.3/Chopin"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1971-06-08 (recorded)"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Duration"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["1 min. 17 sec."]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Collection"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Tamás Vásáry Tapes"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Held by"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["The British Library"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Identifier"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71 C8"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Shelfmark"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["C615/71"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264098>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
+	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"rendering": [
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000012",
+	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
+	 	 	 	 	 	 	 	 	"format":"audio/mp4"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	],
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006#t=3621.8,3750.28",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	}
+	 	 	 	 	]
+	 	 	 	}
+	 	 	]
+	 	}
 	]
 }

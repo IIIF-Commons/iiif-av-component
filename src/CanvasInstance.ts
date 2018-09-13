@@ -22,19 +22,21 @@ namespace IIIFComponents {
         private _$rangeTimelineContainer: JQuery;
         private _$timeDisplay: JQuery;
         private _$timelineItemContainer: JQuery;
-        private _canvasClockDuration: number = 0; // todo: should these 0 values be undefined by default?
         private _canvasClockFrequency: number = 25;
         private _canvasClockInterval: number;
         private _canvasClockStartDate: number = 0;
         private _canvasClockTime: number = 0;
         private _canvasHeight: number = 0;
         private _canvasWidth: number = 0;
+        private _compositeWaveform: AVComponentObjects.CompositeWaveform;
         private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
         private _data: IAVCanvasInstanceData = this.data();
         private _highPriorityFrequency: number = 25;
         private _highPriorityInterval: number;
         private _isPlaying: boolean = false;
         private _isStalled: boolean = false;
+        private _lastCanvasHeight: number | undefined;
+        private _lastCanvasWidth: number | undefined;
         private _lowPriorityFrequency: number = 250;
         private _lowPriorityInterval: number;
         private _mediaSyncMarginSecs: number = 1;
@@ -43,7 +45,11 @@ namespace IIIFComponents {
         private _stallRequestedBy: any[] = []; //todo: type
         private _volume: AVVolumeControl;
         private _wasPlaying: boolean = false;
+        private _waveformCanvas: HTMLCanvasElement | null;
+        private _waveformCtx: CanvasRenderingContext2D | null;
+        //private _waveformNeedsRedraw: boolean = true;
         public ranges: Manifesto.IRange[] = [];
+        public waveforms: string[] = [];
 
         public $playerElement: JQuery;
         public logMessage: (message: string) => void;
@@ -151,8 +157,6 @@ namespace IIIFComponents {
                 });
             }
 
-            this._canvasClockDuration = <number>this._data.canvas.getDuration();
-
             const canvasWidth: number = this._data.canvas.getWidth();
             const canvasHeight: number = this._data.canvas.getHeight();
 
@@ -173,7 +177,9 @@ namespace IIIFComponents {
             let prevClicks: number = 0;
             let prevTimeout: number = 0;
 
-            this._$prevButton.on('click', () => {
+            this._$prevButton.on('touchstart click', (e) => {
+
+                e.preventDefault();
 
                 prevClicks++;
 
@@ -195,7 +201,10 @@ namespace IIIFComponents {
                 }
             });
 
-            this._$playButton.on('click', () => {
+            this._$playButton.on('touchstart click', (e) => {
+
+                e.preventDefault();
+
                 if (this._isPlaying) {
                     this.pause();
                 } else {
@@ -203,7 +212,10 @@ namespace IIIFComponents {
                 }
             });
 
-            this._$nextButton.on('click', () => {
+            this._$nextButton.on('touchstart click', (e) => {
+
+                e.preventDefault();
+
                 this._next();
             });
 
@@ -212,7 +224,7 @@ namespace IIIFComponents {
                 step: 0.01,
                 orientation: "horizontal",
                 range: "min",
-                max: that._canvasClockDuration,
+                max: that._getDuration(),
                 animate: false,
                 create: function (evt: any, ui: any) {
                     // on create
@@ -236,7 +248,7 @@ namespace IIIFComponents {
             });
 
             this._$canvasTimelineContainer.on("mousemove", (e) => {
-                this._updateHoverPreview(e, this._$canvasTimelineContainer, this._canvasClockDuration);
+                this._updateHoverPreview(e, this._$canvasTimelineContainer, this._getDuration());
             });
 
             this._$rangeTimelineContainer.on("mousemove", (e) => {
@@ -275,7 +287,14 @@ namespace IIIFComponents {
                     return;
                 }
 
-                const body: Manifesto.IAnnotationBody = bodies[0];
+                const body: Manifesto.IAnnotationBody | null = this._getBody(bodies);
+
+                if (!body) {
+                    // if no suitable format was found for the current browser, skip this item.
+                    console.warn('unable to find suitable format for', item.id);
+                    continue;
+                }
+
                 const type: Manifesto.ResourceType | null = body.getType();
                 const format: Manifesto.MediaType | null = body.getFormat();
 
@@ -321,7 +340,7 @@ namespace IIIFComponents {
                 }
 
                 if (!t) {
-                    t = [0, this._canvasClockDuration];
+                    t = [0, this._getDuration()];
                 }
 
                 const positionLeft = parseInt(String(xywh[0])),
@@ -366,11 +385,77 @@ namespace IIIFComponents {
                 }
 
                 this._renderMediaElement(itemData);
+
+                // waveform
+
+                // todo: create annotation.getSeeAlso
+                const seeAlso: any = item.getProperty('seeAlso');
+
+                if (seeAlso && seeAlso.length) {
+                    const dat: string = seeAlso[0].id;
+                    this.waveforms.push(dat);
+                }
+
             }
+
+            this._renderWaveform();
+        }
+
+        private _getBody(bodies: Manifesto.IAnnotationBody[]): Manifesto.IAnnotationBody | null {
+            
+            // if there's an HLS format and HLS is supported in this browser
+            for (let i = 0; i < bodies.length; i++) {
+                const body: Manifesto.IAnnotationBody = bodies[i];
+                const format: Manifesto.MediaType | null = body.getFormat();
+                
+                if (format) {
+                    if (AVComponentUtils.Utils.isHLSFormat(format) && AVComponentUtils.Utils.canPlayHls()) {
+                        return body;
+                    }
+                }
+            }
+
+            // if there's a Dash format and the browser isn't Safari
+            for (let i = 0; i < bodies.length; i++) {
+                const body: Manifesto.IAnnotationBody = bodies[i];
+                const format: Manifesto.MediaType | null = body.getFormat();
+                
+                if (format) {
+                    if (AVComponentUtils.Utils.isMpegDashFormat(format) && !AVComponentUtils.Utils.isSafari()) {
+                        return body;        
+                    }
+                }
+            }
+
+            // otherwise, return the first format that isn't HLS or Dash
+            for (let i = 0; i < bodies.length; i++) {
+                const body: Manifesto.IAnnotationBody = bodies[i];
+                const format: Manifesto.MediaType | null = body.getFormat();
+                
+                if (format) {
+                    if (!AVComponentUtils.Utils.isHLSFormat(format) && !AVComponentUtils.Utils.isMpegDashFormat(format)) {
+                        return body;        
+                    }
+                }
+            }
+
+            // couldn't find a suitable format
+            return null;
+        }
+
+        private _getDuration(): number {
+            if (this._data && this._data.canvas) {
+                return <number>this._data.canvas.getDuration();
+            }
+            
+            return 0;
         }
 
         public data(): IAVCanvasInstanceData {
             return <IAVCanvasInstanceData> {
+                waveformColor: "#fff",
+                waveformBarSpacing: 4,
+                waveformBarWidth: 2,
                 volume: 1
             }
         }
@@ -435,7 +520,10 @@ namespace IIIFComponents {
                                 this._setCurrentTime(duration.start);
                             }
                             
-                            this.play();
+                            if (this._data.autoPlay) {
+                                this.play();
+                            }
+                            
                             this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);                          
                         }
                     }
@@ -445,13 +533,17 @@ namespace IIIFComponents {
 
             if (diff.includes('volume')) {
                 this._contentAnnotations.forEach(($mediaElement: any) => {
-                    $($mediaElement.element).prop("volume", this._data.volume);
+                    $($mediaElement.element).prop('volume', this._data.volume);
     
                     this._volume.set({
                         volume: this._data.volume
                     });
                 });
             } else {
+                this._render();
+            }
+
+            if (diff.includes('limitToRange')) {
                 this._render();
             }
 
@@ -542,7 +634,7 @@ namespace IIIFComponents {
                 if (duration) {
 
                     // get the total length in seconds.
-                    const totalLength: number = this._canvasClockDuration;
+                    const totalLength: number = this._getDuration();
 
                     // get the length of the timeline container
                     const timelineLength: number = <number>this._$canvasTimelineContainer.width();
@@ -561,13 +653,16 @@ namespace IIIFComponents {
 
                     //console.log(width);
 
-                    this._$durationHighlight.show();
-
-                    // set the start position and width
-                    this._$durationHighlight.css({
-                        left: start,
-                        width: width
-                    });
+                    if (this.isVirtual()) {
+                        this._$durationHighlight.show();
+                        // set the start position and width
+                        this._$durationHighlight.css({
+                            left: start,
+                            width: width
+                        });
+                    } else {
+                        this._$durationHighlight.hide();
+                    }
 
                     const that = this;
 
@@ -608,6 +703,7 @@ namespace IIIFComponents {
 
             this._updateCurrentTimeDisplay();
             this._updateDurationDisplay();
+            this._drawWaveform();
         }
 
         public getCanvasId(): string | undefined {
@@ -838,13 +934,13 @@ namespace IIIFComponents {
                         this._setCurrentTime(0);
                         //}                        
 
-                        if (this.options.data.autoPlay) {
+                        if (this._data.autoPlay) {
                             this.play();
                         }
 
                         this._updateDurationDisplay();
 
-                        this.fire(AVComponent.Events.CANVASREADY);
+                        this.fire(AVComponent.Events.MEDIA_READY);
                     }
                 });
 
@@ -854,6 +950,133 @@ namespace IIIFComponents {
             }
 
             this._renderSyncIndicator(data);
+        }
+
+        private _getWaveformData(url: string): Promise<any> {
+
+            // return new Promise(function (resolve, reject) {
+            //     const xhr = new XMLHttpRequest();
+            //     xhr.responseType = 'arraybuffer';
+            //     xhr.open('GET', url);
+            //     xhr.addEventListener('load', (progressEvent: any) => {
+            //         if (xhr.status == 200) {
+            //             resolve(WaveformData.create(progressEvent.target.response));
+            //         } else {
+            //             reject(new Error(xhr.statusText));
+            //         }
+            //     });
+            //     xhr.onerror = function () {
+            //         reject(new Error("Network Error"));
+            //     };
+            //     xhr.send();
+            // });
+
+            // must use this for IE11
+            return new Promise(function (resolve, reject) {
+
+                $.ajax(<any>{
+                    url: url,
+                    type: 'GET',
+                    dataType: 'binary',
+                    responseType: 'arraybuffer',
+                    processData: false
+                }).done(function(data) {
+                    resolve(WaveformData.create(data));
+                }).fail(function(err) {
+                    reject(new Error('Network Error'));
+                });
+
+            });
+        }
+
+        private _renderWaveform(): void {
+
+            if (!this.waveforms.length) return;
+
+            const promises = this.waveforms.map((url) => {
+                return this._getWaveformData(url);
+            });
+
+            Promise.all(promises).then((waveforms) => {
+
+                this._waveformCanvas = document.createElement('canvas');
+                this._waveformCanvas.classList.add('waveform');
+                this._$canvasContainer.append(this._waveformCanvas);
+                this._waveformCtx = this._waveformCanvas.getContext('2d');
+
+                if (this._waveformCtx) {
+                    this._waveformCtx.fillStyle = <string>this._data.waveformColor;
+                    this._compositeWaveform = new AVComponentObjects.CompositeWaveform(waveforms);
+                    //this._resize();
+                    this.fire(AVComponent.Events.WAVEFORM_READY);
+                }
+                
+            });
+        }
+
+        private _drawWaveform(): void {
+
+            //if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
+            if (!this._waveformCtx) return;
+
+            let duration: Manifesto.Duration | undefined;
+            let start: number = 0;
+            let end: number = this._compositeWaveform.duration;
+
+            if (this._data.range) {
+                duration = this._data.range.getDuration();
+            }
+
+            if (this._data.limitToRange && duration) {
+                start = duration.start;
+                end = duration.end;
+            }
+
+            const startpx = start * this._compositeWaveform.pixelsPerSecond;
+            const endpx = end * this._compositeWaveform.pixelsPerSecond;
+            const canvasWidth: number = this._waveformCtx.canvas.width;
+            const canvasHeight: number = this._waveformCtx.canvas.height;
+            const barSpacing: number = <number>this._data.waveformBarSpacing;
+            const barWidth: number = <number>this._data.waveformBarWidth;
+            const increment: number = Math.floor(((endpx - startpx) / canvasWidth) * barSpacing);
+            const sampleSpacing: number = (canvasWidth / barSpacing);
+
+            this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+            this._waveformCtx.fillStyle = <string>this._data.waveformColor;
+
+            for (let x = startpx; x < endpx; x += increment) {
+
+                const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
+                const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
+                const ypos = (canvasHeight - height) / 2;
+                const xpos = canvasWidth * AVComponentUtils.Utils.normalise(x, startpx, endpx);
+
+                this._waveformCtx.fillRect(xpos, ypos, barWidth, height);
+            }
+        }
+
+        private _scaleY = (amplitude: number, height: number) => {
+            const range = 256;
+            return Math.max(<number>this._data.waveformBarWidth, (amplitude * height / range));
+        };
+
+        private _getWaveformMaxAndMin(waveform: AVComponentObjects.CompositeWaveform, index: number, sampleSpacing: number): IMaxMin {
+            
+            let max: number = -127;
+            let min: number = 128;
+
+            for (let x = index; x < index + sampleSpacing; x++) {
+                
+                if (waveform.max(x) > max) {
+                    max = waveform.max(x);
+                }
+
+                if (waveform.min(x) < min) {
+                    min = waveform.min(x);
+                }
+            }
+
+            return { max, min };
         }
 
         private _updateCurrentTimeDisplay(): void {
@@ -883,7 +1106,7 @@ namespace IIIFComponents {
             if (this._data.limitToRange && duration) {
                 this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(duration.getLength()));
             } else {
-                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._canvasClockDuration));
+                this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(this._getDuration()));
             }
         }
 
@@ -898,8 +1121,8 @@ namespace IIIFComponents {
 
         private _renderSyncIndicator(mediaElementData: any) {
 
-            const leftPercent: number = this._convertToPercentage(mediaElementData.start, this._canvasClockDuration);
-            const widthPercent: number = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this._canvasClockDuration);
+            const leftPercent: number = this._convertToPercentage(mediaElementData.start, this._getDuration());
+            const widthPercent: number = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this._getDuration());
 
             const $timelineItem: JQuery = $('<div class="timeline-item" title="' + mediaElementData.source + '" data-start="' + mediaElementData.start + '" data-end="' + mediaElementData.end + '"></div>');
 
@@ -938,8 +1161,6 @@ namespace IIIFComponents {
             this._synchronizeMedia();
         }
 
-        // todo: can this be part of the _data state?
-        // this._data.rewind = true?
         private _rewind(withoutUpdate?: boolean): void {
 
             this.pause();
@@ -963,12 +1184,8 @@ namespace IIIFComponents {
                     });
                 }
             }
-
-            this.play();
         }
 
-        // todo: can this be part of the _data state?
-        // this._data.fastforward = true?
         private _fastforward(): void {
 
             let duration: Manifesto.Duration | undefined;
@@ -980,7 +1197,7 @@ namespace IIIFComponents {
             if (this._data.limitToRange && duration) {
                 this._canvasClockTime = duration.end;
             } else {
-                this._canvasClockTime = this._canvasClockDuration;
+                this._canvasClockTime = this._getDuration();
             }
 
             this.pause();
@@ -1004,7 +1221,7 @@ namespace IIIFComponents {
                 this._canvasClockTime = duration.start;
             }
 
-            if (this._canvasClockTime === this._canvasClockDuration) {
+            if (this._canvasClockTime === this._getDuration()) {
                 this._canvasClockTime = 0;
             }
 
@@ -1077,8 +1294,8 @@ namespace IIIFComponents {
                 this.pause();
             }
 
-            if (this._canvasClockTime >= this._canvasClockDuration) {
-                this._canvasClockTime = this._canvasClockDuration;
+            if (this._canvasClockTime >= this._getDuration()) {
+                this._canvasClockTime = this._getDuration();
                 this.pause();
             }
         }
@@ -1100,7 +1317,7 @@ namespace IIIFComponents {
         private _lowPriorityUpdater(): void {
             this._updateMediaActiveStates();
 
-            if (this._isPlaying && this._data.autoSelectRange) {
+            if (this._isPlaying && this._data.autoSelectRange && this.isVirtual()) {
                 this._hasRangeChanged();
             }
 
@@ -1312,7 +1529,28 @@ namespace IIIFComponents {
                     //$canvasContainer.height(this.canvasHeight * resizeFactorY);
 
                     const $options: JQuery = this.$playerElement.find('.options-container');
-                    this._$canvasContainer.height(<number>this.$playerElement.parent().height() - <number>$options.height());
+
+                    // if in the watch metric, make sure the canvasContainer isn't more than half the height to allow
+                    // room between buttons
+                    if (this._data.halveAtWidth !== undefined && <number>this.$playerElement.parent().width() < this._data.halveAtWidth) {
+                        this._$canvasContainer.height(<number>this.$playerElement.parent().height() / 2);
+                    } else {
+                        this._$canvasContainer.height(<number>this.$playerElement.parent().height() - <number>$options.height());
+                    }
+                }
+
+                if (this._waveformCanvas) {
+                    const canvasWidth: number = <number>this._$canvasContainer.width();
+                    const canvasHeight: number = <number>this._$canvasContainer.height();
+
+                    //if (canvasWidth !== this._lastCanvasWidth || canvasHeight !== this._lastCanvasHeight) {
+                        this._waveformCanvas.width = this._lastCanvasWidth = canvasWidth;
+                        this._waveformCanvas.height = this._lastCanvasHeight = canvasHeight;
+                    //     this._waveformNeedsRedraw = true;
+                    // } else {
+                    //     this._waveformNeedsRedraw = false;
+                    // }
+                    
                 }
 
                 this._render();

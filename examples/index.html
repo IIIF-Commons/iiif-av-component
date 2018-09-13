@@ -10,6 +10,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsviews/0.9.76/jsviews.min.js"></script>
     <script src="https://unpkg.com/proxy-observe@0.0.21/browser/proxy-observe.min.js"></script>
@@ -20,13 +21,15 @@
 
     <script src="https://unpkg.com/manifesto.js/dist/client/manifesto.bundle.js"></script>
     <script src="https://unpkg.com/@iiif/manifold/dist/manifold.js"></script>
+    <script src="https://unpkg.com/jquery-binarytransport"></script>
 
     <!-- <script src="https://rawgit.com/iiif-commons/manifesto/end-before-start/dist/client/manifesto.bundle.js"></script>
     <script src="https://rawgit.com/iiif-commons/manifold/master/dist/manifold.js"></script> -->
 
     <script src="https://unpkg.com/dashjs@2.6.6/dist/dash.all.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <script src="https://unpkg.com/waveform-data@2.0.1/dist/waveform-data.js"></script>
 
     <style>
         .playerContainer {
@@ -63,7 +66,9 @@
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C733_48.json">Arabic/Soqotri</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/DA.json">Winter Hymn</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C465_13.json">Jocelyn Herbert</button>
-        <button class="testFixture" data-json="data/riksarkivet/audio-with-posterCanvas.json">Riksarkivet Audio With Poster</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/riksarkivet/audio-with-posterCanvas.json">Riksarkivet Audio With Poster</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615_70.json">Tamas Vasary piano</button>
+        <button class="testFixture" data-json="https://edsilv.github.io/biiif-test-manifests/sound-manifest/index.json">Somali Love Song</button>
     </div>
     
     <input type="text" name="manifestInput" id="manifestInput"/>
@@ -190,7 +195,8 @@
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000013');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000015');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000011');
-                //avcomponent.playRange("https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007");
+                //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007');
+                //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000011');
             });
 
             avcomponent.on('rangechanged', function(rangeid) {

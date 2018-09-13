@@ -36,7 +36,9 @@ namespace IIIFComponents {
 
             const that = this;
 
-            this._$volumeMute.on('click', () => {
+            this._$volumeMute.on('touchstart click', (e) => {
+
+                e.preventDefault();
 
                 // start reducer
                 if (this._data.volume !== 0) {
