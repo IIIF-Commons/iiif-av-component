@@ -2006,7 +2006,7 @@ var IIIFComponents;
                 }
                 return hourValue + minutes + ':' + seconds;
             };
-            Utils.detectIE = function () {
+            Utils.isIE = function () {
                 var ua = window.navigator.userAgent;
                 // Test values; Uncomment to check result …
                 // IE 10

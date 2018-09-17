@@ -282,7 +282,7 @@ declare namespace IIIFComponents.AVComponentUtils {
         static getTimestamp(): string;
         static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined;
         static formatTime(aNumber: number): string;
-        static detectIE(): number | boolean;
+        static isIE(): number | boolean;
         static isSafari(): boolean;
         static debounce(fn: any, debounceDuration: number): any;
         static hlsMimeTypes: string[];
