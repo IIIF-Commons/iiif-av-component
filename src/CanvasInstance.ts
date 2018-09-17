@@ -96,7 +96,7 @@ namespace IIIFComponents {
             this._$canvasTime = this._$timeDisplay.find('.canvas-time');
             this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
 
-            if(this.isVirtual()) {
+            if (this.isVirtual()) {
                 this.$playerElement.addClass('virtual');
             }
 
@@ -138,7 +138,7 @@ namespace IIIFComponents {
                                 clonedRanges.push(clonedRange);
 
                                 if (clonedRange.canvases && clonedRange.canvases.length) {
-                                    
+
                                     for (let i = 0; i < clonedRange.canvases.length; i++) {
                                         clonedRange.canvases[i] = <string>AVComponentUtils.Utils.retargetTemporalComponent((<VirtualCanvas>this._data.canvas).canvases, clonedRange.__jsonld.items[i].id);
                                     }
@@ -152,7 +152,7 @@ namespace IIIFComponents {
                 } else {
                     ranges = ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Manifesto.ICanvas));
                 }
-  
+
                 ranges.forEach((range: Manifesto.IRange) => {
                     this.ranges.push(range);
                 });
@@ -267,7 +267,7 @@ namespace IIIFComponents {
 
             // always hide timelineItemContainer for now
             //if (items.length === 1) {
-                this._$timelineItemContainer.hide();
+            this._$timelineItemContainer.hide();
             //}
 
             for (let i = 0; i < items.length; i++) {
@@ -403,12 +403,12 @@ namespace IIIFComponents {
         }
 
         private _getBody(bodies: Manifesto.IAnnotationBody[]): Manifesto.IAnnotationBody | null {
-            
+
             // if there's an HLS format and HLS is supported in this browser
             for (let i = 0; i < bodies.length; i++) {
                 const body: Manifesto.IAnnotationBody = bodies[i];
                 const format: Manifesto.MediaType | null = body.getFormat();
-                
+
                 if (format) {
                     if (AVComponentUtils.Utils.isHLSFormat(format) && AVComponentUtils.Utils.canPlayHls()) {
                         return body;
@@ -420,10 +420,10 @@ namespace IIIFComponents {
             for (let i = 0; i < bodies.length; i++) {
                 const body: Manifesto.IAnnotationBody = bodies[i];
                 const format: Manifesto.MediaType | null = body.getFormat();
-                
+
                 if (format) {
                     if (AVComponentUtils.Utils.isMpegDashFormat(format) && !AVComponentUtils.Utils.isSafari()) {
-                        return body;        
+                        return body;
                     }
                 }
             }
@@ -432,10 +432,10 @@ namespace IIIFComponents {
             for (let i = 0; i < bodies.length; i++) {
                 const body: Manifesto.IAnnotationBody = bodies[i];
                 const format: Manifesto.MediaType | null = body.getFormat();
-                
+
                 if (format) {
                     if (!AVComponentUtils.Utils.isHLSFormat(format) && !AVComponentUtils.Utils.isMpegDashFormat(format)) {
-                        return body;        
+                        return body;
                     }
                 }
             }
@@ -448,12 +448,12 @@ namespace IIIFComponents {
             if (this._data && this._data.canvas) {
                 return <number>this._data.canvas.getDuration();
             }
-            
+
             return 0;
         }
 
         public data(): IAVCanvasInstanceData {
-            return <IAVCanvasInstanceData> {
+            return <IAVCanvasInstanceData>{
                 waveformColor: "#fff",
                 waveformBarSpacing: 4,
                 waveformBarWidth: 2,
@@ -520,12 +520,12 @@ namespace IIIFComponents {
                             if (!(<any>this._data.range).autoChanged) {
                                 this._setCurrentTime(duration.start);
                             }
-                            
+
                             if (this._data.autoPlay) {
                                 this.play();
                             }
-                            
-                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);                          
+
+                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);
                         }
                     }
                 }
@@ -535,7 +535,7 @@ namespace IIIFComponents {
             if (diff.includes('volume')) {
                 this._contentAnnotations.forEach(($mediaElement: any) => {
                     $($mediaElement.element).prop('volume', this._data.volume);
-    
+
                     this._volume.set({
                         volume: this._data.volume
                     });
@@ -580,7 +580,7 @@ namespace IIIFComponents {
                 // if the range spans the current time, and is navigable, return it.
                 // otherwise, try to find a navigable child range.
                 if (this._rangeSpansCurrentTime(range)) {
-                    
+
                     if (this._rangeNavigable(range)) {
                         return range;
                     }
@@ -599,7 +599,7 @@ namespace IIIFComponents {
                     // this range isn't navigable, and couldn't find a navigable child range.
                     // therefore return the parent range (if any).
                     return range.parentRange;
-                    
+
                 }
             }
 
@@ -607,7 +607,7 @@ namespace IIIFComponents {
         }
 
         private _rangeSpansCurrentTime(range: Manifesto.IRange): boolean {
-            
+
             if (range.spansTime(Math.ceil(this._canvasClockTime) + this._rangeSpanPadding)) {
                 return true;
             }
@@ -616,7 +616,7 @@ namespace IIIFComponents {
         }
 
         private _rangeNavigable(range: Manifesto.IRange): boolean {
-            
+
             const behavior: Manifesto.Behavior | null = range.getBehavior();
 
             if (behavior && behavior.toString() === manifesto.Behavior.nonav().toString()) {
@@ -670,7 +670,7 @@ namespace IIIFComponents {
                     // try to destroy existing rangeTimelineContainer
                     if (this._$rangeTimelineContainer.data("ui-sortable")) {
                         this._$rangeTimelineContainer.slider("destroy");
-                    }                  
+                    }
 
                     this._$rangeTimelineContainer.slider({
                         value: duration.start,
@@ -713,7 +713,7 @@ namespace IIIFComponents {
         public getCanvasId(): string | undefined {
 
             if (this._data && this._data.canvas) {
-                return this._data.canvas.id;           
+                return this._data.canvas.id;
             }
 
             return undefined;
@@ -843,15 +843,33 @@ namespace IIIFComponents {
                 $mediaElement.attr('data-dashjs-player', '');
                 const player = dashjs.MediaPlayer().create();
                 player.getDebug().setLogToBrowserConsole(false);
+                if (this._data.adaptiveAuthEnabled) {
+                    player.setXHRWithCredentialsForType('MPD', true); // send cookies
+                }
                 player.initialize(media, data.source);
             } else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
                 // hls
                 if (Hls.isSupported()) {
-                    const hls = new Hls();
+                    let hls = new Hls();
+
+                    if (this._data.adaptiveAuthEnabled) {
+                        hls = new Hls({
+                            xhrSetup: (xhr: any) => {
+                                xhr.withCredentials = true; // send cookies
+                            }
+                        });
+                    } else {
+                        hls = new Hls();
+                    }
+
+                    if (this._data.adaptiveAuthEnabled) {
+                        
+                    }
+
                     hls.loadSource(data.source);
                     hls.attachMedia(media);
                     //hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                        //media.play();
+                    //media.play();
                     //});
                 }
                 // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
@@ -860,7 +878,7 @@ namespace IIIFComponents {
                 else if (media.canPlayType('application/vnd.apple.mpegurl')) {
                     media.src = data.source;
                     //media.addEventListener('canplay', function () {
-                        //media.play();
+                    //media.play();
                     //});
                 }
             } else {
@@ -985,9 +1003,9 @@ namespace IIIFComponents {
                     dataType: 'binary',
                     responseType: 'arraybuffer',
                     processData: false
-                }).done(function(data) {
+                }).done(function (data) {
                     resolve(WaveformData.create(data));
-                }).fail(function(err) {
+                }).fail(function (err) {
                     reject(new Error('Network Error'));
                 });
 
@@ -1015,7 +1033,7 @@ namespace IIIFComponents {
                     //this._resize();
                     this.fire(AVComponent.Events.WAVEFORM_READY);
                 }
-                
+
             });
         }
 
@@ -1066,12 +1084,12 @@ namespace IIIFComponents {
         };
 
         private _getWaveformMaxAndMin(waveform: AVComponentObjects.CompositeWaveform, index: number, sampleSpacing: number): IMaxMin {
-            
+
             let max: number = -127;
             let min: number = 128;
 
             for (let x = index; x < index + sampleSpacing; x++) {
-                
+
                 if (waveform.max(x) > max) {
                     max = waveform.max(x);
                 }
@@ -1091,10 +1109,10 @@ namespace IIIFComponents {
             if (this._data.range) {
                 duration = this._data.range.getDuration();
             }
-            
-            if (this._data.limitToRange && duration) {              
+
+            if (this._data.limitToRange && duration) {
                 const rangeClockTime: number = this._canvasClockTime - duration.start;
-                this._$canvasTime.text(AVComponentUtils.Utils.formatTime(rangeClockTime));     
+                this._$canvasTime.text(AVComponentUtils.Utils.formatTime(rangeClockTime));
             } else {
                 this._$canvasTime.text(AVComponentUtils.Utils.formatTime(this._canvasClockTime));
             }
@@ -1107,7 +1125,7 @@ namespace IIIFComponents {
             if (this._data.range) {
                 duration = this._data.range.getDuration();
             }
-            
+
             if (this._data.limitToRange && duration) {
                 this._$canvasDuration.text(AVComponentUtils.Utils.formatTime(duration.getLength()));
             } else {
@@ -1174,7 +1192,7 @@ namespace IIIFComponents {
 
             if (this._data.range) {
                 duration = this._data.range.getDuration();
-            }           
+            }
 
             if (this._data.limitToRange && duration) {
                 this._canvasClockTime = duration.start;
@@ -1376,7 +1394,7 @@ namespace IIIFComponents {
 
         private _pauseMedia(media: HTMLMediaElement): void {
             media.pause();
-            
+
             // const playPromise = media.play();
 
             // if (playPromise !== undefined) {
@@ -1390,7 +1408,7 @@ namespace IIIFComponents {
         }
 
         private _setMediaCurrentTime(media: HTMLMediaElement, time: number): void {
-            
+
             if (!isNaN(media.duration)) {
                 media.currentTime = time;
             }
@@ -1549,13 +1567,13 @@ namespace IIIFComponents {
                     const canvasHeight: number = <number>this._$canvasContainer.height();
 
                     //if (canvasWidth !== this._lastCanvasWidth || canvasHeight !== this._lastCanvasHeight) {
-                        this._waveformCanvas.width = this._lastCanvasWidth = canvasWidth;
-                        this._waveformCanvas.height = this._lastCanvasHeight = canvasHeight;
+                    this._waveformCanvas.width = this._lastCanvasWidth = canvasWidth;
+                    this._waveformCanvas.height = this._lastCanvasHeight = canvasHeight;
                     //     this._waveformNeedsRedraw = true;
                     // } else {
                     //     this._waveformNeedsRedraw = false;
                     // }
-                    
+
                 }
 
                 this._render();

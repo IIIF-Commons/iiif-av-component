@@ -15,6 +15,7 @@ namespace IIIFComponents {
     
     export interface IAVComponentData {
         [key: string]: any;
+        adaptiveAuthEnabled?: boolean;
         autoPlay?: boolean;
         autoSelectRange?: boolean;
         canvasId?: string;

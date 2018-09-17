@@ -1307,12 +1307,27 @@ var IIIFComponents;
                 $mediaElement.attr('data-dashjs-player', '');
                 var player = dashjs.MediaPlayer().create();
                 player.getDebug().setLogToBrowserConsole(false);
+                if (this._data.adaptiveAuthEnabled) {
+                    player.setXHRWithCredentialsForType('MPD', true); // send cookies
+                }
                 player.initialize(media, data.source);
             }
             else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
                 // hls
                 if (Hls.isSupported()) {
                     var hls = new Hls();
+                    if (this._data.adaptiveAuthEnabled) {
+                        hls = new Hls({
+                            xhrSetup: function (xhr) {
+                                xhr.withCredentials = true; // send cookies
+                            }
+                        });
+                    }
+                    else {
+                        hls = new Hls();
+                    }
+                    if (this._data.adaptiveAuthEnabled) {
+                    }
                     hls.loadSource(data.source);
                     hls.attachMedia(media);
                     //hls.on(Hls.Events.MANIFEST_PARSED, function () {
