@@ -107,7 +107,7 @@ namespace IIIFComponents.AVComponentUtils {
             return hourValue + minutes + ':' + seconds;
         }
 
-        public static detectIE(): number | boolean {
+        public static isIE(): number | boolean {
             const ua = window.navigator.userAgent;
 
             // Test values; Uncomment to check result …

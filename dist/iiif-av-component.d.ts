@@ -1,4 +1,4 @@
-// iiif-av-component v0.0.75 https://github.com/iiif-commons/iiif-av-component#readme
+// iiif-av-component v0.0.82 https://github.com/iiif-commons/iiif-av-component#readme
 interface Array<T> {
     /**
      * Determines whether an array includes a certain element, returning true or false as appropriate.
@@ -37,6 +37,7 @@ declare namespace IIIFComponents {
         data(): IAVComponentData;
         set(data: IAVComponentData): void;
         private _render();
+        reset(): void;
         private _reset();
         private _checkAllMediaReady();
         private _checkAllWaveformsReady();
@@ -46,6 +47,7 @@ declare namespace IIIFComponents {
         private _prevRange();
         private _nextRange();
         private _setCanvasInstanceVolumes(volume);
+        private _getNormaliseCanvasId(canvasId);
         private _getCanvasInstanceById(canvasId);
         private _getCurrentCanvas();
         private _rewind();
@@ -140,6 +142,7 @@ declare namespace IIIFComponents {
         ranges: Manifesto.IRange[];
         waveforms: string[];
         $playerElement: JQuery;
+        isOnlyCanvasInstance: boolean;
         logMessage: (message: string) => void;
         constructor(options: _Components.IBaseComponentOptions);
         init(): void;
@@ -237,6 +240,7 @@ declare namespace IIIFComponents {
     }
     interface IAVComponentData {
         [key: string]: any;
+        adaptiveAuthEnabled?: boolean;
         autoPlay?: boolean;
         autoSelectRange?: boolean;
         canvasId?: string;
@@ -279,7 +283,7 @@ declare namespace IIIFComponents.AVComponentUtils {
         static getTimestamp(): string;
         static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined;
         static formatTime(aNumber: number): string;
-        static detectIE(): number | boolean;
+        static isIE(): number | boolean;
         static isSafari(): boolean;
         static debounce(fn: any, debounceDuration: number): any;
         static hlsMimeTypes: string[];

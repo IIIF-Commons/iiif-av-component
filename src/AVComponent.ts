@@ -223,9 +223,21 @@ namespace IIIFComponents {
             
         }
 
+        public reset(): void {
+            this._reset();
+        }
+
         private _reset(): void {
 
-            this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
+            this._readyMedia = 0;
+            this._readyWaveforms = 0;
+            this._posterCanvasWidth = 0;
+            this._posterCanvasHeight = 0;
+
+            clearInterval(this._checkAllMediaReadyInterval);
+            clearInterval(this._checkAllWaveformsReadyInterval);
+
+            this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
                 canvasInstance.destroy();
             });
 
@@ -363,7 +375,8 @@ namespace IIIFComponents {
                 data: Object.assign({}, { canvas: canvas }, this._data)
             });
 
-            canvasInstance.logMessage = this._logMessage.bind(this);   
+            canvasInstance.logMessage = this._logMessage.bind(this);
+            canvasInstance.isOnlyCanvasInstance = this._getCanvases().length === 1;
             this._$element.append(canvasInstance.$playerElement);
 
             canvasInstance.init();
@@ -435,9 +448,13 @@ namespace IIIFComponents {
             });
         }
 
+        private _getNormaliseCanvasId(canvasId: string): string {
+            return (canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(canvasId) : canvasId;
+        }
+
         private _getCanvasInstanceById(canvasId: string): CanvasInstance | undefined {
             
-            canvasId = (canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(canvasId) : canvasId;
+            canvasId = this._getNormaliseCanvasId(canvasId);
     
             // if virtual canvas is enabled, check for that first
             if (this._data.virtualCanvasEnabled) {
@@ -446,9 +463,19 @@ namespace IIIFComponents {
     
                     const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
                     
-                    if (canvasInstance.isVirtual() && canvasInstance.getCanvasId() === canvasId || canvasInstance.includesVirtualSubCanvas(canvasId)) {
-                        return canvasInstance;
+                    let currentCanvasId: string | undefined = canvasInstance.getCanvasId();
+
+                    if (currentCanvasId) {
+
+                        currentCanvasId = this._getNormaliseCanvasId(currentCanvasId);
+
+                        if ((canvasInstance.isVirtual() || this.canvasInstances.length === 1) && currentCanvasId === canvasId || 
+                            canvasInstance.includesVirtualSubCanvas(canvasId)) {
+                            return canvasInstance;
+                        }
+
                     }
+
                 }
 
             } else {
