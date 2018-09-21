@@ -279,7 +279,7 @@
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	"value":{"en":["<span>Starts abruptly. First few seconds missing Chat show. Guests talk about their jobs and latest developments in their career. Includes <a class='iiif-viewer-link' href='#rid=https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007'>live music performances (catalogued separately)</a></span>"]}
+	 	 	 	 	 	 	"value":{"en":["<span>Starts abruptly. First few seconds missing Chat show. Guests talk about their jobs and latest developments in their career. Includes <a class='iiif-viewer-link' href='#?rid=https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007'>live music performances (catalogued separately)</a></span>"]}
 	 	 	 	 	 	}
 	 	 	 	 	],
 	 	 	 	 	"rendering": [
