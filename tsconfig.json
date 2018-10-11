@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "declaration": true,
+        "declarationDir": "./dist/",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": false,
@@ -13,17 +14,14 @@
         "types": [
             "manifesto.js",
             "@iiif/manifold",
-            "base-component",
+            "@iiif/base-component",
             "exjs",
             "jquery",
             "jqueryui"
-        ]
+        ],
+        "outDir": "./dist/"
     },
-    "files": [
-        "src/Definitions.ts"
-    ],
     "include": [
-        "src/**/*",
-        "typings/**/*"
+        "src/**/*"
     ]
 }
