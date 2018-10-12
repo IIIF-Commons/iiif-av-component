@@ -2401,14 +2401,16 @@ namespace IIIFComponents {
                     this._$posterImage.animate(target);
                     this._posterImageExpanded = !this._posterImageExpanded;
 
-                    if (this._posterImageExpanded) {
-                        const label: string = this.options.data.content.collapse;
-                        this._$posterExpandButton.prop('title', label);
-                        this._$posterExpandButton.find('i').switchClass('expand', 'collapse');
-                    } else {
-                        const label: string = this.options.data.content.expand;
-                        this._$posterExpandButton.prop('title', label);
-                        this._$posterExpandButton.find('i').switchClass('collapse', 'expand');
+                    if (this._data.content) {
+                        if (this._posterImageExpanded) {
+                            const label: string = this._data.content.collapse;
+                            this._$posterExpandButton.prop('title', label);
+                            this._$posterExpandButton.find('i').switchClass('expand', 'collapse');
+                        } else {
+                            const label: string = this._data.content.expand;
+                            this._$posterExpandButton.prop('title', label);
+                            this._$posterExpandButton.find('i').switchClass('collapse', 'expand');
+                        }
                     }
                     
                 });
