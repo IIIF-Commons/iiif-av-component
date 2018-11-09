@@ -19,7 +19,28 @@ namespace IIIFComponents {
         previous: string;
         unmute: string;
     }
-    
+
+    export interface IMediaElementData {
+        $element?: JQuery;
+        $timelineElement?: JQuery;
+        active: boolean;
+        checkForStall?: () => void;
+        element?: HTMLMediaElement;
+        endOffset: number;
+        end: number;
+        format: Manifesto.MediaType | null;
+        height: number;
+        left: number;
+        outOfSync?: boolean;
+        source: string;
+        start: number;
+        startOffset: number;
+        timeout?: number | null;
+        top: number;
+        type: Manifesto.ResourceType;
+        width: number;
+    }
+
     export interface IAVComponentData {
         [key: string]: any;
         adaptiveAuthEnabled?: boolean;
@@ -36,7 +57,7 @@ namespace IIIFComponents {
         posterImageRatio?: number;
         rangeId?: string;
         virtualCanvasEnabled?: boolean;
-        waveformBarSpacing?: number; 
+        waveformBarSpacing?: number;
         waveformBarWidth?: number;
         waveformColor?: string;
     }
@@ -51,7 +72,7 @@ namespace IIIFComponents {
     }
 
     export class AVVolumeControl extends _Components.BaseComponent {
-        
+
         private _$volumeSlider: JQuery;
         private _$volumeMute: JQuery;
 
@@ -113,20 +134,20 @@ namespace IIIFComponents {
                 max: 1,
                 animate: false,
                 create: function (evt: any, ui: any) {
- 
+
                 },
                 slide: function (evt: any, ui: any) {
 
                     // start reducer
                     that._data.volume = ui.value;
-    
+
                     if (that._data.volume === 0) {
                         that._lastVolume = 0;
                     }
                     // end reducer
-    
+
                     that.fire(VolumeEvents.VOLUME_CHANGED, that._data.volume);
-                    
+
                 },
                 stop: function (evt: any, ui: any) {
 
@@ -149,17 +170,17 @@ namespace IIIFComponents {
                 this._$volumeSlider.slider({
                     value: this._data.volume
                 });
-    
+
                 if (this._data.volume === 0) {
                     const label: string = this.options.data.content.unmute;
                     this._$volumeMute.prop('title', label);
-                    this._$volumeMute.find('i').switchClass('on', 'off');                
+                    this._$volumeMute.find('i').switchClass('on', 'off');
                 } else {
                     const label: string = this.options.data.content.mute;
                     this._$volumeMute.prop('title', label);
                     this._$volumeMute.find('i').switchClass('off', 'on');
                 }
-            }            
+            }
         }
 
         protected _resize(): void {
@@ -198,7 +219,7 @@ namespace IIIFComponents {
         private _canvasHeight: number = 0;
         private _canvasWidth: number = 0;
         private _compositeWaveform: CompositeWaveform;
-        private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
+        private _contentAnnotations: IMediaElementData[];
         private _data: IAVCanvasInstanceData = this.data();
         private _highPriorityFrequency: number = 25;
         private _highPriorityInterval: number;
@@ -389,24 +410,6 @@ namespace IIIFComponents {
                 this._next();
             });
 
-            this._$canvasTimelineContainer.slider({
-                value: 0,
-                step: 0.01,
-                orientation: "horizontal",
-                range: "min",
-                max: that._getDuration(),
-                animate: false,
-                create: function (evt: any, ui: any) {
-                    // on create
-                },
-                slide: function (evt: any, ui: any) {
-                    that._setCurrentTime(ui.value);
-                },
-                stop: function (evt: any, ui: any) {
-                    //this._setCurrentTime(ui.value);
-                }
-            });
-
             this._$canvasTimelineContainer.mouseout(() => {
                 that._$canvasHoverHighlight.width(0);
                 that._$canvasHoverPreview.hide();
@@ -468,6 +471,10 @@ namespace IIIFComponents {
                 const type: Manifesto.ResourceType | null = body.getType();
                 const format: Manifesto.MediaType | null = body.getFormat();
 
+                if (!type) {
+                    return;
+                }
+
                 // if (type && type.toString() === 'choice') {
                 //     // Choose first "Choice" item as body
                 //     const tmpItem = item;
@@ -475,11 +482,11 @@ namespace IIIFComponents {
                 //     mediaSource = item.body.id.split('#')[0];
                 // } else 
 
-                if (type && type.toString() === 'textualbody') {
+                //if (type && type.toString() === 'textualbody') {
                     //mediaSource = (<any>body).value;
-                } else {
-                    mediaSource = body.id.split('#')[0];
-                }
+                //} else {
+                mediaSource = body.id.split('#')[0];
+                //}
 
                 /*
                 var targetFragment = (item.target.indexOf('#') != -1) ? item.target.split('#t=')[1] : '0, '+ canvasClockDuration,
@@ -510,7 +517,7 @@ namespace IIIFComponents {
                 }
 
                 if (!t) {
-                    t = [0, this._getDuration()];
+                    t = [0, 0];
                 }
 
                 const positionLeft = parseInt(String(xywh[0])),
@@ -535,26 +542,31 @@ namespace IIIFComponents {
                     ot = [null, null];
                 }
 
-                const offsetStart = (ot[0]) ? parseInt(<string>ot[0]) : ot[0],
-                    offsetEnd = (ot[1]) ? parseInt(<string>ot[1]) : ot[1];
+                let startOffset = (ot[0]) ? parseInt(<string>ot[0]) : parseInt(<string>ot[0]);
+                let endOffset = (ot[1]) ? parseInt(<string>ot[1]) : parseInt(<string>ot[1]);
 
-                // todo: type this
-                const itemData: any = {
-                    'active': false,
-                    'end': endTime,
-                    'endOffset': offsetEnd,
-                    'format': format,
-                    'height': percentageHeight,
-                    'left': percentageLeft,
-                    'source': mediaSource,
-                    'start': startTime,
-                    'startOffset': offsetStart,
-                    'top': percentageTop,
-                    'type': type,
-                    'width': percentageWidth
+                if (Number.isNaN(startOffset)) {
+                    startOffset = 0;
                 }
 
-                this._renderMediaElement(itemData);
+                if (Number.isNaN(endOffset)) {
+                    endOffset = 0;
+                }
+
+                let itemData: IMediaElementData = {
+                    active: false,
+                    end: endTime,
+                    endOffset: endOffset,
+                    format: format,
+                    height: percentageHeight,
+                    left: percentageLeft,
+                    source: mediaSource,
+                    start: startTime,
+                    startOffset: startOffset,
+                    top: percentageTop,
+                    type: type,
+                    width: percentageWidth
+                }
 
                 // waveform
 
@@ -566,9 +578,38 @@ namespace IIIFComponents {
                     this.waveforms.push(dat);
                 }
 
+                this._createMediaElement(itemData).then((data: IMediaElementData) => {
+                    
+                    itemData = data;
+
+                    // now we know the duration (if not supplied on the canvas)
+                    if (itemData.end === 0) {
+                        itemData.end = this._getDuration();
+                    }
+
+                    this._$canvasTimelineContainer.slider({
+                        value: 0,
+                        step: 0.01,
+                        orientation: "horizontal",
+                        range: "min",
+                        max: that._getDuration(),
+                        animate: false,
+                        create: function (evt: any, ui: any) {
+                            // on create
+                        },
+                        slide: function (evt: any, ui: any) {
+                            that._setCurrentTime(ui.value);
+                        },
+                        stop: function (evt: any, ui: any) {
+                            //this._setCurrentTime(ui.value);
+                        }
+                    });
+        
+                    this._renderWaveform();
+                });
+
             }
 
-            this._renderWaveform();
         }
 
         private _getBody(bodies: Manifesto.IAnnotationBody[]): Manifesto.IAnnotationBody | null {
@@ -614,11 +655,47 @@ namespace IIIFComponents {
         }
 
         private _getDuration(): number {
+
+            let duration: number | undefined;
+
             if (this._data && this._data.canvas) {
-                return <number>this._data.canvas.getDuration();
+                duration = <number>this._data.canvas.getDuration();
+            }
+
+            if (duration === undefined) {
+                // get the duration from the file itself
+                const anno: IMediaElementData | null = this._getActiveOrFirstMedia();
+
+                if (anno && anno.element) {
+                    duration = anno.element.duration;
+                }
+            }
+
+            if (duration !== undefined && !Number.isNaN(duration)) {
+                return duration;
             }
 
             return 0;
+        }
+
+        private _getActiveOrFirstMedia(): IMediaElementData | null {
+
+            let mediaElementData: IMediaElementData | null = null;
+
+            for (let i = 0; i < this._contentAnnotations.length; i++) {
+                const anno: IMediaElementData = this._contentAnnotations[i];
+                if (anno.active) {
+                    mediaElementData = anno;
+                }
+            }
+
+            if (mediaElementData) {
+                return mediaElementData;
+            } else if (this._contentAnnotations.length) {
+                return this._contentAnnotations[0];
+            }
+
+            return null;
         }
 
         public data(): IAVCanvasInstanceData {
@@ -986,165 +1063,168 @@ namespace IIIFComponents {
             return percentage;
         }
 
-        private _renderMediaElement(data: any): void {
+        // todo: mediaelements should be split into sub components
+        private _createMediaElement(data: IMediaElementData): Promise<IMediaElementData> {
 
-            let $mediaElement;
-            let type: string = data.type.toString().toLowerCase();
+            return new Promise<IMediaElementData>((resolve, reject) => {
 
-            switch (type) {
-                case 'image':
-                    $mediaElement = $('<img class="anno" src="' + data.source + '" />');
-                    break;
-                case 'video':
-                    $mediaElement = $('<video class="anno" />');
-                    break;
-                case 'audio':
-                    $mediaElement = $('<audio class="anno" />');
-                    break;
-                case 'textualbody':
-                    $mediaElement = $('<div class="anno">' + data.source + '</div>');
-                    break;
-                default:
-                    return;
-            }
+                let $mediaElement;
+                let type: string = data.type.toString().toLowerCase();
 
-            const media: HTMLMediaElement = $mediaElement[0] as HTMLMediaElement;
-
-            if (data.format && data.format.toString() === 'application/dash+xml') {
-                // dash
-                $mediaElement.attr('data-dashjs-player', '');
-                const player = dashjs.MediaPlayer().create();
-                player.getDebug().setLogToBrowserConsole(false);
-                if (this._data.adaptiveAuthEnabled) {
-                    player.setXHRWithCredentialsForType('MPD', true); // send cookies
+                switch (type) {
+                    case 'video':
+                        $mediaElement = $('<video class="anno" />');
+                        break;
+                    case 'audio':
+                    case 'sound':
+                        $mediaElement = $('<audio class="anno" />');
+                        break;
+                    // case 'image':
+                    //     $mediaElement = $('<img class="anno" src="' + data.source + '" />');
+                    //     break;
+                    // case 'textualbody':
+                    //     $mediaElement = $('<div class="anno">' + data.source + '</div>');
+                    //     break;
                 }
-                player.initialize(media, data.source);
-            } else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
-                // hls
-                if (Hls.isSupported()) {
-                    let hls = new Hls();
 
-                    if (this._data.adaptiveAuthEnabled) {
-                        hls = new Hls({
-                            xhrSetup: (xhr: any) => {
-                                xhr.withCredentials = true; // send cookies
+                if (!$mediaElement) {
+                    reject();
+                } else {
+                    const media: HTMLMediaElement = $mediaElement[0] as HTMLMediaElement;
+
+                    if (data.format && data.format.toString() === 'application/dash+xml') {
+                        // dash
+                        $mediaElement.attr('data-dashjs-player', '');
+                        const player = dashjs.MediaPlayer().create();
+                        player.getDebug().setLogToBrowserConsole(false);
+                        if (this._data.adaptiveAuthEnabled) {
+                            player.setXHRWithCredentialsForType('MPD', true); // send cookies
+                        }
+                        player.initialize(media, data.source);
+                    } else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
+                        // hls
+                        if (Hls.isSupported()) {
+                            let hls = new Hls();
+
+                            if (this._data.adaptiveAuthEnabled) {
+                                hls = new Hls({
+                                    xhrSetup: (xhr: any) => {
+                                        xhr.withCredentials = true; // send cookies
+                                    }
+                                });
+                            } else {
+                                hls = new Hls();
                             }
-                        });
+
+                            if (this._data.adaptiveAuthEnabled) {
+
+                            }
+
+                            hls.loadSource(data.source);
+                            hls.attachMedia(media);
+                            //hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                            //media.play();
+                            //});
+                        }
+                        // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+                        // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
+                        // This is using the built-in support of the plain video element, without using hls.js.
+                        else if (media.canPlayType('application/vnd.apple.mpegurl')) {
+                            media.src = data.source;
+                            //media.addEventListener('canplay', function () {
+                            //media.play();
+                            //});
+                        }
                     } else {
-                        hls = new Hls();
+                        $mediaElement.attr('src', data.source);
                     }
 
-                    if (this._data.adaptiveAuthEnabled) {
-                        
-                    }
+                    $mediaElement.css({
+                        top: data.top + '%',
+                        left: data.left + '%',
+                        width: data.width + '%',
+                        height: data.height + '%'
+                    }).hide();
 
-                    hls.loadSource(data.source);
-                    hls.attachMedia(media);
-                    //hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                    //media.play();
-                    //});
-                }
-                // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
-                // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
-                // This is using the built-in support of the plain video element, without using hls.js.
-                else if (media.canPlayType('application/vnd.apple.mpegurl')) {
-                    media.src = data.source;
-                    //media.addEventListener('canplay', function () {
-                    //media.play();
-                    //});
-                }
-            } else {
-                $mediaElement.attr('src', data.source);
-            }
+                    data.element = $mediaElement[0] as HTMLMediaElement;
 
-            $mediaElement.css({
-                top: data.top + '%',
-                left: data.left + '%',
-                width: data.width + '%',
-                height: data.height + '%'
-            }).hide();
+                    data.timeout = null;
 
-            data.element = $mediaElement;
+                    const that = this;
 
-            if (type === 'video' || type === 'audio') {
+                    data.checkForStall = function () {
 
-                data.timeout = null;
+                        const self = this;
 
-                const that = this;
+                        if (this.active) {
+                            that._checkMediaSynchronization();
+                            if (this.element.get(0).readyState > 0 && !this.outOfSync) {
+                                that._playbackStalled(false, self);
+                            } else {
+                                that._playbackStalled(true, self);
+                                if (this.timeout) {
+                                    window.clearTimeout(this.timeout);
+                                }
+                                this.timeout = window.setTimeout(function () {
+                                    self.checkForStall();
+                                }, 1000);
+                            }
 
-                data.checkForStall = function () {
-
-                    const self = this;
-
-                    if (this.active) {
-                        that._checkMediaSynchronization();
-                        if (this.element.get(0).readyState > 0 && !this.outOfSync) {
-                            that._playbackStalled(false, self);
                         } else {
-                            that._playbackStalled(true, self);
-                            if (this.timeout) {
-                                window.clearTimeout(this.timeout);
+                            that._playbackStalled(false, self);
+                        }
+
+                    }
+
+                    this._contentAnnotations.push(data);
+
+                    if (this.$playerElement) {
+                        this._$canvasContainer.append($mediaElement);
+                    }
+
+                    $mediaElement.on('loadstart', () => {
+                        //console.log('loadstart');
+                        //data.checkForStall();
+                    });
+
+                    $mediaElement.on('waiting', () => {
+                        //console.log('waiting');
+                        //data.checkForStall();
+                    });
+
+                    $mediaElement.on('seeking', () => {
+                        //console.log('seeking');
+                        //data.checkForStall();
+                    });
+
+                    $mediaElement.on('loadedmetadata', () => {
+                        this._readyMediaCount++;
+
+                        if (this._readyMediaCount === this._contentAnnotations.length) {
+
+                            //if (!this._data.range) {
+                            this._setCurrentTime(0);
+                            //}                        
+
+                            if (this._data.autoPlay) {
+                                this.play();
                             }
-                            this.timeout = window.setTimeout(function () {
-                                self.checkForStall();
-                            }, 1000);
+
+                            this._updateDurationDisplay();
+
+                            this.fire(AVComponent.Events.MEDIA_READY);
+
+                            this._renderSyncIndicator(data);
+
+                            resolve(data);
                         }
+                    });
 
-                    } else {
-                        that._playbackStalled(false, self);
-                    }
+                    $mediaElement.attr('preload', 'auto');
 
+                    (<any>$mediaElement.get(0)).load();
                 }
-            }
-
-            this._contentAnnotations.push(data);
-
-            if (this.$playerElement) {
-                this._$canvasContainer.append($mediaElement);
-            }
-
-            if (type === 'video' || type === 'audio') {
-
-                $mediaElement.on('loadstart', () => {
-                    //console.log('loadstart');
-                    //data.checkForStall();
-                });
-
-                $mediaElement.on('waiting', () => {
-                    //console.log('waiting');
-                    //data.checkForStall();
-                });
-
-                $mediaElement.on('seeking', () => {
-                    //console.log('seeking');
-                    //data.checkForStall();
-                });
-
-                $mediaElement.on('loadedmetadata', () => {
-                    this._readyMediaCount++;
-
-                    if (this._readyMediaCount === this._contentAnnotations.length) {
-
-                        //if (!this._data.range) {
-                        this._setCurrentTime(0);
-                        //}                        
-
-                        if (this._data.autoPlay) {
-                            this.play();
-                        }
-
-                        this._updateDurationDisplay();
-
-                        this.fire(AVComponent.Events.MEDIA_READY);
-                    }
-                });
-
-                $mediaElement.attr('preload', 'auto');
-
-                (<any>$mediaElement.get(0)).load();
-            }
-
-            this._renderSyncIndicator(data);
+            });
         }
 
         private _getWaveformData(url: string): Promise<any> {
@@ -1525,38 +1605,34 @@ namespace IIIFComponents {
             for (let i = 0; i < this._contentAnnotations.length; i++) {
 
                 contentAnnotation = this._contentAnnotations[i];
-                const type: string = contentAnnotation.type.toString().toLowerCase();
 
-                if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
+                if (contentAnnotation.type && contentAnnotation.element && contentAnnotation.$element && contentAnnotation.$timelineElement && contentAnnotation.end) {                    
 
-                    this._checkMediaSynchronization();
+                    if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
 
-                    if (!contentAnnotation.active) {
-                        this._synchronizeMedia();
-                        contentAnnotation.active = true;
-                        contentAnnotation.element.show();
-                        contentAnnotation.timelineElement.addClass('active');
-                    }
+                        this._checkMediaSynchronization();
 
-                    if (type === 'video' || type === 'audio') {
+                        if (!contentAnnotation.active) {
+                            this._synchronizeMedia();
+                            contentAnnotation.active = true;
+                            contentAnnotation.$element.show();
+                            contentAnnotation.$timelineElement.addClass('active');
+                        }
 
-                        if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
-                            this._pauseMedia(contentAnnotation.element[0]);
+                        if (contentAnnotation.element.currentTime > contentAnnotation.element.duration - contentAnnotation.endOffset) {
+                            this._pauseMedia(contentAnnotation.element);
+                        }
+
+                    } else {
+
+                        if (contentAnnotation.active) {
+                            contentAnnotation.active = false;
+                            contentAnnotation.$element.hide();
+                            contentAnnotation.$timelineElement.removeClass('active');
+                            this._pauseMedia(contentAnnotation.element);
                         }
 
                     }
-
-                } else {
-
-                    if (contentAnnotation.active) {
-                        contentAnnotation.active = false;
-                        contentAnnotation.element.hide();
-                        contentAnnotation.timelineElement.removeClass('active');
-                        if (type === 'video' || type === 'audio') {
-                            this._pauseMedia(contentAnnotation.element[0]);
-                        }
-                    }
-
                 }
 
             }
@@ -1593,29 +1669,28 @@ namespace IIIFComponents {
             for (let i = 0; i < this._contentAnnotations.length; i++) {
 
                 contentAnnotation = this._contentAnnotations[i];
-                const type: string = contentAnnotation.type.toString().toLowerCase();
 
-                if (type === 'video' || type === 'audio') {
+                if (contentAnnotation.element && contentAnnotation.end) {
 
-                    this._setMediaCurrentTime(contentAnnotation.element[0], this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
+                    this._setMediaCurrentTime(contentAnnotation.element, this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
 
                     if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
                         if (this._isPlaying) {
-                            if (contentAnnotation.element[0].paused) {
-                                const promise = contentAnnotation.element[0].play();
+                            if (contentAnnotation.element.paused) {
+                                const promise = contentAnnotation.element.play();
                                 if (promise) {
                                     promise.catch(function () { });
                                 }
                             }
                         } else {
-                            this._pauseMedia(contentAnnotation.element[0]);
+                            this._pauseMedia(contentAnnotation.element);
                         }
                     } else {
-                        this._pauseMedia(contentAnnotation.element[0]);
+                        this._pauseMedia(contentAnnotation.element);
                     }
 
-                    if (contentAnnotation.element[0].currentTime > contentAnnotation.element[0].duration - contentAnnotation.endOffset) {
-                        this._pauseMedia(contentAnnotation.element[0]);
+                    if (contentAnnotation.element.currentTime > contentAnnotation.element.duration - contentAnnotation.endOffset) {
+                        this._pauseMedia(contentAnnotation.element);
                     }
                 }
             }
@@ -1632,13 +1707,10 @@ namespace IIIFComponents {
 
                 contentAnnotation = this._contentAnnotations[i];
 
-                const type: string = contentAnnotation.type.toString().toLowerCase();
-
-                if ((type === 'video' || type === 'audio') &&
-                    (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime)) {
+                if (contentAnnotation.element && (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime)) {
 
                     const correctTime: number = (this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
-                    const factualTime: number = contentAnnotation.element[0].currentTime;
+                    const factualTime: number = contentAnnotation.element.currentTime;
 
                     // off by 0.2 seconds
                     if (Math.abs(factualTime - correctTime) > this._mediaSyncMarginSecs) {
@@ -1648,7 +1720,7 @@ namespace IIIFComponents {
 
                         const lag: number = Math.abs(factualTime - correctTime);
                         this.logMessage('DETECTED synchronization lag: ' + Math.abs(lag));
-                        this._setMediaCurrentTime(contentAnnotation.element[0], correctTime);
+                        this._setMediaCurrentTime(contentAnnotation.element, correctTime);
                         //this.synchronizeMedia();
 
                     } else {
@@ -1812,7 +1884,7 @@ namespace IIIFComponents {
             });
             return changed;
         }
-        
+
         public static diff(a: any, b: any) {
             return Array.from(new Set(AVComponentUtils._compare(a, b).concat(AVComponentUtils._compare(b, a))));
         }
@@ -1829,7 +1901,7 @@ namespace IIIFComponents {
         }
 
         public static getFirstTargetedCanvasId(range: Manifesto.IRange): string | undefined {
-            
+
             let canvasId: string | undefined;
 
             if (range.canvases && range.canvases.length) {
@@ -1856,7 +1928,7 @@ namespace IIIFComponents {
         }
 
         public static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined {
-            
+
             let t: number[] | null = Manifesto.Utils.getTemporalComponent(target);
 
             if (t) {
@@ -1891,13 +1963,13 @@ namespace IIIFComponents {
 
             let hours: number | string, minutes: number | string, seconds: number | string, hourValue: string;
 
-            seconds 	= Math.ceil(aNumber);
-            hours 		= Math.floor(seconds / (60 * 60));
-            hours 		= (hours >= 10) ? hours : '0' + hours;
-            minutes 	= Math.floor(seconds % (60*60) / 60);
-            minutes 	= (minutes >= 10) ? minutes : '0' + minutes;
-            seconds 	= Math.floor(seconds % (60*60) % 60);
-            seconds 	= (seconds >= 10) ? seconds : '0' + seconds;
+            seconds = Math.ceil(aNumber);
+            hours = Math.floor(seconds / (60 * 60));
+            hours = (hours >= 10) ? hours : '0' + hours;
+            minutes = Math.floor(seconds % (60 * 60) / 60);
+            minutes = (minutes >= 10) ? minutes : '0' + minutes;
+            seconds = Math.floor(seconds % (60 * 60) % 60);
+            seconds = (seconds >= 10) ? seconds : '0' + seconds;
 
             if (hours >= 1) {
                 hourValue = hours + ':';
@@ -1915,13 +1987,13 @@ namespace IIIFComponents {
 
             // IE 10
             // ua = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
-            
+
             // IE 11
             // ua = 'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko';
-            
+
             // Edge 12 (Spartan)
             // ua = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Edge/12.0';
-            
+
             // Edge 13
             // ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586';
 
@@ -1966,7 +2038,7 @@ namespace IIIFComponents {
             //      will debounce the function. (defaults to 100ms)
             debounceDuration = debounceDuration || 100;
 
-            return function() {
+            return function () {
                 if (!fn.debouncing) {
                     const args: any = Array.prototype.slice.apply(arguments);
                     fn.lastReturnVal = fn.apply(window, args);
@@ -2000,19 +2072,19 @@ namespace IIIFComponents {
         public static normalise(num: number, min: number, max: number): number {
             return (num - min) / (max - min);
         }
-    
+
         public static isHLSFormat(format: Manifesto.MediaType) {
             return this.hlsMimeTypes.includes(format.toString());
         }
-    
+
         public static isMpegDashFormat(format: Manifesto.MediaType) {
             return format.toString() === 'application/dash+xml';
         }
 
         public static canPlayHls() {
             var doc = typeof document === 'object' && document,
-            videoelem = doc && doc.createElement('video'),
-            isvideosupport = Boolean(videoelem && videoelem.canPlayType);
+                videoelem = doc && doc.createElement('video'),
+                isvideosupport = Boolean(videoelem && videoelem.canPlayType);
 
             return isvideosupport && this.hlsMimeTypes.some(function (canItPlay) {
                 return /maybe|probably/i.test((<any>videoelem).canPlayType(canItPlay));
@@ -2022,7 +2094,7 @@ namespace IIIFComponents {
     }
 
     export class VirtualCanvas {
-        
+
         public canvases: Manifesto.ICanvas[] = [];
         public id: string;
 
@@ -2054,14 +2126,14 @@ namespace IIIFComponents {
                             item.__jsonld.target += '#t=0,' + canvas.getDuration();
                         }
                     }
-                    
+
                 });
 
                 items.forEach((item: Manifesto.IAnnotation) => {
                     const target: string | null = item.getTarget();
 
                     if (target) {
-                        item.__jsonld.target = AVComponentUtils.retargetTemporalComponent(this.canvases, target);                        
+                        item.__jsonld.target = AVComponentUtils.retargetTemporalComponent(this.canvases, target);
                     }
                 });
 
@@ -2081,7 +2153,7 @@ namespace IIIFComponents {
                     duration += d;
                 }
             });
-            
+
             return duration;
         }
 
@@ -2142,7 +2214,7 @@ namespace IIIFComponents {
         }
 
         public data(): IAVComponentData {
-            return <IAVComponentData> {
+            return <IAVComponentData>{
                 autoPlay: false,
                 constrainNavigationToRange: false,
                 defaultAspectRatio: 0.56,
@@ -2186,7 +2258,7 @@ namespace IIIFComponents {
             if (diff.includes('limitToRange') && this._data.canvasId) {
 
                 this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({ 
+                    canvasInstance.set({
                         limitToRange: this._data.limitToRange
                     });
                 });
@@ -2195,7 +2267,7 @@ namespace IIIFComponents {
             if (diff.includes('constrainNavigationToRange') && this._data.canvasId) {
 
                 this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({ 
+                    canvasInstance.set({
                         constrainNavigationToRange: this._data.constrainNavigationToRange
                     });
                 });
@@ -2204,7 +2276,7 @@ namespace IIIFComponents {
             if (diff.includes('autoSelectRange') && this._data.canvasId) {
 
                 this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({ 
+                    canvasInstance.set({
                         autoSelectRange: this._data.autoSelectRange
                     });
                 });
@@ -2215,31 +2287,31 @@ namespace IIIFComponents {
                 const nextCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
 
                 if (nextCanvasInstance) {
-                    
+
                     this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
                         // hide canvases that don't have the same id        
                         if (canvasInstance.getCanvasId() !== nextCanvasInstance.getCanvasId()) {
-                            canvasInstance.set({ 
+                            canvasInstance.set({
                                 visible: false
                             });
                         } else {
 
                             if (diff.includes('range')) {
-                                canvasInstance.set({ 
+                                canvasInstance.set({
                                     visible: true,
                                     range: this._data.range ? jQuery.extend(true, {}, this._data.range) : undefined
                                 });
                             } else {
-                                canvasInstance.set({ 
+                                canvasInstance.set({
                                     visible: true
                                 });
                             }
-                            
+
                         }
                     });
 
                 }
-                
+
             }
 
             if (diff.includes('virtualCanvasEnabled')) {
@@ -2252,7 +2324,7 @@ namespace IIIFComponents {
                 // but when toggling off, you must call showCanvas to show the next canvas
                 if (this._data.virtualCanvasEnabled) {
 
-                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
+                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
                         if (canvasInstance.isVirtual()) {
                             this.set({
                                 canvasId: canvasInstance.getCanvasId(),
@@ -2261,10 +2333,10 @@ namespace IIIFComponents {
                         }
                     });
 
-                }            
+                }
 
             }
-            
+
             if (diff.includes('range') && this._data.range) {
 
                 let range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.range.id);
@@ -2279,10 +2351,10 @@ namespace IIIFComponents {
 
                         // get canvas by normalised id (without temporal part)
                         const canvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(canvasId);
-                        
+
                         if (canvasInstance) {
-                            
-                            if (canvasInstance.isVirtual() && this._data.virtualCanvasEnabled) {                                
+
+                            if (canvasInstance.isVirtual() && this._data.virtualCanvasEnabled) {
                                 if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
                                     canvasId = canvasInstance.getCanvasId();
 
@@ -2299,7 +2371,7 @@ namespace IIIFComponents {
                             }
 
                             // if not using the correct canvasinstance, switch to it                    
-                            if (this._data.canvasId && 
+                            if (this._data.canvasId &&
                                 ((this._data.canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(this._data.canvasId) : this._data.canvasId) !== canvasId) {
 
                                 this.set({
@@ -2312,21 +2384,21 @@ namespace IIIFComponents {
                                 canvasInstance.set({
                                     range: jQuery.extend(true, {}, range)
                                 });
-    
+
                             }
-                            
+
                         }
                     }
                 }
-            } 
-            
+            }
+
             this._render();
             this._resize();
         }
 
         private _render(): void {
 
-            
+
         }
 
         public reset(): void {
@@ -2353,31 +2425,6 @@ namespace IIIFComponents {
 
             if (this._data && this._data.helper) {
 
-                // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
-                const behavior: Manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
-                const canvases: Manifesto.ICanvas[] = this._getCanvases();
-
-                if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
-
-                    const virtualCanvas: VirtualCanvas = new VirtualCanvas();
-
-                    canvases.forEach((canvas: Manifesto.ICanvas) => {
-                        virtualCanvas.addCanvas(canvas);
-                    });
-
-                    this._initCanvas(virtualCanvas);
-
-                }                
-
-                // all canvases need to be individually navigable
-                canvases.forEach((canvas: Manifesto.ICanvas) => {
-                    this._initCanvas(canvas);
-                });                
-
-                if (this.canvasInstances.length > 0) {
-                    this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
-                }
-
                 this._checkAllMediaReadyInterval = setInterval(this._checkAllMediaReady.bind(this), 100);
                 this._checkAllWaveformsReadyInterval = setInterval(this._checkAllWaveformsReady.bind(this), 100);
 
@@ -2392,10 +2439,10 @@ namespace IIIFComponents {
                 `);
                 this._$posterImage.append(this._$posterExpandButton);
 
-                this._$posterImage.on('touchstart click', (e) => {    
-                    
+                this._$posterImage.on('touchstart click', (e) => {
+
                     e.preventDefault();
-                    
+
                     const target: any = this._getPosterImageCss(!this._posterImageExpanded);
                     //this._$posterImage.animate(target,"fast", "easein");
                     this._$posterImage.animate(target);
@@ -2412,7 +2459,7 @@ namespace IIIFComponents {
                             this._$posterExpandButton.find('i').switchClass('collapse', 'expand');
                         }
                     }
-                    
+
                 });
 
                 // poster canvas
@@ -2446,9 +2493,42 @@ namespace IIIFComponents {
             if (this._readyMedia === this.canvasInstances.length) {
                 console.log('all media ready');
                 clearInterval(this._checkAllMediaReadyInterval);
+                this._initCanvasInstances();
                 //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
                 this.fire(AVComponent.Events.MEDIA_READY);
                 this.resize();
+            }
+        }
+
+        private _initCanvasInstances(): void {
+
+            if (!this._data.helper) {
+                return;
+            }
+
+            // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
+            const behavior: Manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
+            const canvases: Manifesto.ICanvas[] = this._getCanvases();
+
+            if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
+
+                const virtualCanvas: VirtualCanvas = new VirtualCanvas();
+
+                canvases.forEach((canvas: Manifesto.ICanvas) => {
+                    virtualCanvas.addCanvas(canvas);
+                });
+
+                this._initCanvas(virtualCanvas);
+
+            }
+
+            // all canvases need to be individually navigable
+            canvases.forEach((canvas: Manifesto.ICanvas) => {
+                this._initCanvas(canvas);
+            });
+
+            if (this.canvasInstances.length > 0) {
+                this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
             }
         }
 
@@ -2472,7 +2552,7 @@ namespace IIIFComponents {
             if (this._data.helper) {
                 return this._data.helper.getCanvases();
             }
-            
+
             return [];
         }
 
@@ -2485,10 +2565,10 @@ namespace IIIFComponents {
 
             canvasInstance.logMessage = this._logMessage.bind(this);
             canvasInstance.isOnlyCanvasInstance = this._getCanvases().length === 1;
-            this._$element.append(canvasInstance.$playerElement);
+            this._$element.prepend(canvasInstance.$playerElement);
 
             canvasInstance.init();
-            this.canvasInstances.push(canvasInstance);      
+            this.canvasInstances.push(canvasInstance);
 
             canvasInstance.on(AVComponent.Events.MEDIA_READY, () => {
                 this._readyMedia++;
@@ -2543,7 +2623,7 @@ namespace IIIFComponents {
             const nextRange: Manifesto.IRange | null = this._data.helper.getNextRange();
 
             if (nextRange) {
-                this.playRange(nextRange.id);         
+                this.playRange(nextRange.id);
             }
         }
 
@@ -2561,23 +2641,23 @@ namespace IIIFComponents {
         }
 
         private _getCanvasInstanceById(canvasId: string): CanvasInstance | undefined {
-            
+
             canvasId = this._getNormaliseCanvasId(canvasId);
-    
+
             // if virtual canvas is enabled, check for that first
             if (this._data.virtualCanvasEnabled) {
 
                 for (let i = 0; i < this.canvasInstances.length; i++) {
-    
+
                     const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
-                    
+
                     let currentCanvasId: string | undefined = canvasInstance.getCanvasId();
 
                     if (currentCanvasId) {
 
                         currentCanvasId = this._getNormaliseCanvasId(currentCanvasId);
 
-                        if ((canvasInstance.isVirtual() || this.canvasInstances.length === 1) && currentCanvasId === canvasId || 
+                        if ((canvasInstance.isVirtual() || this.canvasInstances.length === 1) && currentCanvasId === canvasId ||
                             canvasInstance.includesVirtualSubCanvas(canvasId)) {
                             return canvasInstance;
                         }
@@ -2613,19 +2693,19 @@ namespace IIIFComponents {
 
             return undefined;
         }
-        
+
         private _rewind(): void {
 
             if (this._data.limitToRange) {
                 return;
             }
-            
+
             const canvasInstance: CanvasInstance | undefined = this._getCurrentCanvas();
 
             if (canvasInstance) {
                 canvasInstance.set({
                     range: undefined
-                });             
+                });
             }
         }
 
@@ -2661,7 +2741,7 @@ namespace IIIFComponents {
         }
 
         public showCanvas(canvasId: string): void {
-            
+
             // if the passed canvas id is already the current canvas id, but the canvas isn't visible
             // (switching from virtual canvas)
 
@@ -2684,7 +2764,7 @@ namespace IIIFComponents {
         }
 
         private _getPosterImageCss(expanded: boolean): any {
-            
+
             const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
 
             if (currentCanvas) {
@@ -2765,7 +2845,7 @@ namespace IIIFComponents.AVComponent {
     }
 }
 
-(function(g:any) {
+(function (g: any) {
     if (!g.IIIFComponents) {
         g.IIIFComponents = IIIFComponents;
     } else {
