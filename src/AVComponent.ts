@@ -1,6 +1,13 @@
-import { Canvas, Range, Duration, ExternalResourceType, Behavior, MediaType, Annotation, AnnotationBody, Utils } from "manifesto.js";
-
 namespace IIIFComponents {
+
+    type Annotation = manifesto.Annotation;
+    type AnnotationBody = manifesto.AnnotationBody;
+    type Behavior = manifesto.Behavior;
+    type Canvas = manifesto.Canvas;
+    type Duration = manifesto.Duration;
+    type ExternalResourceType = manifesto.ExternalResourceType;
+    type Range = manifesto.Range;
+    type MediaType = manifesto.MediaType;
 
     export interface IAVCanvasInstanceData extends IAVComponentData {
         canvas?: Canvas | VirtualCanvas;
@@ -32,7 +39,7 @@ namespace IIIFComponents {
         content?: IAVComponentContent;
         defaultAspectRatio?: number;
         doubleClickMS?: number;
-        helper?: Manifold.IHelper;
+        helper?: manifold.Helper;
         halveAtWidth?: number;
         limitToRange?: boolean;
         posterImageRatio?: number;
@@ -505,7 +512,7 @@ namespace IIIFComponents {
                 }
 
                 let xywh: number[] | null = AVComponentUtils.getSpatialComponent(target);
-                let t: number[] | null = Utils.getTemporalComponent(target);
+                let t: number[] | null = manifesto.Utils.getTemporalComponent(target);
 
                 if (!xywh) {
                     xywh = [0, 0, this._canvasWidth, this._canvasHeight];
@@ -644,7 +651,7 @@ namespace IIIFComponents {
             if (this.isVirtual() && this._data.canvas && (<VirtualCanvas>this._data.canvas).canvases) {
                 for (let i = 0; i < (<VirtualCanvas>this._data.canvas).canvases.length; i++) {
                     const canvas: Canvas = (<VirtualCanvas>this._data.canvas).canvases[i];
-                    if (Utils.normaliseUrl(canvas.id) === canvasId) {
+                    if (manifesto.Utils.normaliseUrl(canvas.id) === canvasId) {
                         return true;
                     }
                 }
@@ -793,7 +800,7 @@ namespace IIIFComponents {
 
             const behavior: Behavior | null = range.getBehavior();
 
-            if (behavior && behavior.toString() === Behavior.NO_NAV) {
+            if (behavior && behavior.toString() === manifesto.Behavior.NO_NAV) {
                 return false;
             }
 
@@ -1069,7 +1076,6 @@ namespace IIIFComponents {
 
             data.element = $mediaElement;
 
-
             data.timeout = null;
 
             const that = this;
@@ -1091,11 +1097,9 @@ namespace IIIFComponents {
                             self.checkForStall();
                         }, 1000);
                     }
-
                 } else {
                     that._playbackStalled(false, self);
                 }
-
             }
 
             this._contentAnnotations.push(data);
@@ -1513,7 +1517,6 @@ namespace IIIFComponents {
             if (this._isPlaying && this._data.autoSelectRange && (this.isVirtual() || this.isOnlyCanvasInstance)) {
                 this._hasRangeChanged();
             }
-
         }
 
         private _updateMediaActiveStates(): void {
@@ -1829,7 +1832,7 @@ namespace IIIFComponents {
             }
 
             if (canvasId !== undefined) {
-                return Utils.normaliseUrl(canvasId);
+                return manifesto.Utils.normaliseUrl(canvasId);
             }
 
             return undefined;
@@ -1841,7 +1844,7 @@ namespace IIIFComponents {
 
         public static retargetTemporalComponent(canvases: Canvas[], target: string): string | undefined {
             
-            let t: number[] | null = Utils.getTemporalComponent(target);
+            let t: number[] | null = manifesto.Utils.getTemporalComponent(target);
 
             if (t) {
 
@@ -2033,7 +2036,7 @@ namespace IIIFComponents {
                     const target: string | null = item.getTarget();
 
                     if (target) {
-                        let t: number[] | null = Utils.getTemporalComponent(target);
+                        let t: number[] | null = manifesto.Utils.getTemporalComponent(target);
                         if (!t) {
                             item.__jsonld.target += '#t=0,' + canvas.getDuration();
                         }
@@ -2284,7 +2287,7 @@ namespace IIIFComponents {
 
                             // if not using the correct canvasinstance, switch to it                    
                             if (this._data.canvasId && 
-                                ((this._data.canvasId.includes('://')) ? Utils.normaliseUrl(this._data.canvasId) : this._data.canvasId) !== canvasId) {
+                                ((this._data.canvasId.includes('://')) ? manifesto.Utils.normaliseUrl(this._data.canvasId) : this._data.canvasId) !== canvasId) {
 
                                 this.set({
                                     canvasId: canvasId,
@@ -2341,7 +2344,7 @@ namespace IIIFComponents {
                 const behavior: Behavior | null = this._data.helper.manifest.getBehavior();
                 const canvases: Canvas[] = this._getCanvases();
 
-                if (behavior && behavior.toString() === Behavior.autoadvance().toString()) {
+                if (behavior && behavior.toString() === manifesto.Behavior.AUTO_ADVANCE) {
 
                     const virtualCanvas: VirtualCanvas = new VirtualCanvas();
 
@@ -2541,7 +2544,7 @@ namespace IIIFComponents {
         }
 
         private _getNormaliseCanvasId(canvasId: string): string {
-            return (canvasId.includes('://')) ? Utils.normaliseUrl(canvasId) : canvasId;
+            return (canvasId.includes('://')) ? manifesto.Utils.normaliseUrl(canvasId) : canvasId;
         }
 
         private _getCanvasInstanceById(canvasId: string): CanvasInstance | undefined {
@@ -2578,7 +2581,7 @@ namespace IIIFComponents {
                     const id: string | undefined = canvasInstance.getCanvasId();
 
                     if (id) {
-                        const canvasInstanceId: string = Utils.normaliseUrl(id);
+                        const canvasInstanceId: string = manifesto.Utils.normaliseUrl(id);
 
                         if (canvasInstanceId === canvasId) {
                             return canvasInstance;

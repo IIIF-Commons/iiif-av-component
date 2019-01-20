@@ -17,10 +17,10 @@
 
     <script src="https://unpkg.com/@iiif/base-component/dist/BaseComponent.js"></script>
     <script src="../dist/AVComponent.js"></script>
-    <script src="https://unpkg.com/@iiif/iiif-tree-component/dist/TreeComponent.js"></script>
+    <script src="https://unpkg.com/@iiif/iiif-tree-component@2.0.0-pre.1/dist/TreeComponent.js"></script>
 
-    <script src="https://unpkg.com/manifesto.js/dist/client/manifesto.bundle.js"></script>
-    <script src="https://unpkg.com/@iiif/manifold/dist/manifold.js"></script>
+    <script src="https://unpkg.com/manifesto.js@4.0.0-pre.5/dist-umd/manifesto.js"></script>
+    <script src="https://unpkg.com/@iiif/manifold@2.0.0-pre.9/dist-umd/manifold.js"></script>
     <script src="https://unpkg.com/jquery-binarytransport"></script>
 
     <!-- <script src="https://rawgit.com/iiif-commons/manifesto/end-before-start/dist/client/manifesto.bundle.js"></script>
@@ -143,8 +143,8 @@
 
         function loadManifest(manifest, successcb, errorcb) {
 
-            Manifold.loadManifest({
-                iiifResourceUri: manifest,
+            manifold.loadManifest({
+                manifestUri: manifest,
                 collectionIndex: 0,
                 manifestIndex: 0,
                 sequenceIndex: 0,
