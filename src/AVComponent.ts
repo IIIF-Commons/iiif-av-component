@@ -227,7 +227,11 @@ namespace IIIFComponents {
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
             this._data = this.options.data;
-            this.$playerElement = $('<div class="player"></div>');
+            this.$playerElement = $('<div class="player player--loading"></div>');
+        }
+
+        public loaded(): void {
+            this.$playerElement.removeClass('player--loading');
         }
 
         public init() {
@@ -271,7 +275,7 @@ namespace IIIFComponents {
 
             const $volume: JQuery = $('<div class="volume"></div>');
             this._volume = new AVVolumeControl({
-                target: $volume[0],
+                target: $volume[0] as HTMLElement,
                 data: Object.assign({}, this._data)
             });
 
@@ -2474,6 +2478,10 @@ namespace IIIFComponents {
 
             canvasInstance.on(AVComponent.Events.MEDIA_READY, () => {
                 this._readyMedia++;
+
+                if (this._readyMedia === this.canvasInstances.length) {
+                    canvasInstance.loaded();
+                }
             }, false);
 
             canvasInstance.on(AVComponent.Events.WAVEFORM_READY, () => {
