@@ -234,6 +234,10 @@ namespace IIIFComponents {
             this.$playerElement.removeClass('player--loading');
         }
 
+        public isPlaying(): boolean {
+            return this._isPlaying;
+        }
+
         public init() {
 
             if (!this._data || !this._data.content || !this._data.canvas) {
@@ -2113,6 +2117,8 @@ namespace IIIFComponents {
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
 
+            console.log('av component from local');
+
             this._init();
             this._resize();
         }
@@ -2427,6 +2433,12 @@ namespace IIIFComponents {
 
         }
 
+        public isPlaying(): boolean {
+            return this.canvasInstances.reduce((isPlaying: boolean, next: CanvasInstance) => {
+                return isPlaying || next.isPlaying();
+            }, false);
+        }
+
         private _checkAllMediaReady(): void {
             console.log('loading media');
             if (this._readyMedia === this.canvasInstances.length) {
@@ -2474,14 +2486,19 @@ namespace IIIFComponents {
             this._$element.append(canvasInstance.$playerElement);
 
             canvasInstance.init();
-            this.canvasInstances.push(canvasInstance);      
+            this.canvasInstances.push(canvasInstance);
+
+            canvasInstance.on('play', () => {
+                this.fire(AVComponent.Events.PLAY, canvasInstance);
+            }, false);
+
+            canvasInstance.on('pause', () => {
+                this.fire(AVComponent.Events.PAUSE, canvasInstance);
+            }, false);
 
             canvasInstance.on(AVComponent.Events.MEDIA_READY, () => {
                 this._readyMedia++;
-
-                if (this._readyMedia === this.canvasInstances.length) {
-                    canvasInstance.loaded();
-                }
+                canvasInstance.loaded();
             }, false);
 
             canvasInstance.on(AVComponent.Events.WAVEFORM_READY, () => {
@@ -2747,6 +2764,8 @@ namespace IIIFComponents {
 
 namespace IIIFComponents.AVComponent {
     export class Events {
+        static PLAY: string = 'play';
+        static PAUSE: string = 'pause';
         static MEDIA_READY: string = 'mediaready';
         static LOG: string = 'log';
         static RANGE_CHANGED: string = 'rangechanged';

@@ -19,12 +19,12 @@
     <script src="../dist/AVComponent.js"></script>
     <script src="https://unpkg.com/@iiif/iiif-tree-component/dist/TreeComponent.js"></script>
 
-    <script src="https://unpkg.com/manifesto.js/dist/client/manifesto.bundle.js"></script>
-    <script src="https://unpkg.com/@iiif/manifold/dist/manifold.js"></script>
+    <script src="https://unpkg.com/manifesto.js@2.3.1/dist/client/manifesto.js"></script>
+    <script src="https://unpkg.com/@iiif/manifold@1.2.34/dist/manifold.js"></script>
     <script src="https://unpkg.com/jquery-binarytransport"></script>
 
-    <!-- <script src="https://rawgit.com/iiif-commons/manifesto/end-before-start/dist/client/manifesto.bundle.js"></script>
-    <script src="https://rawgit.com/iiif-commons/manifold/master/dist/manifold.js"></script> -->
+    <!--<script src="https://rawgit.com/iiif-commons/manifesto/end-before-start/dist/client/manifesto.bundle.js"></script>-->
+    <!--<script src="https://rawgit.com/iiif-commons/manifold/master/dist/manifold.js"></script>-->
 
     <script src="https://unpkg.com/dashjs@2.6.6/dist/dash.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
@@ -87,6 +87,10 @@
     </div>
 
     <div id="options">
+
+        <button id="play-pause-combo" disabled="disabled">
+            loading...
+        </button>
         <button id="play">Play</button>
         <button id="pause">Pause</button>
         <input id="limitToRangeCheckbox" type="checkbox"><label for="limitToRangeCheckbox">Limit to Range</label>
@@ -197,6 +201,24 @@
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000007');
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000011');
             });
+
+            var $ppc = $('#play-pause-combo');
+            avcomponent.on('medialoaded', function() {
+              $ppc.text('play');
+              $ppc.removeAttr('disabled');
+            });
+
+            $ppc.on('click', function(e) {
+              e.preventDefault();
+              if (avcomponent._isPlaying) {
+                avcomponent.pause();
+                $ppc.innerText('play');
+              } else {
+                avcomponent.play();
+                $ppc.innerText('pause');
+              }
+            })
+
 
             avcomponent.on('rangechanged', function(rangeid) {
                 helper.rangeId = rangeid;
