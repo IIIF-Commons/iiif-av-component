@@ -694,7 +694,8 @@ namespace IIIFComponents {
 
                         if (duration) {
 
-                            if (!(<any>this._data.range).autoChanged) {
+                            // Only change the current time if the current time is outside of the current time.
+                            if (duration.start >= this._canvasClockTime || duration.end <= this._canvasClockTime) {
                                 this._setCurrentTime(duration.start);
                             }
 
@@ -2652,7 +2653,7 @@ namespace IIIFComponents {
             }
         }
 
-        public playRange(rangeId: string): void {
+        public playRange(rangeId: string, autoChanged: boolean = false): void {
 
             if (!this._data.helper) {
                 return;
@@ -2662,7 +2663,7 @@ namespace IIIFComponents {
 
             if (range) {
                 this.set({
-                    range: jQuery.extend(true, {}, range)
+                    range: jQuery.extend(true, { autoChanged }, range)
                 });
             }
         }
