@@ -1025,6 +1025,8 @@ namespace IIIFComponents {
                 $mediaElement.attr('data-dashjs-player', '');
                 const player = dashjs.MediaPlayer().create();
                 player.getDebug().setLogToBrowserConsole(false);
+                // player.getDebug().setLogToBrowserConsole(true);
+                // player.getDebug().setLogLevel(4);
                 if (this._data.adaptiveAuthEnabled) {
                     player.setXHRWithCredentialsForType('MPD', true); // send cookies
                 }
@@ -1343,7 +1345,6 @@ namespace IIIFComponents {
         }
 
         private _setCurrentTime(seconds: number): void { // seconds was originally a string or a number - didn't seem necessary
-
             // const secondsAsFloat: number = parseFloat(seconds.toString());
 
             // if (isNaN(secondsAsFloat)) {
@@ -1407,8 +1408,6 @@ namespace IIIFComponents {
         // this._data.play = true?
         public play(withoutUpdate?: boolean): void {
 
-            //console.log('playing ', this.getCanvasId());
-
             if (this._isPlaying) return;
 
             let duration: Manifesto.Duration | undefined;
@@ -1427,14 +1426,24 @@ namespace IIIFComponents {
 
             this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
 
+
+            if (this._highPriorityInterval) {
+                clearInterval(this._highPriorityInterval);
+            }
             this._highPriorityInterval = window.setInterval(() => {
                 this._highPriorityUpdater();
             }, this._highPriorityFrequency);
 
+            if (this._lowPriorityInterval) {
+                clearInterval(this._lowPriorityInterval);
+            }
             this._lowPriorityInterval = window.setInterval(() => {
                 this._lowPriorityUpdater();
             }, this._lowPriorityFrequency);
 
+            if (this._canvasClockInterval) {
+                clearInterval(this._canvasClockInterval);
+            }
             this._canvasClockInterval = window.setInterval(() => {
                 this._canvasClockUpdater();
             }, this._canvasClockFrequency);
