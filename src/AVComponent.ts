@@ -231,7 +231,9 @@ namespace IIIFComponents {
         }
 
         public loaded(): void {
-            this.$playerElement.removeClass('player--loading');
+            setTimeout(() => {
+                this.$playerElement.removeClass('player--loading');
+            }, 500);
         }
 
         public isPlaying(): boolean {
@@ -703,7 +705,7 @@ namespace IIIFComponents {
                                 this.play();
                             }
 
-                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);
+                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id, this._data.range);
                         }
                     }
                 }
