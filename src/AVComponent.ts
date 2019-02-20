@@ -240,6 +240,10 @@ namespace IIIFComponents {
             return this._isPlaying;
         }
 
+        public getClockTime(): number {
+            return this._canvasClockTime;
+        }
+
         public init() {
 
             if (!this._data || !this._data.content || !this._data.canvas) {
@@ -1135,10 +1139,6 @@ namespace IIIFComponents {
 
                 if (this._readyMediaCount === this._contentAnnotations.length) {
 
-                    //if (!this._data.range) {
-                    this._setCurrentTime(0);
-                    //}                        
-
                     if (this._data.autoPlay) {
                         this.play();
                     }
@@ -1344,6 +1344,10 @@ namespace IIIFComponents {
             if (this.$playerElement) {
                 this._$timelineItemContainer.append($lineWrapper);
             }
+        }
+
+        public setCurrentTime(seconds: number): void {
+            return this._setCurrentTime(seconds);
         }
 
         private _setCurrentTime(seconds: number): void { // seconds was originally a string or a number - didn't seem necessary
@@ -2443,6 +2447,21 @@ namespace IIIFComponents {
 
             }
 
+        }
+
+        public setCurrentTime(time: number): void {
+            const canvas: CanvasInstance | undefined = this._getCurrentCanvas();
+            if (canvas) {
+                return canvas.setCurrentTime(time);
+            }
+        }
+
+        public getCurrentTime(): number {
+            const canvas: CanvasInstance | undefined = this._getCurrentCanvas();
+            if (canvas) {
+                return canvas.getClockTime();
+            }
+            return 0;
         }
 
         public isPlaying(): boolean {
