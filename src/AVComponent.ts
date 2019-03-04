@@ -1270,13 +1270,15 @@ namespace IIIFComponents {
             let min: number = 128;
 
             for (let x = index; x < index + sampleSpacing; x++) {
+                const wMax = waveform.max(x);
+                const wMin = waveform.min(x);
 
-                if (waveform.max(x) > max) {
-                    max = waveform.max(x);
+                if (wMax > max) {
+                    max = wMax;
                 }
 
-                if (waveform.min(x) < min) {
-                    min = waveform.min(x);
+                if (wMin < min) {
+                    min = wMin;
                 }
             }
 
@@ -1768,6 +1770,10 @@ namespace IIIFComponents {
         public duration: number = 0;
         public pixelsPerSecond: number = Number.MAX_VALUE;
         public secondsPerPixel: number = Number.MAX_VALUE;
+        private timeIndex: {[r: number]: Waveform} = {};
+        private minIndex: {[r: number]: number} = {};
+        private maxIndex: {[r: number]: number} = {};
+
 
         constructor(waveforms: any[]) {
             this._waveforms = [];
@@ -1789,21 +1795,34 @@ namespace IIIFComponents {
         // Note: these could be optimised, assuming access is sequential
 
         min(index: number) {
-            const waveform = this._find(index);
-            return waveform ? waveform.waveform.min_sample(index - waveform.start) : 0;
+            if (typeof this.minIndex[index] === 'undefined') {
+                const waveform = this._find(index);
+                this.minIndex[index] = waveform ? waveform.waveform.min_sample(index - waveform.start) : 0;
+            }
+            return this.minIndex[index];
         }
 
         max(index: number) {
-            const waveform = this._find(index);
-            return waveform ? waveform.waveform.max_sample(index - waveform.start) : 0;
+            if (typeof this.maxIndex[index] === 'undefined') {
+                const waveform = this._find(index);
+                this.maxIndex[index] = waveform ? waveform.waveform.max_sample(index - waveform.start) : 0;
+            }
+            return this.maxIndex[index];
         }
 
         _find(index: number) {
-            const waveforms = this._waveforms.filter((waveform) => {
-                return index >= waveform.start && index < waveform.end;
-            });
+            if (typeof this.timeIndex[index] === 'undefined') {
+                const waveform = this._waveforms.find((waveform) => {
+                    return index >= waveform.start && index < waveform.end;
+                });
 
-            return waveforms.length > 0 ? waveforms[0] : null;
+                if (!waveform) {
+                    return null;
+                }
+
+                this.timeIndex[index] = waveform;
+            }
+            return this.timeIndex[index];
         }
     }
 
