@@ -1379,9 +1379,9 @@ namespace IIIFComponents {
             }
 
             if (this._data.limitToRange && duration) {
-                this._canvasClockTime = duration.start;
+                this.setCurrentTime(duration.start)
             } else {
-                this._canvasClockTime = 0;
+                this.setCurrentTime(0);
             }
 
             if (!this._data.limitToRange) {
@@ -1532,7 +1532,7 @@ namespace IIIFComponents {
         private _lowPriorityUpdater(): void {
             this._updateMediaActiveStates();
 
-            if (this._isPlaying && this._data.autoSelectRange && (this.isVirtual() || this.isOnlyCanvasInstance)) {
+            if (/*this._isPlaying && */this._data.autoSelectRange && (this.isVirtual() || this.isOnlyCanvasInstance)) {
                 this._hasRangeChanged();
             }
 
@@ -2149,6 +2149,16 @@ namespace IIIFComponents {
             return success;
         }
 
+        public getCurrentCanvasInstance(): Manifesto.ICanvas | null {
+            const range = this._data.helper!.getRangeById(this._data.range.id);
+            if (!range) {
+                return null;
+            }
+            const canvasId: string | undefined = AVComponentUtils.getFirstTargetedCanvasId(range);
+
+            return canvasId ? this._data.helper!.getCanvasById(canvasId) : null;
+        }
+
         public data(): IAVComponentData {
             return <IAVComponentData> {
                 autoPlay: false,
@@ -2542,10 +2552,12 @@ namespace IIIFComponents {
 
             canvasInstance.on(CanvasInstanceEvents.PREVIOUS_RANGE, () => {
                 this._prevRange();
+                this.play();
             }, false);
 
             canvasInstance.on(CanvasInstanceEvents.NEXT_RANGE, () => {
                 this._nextRange();
+                this.play();
             }, false);
 
             canvasInstance.on(AVComponent.Events.RANGE_CHANGED, (rangeId: string | null) => {
@@ -2558,9 +2570,27 @@ namespace IIIFComponents {
             }, false);
         }
 
+        public getCurrentRange(): Manifesto.IRange | null {
+            const rangeId = this._data!.helper!.getCurrentRange()!.id;
+            return this._getCurrentCanvas()!.ranges.find((range) => {
+                return range.id === rangeId;
+            }) || null;
+        }
+
         private _prevRange(): void {
             if (!this._data || !this._data.helper) {
                 return;
+            }
+
+            const currentRange: Manifesto.IRange | null = this.getCurrentRange();
+            if (currentRange) {
+                const currentTime = this.getCurrentTime();
+                const startTime = currentRange.getDuration()!.start || 0;
+                // 5 = 5 seconds before going back to current range.
+                if (currentTime - startTime > 5) {
+                    this.setCurrentTime(startTime);
+                    return;
+                }
             }
 
             const prevRange: Manifesto.IRange | null = this._data.helper.getPreviousRange();
