@@ -1,17 +1,8 @@
 namespace IIIFComponents {
 
-    type Annotation = manifesto.Annotation;
-    type AnnotationBody = manifesto.AnnotationBody;
-    type Behavior = manifesto.Behavior;
-    type Canvas = manifesto.Canvas;
-    type Duration = manifesto.Duration;
-    type ExternalResourceType = manifesto.ExternalResourceType;
-    type Range = manifesto.Range;
-    type MediaType = manifesto.MediaType;
-
     export interface IAVCanvasInstanceData extends IAVComponentData {
-        canvas?: Canvas | VirtualCanvas;
-        range?: Range;
+        canvas?: manifesto.Canvas | VirtualCanvas;
+        range?: manifesto.Range;
         visible?: boolean;
         volume?: number;
     }
@@ -226,7 +217,7 @@ namespace IIIFComponents {
         private _waveformCanvas: HTMLCanvasElement | null;
         private _waveformCtx: CanvasRenderingContext2D | null;
         //private _waveformNeedsRedraw: boolean = true;
-        public ranges: Range[] = [];
+        public ranges: manifesto.Range[] = [];
         public waveforms: string[] = [];
 
         public $playerElement: JQuery;
@@ -299,18 +290,18 @@ namespace IIIFComponents {
 
             if (this._data && this._data.helper && this._data.canvas) {
 
-                let ranges: Range[] = [];
+                let ranges: manifesto.Range[] = [];
 
                 // if the canvas is virtual, get the ranges for all sub canvases
                 if (this.isVirtual()) {
-                    (<VirtualCanvas>this._data.canvas).canvases.forEach((canvas: Canvas) => {
+                    (<VirtualCanvas>this._data.canvas).canvases.forEach((canvas: manifesto.Canvas) => {
                         if (this._data && this._data.helper) {
-                            let r: Range[] = this._data.helper.getCanvasRanges(canvas);
+                            let r: manifesto.Range[] = this._data.helper.getCanvasRanges(canvas);
 
-                            let clonedRanges: Range[] = [];
+                            let clonedRanges: manifesto.Range[] = [];
 
                             // shift the range targets forward by the duration of their previous canvases
-                            r.forEach((range: Range) => {
+                            r.forEach((range: manifesto.Range) => {
 
                                 const clonedRange = jQuery.extend(true, {}, range);
                                 clonedRanges.push(clonedRange);
@@ -328,10 +319,10 @@ namespace IIIFComponents {
                         }
                     });
                 } else {
-                    ranges = ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Canvas));
+                    ranges = ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as manifesto.Canvas));
                 }
 
-                ranges.forEach((range: Range) => {
+                ranges.forEach((range: manifesto.Range) => {
                     this.ranges.push(range);
                 });
             }
@@ -432,7 +423,7 @@ namespace IIIFComponents {
 
             this._$rangeTimelineContainer.on("mousemove", (e) => {
                 if (this._data.range) {
-                    const duration: Duration | undefined = this._data.range.getDuration();
+                    const duration: manifesto.Duration | undefined = this._data.range.getDuration();
                     this._updateHoverPreview(e, this._$rangeTimelineContainer, duration ? duration.getLength() : 0);
                 }
             });
@@ -441,7 +432,7 @@ namespace IIIFComponents {
 
             this._contentAnnotations = [];
 
-            const items: Annotation[] = this._data.canvas.getContent();// (<any>this._data.canvas).__jsonld.content[0].items;
+            const items: manifesto.Annotation[] = this._data.canvas.getContent();// (<any>this._data.canvas).__jsonld.content[0].items;
 
             // always hide timelineItemContainer for now
             //if (items.length === 1) {
@@ -450,7 +441,7 @@ namespace IIIFComponents {
 
             for (let i = 0; i < items.length; i++) {
 
-                const item: Annotation = items[i];
+                const item: manifesto.Annotation = items[i];
 
                 /*
                 if (item.motivation != 'painting') {
@@ -459,14 +450,14 @@ namespace IIIFComponents {
                 */
 
                 let mediaSource: any;
-                const bodies: AnnotationBody[] = item.getBody();
+                const bodies: manifesto.AnnotationBody[] = item.getBody();
 
                 if (!bodies.length) {
                     console.warn('item has no body');
                     return;
                 }
 
-                const body: AnnotationBody | null = this._getBody(bodies);
+                const body: manifesto.AnnotationBody | null = this._getBody(bodies);
 
                 if (!body) {
                     // if no suitable format was found for the current browser, skip this item.
@@ -474,8 +465,8 @@ namespace IIIFComponents {
                     continue;
                 }
 
-                const type: ExternalResourceType | null = body.getType();
-                const format: MediaType | null = body.getFormat();
+                const type: manifesto.ExternalResourceType | null = body.getType();
+                const format: manifesto.MediaType | null = body.getFormat();
 
                 // if (type && type.toString() === 'choice') {
                 //     // Choose first "Choice" item as body
@@ -580,12 +571,12 @@ namespace IIIFComponents {
             this._renderWaveform();
         }
 
-        private _getBody(bodies: AnnotationBody[]): AnnotationBody | null {
+        private _getBody(bodies: manifesto.AnnotationBody[]): manifesto.AnnotationBody | null {
 
             // if there's an HLS format and HLS is supported in this browser
             for (let i = 0; i < bodies.length; i++) {
-                const body: AnnotationBody = bodies[i];
-                const format: MediaType | null = body.getFormat();
+                const body: manifesto.AnnotationBody = bodies[i];
+                const format: manifesto.MediaType | null = body.getFormat();
 
                 if (format) {
                     if (AVComponentUtils.isHLSFormat(format) && AVComponentUtils.canPlayHls()) {
@@ -596,8 +587,8 @@ namespace IIIFComponents {
 
             // if there's a Dash format and the browser isn't Safari
             for (let i = 0; i < bodies.length; i++) {
-                const body: AnnotationBody = bodies[i];
-                const format: MediaType | null = body.getFormat();
+                const body: manifesto.AnnotationBody = bodies[i];
+                const format: manifesto.MediaType | null = body.getFormat();
 
                 if (format) {
                     if (AVComponentUtils.isMpegDashFormat(format) && !AVComponentUtils.isSafari()) {
@@ -608,8 +599,8 @@ namespace IIIFComponents {
 
             // otherwise, return the first format that isn't HLS or Dash
             for (let i = 0; i < bodies.length; i++) {
-                const body: AnnotationBody = bodies[i];
-                const format: MediaType | null = body.getFormat();
+                const body: manifesto.AnnotationBody = bodies[i];
+                const format: manifesto.MediaType | null = body.getFormat();
 
                 if (format) {
                     if (!AVComponentUtils.isHLSFormat(format) && !AVComponentUtils.isMpegDashFormat(format)) {
@@ -650,7 +641,7 @@ namespace IIIFComponents {
         public includesVirtualSubCanvas(canvasId: string): boolean {
             if (this.isVirtual() && this._data.canvas && (<VirtualCanvas>this._data.canvas).canvases) {
                 for (let i = 0; i < (<VirtualCanvas>this._data.canvas).canvases.length; i++) {
-                    const canvas: Canvas = (<VirtualCanvas>this._data.canvas).canvases[i];
+                    const canvas: manifesto.Canvas = (<VirtualCanvas>this._data.canvas).canvases[i];
                     if (manifesto.Utils.normaliseUrl(canvas.id) === canvasId) {
                         return true;
                     }
@@ -691,7 +682,7 @@ namespace IIIFComponents {
                         this.fire(AVComponent.Events.RANGE_CHANGED, null);
                     } else {
 
-                        const duration: Duration | undefined = this._data.range.getDuration();
+                        const duration: manifesto.Duration | undefined = this._data.range.getDuration();
 
                         if (duration) {
 
@@ -733,7 +724,7 @@ namespace IIIFComponents {
 
         private _hasRangeChanged(): void {
 
-            const range: Range | undefined = this._getRangeForCurrentTime();
+            const range: manifesto.Range | undefined = this._getRangeForCurrentTime();
 
             if (range && !this._data.limitToRange && (!this._data.range || (this._data.range && range.id !== this._data.range.id))) {
 
@@ -744,9 +735,9 @@ namespace IIIFComponents {
             }
         }
 
-        private _getRangeForCurrentTime(parentRange?: Range): Range | undefined {
+        private _getRangeForCurrentTime(parentRange?: manifesto.Range): manifesto.Range | undefined {
 
-            let ranges: Range[];
+            let ranges: manifesto.Range[];
 
             if (!parentRange) {
                 ranges = this.ranges;
@@ -756,7 +747,7 @@ namespace IIIFComponents {
 
             for (let i = 0; i < ranges.length; i++) {
 
-                const range: Range = ranges[i];
+                const range: manifesto.Range = ranges[i];
 
                 // if the range spans the current time, and is navigable, return it.
                 // otherwise, try to find a navigable child range.
@@ -766,11 +757,11 @@ namespace IIIFComponents {
                         return range;
                     }
 
-                    const childRanges: Range[] = range.getRanges();
+                    const childRanges: manifesto.Range[] = range.getRanges();
 
                     // if a child range spans the current time, recurse into it
                     for (let i = 0; i < childRanges.length; i++) {
-                        const childRange: Range = childRanges[i];
+                        const childRange: manifesto.Range = childRanges[i];
 
                         if (this._rangeSpansCurrentTime(childRange)) {
                             return this._getRangeForCurrentTime(childRange);
@@ -787,7 +778,7 @@ namespace IIIFComponents {
             return undefined;
         }
 
-        private _rangeSpansCurrentTime(range: Range): boolean {
+        private _rangeSpansCurrentTime(range: manifesto.Range): boolean {
 
             if (range.spansTime(Math.ceil(this._canvasClockTime) + this._rangeSpanPadding)) {
                 return true;
@@ -796,9 +787,9 @@ namespace IIIFComponents {
             return false;
         }
 
-        private _rangeNavigable(range: Range): boolean {
+        private _rangeNavigable(range: manifesto.Range): boolean {
 
-            const behavior: Behavior | null = range.getBehavior();
+            const behavior: manifesto.Behavior | null = range.getBehavior();
 
             if (behavior && behavior.toString() === manifesto.Behavior.NO_NAV) {
                 return false;
@@ -811,7 +802,7 @@ namespace IIIFComponents {
 
             if (this._data.range) {
 
-                const duration: Duration | undefined = this._data.range.getDuration();
+                const duration: manifesto.Duration | undefined = this._data.range.getDuration();
 
                 if (duration) {
 
@@ -1216,7 +1207,7 @@ namespace IIIFComponents {
             //if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
             if (!this._waveformCtx) return;
 
-            let duration: Duration | undefined;
+            let duration: manifesto.Duration | undefined;
             let start: number = 0;
             let end: number = this._compositeWaveform.duration;
 
@@ -1278,7 +1269,7 @@ namespace IIIFComponents {
 
         private _updateCurrentTimeDisplay(): void {
 
-            let duration: Duration | undefined;
+            let duration: manifesto.Duration | undefined;
 
             if (this._data.range) {
                 duration = this._data.range.getDuration();
@@ -1294,7 +1285,7 @@ namespace IIIFComponents {
 
         private _updateDurationDisplay(): void {
 
-            let duration: Duration | undefined;
+            let duration: manifesto.Duration | undefined;
 
             if (this._data.range) {
                 duration = this._data.range.getDuration();
@@ -1362,7 +1353,7 @@ namespace IIIFComponents {
 
             this.pause();
 
-            let duration: Duration | undefined;
+            let duration: manifesto.Duration | undefined;
 
             if (this._data.range) {
                 duration = this._data.range.getDuration();
@@ -1385,7 +1376,7 @@ namespace IIIFComponents {
 
         private _fastforward(): void {
 
-            let duration: Duration | undefined;
+            let duration: manifesto.Duration | undefined;
 
             if (this._data.range) {
                 duration = this._data.range.getDuration();
@@ -1408,7 +1399,7 @@ namespace IIIFComponents {
 
             if (this._isPlaying) return;
 
-            let duration: Duration | undefined;
+            let duration: manifesto.Duration | undefined;
 
             if (this._data.range) {
                 duration = this._data.range.getDuration();
@@ -1481,7 +1472,7 @@ namespace IIIFComponents {
         private _canvasClockUpdater(): void {
             this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
 
-            let duration: Duration | undefined;
+            let duration: manifesto.Duration | undefined;
 
             if (this._data.range) {
                 duration = this._data.range.getDuration();
@@ -1815,7 +1806,7 @@ namespace IIIFComponents {
             return xywh;
         }
 
-        public static getFirstTargetedCanvasId(range: Range): string | undefined {
+        public static getFirstTargetedCanvasId(range: manifesto.Range): string | undefined {
             
             let canvasId: string | undefined;
 
@@ -1823,7 +1814,7 @@ namespace IIIFComponents {
                 canvasId = range.canvases[0];
             } else {
 
-                const childRanges: Range[] = range.getRanges();
+                const childRanges: manifesto.Range[] = range.getRanges();
 
                 if (childRanges.length) {
                     return AVComponentUtils.getFirstTargetedCanvasId(childRanges[0]);
@@ -1842,7 +1833,7 @@ namespace IIIFComponents {
             return String(new Date().valueOf());
         }
 
-        public static retargetTemporalComponent(canvases: Canvas[], target: string): string | undefined {
+        public static retargetTemporalComponent(canvases: manifesto.Canvas[], target: string): string | undefined {
             
             let t: number[] | null = manifesto.Utils.getTemporalComponent(target);
 
@@ -1853,7 +1844,7 @@ namespace IIIFComponents {
 
                 // loop through canvases adding up their durations until we reach the targeted canvas
                 for (let i = 0; i < canvases.length; i++) {
-                    const canvas: Canvas = canvases[i];
+                    const canvas: manifesto.Canvas = canvases[i];
                     if (!canvas.id.includes(targetWithoutTemporal)) {
                         const duration: number | null = canvas.getDuration();
                         if (duration) {
@@ -1988,11 +1979,11 @@ namespace IIIFComponents {
             return (num - min) / (max - min);
         }
     
-        public static isHLSFormat(format: MediaType) {
+        public static isHLSFormat(format: manifesto.MediaType) {
             return this.hlsMimeTypes.includes(format.toString());
         }
     
-        public static isMpegDashFormat(format: MediaType) {
+        public static isMpegDashFormat(format: manifesto.MediaType) {
             return format.toString() === 'application/dash+xml';
         }
 
@@ -2010,7 +2001,7 @@ namespace IIIFComponents {
 
     export class VirtualCanvas {
         
-        public canvases: Canvas[] = [];
+        public canvases: manifesto.Canvas[] = [];
         public id: string;
 
         constructor() {
@@ -2018,21 +2009,21 @@ namespace IIIFComponents {
             this.id = AVComponentUtils.getTimestamp();
         }
 
-        public addCanvas(canvas: Canvas): void {
+        public addCanvas(canvas: manifesto.Canvas): void {
             // canvases need to be deep copied including functions
             this.canvases.push(jQuery.extend(true, {}, canvas));
         }
 
-        public getContent(): Annotation[] {
+        public getContent(): manifesto.Annotation[] {
 
-            const annotations: Annotation[] = [];
+            const annotations: manifesto.Annotation[] = [];
 
-            this.canvases.forEach((canvas: Canvas) => {
-                const items: Annotation[] = canvas.getContent();
+            this.canvases.forEach((canvas: manifesto.Canvas) => {
+                const items: manifesto.Annotation[] = canvas.getContent();
 
                 // if the annotations have no temporal target, add one so that
                 // they specifically target the duration of their canvas
-                items.forEach((item: Annotation) => {
+                items.forEach((item: manifesto.Annotation) => {
                     const target: string | null = item.getTarget();
 
                     if (target) {
@@ -2044,7 +2035,7 @@ namespace IIIFComponents {
                     
                 });
 
-                items.forEach((item: Annotation) => {
+                items.forEach((item: manifesto.Annotation) => {
                     const target: string | null = item.getTarget();
 
                     if (target) {
@@ -2062,7 +2053,7 @@ namespace IIIFComponents {
 
             let duration: number = 0;
 
-            this.canvases.forEach((canvas: Canvas) => {
+            this.canvases.forEach((canvas: manifesto.Canvas) => {
                 const d: number | null = canvas.getDuration();
                 if (d) {
                     duration += d;
@@ -2254,7 +2245,7 @@ namespace IIIFComponents {
             
             if (diff.includes('range') && this._data.range) {
 
-                let range: Range | null = this._data.helper.getRangeById(this._data.range.id);
+                let range: manifesto.Range | null = this._data.helper.getRangeById(this._data.range.id);
 
                 if (!range) {
                     console.warn('range not found');
@@ -2275,7 +2266,7 @@ namespace IIIFComponents {
 
                                     // use the retargeted range
                                     for (let i = 0; i < canvasInstance.ranges.length; i++) {
-                                        const r: Range = canvasInstance.ranges[i];
+                                        const r: manifesto.Range = canvasInstance.ranges[i];
 
                                         if (r.id === range.id) {
                                             range = r;
@@ -2341,14 +2332,14 @@ namespace IIIFComponents {
             if (this._data && this._data.helper) {
 
                 // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
-                const behavior: Behavior | null = this._data.helper.manifest.getBehavior();
-                const canvases: Canvas[] = this._getCanvases();
+                const behavior: manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
+                const canvases: manifesto.Canvas[] = this._getCanvases();
 
                 if (behavior && behavior.toString() === manifesto.Behavior.AUTO_ADVANCE) {
 
                     const virtualCanvas: VirtualCanvas = new VirtualCanvas();
 
-                    canvases.forEach((canvas: Canvas) => {
+                    canvases.forEach((canvas: manifesto.Canvas) => {
                         virtualCanvas.addCanvas(canvas);
                     });
 
@@ -2357,7 +2348,7 @@ namespace IIIFComponents {
                 }                
 
                 // all canvases need to be individually navigable
-                canvases.forEach((canvas: Canvas) => {
+                canvases.forEach((canvas: manifesto.Canvas) => {
                     this._initCanvas(canvas);
                 });                
 
@@ -2403,7 +2394,7 @@ namespace IIIFComponents {
                 });
 
                 // poster canvas
-                const posterCanvas: Canvas | null = this._data.helper.getPosterCanvas();
+                const posterCanvas: manifesto.Canvas | null = this._data.helper.getPosterCanvas();
 
                 if (posterCanvas) {
 
@@ -2455,7 +2446,7 @@ namespace IIIFComponents {
             });
         }
 
-        private _getCanvases(): Canvas[] {
+        private _getCanvases(): manifesto.Canvas[] {
             if (this._data.helper) {
                 return this._data.helper.getCanvases();
             }
@@ -2463,7 +2454,7 @@ namespace IIIFComponents {
             return [];
         }
 
-        private _initCanvas(canvas: Canvas | VirtualCanvas): void {
+        private _initCanvas(canvas: manifesto.Canvas | VirtualCanvas): void {
 
             const canvasInstance: CanvasInstance = new CanvasInstance({
                 target: document.createElement('div'),
@@ -2512,7 +2503,7 @@ namespace IIIFComponents {
                 return;
             }
 
-            const prevRange: Range | null = this._data.helper.getPreviousRange();
+            const prevRange: manifesto.Range | null = this._data.helper.getPreviousRange();
 
             if (prevRange) {
                 this.playRange(prevRange.id);
@@ -2527,7 +2518,7 @@ namespace IIIFComponents {
                 return;
             }
 
-            const nextRange: Range | null = this._data.helper.getNextRange();
+            const nextRange: manifesto.Range | null = this._data.helper.getNextRange();
 
             if (nextRange) {
                 this.playRange(nextRange.id);         
@@ -2638,7 +2629,7 @@ namespace IIIFComponents {
                 return;
             }
 
-            const range: Range | null = this._data.helper.getRangeById(rangeId);
+            const range: manifesto.Range | null = this._data.helper.getRangeById(rangeId);
 
             if (range) {
                 this.set({
