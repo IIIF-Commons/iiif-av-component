@@ -1,3 +1,5 @@
+import { MediaType, Behavior, ExternalResourceType } from "@iiif/vocabulary";
+
 namespace IIIFComponents {
 
     export interface IAVCanvasInstanceData extends IAVComponentData {
@@ -465,8 +467,8 @@ namespace IIIFComponents {
                     continue;
                 }
 
-                const type: manifesto.ExternalResourceType | null = body.getType();
-                const format: manifesto.MediaType | null = body.getFormat();
+                const type: ExternalResourceType | null = body.getType();
+                const format: MediaType | null = body.getFormat();
 
                 // if (type && type.toString() === 'choice') {
                 //     // Choose first "Choice" item as body
@@ -576,7 +578,7 @@ namespace IIIFComponents {
             // if there's an HLS format and HLS is supported in this browser
             for (let i = 0; i < bodies.length; i++) {
                 const body: manifesto.AnnotationBody = bodies[i];
-                const format: manifesto.MediaType | null = body.getFormat();
+                const format: MediaType | null = body.getFormat();
 
                 if (format) {
                     if (AVComponentUtils.isHLSFormat(format) && AVComponentUtils.canPlayHls()) {
@@ -588,7 +590,7 @@ namespace IIIFComponents {
             // if there's a Dash format and the browser isn't Safari
             for (let i = 0; i < bodies.length; i++) {
                 const body: manifesto.AnnotationBody = bodies[i];
-                const format: manifesto.MediaType | null = body.getFormat();
+                const format: MediaType | null = body.getFormat();
 
                 if (format) {
                     if (AVComponentUtils.isMpegDashFormat(format) && !AVComponentUtils.isSafari()) {
@@ -600,7 +602,7 @@ namespace IIIFComponents {
             // otherwise, return the first format that isn't HLS or Dash
             for (let i = 0; i < bodies.length; i++) {
                 const body: manifesto.AnnotationBody = bodies[i];
-                const format: manifesto.MediaType | null = body.getFormat();
+                const format: MediaType | null = body.getFormat();
 
                 if (format) {
                     if (!AVComponentUtils.isHLSFormat(format) && !AVComponentUtils.isMpegDashFormat(format)) {
@@ -789,9 +791,9 @@ namespace IIIFComponents {
 
         private _rangeNavigable(range: manifesto.Range): boolean {
 
-            const behavior: manifesto.Behavior | null = range.getBehavior();
+            const behavior: Behavior | null = range.getBehavior();
 
-            if (behavior && behavior.toString() === manifesto.Behavior.NO_NAV) {
+            if (behavior && behavior.toString() === Behavior.NO_NAV) {
                 return false;
             }
 
@@ -1979,11 +1981,11 @@ namespace IIIFComponents {
             return (num - min) / (max - min);
         }
     
-        public static isHLSFormat(format: manifesto.MediaType) {
+        public static isHLSFormat(format: MediaType) {
             return this.hlsMimeTypes.includes(format.toString());
         }
     
-        public static isMpegDashFormat(format: manifesto.MediaType) {
+        public static isMpegDashFormat(format: MediaType) {
             return format.toString() === 'application/dash+xml';
         }
 
@@ -2332,10 +2334,10 @@ namespace IIIFComponents {
             if (this._data && this._data.helper) {
 
                 // if the manifest has an auto-advance behavior, join the canvases into a single "virtual" canvas
-                const behavior: manifesto.Behavior | null = this._data.helper.manifest.getBehavior();
+                const behavior: Behavior | null = this._data.helper.manifest.getBehavior();
                 const canvases: manifesto.Canvas[] = this._getCanvases();
 
-                if (behavior && behavior.toString() === manifesto.Behavior.AUTO_ADVANCE) {
+                if (behavior && behavior.toString() === Behavior.AUTO_ADVANCE) {
 
                     const virtualCanvas: VirtualCanvas = new VirtualCanvas();
 
