@@ -1193,6 +1193,9 @@ namespace IIIFComponents {
             });
         }
 
+        private waveformDeltaX = 0;
+        private waveformPageX = 0;
+
         private _renderWaveform(): void {
 
             if (!this.waveforms.length) return;
@@ -1202,16 +1205,48 @@ namespace IIIFComponents {
             });
 
             Promise.all(promises).then((waveforms) => {
-
                 this._waveformCanvas = document.createElement('canvas');
                 this._waveformCanvas.classList.add('waveform');
                 this._$canvasContainer.append(this._waveformCanvas);
+                this.waveformPageX = this._waveformCanvas.getBoundingClientRect().left;
+                const raf = this._drawWaveform.bind(this);
+
+                // Mouse in and out we reset the delta
+                this._waveformCanvas.addEventListener('mousein', () => {
+                    this.waveformDeltaX = 0;
+                });
+                this._$canvasTimelineContainer.on('mouseout', () => {
+                    this.waveformDeltaX = 0;
+                    requestAnimationFrame(raf);
+                });
+                this._waveformCanvas.addEventListener('mouseout', () => {
+                    this.waveformDeltaX = 0;
+                    requestAnimationFrame(raf);
+                });
+
+                // When mouse moves over waveform, we render
+                this._waveformCanvas.addEventListener('mousemove', (e) => {
+                    this.waveformDeltaX = e.clientX - this.waveformPageX;
+                    requestAnimationFrame(raf);
+                });
+                this._$canvasTimelineContainer.on('mousemove', (e) => {
+                    this.waveformDeltaX = e.clientX - this.waveformPageX;
+                    requestAnimationFrame(raf);
+                });
+
+                // When we click the waveform, it should navigate
+                this._waveformCanvas.addEventListener('click', () => {
+                    const width = this._waveformCanvas!.getBoundingClientRect().width || 0;
+                    if (width) {
+                        this.setCurrentTime(this._getDuration() * (this.waveformDeltaX / width));
+                    }
+                });
+
                 this._waveformCtx = this._waveformCanvas.getContext('2d');
 
                 if (this._waveformCtx) {
                     this._waveformCtx.fillStyle = <string>this._data.waveformColor;
                     this._compositeWaveform = new CompositeWaveform(waveforms);
-                    //this._resize();
                     this.fire(AVComponent.Events.WAVEFORM_READY);
                 }
 
@@ -1236,6 +1271,7 @@ namespace IIIFComponents {
                 end = duration.end;
             }
 
+            const currentTimeAsPercentage = Math.min(this.getClockTime() / this._getDuration(), 1);
             const startpx = start * this._compositeWaveform.pixelsPerSecond;
             const endpx = end * this._compositeWaveform.pixelsPerSecond;
             const canvasWidth: number = this._waveformCtx.canvas.width;
@@ -1249,12 +1285,40 @@ namespace IIIFComponents {
             this._waveformCtx.fillStyle = <string>this._data.waveformColor;
 
             for (let x = startpx; x < endpx; x += increment) {
-
                 const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
                 const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
                 const ypos = (canvasHeight - height) / 2;
                 const xpos = canvasWidth * AVComponentUtils.normalise(x, startpx, endpx);
+                const pastCurrentTime = xpos/canvasWidth < currentTimeAsPercentage;
+                const hoverWidth = this.waveformDeltaX/canvasWidth;
+                let colour = <string>this._data.waveformColor;
+                // For colours.
+                // ======o-------T_____
+                //       ^ current time
+                // ======o-------T_____
+                //               ^ cursor
+                //
+                if (pastCurrentTime) {
+                    if (this.waveformDeltaX === 0) {
+                        // ======o_____
+                        //   ^ this colour, no hover
+                        colour = '#14A4C3';
+                    } else if (xpos/canvasWidth < hoverWidth) {
+                        // ======T---o_____
+                        //    ^ this colour
+                        colour = '#11758e'; // dark
+                    } else {
+                        // ======T---o_____
+                        //         ^ this colour
+                        colour = '#14A4C3'; // normal
+                    }
+                } else if (xpos/canvasWidth < hoverWidth) {
+                    // ======o-------T_____
+                    //           ^ this colour
+                    colour = '#86b3c3'; // lighter
+                }
 
+                this._waveformCtx.fillStyle = colour;
                 this._waveformCtx.fillRect(xpos, ypos, barWidth, height);
             }
         }
@@ -1518,7 +1582,6 @@ namespace IIIFComponents {
         }
 
         private _highPriorityUpdater(): void {
-
             this._$rangeTimelineContainer.slider({
                 value: this._canvasClockTime
             });
@@ -1529,6 +1592,7 @@ namespace IIIFComponents {
 
             this._updateCurrentTimeDisplay();
             this._updateDurationDisplay();
+            this._drawWaveform();
         }
 
         private _lowPriorityUpdater(): void {
@@ -1748,6 +1812,7 @@ namespace IIIFComponents {
 
                     this._waveformCanvas.width = canvasWidth;
                     this._waveformCanvas.height = canvasHeight;
+                    this.waveformPageX = this._waveformCanvas.getBoundingClientRect().left;
                 }
 
                 this._render();
