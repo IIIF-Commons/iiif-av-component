@@ -73,7 +73,7 @@ function addToPlayList(playList, range){
 
 
 function makeUrl(manifestId, rangeId){
-    var s = "https://uv-britishlibrary2.netlify.com/template.html#?manifest=" + manifestId;
+    var s = "http://localhost:8002/examples/template.html#?manifest=" + manifestId;
     if(rangeId){
         s += "&rid=" + rangeId;
     }

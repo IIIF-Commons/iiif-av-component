@@ -61,6 +61,11 @@
             "id": "https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615_70.json",
             "type": "Manifest",
             "label": { "en": [ "C615/70 C615/71 Tamas Vasary piano" ] }
+        },
+        {
+            "id": "https://stephenwf.github.io/C615_70.json",
+            "type": "Manifest",
+            "label": { "en": [ "C615/70 C615/71 Tamas Vasary piano (modified with extra rendering)" ] }
         }
     ]  
   }

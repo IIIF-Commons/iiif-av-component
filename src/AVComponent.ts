@@ -227,7 +227,21 @@ namespace IIIFComponents {
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
             this._data = this.options.data;
-            this.$playerElement = $('<div class="player"></div>');
+            this.$playerElement = $('<div class="player player--loading"></div>');
+        }
+
+        public loaded(): void {
+            setTimeout(() => {
+                this.$playerElement.removeClass('player--loading');
+            }, 500);
+        }
+
+        public isPlaying(): boolean {
+            return this._isPlaying;
+        }
+
+        public getClockTime(): number {
+            return this._canvasClockTime;
         }
 
         public init() {
@@ -271,7 +285,7 @@ namespace IIIFComponents {
 
             const $volume: JQuery = $('<div class="volume"></div>');
             this._volume = new AVVolumeControl({
-                target: $volume[0],
+                target: $volume[0] as HTMLElement,
                 data: Object.assign({}, this._data)
             });
 
@@ -686,7 +700,8 @@ namespace IIIFComponents {
 
                         if (duration) {
 
-                            if (!(<any>this._data.range).autoChanged) {
+                            // Only change the current time if the current time is outside of the current time.
+                            if (duration.start >= this._canvasClockTime || duration.end <= this._canvasClockTime) {
                                 this._setCurrentTime(duration.start);
                             }
 
@@ -694,7 +709,7 @@ namespace IIIFComponents {
                                 this.play();
                             }
 
-                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id);
+                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id, this._data.range);
                         }
                     }
                 }
@@ -1016,6 +1031,8 @@ namespace IIIFComponents {
                 $mediaElement.attr('data-dashjs-player', '');
                 const player = dashjs.MediaPlayer().create();
                 player.getDebug().setLogToBrowserConsole(false);
+                // player.getDebug().setLogToBrowserConsole(true);
+                // player.getDebug().setLogLevel(4);
                 if (this._data.adaptiveAuthEnabled) {
                     player.setXHRWithCredentialsForType('MPD', true); // send cookies
                 }
@@ -1122,10 +1139,6 @@ namespace IIIFComponents {
 
                 if (this._readyMediaCount === this._contentAnnotations.length) {
 
-                    //if (!this._data.range) {
-                    this._setCurrentTime(0);
-                    //}                        
-
                     if (this._data.autoPlay) {
                         this.play();
                     }
@@ -1180,6 +1193,9 @@ namespace IIIFComponents {
             });
         }
 
+        private waveformDeltaX = 0;
+        private waveformPageX = 0;
+
         private _renderWaveform(): void {
 
             if (!this.waveforms.length) return;
@@ -1189,16 +1205,48 @@ namespace IIIFComponents {
             });
 
             Promise.all(promises).then((waveforms) => {
-
                 this._waveformCanvas = document.createElement('canvas');
                 this._waveformCanvas.classList.add('waveform');
                 this._$canvasContainer.append(this._waveformCanvas);
+                this.waveformPageX = this._waveformCanvas.getBoundingClientRect().left;
+                const raf = this._drawWaveform.bind(this);
+
+                // Mouse in and out we reset the delta
+                this._waveformCanvas.addEventListener('mousein', () => {
+                    this.waveformDeltaX = 0;
+                });
+                this._$canvasTimelineContainer.on('mouseout', () => {
+                    this.waveformDeltaX = 0;
+                    requestAnimationFrame(raf);
+                });
+                this._waveformCanvas.addEventListener('mouseout', () => {
+                    this.waveformDeltaX = 0;
+                    requestAnimationFrame(raf);
+                });
+
+                // When mouse moves over waveform, we render
+                this._waveformCanvas.addEventListener('mousemove', (e) => {
+                    this.waveformDeltaX = e.clientX - this.waveformPageX;
+                    requestAnimationFrame(raf);
+                });
+                this._$canvasTimelineContainer.on('mousemove', (e) => {
+                    this.waveformDeltaX = e.clientX - this.waveformPageX;
+                    requestAnimationFrame(raf);
+                });
+
+                // When we click the waveform, it should navigate
+                this._waveformCanvas.addEventListener('click', () => {
+                    const width = this._waveformCanvas!.getBoundingClientRect().width || 0;
+                    if (width) {
+                        this.setCurrentTime(this._getDuration() * (this.waveformDeltaX / width));
+                    }
+                });
+
                 this._waveformCtx = this._waveformCanvas.getContext('2d');
 
                 if (this._waveformCtx) {
                     this._waveformCtx.fillStyle = <string>this._data.waveformColor;
                     this._compositeWaveform = new CompositeWaveform(waveforms);
-                    //this._resize();
                     this.fire(AVComponent.Events.WAVEFORM_READY);
                 }
 
@@ -1223,6 +1271,7 @@ namespace IIIFComponents {
                 end = duration.end;
             }
 
+            const currentTimeAsPercentage = Math.min(this.getClockTime() / this._getDuration(), 1);
             const startpx = start * this._compositeWaveform.pixelsPerSecond;
             const endpx = end * this._compositeWaveform.pixelsPerSecond;
             const canvasWidth: number = this._waveformCtx.canvas.width;
@@ -1236,12 +1285,40 @@ namespace IIIFComponents {
             this._waveformCtx.fillStyle = <string>this._data.waveformColor;
 
             for (let x = startpx; x < endpx; x += increment) {
-
                 const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
                 const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
                 const ypos = (canvasHeight - height) / 2;
                 const xpos = canvasWidth * AVComponentUtils.normalise(x, startpx, endpx);
+                const pastCurrentTime = xpos/canvasWidth < currentTimeAsPercentage;
+                const hoverWidth = this.waveformDeltaX/canvasWidth;
+                let colour = <string>this._data.waveformColor;
+                // For colours.
+                // ======o-------T_____
+                //       ^ current time
+                // ======o-------T_____
+                //               ^ cursor
+                //
+                if (pastCurrentTime) {
+                    if (this.waveformDeltaX === 0) {
+                        // ======o_____
+                        //   ^ this colour, no hover
+                        colour = '#14A4C3';
+                    } else if (xpos/canvasWidth < hoverWidth) {
+                        // ======T---o_____
+                        //    ^ this colour
+                        colour = '#11758e'; // dark
+                    } else {
+                        // ======T---o_____
+                        //         ^ this colour
+                        colour = '#14A4C3'; // normal
+                    }
+                } else if (xpos/canvasWidth < hoverWidth) {
+                    // ======o-------T_____
+                    //           ^ this colour
+                    colour = '#86b3c3'; // lighter
+                }
 
+                this._waveformCtx.fillStyle = colour;
                 this._waveformCtx.fillRect(xpos, ypos, barWidth, height);
             }
         }
@@ -1257,13 +1334,15 @@ namespace IIIFComponents {
             let min: number = 128;
 
             for (let x = index; x < index + sampleSpacing; x++) {
+                const wMax = waveform.max(x);
+                const wMin = waveform.min(x);
 
-                if (waveform.max(x) > max) {
-                    max = waveform.max(x);
+                if (wMax > max) {
+                    max = wMax;
                 }
 
-                if (waveform.min(x) < min) {
-                    min = waveform.min(x);
+                if (wMin < min) {
+                    min = wMin;
                 }
             }
 
@@ -1333,8 +1412,11 @@ namespace IIIFComponents {
             }
         }
 
-        private _setCurrentTime(seconds: number): void { // seconds was originally a string or a number - didn't seem necessary
+        public setCurrentTime(seconds: number): void {
+            return this._setCurrentTime(seconds);
+        }
 
+        private _setCurrentTime(seconds: number): void { // seconds was originally a string or a number - didn't seem necessary
             // const secondsAsFloat: number = parseFloat(seconds.toString());
 
             // if (isNaN(secondsAsFloat)) {
@@ -1363,9 +1445,9 @@ namespace IIIFComponents {
             }
 
             if (this._data.limitToRange && duration) {
-                this._canvasClockTime = duration.start;
+                this.setCurrentTime(duration.start)
             } else {
-                this._canvasClockTime = 0;
+                this.setCurrentTime(0);
             }
 
             if (!this._data.limitToRange) {
@@ -1398,8 +1480,6 @@ namespace IIIFComponents {
         // this._data.play = true?
         public play(withoutUpdate?: boolean): void {
 
-            //console.log('playing ', this.getCanvasId());
-
             if (this._isPlaying) return;
 
             let duration: Manifesto.Duration | undefined;
@@ -1418,14 +1498,24 @@ namespace IIIFComponents {
 
             this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
 
+
+            if (this._highPriorityInterval) {
+                clearInterval(this._highPriorityInterval);
+            }
             this._highPriorityInterval = window.setInterval(() => {
                 this._highPriorityUpdater();
             }, this._highPriorityFrequency);
 
+            if (this._lowPriorityInterval) {
+                clearInterval(this._lowPriorityInterval);
+            }
             this._lowPriorityInterval = window.setInterval(() => {
                 this._lowPriorityUpdater();
             }, this._lowPriorityFrequency);
 
+            if (this._canvasClockInterval) {
+                clearInterval(this._canvasClockInterval);
+            }
             this._canvasClockInterval = window.setInterval(() => {
                 this._canvasClockUpdater();
             }, this._canvasClockFrequency);
@@ -1492,7 +1582,6 @@ namespace IIIFComponents {
         }
 
         private _highPriorityUpdater(): void {
-
             this._$rangeTimelineContainer.slider({
                 value: this._canvasClockTime
             });
@@ -1503,12 +1592,13 @@ namespace IIIFComponents {
 
             this._updateCurrentTimeDisplay();
             this._updateDurationDisplay();
+            this._drawWaveform();
         }
 
         private _lowPriorityUpdater(): void {
             this._updateMediaActiveStates();
 
-            if (this._isPlaying && this._data.autoSelectRange && (this.isVirtual() || this.isOnlyCanvasInstance)) {
+            if (/*this._isPlaying && */this._data.autoSelectRange && (this.isVirtual() || this.isOnlyCanvasInstance)) {
                 this._hasRangeChanged();
             }
 
@@ -1722,6 +1812,7 @@ namespace IIIFComponents {
 
                     this._waveformCanvas.width = canvasWidth;
                     this._waveformCanvas.height = canvasHeight;
+                    this.waveformPageX = this._waveformCanvas.getBoundingClientRect().left;
                 }
 
                 this._render();
@@ -1744,6 +1835,10 @@ namespace IIIFComponents {
         public duration: number = 0;
         public pixelsPerSecond: number = Number.MAX_VALUE;
         public secondsPerPixel: number = Number.MAX_VALUE;
+        private timeIndex: {[r: number]: Waveform} = {};
+        private minIndex: {[r: number]: number} = {};
+        private maxIndex: {[r: number]: number} = {};
+
 
         constructor(waveforms: any[]) {
             this._waveforms = [];
@@ -1765,21 +1860,34 @@ namespace IIIFComponents {
         // Note: these could be optimised, assuming access is sequential
 
         min(index: number) {
-            const waveform = this._find(index);
-            return waveform ? waveform.waveform.min_sample(index - waveform.start) : 0;
+            if (typeof this.minIndex[index] === 'undefined') {
+                const waveform = this._find(index);
+                this.minIndex[index] = waveform ? waveform.waveform.min_sample(index - waveform.start) : 0;
+            }
+            return this.minIndex[index];
         }
 
         max(index: number) {
-            const waveform = this._find(index);
-            return waveform ? waveform.waveform.max_sample(index - waveform.start) : 0;
+            if (typeof this.maxIndex[index] === 'undefined') {
+                const waveform = this._find(index);
+                this.maxIndex[index] = waveform ? waveform.waveform.max_sample(index - waveform.start) : 0;
+            }
+            return this.maxIndex[index];
         }
 
         _find(index: number) {
-            const waveforms = this._waveforms.filter((waveform) => {
-                return index >= waveform.start && index < waveform.end;
-            });
+            if (typeof this.timeIndex[index] === 'undefined') {
+                const waveform = this._waveforms.find((waveform) => {
+                    return index >= waveform.start && index < waveform.end;
+                });
 
-            return waveforms.length > 0 ? waveforms[0] : null;
+                if (!waveform) {
+                    return null;
+                }
+
+                this.timeIndex[index] = waveform;
+            }
+            return this.timeIndex[index];
         }
     }
 
@@ -2109,6 +2217,8 @@ namespace IIIFComponents {
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
 
+            console.log('av component from local');
+
             this._init();
             this._resize();
         }
@@ -2121,6 +2231,16 @@ namespace IIIFComponents {
             }
 
             return success;
+        }
+
+        public getCurrentCanvasInstance(): Manifesto.ICanvas | null {
+            const range = this._data.helper!.getRangeById(this._data.range.id);
+            if (!range) {
+                return null;
+            }
+            const canvasId: string | undefined = AVComponentUtils.getFirstTargetedCanvasId(range);
+
+            return canvasId ? this._data.helper!.getCanvasById(canvasId) : null;
         }
 
         public data(): IAVComponentData {
@@ -2423,6 +2543,27 @@ namespace IIIFComponents {
 
         }
 
+        public setCurrentTime(time: number): void {
+            const canvas: CanvasInstance | undefined = this._getCurrentCanvas();
+            if (canvas) {
+                return canvas.setCurrentTime(time);
+            }
+        }
+
+        public getCurrentTime(): number {
+            const canvas: CanvasInstance | undefined = this._getCurrentCanvas();
+            if (canvas) {
+                return canvas.getClockTime();
+            }
+            return 0;
+        }
+
+        public isPlaying(): boolean {
+            return this.canvasInstances.reduce((isPlaying: boolean, next: CanvasInstance) => {
+                return isPlaying || next.isPlaying();
+            }, false);
+        }
+
         private _checkAllMediaReady(): void {
             console.log('loading media');
             if (this._readyMedia === this.canvasInstances.length) {
@@ -2470,10 +2611,19 @@ namespace IIIFComponents {
             this._$element.append(canvasInstance.$playerElement);
 
             canvasInstance.init();
-            this.canvasInstances.push(canvasInstance);      
+            this.canvasInstances.push(canvasInstance);
+
+            canvasInstance.on('play', () => {
+                this.fire(AVComponent.Events.PLAY, canvasInstance);
+            }, false);
+
+            canvasInstance.on('pause', () => {
+                this.fire(AVComponent.Events.PAUSE, canvasInstance);
+            }, false);
 
             canvasInstance.on(AVComponent.Events.MEDIA_READY, () => {
                 this._readyMedia++;
+                canvasInstance.loaded();
             }, false);
 
             canvasInstance.on(AVComponent.Events.WAVEFORM_READY, () => {
@@ -2486,10 +2636,12 @@ namespace IIIFComponents {
 
             canvasInstance.on(CanvasInstanceEvents.PREVIOUS_RANGE, () => {
                 this._prevRange();
+                this.play();
             }, false);
 
             canvasInstance.on(CanvasInstanceEvents.NEXT_RANGE, () => {
                 this._nextRange();
+                this.play();
             }, false);
 
             canvasInstance.on(AVComponent.Events.RANGE_CHANGED, (rangeId: string | null) => {
@@ -2502,9 +2654,27 @@ namespace IIIFComponents {
             }, false);
         }
 
+        public getCurrentRange(): Manifesto.IRange | null {
+            const rangeId = this._data!.helper!.getCurrentRange()!.id;
+            return this._getCurrentCanvas()!.ranges.find((range) => {
+                return range.id === rangeId;
+            }) || null;
+        }
+
         private _prevRange(): void {
             if (!this._data || !this._data.helper) {
                 return;
+            }
+
+            const currentRange: Manifesto.IRange | null = this.getCurrentRange();
+            if (currentRange) {
+                const currentTime = this.getCurrentTime();
+                const startTime = currentRange.getDuration()!.start || 0;
+                // 5 = 5 seconds before going back to current range.
+                if (currentTime - startTime > 5) {
+                    this.setCurrentTime(startTime);
+                    return;
+                }
             }
 
             const prevRange: Manifesto.IRange | null = this._data.helper.getPreviousRange();
@@ -2627,7 +2797,7 @@ namespace IIIFComponents {
             }
         }
 
-        public playRange(rangeId: string): void {
+        public playRange(rangeId: string, autoChanged: boolean = false): void {
 
             if (!this._data.helper) {
                 return;
@@ -2637,7 +2807,7 @@ namespace IIIFComponents {
 
             if (range) {
                 this.set({
-                    range: jQuery.extend(true, {}, range)
+                    range: jQuery.extend(true, { autoChanged }, range)
                 });
             }
         }
@@ -2739,6 +2909,8 @@ namespace IIIFComponents {
 
 namespace IIIFComponents.AVComponent {
     export class Events {
+        static PLAY: string = 'play';
+        static PAUSE: string = 'pause';
         static MEDIA_READY: string = 'mediaready';
         static LOG: string = 'log';
         static RANGE_CHANGED: string = 'rangechanged';
