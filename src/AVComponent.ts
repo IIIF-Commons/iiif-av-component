@@ -1140,7 +1140,10 @@ namespace IIIFComponents {
                 if (this._readyMediaCount === this._contentAnnotations.length) {
 
                     if (this._data.autoPlay) {
+                        console.log('autoplay');
                         this.play();
+                    } else {
+                        this.pause();
                     }
 
                     this._updateDurationDisplay();
