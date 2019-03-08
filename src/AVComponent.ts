@@ -385,16 +385,18 @@ namespace IIIFComponents {
                 }
             });
 
-            this._$playButton.on('touchstart click', (e) => {
+            this._$playButton[0].addEventListener('click', (e) => {
 
                 e.preventDefault();
 
                 if (this._isPlaying) {
                     this.pause();
-                } else {
+                }
+                else {
                     this.play();
                 }
-            });
+
+            }, false);
 
             this._$nextButton.on('touchstart click', (e) => {
 
