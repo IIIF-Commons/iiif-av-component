@@ -43,6 +43,10 @@
 	 	{
 	 	 	"label":{"en":["Link to catalogue"]},
 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA8030616>View the catalogue record</a>"]}
+		},
+	 	{
+	 	 	"label":{"en":["Contributors"]},
+	 	 	"value":{"en":["Marky, Ricky, Danny, Terry, Mikey, Davey, Timmy, Tommy, Joey, Robby, Johnny, Brian"]}
 	 	}
 	],
 	"requiredStatement": {
