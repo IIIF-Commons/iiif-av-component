@@ -18,6 +18,8 @@ namespace IIIFComponents {
         play: string;
         previous: string;
         unmute: string;
+        fastForward: string;
+        fastRewind: string;
     }
     
     export interface IAVComponentData {
@@ -183,6 +185,8 @@ namespace IIIFComponents {
         private _$durationHighlight: JQuery;
         private _$hoverPreviewTemplate: JQuery;
         private _$nextButton: JQuery;
+        private _$fastForward: JQuery;
+        private _$fastRewind: JQuery;
         private _$optionsContainer: JQuery;
         private _$playButton: JQuery;
         private _$prevButton: JQuery;
@@ -275,6 +279,15 @@ namespace IIIFComponents {
                                 <button class="btn" title="${this._data.content.next}">
                                     <i class="av-icon av-icon-next" aria-hidden="true"></i>${this._data.content.next}
                                 </button>`);
+            this._$fastForward = $(`
+                                <button class="btn" title="${this._data.content.next}">
+                                    <i class="av-icon av-icon-fast-forward" aria-hidden="true"></i>${this._data.content.fastForward}
+                                </button>`);
+            this._$fastRewind = $(`
+                                <button class="btn" title="${this._data.content.next}">
+                                    <i class="av-icon av-icon-fast-rewind" aria-hidden="true"></i>${this._data.content.fastRewind}
+                                </button>`);
+
             this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
             this._$canvasTime = this._$timeDisplay.find('.canvas-time');
             this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
@@ -293,7 +306,16 @@ namespace IIIFComponents {
                 this.fire(VolumeEvents.VOLUME_CHANGED, value);
             }, false);
 
-            this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume);
+            // @todo make the buttons for FF and FR configurable.
+            this._$controlsContainer.append(
+                this._$prevButton,
+                this._$fastRewind,
+                this._$playButton,
+                this._$fastForward,
+                this._$nextButton,
+                this._$timeDisplay,
+                $volume
+            );
             this._$canvasTimelineContainer.append(this._$canvasHoverPreview, this._$canvasHoverHighlight, this._$durationHighlight);
             this._$rangeTimelineContainer.append(this._$rangeHoverPreview, this._$rangeHoverHighlight);
             this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
@@ -369,7 +391,6 @@ namespace IIIFComponents {
 
                 if (prevClicks === 1) {
                     // single click
-                    //console.log('single');
                     this._previous(false);
                     prevTimeout = setTimeout(() => {
                         prevClicks = 0;
@@ -377,7 +398,6 @@ namespace IIIFComponents {
                     }, this._data.doubleClickMS);
                 } else {
                     // double click
-                    //console.log('double');
                     this._previous(true);
                     clearTimeout(prevTimeout);
                     prevClicks = 0;
@@ -401,6 +421,22 @@ namespace IIIFComponents {
                 e.preventDefault();
 
                 this._next();
+            });
+
+            this._$fastForward.on('touchstart click', e => {
+                const { end } = this.getRangeTiming();
+                const goToTime = this.getClockTime() + 20;
+                if (goToTime < end) {
+                    return this.setCurrentTime(goToTime)
+                }
+            });
+
+            this._$fastRewind.on('touchstart click', e => {
+                const { start } = this.getRangeTiming();
+                const goToTime = this.getClockTime() - 20;
+                if (goToTime >= start) {
+                    return this.setCurrentTime(goToTime)
+                }
             });
 
             this._$canvasTimelineContainer.slider({
@@ -581,8 +617,6 @@ namespace IIIFComponents {
                 }
 
             }
-
-            this._renderWaveform();
         }
 
         private _getBody(bodies: Manifesto.IAnnotationBody[]): Manifesto.IAnnotationBody | null {
@@ -677,11 +711,9 @@ namespace IIIFComponents {
                     if (this._data.visible) {
                         this._rewind();
                         this.$playerElement.show();
-                        //console.log('show ' + this._data.canvas.id);
                     } else {
                         this.$playerElement.hide();
                         this.pause();
-                        //console.log('hide ' + this._data.canvas.id);
                     }
 
                     this.resize();
@@ -728,7 +760,9 @@ namespace IIIFComponents {
                     });
                 });
             } else {
-                this._render();
+                if (this.isVisible()) {
+                    this._render();
+                }
             }
 
             if (diff.includes('limitToRange')) {
@@ -815,6 +849,28 @@ namespace IIIFComponents {
 
         private _render(): void {
 
+            // Hide/show UI elements regardless of visibility.
+            if (this._data.limitToRange && this._data.range) {
+                this._$canvasTimelineContainer.hide();
+                this._$rangeTimelineContainer.show();
+            } else {
+                this._$canvasTimelineContainer.show();
+                this._$rangeTimelineContainer.hide();
+            }
+
+            if (!this._data.range) {
+                this._$durationHighlight.hide();
+            }
+
+            // Return early if the current CanvasInstance isn't visible
+            if (!this.isVisible()) {
+                return;
+            }
+            if (!this.isOnlyCanvasInstance && !this.isVirtual()) {
+                return;
+            }
+
+            // Render otherwise.
             if (this._data.range) {
 
                 const duration: Manifesto.Duration | undefined = this._data.range.getDuration();
@@ -838,8 +894,6 @@ namespace IIIFComponents {
                     }
 
                     const width: number = end - start;
-
-                    //console.log(width);
 
                     if (this.isVirtual() || this.isOnlyCanvasInstance) {
                         this._$durationHighlight.show();
@@ -880,16 +934,6 @@ namespace IIIFComponents {
 
                 }
 
-            } else {
-                this._$durationHighlight.hide();
-            }
-
-            if (this._data.limitToRange && this._data.range) {
-                this._$canvasTimelineContainer.hide();
-                this._$rangeTimelineContainer.show();
-            } else {
-                this._$canvasTimelineContainer.show();
-                this._$rangeTimelineContainer.hide();
             }
 
             this._updateCurrentTimeDisplay();
@@ -1119,21 +1163,6 @@ namespace IIIFComponents {
                 this._$canvasContainer.append($mediaElement);
             }
 
-            $mediaElement.on('loadstart', () => {
-                //console.log('loadstart');
-                //data.checkForStall();
-            });
-
-            $mediaElement.on('waiting', () => {
-                //console.log('waiting');
-                //data.checkForStall();
-            });
-
-            $mediaElement.on('seeking', () => {
-                //console.log('seeking');
-                //data.checkForStall();
-            });
-
             $mediaElement.on('loadedmetadata', () => {
                 this._readyMediaCount++;
 
@@ -1141,6 +1170,8 @@ namespace IIIFComponents {
 
                     if (this._data.autoPlay) {
                         this.play();
+                    } else {
+                        this.pause();
                     }
 
                     this._updateDurationDisplay();
@@ -1195,8 +1226,14 @@ namespace IIIFComponents {
 
         private waveformDeltaX = 0;
         private waveformPageX = 0;
+        private waveFormInit = false;
 
-        private _renderWaveform(): void {
+
+        private _renderWaveform(forceRender = false): void {
+            if (this.waveFormInit && !forceRender) {
+                return;
+            }
+            this.waveFormInit = true;
 
             if (!this.waveforms.length) return;
 
@@ -1238,7 +1275,10 @@ namespace IIIFComponents {
                 this._waveformCanvas.addEventListener('click', () => {
                     const width = this._waveformCanvas!.getBoundingClientRect().width || 0;
                     if (width) {
-                        this.setCurrentTime(this._getDuration() * (this.waveformDeltaX / width));
+                        const { start, duration } = this.getRangeTiming();
+                        this.setCurrentTime(
+                            start + (duration * (this.waveformDeltaX / width))
+                        );
                     }
                 });
 
@@ -1253,25 +1293,38 @@ namespace IIIFComponents {
             });
         }
 
+        private getRangeTiming(): { start: number, end: number, duration: number, percent: number } {
+            let durationObj: Manifesto.Duration | undefined;
+            let start = 0;
+            let end = this._compositeWaveform.duration;
+            let duration = end;
+
+            // This is very similar to
+            if (this._data.range) {
+                durationObj = this._data.range.getDuration();
+            }
+
+            if (this._data.limitToRange && durationObj) {
+                start = durationObj.start;
+                end = durationObj.end;
+                duration = end - start;
+            }
+
+            return {
+                start,
+                end,
+                duration: end - start,
+                percent: Math.min((this.getClockTime()-start) / duration, 1)
+            };
+        }
+
         private _drawWaveform(): void {
+            this._renderWaveform();
 
             //if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
-            if (!this._waveformCtx) return;
+            if (!this._waveformCtx || !this.isVisible()) return;
 
-            let duration: Manifesto.Duration | undefined;
-            let start: number = 0;
-            let end: number = this._compositeWaveform.duration;
-
-            if (this._data.range) {
-                duration = this._data.range.getDuration();
-            }
-
-            if (this._data.limitToRange && duration) {
-                start = duration.start;
-                end = duration.end;
-            }
-
-            const currentTimeAsPercentage = Math.min(this.getClockTime() / this._getDuration(), 1);
+            const { start, end, percent } = this.getRangeTiming();
             const startpx = start * this._compositeWaveform.pixelsPerSecond;
             const endpx = end * this._compositeWaveform.pixelsPerSecond;
             const canvasWidth: number = this._waveformCtx.canvas.width;
@@ -1289,7 +1342,7 @@ namespace IIIFComponents {
                 const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
                 const ypos = (canvasHeight - height) / 2;
                 const xpos = canvasWidth * AVComponentUtils.normalise(x, startpx, endpx);
-                const pastCurrentTime = xpos/canvasWidth < currentTimeAsPercentage;
+                const pastCurrentTime = xpos/canvasWidth < percent;
                 const hoverWidth = this.waveformDeltaX/canvasWidth;
                 let colour = <string>this._data.waveformColor;
                 // For colours.
@@ -1379,15 +1432,6 @@ namespace IIIFComponents {
                 this._$canvasDuration.text(AVComponentUtils.formatTime(this._getDuration()));
             }
         }
-
-        // public setVolume(value: number): void {
-        //     //console.log('set volume', (<any>this._data.canvas).id);
-        //     this._data.volume = value;
-        //     for (let i = 0; i < this._contentAnnotations.length; i++) {
-        //         const $mediaElement = this._contentAnnotations[i];
-        //         $($mediaElement.element).prop("volume", value);
-        //     }
-        // }
 
         private _renderSyncIndicator(mediaElementData: any) {
 
@@ -1771,19 +1815,6 @@ namespace IIIFComponents {
             }
         }
 
-        // private _showWorkingIndicator($targetElement: JQuery): void {
-        //     const workingIndicator: JQuery = $('<div class="working-indicator">Waiting...</div>');
-        //     if ($targetElement.find('.working-indicator').length == 0) {
-        //         $targetElement.append(workingIndicator);
-        //     }
-        //     //console.log('show working');
-        // }
-
-        // private _hideWorkingIndicator() {
-        //     $('.workingIndicator').remove();
-        //     //console.log('hide working');
-        // }
-
         public resize(): void {
             if (this.$playerElement) {
 
@@ -1816,6 +1847,7 @@ namespace IIIFComponents {
                 }
 
                 this._render();
+                this._drawWaveform();
             }
         }
 
@@ -2038,11 +2070,9 @@ namespace IIIFComponents {
             return false;
         }
 
-        public static isSafari() {
+        public static isSafari(): boolean {
             // https://stackoverflow.com/questions/7944460/detect-safari-browser?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-            var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            console.log('isSafari', isSafari);
-            return isSafari;
+            return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         }
 
         public static debounce(fn: any, debounceDuration: number): any {
@@ -2216,8 +2246,6 @@ namespace IIIFComponents {
 
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
-
-            console.log('av component from local');
 
             this._init();
             this._resize();
@@ -2565,20 +2593,15 @@ namespace IIIFComponents {
         }
 
         private _checkAllMediaReady(): void {
-            console.log('loading media');
             if (this._readyMedia === this.canvasInstances.length) {
-                console.log('all media ready');
                 clearInterval(this._checkAllMediaReadyInterval);
-                //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
                 this.fire(AVComponent.Events.MEDIA_READY);
                 this.resize();
             }
         }
 
         private _checkAllWaveformsReady(): void {
-            console.log('loading waveforms');
             if (this._readyWaveforms === this._getCanvasInstancesWithWaveforms().length) {
-                console.log('waveforms ready');
                 clearInterval(this._checkAllWaveformsReadyInterval);
                 this.fire(AVComponent.Events.WAVEFORMS_READY);
                 this.resize();
