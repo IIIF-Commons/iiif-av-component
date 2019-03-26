@@ -41,6 +41,8 @@ namespace IIIFComponents {
         waveformBarSpacing?: number; 
         waveformBarWidth?: number;
         waveformColor?: string;
+        enableFastForward?: boolean;
+        enableFastRewind?: boolean;
     }
 
     export interface IAVVolumeControlState {
@@ -309,9 +311,9 @@ namespace IIIFComponents {
             // @todo make the buttons for FF and FR configurable.
             this._$controlsContainer.append(
                 this._$prevButton,
-                this._$fastRewind,
+                this._data.enableFastRewind ? this._$fastRewind : null,
                 this._$playButton,
-                this._$fastForward,
+                this._data.enableFastForward ? this._$fastForward : null,
                 this._$nextButton,
                 this._$timeDisplay,
                 $volume
@@ -429,6 +431,7 @@ namespace IIIFComponents {
                 if (goToTime < end) {
                     return this.setCurrentTime(goToTime)
                 }
+                return this.setCurrentTime(end)
             });
 
             this._$fastRewind.on('touchstart click', e => {
@@ -437,6 +440,7 @@ namespace IIIFComponents {
                 if (goToTime >= start) {
                     return this.setCurrentTime(goToTime)
                 }
+                return this.setCurrentTime(start);
             });
 
             this._$canvasTimelineContainer.slider({
@@ -1052,11 +1056,11 @@ namespace IIIFComponents {
 
             switch (type) {
                 case 'video':
-                    $mediaElement = $('<video class="anno" />');
+                    $mediaElement = $('<video crossorigin="anonymous" class="anno" />');
                     break;
                 case 'sound':
                 case 'audio':
-                    $mediaElement = $('<audio class="anno" />');
+                    $mediaElement = $('<audio crossorigin="anonymous" class="anno" />');
                     break;
                 // case 'textualbody':
                 //     $mediaElement = $('<div class="anno">' + data.source + '</div>');
@@ -1069,6 +1073,23 @@ namespace IIIFComponents {
             }
 
             const media: HTMLMediaElement = $mediaElement[0] as HTMLMediaElement;
+            //
+            // var audioCtx = new AudioContext();
+            // var source = audioCtx.createMediaElementSource(media);
+            // var panNode = audioCtx.createStereoPanner();
+            // var val = -1;
+            // setInterval(() => {
+            //     val = val === -1 ? 1 : -1;
+            //     panNode.pan.setValueAtTime(val, audioCtx.currentTime);
+            //     if (val === 1) {
+            //         media.playbackRate = 2;
+            //     } else {
+            //         // media.playbackRate = 1;
+            //     }
+            // }, 1000);
+            // source.connect(panNode);
+            // panNode.connect(audioCtx.destination);
+
 
             if (data.format && data.format.toString() === 'application/dash+xml') {
                 // dash
@@ -2292,7 +2313,9 @@ namespace IIIFComponents {
                     play: "Play",
                     previous: "Previous",
                     unmute: "Unmute"
-                }
+                },
+                enableFastForward: true,
+                enableFastRewind: true,
             }
         }
 
