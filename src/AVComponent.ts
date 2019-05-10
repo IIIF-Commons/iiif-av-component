@@ -1311,6 +1311,8 @@ namespace IIIFComponents {
                     this.fire(AVComponent.Events.WAVEFORM_READY);
                 }
 
+            }).catch(() => {
+                console.warn('Could not load wave forms.');
             });
         }
 
