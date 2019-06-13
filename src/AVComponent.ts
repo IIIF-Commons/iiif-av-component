@@ -2201,10 +2201,14 @@ namespace IIIFComponents {
         public waveform: any;
     }
 
+    export interface IAVComponentOptions extends _Components.IBaseComponentOptions {
+        posterImageExpanded: boolean;
+    }
+
     export class AVComponent extends _Components.BaseComponent {
 
         private _data: IAVComponentData = this.data();
-        public options: _Components.IBaseComponentOptions;
+        public options: IAVComponentOptions;
         public canvasInstances: CanvasInstance[] = [];
         private _checkAllMediaReadyInterval: any;
         private _checkAllWaveformsReadyInterval: any;
@@ -2219,8 +2223,9 @@ namespace IIIFComponents {
 
         private _posterImageExpanded: boolean = false;
 
-        constructor(options: _Components.IBaseComponentOptions) {
+        constructor(options: IAVComponentOptions) {
             super(options);
+            this._posterImageExpanded = options.posterImageExpanded || false;
 
             console.log('av component from local');
 
@@ -2497,6 +2502,11 @@ namespace IIIFComponents {
                         <i class="av-icon  av-icon-expand expand" aria-hidden="true"></i><span>${this._data && this._data.content ? this._data.content.expand : ''}</span>
                     </button>
                 `);
+
+                if (this._posterImageExpanded) {
+                  this._$posterExpandButton.find('i').switchClass('expand', 'collapse');
+                }
+
                 this._$posterImage.append(this._$posterExpandButton);
 
                 this._$posterImage.on('touchstart click', (e) => {
