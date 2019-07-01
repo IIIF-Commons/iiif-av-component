@@ -1,6 +1,6 @@
 {
   "name": "@iiif/iiif-av-component",
-  "version": "0.0.92",
+  "version": "0.0.93",
   "description": "",
   "main": "./dist/AVComponent.js",
   "types": "./dist/AVComponent.d.ts",
@@ -35,6 +35,6 @@
     "@types/jquery": "2.0.34",
     "@types/jqueryui": "^1.11.36",
     "exjs": "BSick7/exjs#0.5.1",
-    "manifesto.js": "3.0.9"
+    "manifesto.js": "3.0.11"
   }
 }
