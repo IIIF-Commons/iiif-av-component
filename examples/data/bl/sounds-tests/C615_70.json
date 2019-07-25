@@ -1,5 +1,5 @@
 {
-	"@context":["http://www.w3.org/ns/anno.jsonld","http://iiif.io/api/presentation/3/context.json"],
+	"@context":["http://iiif.io/api/auth/1/context.json","http://www.w3.org/ns/anno.jsonld","http://iiif.io/api/presentation/3/context.json"],
 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/manifest.json",
 	"type":"Manifest",
 	"label":{"en":["C615/70 C615/71 Tamas Vasary piano"]},
@@ -30,7 +30,7 @@
 	 	},
 	 	{
 	 	 	"label":{"en":["Digitisation funded by"]},
-	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	"value":{"en":["National Lottery Heritage Fund"]}
 	 	},
 	 	{
 	 	 	"label":{"en":["Identifier"]},
@@ -42,15 +42,64 @@
 	 	},
 	 	{
 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA5898224>View the catalogue record</a>"]}
+	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	},
 	 	{
 	 	 	"label":{"en":["Contents"]},
 	 	 	"value":{"en":["Beethoven and Mozart recital"]}
 	 	}
+	],"requiredStatement": 
+	{
+	 	"label":{"en":["Usage"]},
+	 	"value":{"en":["<span><a>Please read the full information about this object</a><br>Rights unassigned - staff access only</span>"]}
+	},
+	
+	"provider":[
+	 	
+	 	{
+	 	 	"id":"https://www.bl.uk/about-us",
+	 	 	"type":"Agent",
+	 	 	"label":{"en":["The British Library"]},
+	 	 	"homepage": [
+	 	 	 	{
+	 	 	 	 	"id":"https://www.bl.uk/",
+	 	 	 	 	"type":"Text",
+	 	 	 	 	"format":"text/html",
+	 	 	 	 	"label":{"en":["The British Library"]}
+	 	 	 	}
+	 	 	],
+	 	 	"logo": [
+	 	 	 	{
+	 	 	 	 	"id":"https://www.bl.uk/images/bl_logo_100.gif",
+	 	 	 	 	"type":"Image",
+	 	 	 	 	"format":"image/gif"
+	 	 	 	}
+	 	 	]
+	 	}
 	],
-	"logo":[{"id":"https://www.bl.uk/images/bl_logo_100.gif","type":"Image"}],
-	"posterCanvas": {
+	"service": [
+	 	{
+	 	 	"id":"https://api.bl.uk/auth/iiif/login",
+	 	 	"type":"AuthCookieService1",
+	 	 	"profile":"http://iiif.io/api/auth/1/login",
+	 	 	"description":"Some portions of this recording may be unavailable due to rights restrictions.",
+	 	 	"header":"Please Log-In",
+	 	 	"label":"Login to The British Library",
+	 	 	"service": [
+	 	 	 	{
+	 	 	 	 	"id":"https://api.bl.uk/auth/iiif/token",
+	 	 	 	 	"type":"AuthTokenService1",
+	 	 	 	 	"profile":"http://iiif.io/api/auth/1/token"
+	 	 	 	}
+	 	 	]
+	 	},
+	 	{
+	 	 	"id":"http://access.bl.uk/item/share/ark:/81055/vdc_100055540263.0x000002",
+	 	 	"type":"Service",
+	 	 	"profile":"http://universalviewer.io/share-extensions-profile"
+	 	}
+	],
+	"accompanyingCanvas": {
 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/c/poster",
 	 	"type":"Canvas",
 	 	"label":{"en":["world"]},
@@ -58,11 +107,11 @@
 	 	"height":962,
 	 	"items": [
 	 	 	{
-	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/c/poster/p1",
+	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/c/a1",
 	 	 	 	"type":"AnnotationPage",
 	 	 	 	"items": [
 	 	 	 	 	{
-	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/c/poster/p1/a1",
+	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/c/a1/a1",
 	 	 	 	 	 	"type":"Annotation",
 	 	 	 	 	 	"motivation":"painting",
 	 	 	 	 	 	"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000002/c/poster",
@@ -78,25 +127,19 @@
 	 	 	}
 	 	]
 	},
-	"homepage": {
-		"id":"http://access.bl.uk/item/viewer/ark:/81055/vdc_100055540263.0x000002",
-		"type":"Text",
-		"label":{"en":["View at the British Library"]},
-		"format":"text/html"
-	},
+	"homepage": [
+	 	{
+	 	 	"id":"http://access.bl.uk/item/viewer/ark:/81055/vdc_100055540263.0x000002",
+	 	 	"type":"Text",
+	 	 	"format":"text/html",
+	 	 	"label":{"en":["View at the British Library"]}
+	 	}
+	],
 	"behavior":["auto-advance"],
 	"items": [{
 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004",
 	 	 	"type":"Canvas",
 	 	 	"label":{"en":["Tape 1 Side 1"]},
-			"rendering": [
-				{
-					"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000004/ark:/81055",
-					"type":"Audio",
-					"label":{"en":["Download this tape"]},
-					"format":"audio/mp4"
-				}
-			],
 	 	 	"duration":3166.84,
 	 	 	"items": [
 	 	 	 	{
@@ -112,26 +155,37 @@
 	 	 	 	 	 	 	 	"type":"Choice",
 	 	 	 	 	 	 	 	"items":[
 	 	 	 	 	 	 	 	 	{
-											"id":"https://resources.digirati.com/bl/C615_70/vdc_100055540263.0x000024.mp4",
-											"type":"Audio",
-											"format":"audio/mp4"
-}
+	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100055540263.0x000024/manifest.mpd",
+	 	 	 	 	 	 	 	 	 	"format":"application/dash+xml",
+	 	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	 	"service": [
+	 	 	 	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/dash/ark:/81055/vdc_100055540263.0x000024/probe.json",
+	 	 	 	 	 	 	 	 	 	 	 	"type":"AuthProbeService1",
+	 	 	 	 	 	 	 	 	 	 	 	"profile":"http://iiif.io/api/auth/1/probe"
+	 	 	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	 	]
+	 	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100055540263.0x000024/index.m3u8",
+	 	 	 	 	 	 	 	 	 	"format":"vnd.apple.mpegURL",
+	 	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	 	"service": [
+	 	 	 	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/hls/ark:/81055/vdc_100055540263.0x000024/probe.json",
+	 	 	 	 	 	 	 	 	 	 	 	"type":"AuthProbeService1",
+	 	 	 	 	 	 	 	 	 	 	 	"profile":"http://iiif.io/api/auth/1/probe"
+	 	 	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	 	]
+	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	]
 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	"seeAlso": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://iiif-waveforms.s3.eu-west-2.amazonaws.com/vdc_100055540263.0x000023.dat",
+	 	 	 	 	 	 	 	 	"id":"https://iiif-waveforms.s3.amazonaws.com/vdc_100055540263.0x000023.dat",
 	 	 	 	 	 	 	 	 	"type":"Dataset",
 	 	 	 	 	 	 	 	 	"format":"application/octet-stream",
 	 	 	 	 	 	 	 	 	"profile":"http://waveform.prototyping.bbc.co.uk"
-	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	],
-							"rendering": [
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
-	 	 	 	 	 	 	 	 	"type":"Audio",
-	 	 	 	 	 	 	 	 	"label":{"en":["Download this side"]},
-	 	 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	]
 	 	 	 	 	 	}
@@ -142,14 +196,6 @@
 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000006",
 	 	 	"type":"Canvas",
 	 	 	"label":{"en":["Tape 2 Side 1"]},
-			"rendering": [
-				{
-					"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055",
-					"type":"Audio",
-					"label":{"en":["Download this tape"]},
-					"format":"audio/mp4"
-				}
-			],
 	 	 	"duration":3750.28,
 	 	 	"items": [
 	 	 	 	{
@@ -165,26 +211,37 @@
 	 	 	 	 	 	 	 	"type":"Choice",
 	 	 	 	 	 	 	 	"items":[
 	 	 	 	 	 	 	 	 	{
-											"id":"https://resources.digirati.com/bl/C615_70/vdc_100055540263.0x000026.mp4",
-											"type":"Audio",
-											"format":"audio/mp4"
-}
+	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100055540263.0x000026/manifest.mpd",
+	 	 	 	 	 	 	 	 	 	"format":"application/dash+xml",
+	 	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	 	"service": [
+	 	 	 	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/dash/ark:/81055/vdc_100055540263.0x000026/probe.json",
+	 	 	 	 	 	 	 	 	 	 	 	"type":"AuthProbeService1",
+	 	 	 	 	 	 	 	 	 	 	 	"profile":"http://iiif.io/api/auth/1/probe"
+	 	 	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	 	]
+	 	 	 	 	 	 	 	 	},
+	 	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/iiif/ark:/81055/vdc_100055540263.0x000026/index.m3u8",
+	 	 	 	 	 	 	 	 	 	"format":"vnd.apple.mpegURL",
+	 	 	 	 	 	 	 	 	 	"type":"Audio",
+	 	 	 	 	 	 	 	 	 	"service": [
+	 	 	 	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/media/hls/ark:/81055/vdc_100055540263.0x000026/probe.json",
+	 	 	 	 	 	 	 	 	 	 	 	"type":"AuthProbeService1",
+	 	 	 	 	 	 	 	 	 	 	 	"profile":"http://iiif.io/api/auth/1/probe"
+	 	 	 	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	 	 	 	]
+	 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	 	]
 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	"seeAlso": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://iiif-waveforms.s3.eu-west-2.amazonaws.com/vdc_100055540263.0x000025.dat",
+	 	 	 	 	 	 	 	 	"id":"https://iiif-waveforms.s3.amazonaws.com/vdc_100055540263.0x000025.dat",
 	 	 	 	 	 	 	 	 	"type":"Dataset",
 	 	 	 	 	 	 	 	 	"format":"application/octet-stream",
 	 	 	 	 	 	 	 	 	"profile":"http://waveform.prototyping.bbc.co.uk"
-	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	],
-							"rendering": [
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
-	 	 	 	 	 	 	 	 	"type":"Audio",
-	 	 	 	 	 	 	 	 	"label":{"en":["Download this side"]},
-	 	 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	]
 	 	 	 	 	 	}
@@ -226,7 +283,7 @@
 	 	 	 	},
 	 	 	 	{
 	 	 	 	 	"label":{"en":["Digitisation funded by"]},
-	 	 	 	 	"value":{"en":["<span>Heritage Lottery Fund<br/><br/><img src=\"https://www.hlf.org.uk/sites/default/files/styles/col-9/public/media/logos/english_compact_cmyk.jpg\"/></span>"]}
+	 	 	 	 	"value":{"en":["National Lottery Heritage Fund"]}
 	 	 	 	},
 	 	 	 	{
 	 	 	 	 	"label":{"en":["Identifier"]},
@@ -238,7 +295,7 @@
 	 	 	 	},
 	 	 	 	{
 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA5898224>View the catalogue record</a>"]}
+	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	},
 	 	 	 	{
 	 	 	 	 	"label":{"en":["Contents"]},
@@ -247,7 +304,7 @@
 	 	 	],
 	 	 	"rendering": [
 	 	 	 	{
-	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000002/top",
 	 	 	 	 	"type":"Audio",
 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	"format":"audio/mp4"
@@ -261,7 +318,7 @@
 	 	 	 	 	
 	 	 	 	 	"items":[
 	 	 	 	 	 	{
-	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,15.16",
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=0,31.28",
 	 	 	 	 	 	 	"type":"Canvas"
 	 	 	 	 	 	}
 	 	 	 	 	]
@@ -269,15 +326,15 @@
 	 	 	 	{
 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000007",
 	 	 	 	 	"type":"Range",
-	 	 	 	 	"label":{"en":["[No Title]"]},
+	 	 	 	 	"label":{"en":["[Tamás Vásáry piano recital]"]},
 	 	 	 	 	"metadata": [
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Full title"]},
-	 	 	 	 	 	 	"value":{"en":["[No Title]"]}
+	 	 	 	 	 	 	"value":{"en":["[Tamás Vásáry piano recital]"]}
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -305,34 +362,22 @@
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA8055177>View the catalogue record</a>"]}
+	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	"value":{"en":["Live performance Concert recital. Items performed catalogued separately"]}
+	 	 	 	 	 	 	"value":{"en":["Concert recital. Items performed catalogued separately"]}
 	 	 	 	 	 	}
 	 	 	 	 	],
 	 	 	 	 	"rendering": [
 	 	 	 	 	 	{
-	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000007",
 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	"format":"audio/mp4"
 	 	 	 	 	 	}
 	 	 	 	 	],
 	 	 	 	 	"items":[
-	 	 	 	 	 	{
-	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000007/nn1",
-	 	 	 	 	 	 	"type":"Range",
-	 	 	 	 	 	 	"behavior":["no-nav"],
-	 	 	 	 	 	 	
-	 	 	 	 	 	 	"items":[
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=15.16,31.28",
-	 	 	 	 	 	 	 	 	"type":"Canvas"
-	 	 	 	 	 	 	 	}
-	 	 	 	 	 	 	]
-	 	 	 	 	 	},
 	 	 	 	 	 	{
 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000008",
 	 	 	 	 	 	 	"type":"Range",
@@ -344,7 +389,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -372,16 +417,12 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264038>View the catalogue record</a>"]}
-	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000008",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
@@ -405,7 +446,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -433,16 +474,12 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264039>View the catalogue record</a>"]}
-	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000009",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
@@ -466,7 +503,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -494,16 +531,12 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264041>View the catalogue record</a>"]}
-	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000a",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
@@ -539,7 +572,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -567,16 +600,12 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6261427>View the catalogue record</a>"]}
-	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000b",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
@@ -600,7 +629,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -628,16 +657,12 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6261428>View the catalogue record</a>"]}
-	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000c",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
@@ -661,7 +686,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -689,16 +714,12 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264043>View the catalogue record</a>"]}
-	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000d",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
@@ -722,7 +743,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -750,16 +771,12 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264044>View the catalogue record</a>"]}
-	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000e",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
@@ -783,7 +800,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -811,16 +828,16 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264045>View the catalogue record</a>"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance Scherzo only"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Scherzo only"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x00000f",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
@@ -844,7 +861,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -872,16 +889,12 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264048>View the catalogue record</a>"]}
-	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000010",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
@@ -917,7 +930,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -945,16 +958,12 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264097>View the catalogue record</a>"]}
-	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000011",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
@@ -990,7 +999,7 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Creator"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás, 1933- (piano)"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["Vásáry, Tamás,"]}
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Date"]},
@@ -1018,16 +1027,12 @@
 	 	 	 	 	 	 	 	},
 	 	 	 	 	 	 	 	{
 	 	 	 	 	 	 	 	 	"label":{"en":["Link to catalogue"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA6264098>View the catalogue record</a>"]}
-	 	 	 	 	 	 	 	},
-	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"label":{"en":["Description"]},
-	 	 	 	 	 	 	 	 	"value":{"en":["Live performance"]}
+	 	 	 	 	 	 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA>View the catalogue record</a>"]}
 	 	 	 	 	 	 	 	}
 	 	 	 	 	 	 	],
 	 	 	 	 	 	 	"rendering": [
 	 	 	 	 	 	 	 	{
-	 	 	 	 	 	 	 	 	"id":"https://ia801602.us.archive.org/11/items/Rick_Astley_Never_Gonna_Give_You_Up/Rick_Astley_Never_Gonna_Give_You_Up.mp4",
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/item/download/ark:/81055/vdc_100055540263.0x000002/ark:/81055/vdc_100055540263.0x000012",
 	 	 	 	 	 	 	 	 	"type":"Audio",
 	 	 	 	 	 	 	 	 	"label":{"en":["Download this recording"]},
 	 	 	 	 	 	 	 	 	"format":"audio/mp4"
