@@ -550,6 +550,18 @@
 	 	 	 	 	 	 	]
 	 	 	 	 	 	},
 	 	 	 	 	 	{
+	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000007/nn3",
+	 	 	 	 	 	 	"type":"Range",
+	 	 	 	 	 	 	"behavior":["no-nav"],
+	 	 	 	 	 	 	
+	 	 	 	 	 	 	"items":[
+	 	 	 	 	 	 	 	{
+	 	 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000004#t=3159.76,3166.84",
+	 	 	 	 	 	 	 	 	"type":"Canvas"
+	 	 	 	 	 	 	 	}
+	 	 	 	 	 	 	]
+	 	 	 	 	 	},
+	 	 	 	 	 	{
 	 	 	 	 	 	 	"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000007/nn4",
 	 	 	 	 	 	 	"type":"Range",
 	 	 	 	 	 	 	"behavior":["no-nav"],
