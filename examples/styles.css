@@ -162,4 +162,12 @@ overflow: hidden;
 .iiif-tree-component ul li a.selected {
 color: green !important;
 }
+
+.errormessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
   
