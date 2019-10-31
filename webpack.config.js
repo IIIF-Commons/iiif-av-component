@@ -12,7 +12,7 @@ const config = {
         'node-fetch': 'node-fetch',
         'fetch-cookie/node-fetch': 'fetch-cookie/node-fetch',
         'form-data': 'form-data',
-        'url': 'url',
+        'url': 'url'
     },
     output: {
         path: resolvePath('dist-umd'),

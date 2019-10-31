@@ -1,13 +1,13 @@
 {
   "name": "@iiif/iiif-av-component",
-  "version": "1.0.0-pre.2",
+  "version": "1.0.0",
   "description": "",
   "main": "./dist-commonjs/index.js",
   "module": "./dist-esmodule/index.js",
   "browser": "./dist-umd/IIIFAVComponent.js",
   "types": "./types/index.d.ts",
   "scripts": {
-    "build:css": "cross-env mkdir dist-css && npx lessc ./src/css/styles.less > ./dist-css/styles.css",
+    "build:css": "cross-env mkdir dist-css && npx lessc ./src/css/styles.less > ./dist-css/styles.css && cross-env cp ./dist-css/styles.css ./dist-css/styles.less",
     "build:commonjs": "tsc",
     "build:docs": "rimraf -rf docs && typedoc --out docs --name IIIFAVComponent --theme default --ignoreCompilerErrors --experimentalDecorators --emitDecoratorMetadata --target ES6 --moduleResolution node --preserveConstEnums --stripInternal --suppressExcessPropertyErrors --suppressImplicitAnyIndexErrors --module commonjs src/ && touch docs/.nojekyll",
     "build:esmodule": "tsc -m es6 --outDir dist-esmodule",
@@ -43,10 +43,10 @@
     "webpack": "^4.28.3"
   },
   "dependencies": {
-    "@iiif/base-component": "2.0.0-pre.4",
-    "@iiif/manifold": "2.0.0-pre.21",
+    "@iiif/base-component": "2.0.1",
+    "@iiif/manifold": "2.0.0",
     "@types/jquery": "2.0.34",
     "@types/jqueryui": "1.11.36",
-    "manifesto.js": "4.0.0-pre.19"
+    "manifesto.js": "4.0.0"
   }
 }

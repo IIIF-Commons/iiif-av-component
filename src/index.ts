@@ -66,10 +66,10 @@ export class AVComponent extends BaseComponent {
     this._resize();
   }
 
-  protected async _init(): Promise<boolean> {
-    await super._init();
+  protected _init(): boolean {
+    super._init();
 
-    this._$element = $(this._el);
+    this._$element = $(this.el);
 
     return true;
   }

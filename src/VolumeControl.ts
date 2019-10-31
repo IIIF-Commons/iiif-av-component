@@ -22,14 +22,10 @@ export class AVVolumeControl extends BaseComponent {
     this._resize();
   }
 
-  protected async _init(): Promise<boolean> {
-    const success: boolean = await super._init();
+  protected _init(): boolean {
+    super._init();
 
-    if (!success) {
-      console.error("Component failed to initialise");
-    }
-
-    this._$element = $(this._el);
+    this._$element = $(this.el);
 
     this._$volumeMute = $(`
                             <button class="btn volume-mute" title="${this.options.data.content.mute}">
@@ -82,7 +78,7 @@ export class AVVolumeControl extends BaseComponent {
       stop: function(evt: any, ui: any) {}
     });
 
-    return success;
+    return true;
   }
 
   public set(data: IAVVolumeControlState): void {
