@@ -44,9 +44,9 @@
   },
   "dependencies": {
     "@iiif/base-component": "2.0.1",
-    "@iiif/manifold": "2.0.0",
+    "@iiif/manifold": "2.0.2",
     "@types/jquery": "2.0.34",
     "@types/jqueryui": "1.11.36",
-    "manifesto.js": "4.0.0"
+    "manifesto.js": "4.0.1"
   }
 }
