@@ -1,25 +1,23 @@
 {
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
         "declaration": true,
-        "declarationDir": "./dist/",
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": false,
-        "module": "es6",
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "lib": [ "es2015", "dom" ],
+        "module": "commonjs",
         "moduleResolution": "node",
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": false,
+        "outDir": "dist-commonjs",
+        "skipLibCheck": true,
+        "sourceMap": true,
         "strictNullChecks": true,
-        "lib": ["es6", "dom", "es2017"],
-        "types": [
-            "manifesto.js",
-            "@iiif/manifold",
-            "@iiif/base-component",
-            "exjs",
-            "jquery",
-            "jqueryui"
-        ],
-        "outDir": "./dist/"
+        "suppressImplicitAnyIndexErrors": true,
+        "target": "es5"
     },
     "include": [
         "src/**/*"
