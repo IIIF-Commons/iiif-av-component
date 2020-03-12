@@ -463,7 +463,7 @@ export class CanvasInstance extends BaseComponent {
           this._canvasHeight
         );
 
-      const temporalOffsets: RegExpExecArray | null = /t=([^&]+)/g.exec(
+      const temporalOffsets: RegExpExecArray | null = /[\?|&]t=([^&]+)/g.exec(
         body.id
       );
 
