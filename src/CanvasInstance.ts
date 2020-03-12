@@ -63,6 +63,8 @@ export class CanvasInstance extends BaseComponent {
   private _waveformCtx: CanvasRenderingContext2D | null;
   public ranges: Range[] = [];
   public waveforms: string[] = [];
+  private _$canvasLoadingProgress: JQuery;
+  private _$fullscreenButton: JQuery;
 
   public $playerElement: JQuery;
   public isOnlyCanvasInstance: boolean = false;
@@ -105,7 +107,7 @@ export class CanvasInstance extends BaseComponent {
                                 <i class="av-icon av-icon-previous" aria-hidden="true"></i>${this._data.content.previous}
                             </button>`);
     this._$playButton = $(`
-                            <button class="btn" title="${this._data.content.play}">
+                            <button class="btn button-play" title="${this._data.content.play}">
                                 <i class="av-icon av-icon-play play" aria-hidden="true"></i>${this._data.content.play}
                             </button>`);
     this._$nextButton = $(`
@@ -117,6 +119,11 @@ export class CanvasInstance extends BaseComponent {
     );
     this._$canvasTime = this._$timeDisplay.find(".canvas-time");
     this._$canvasDuration = this._$timeDisplay.find(".canvas-duration");
+    this._$canvasLoadingProgress = $('<div class="loading-progress"></div>');
+    this._$fullscreenButton = $(`
+                                <button class="btn button-fullscreen" title="${this._data.content.fullscreen}">
+                                    <i class="av-icon av-icon-fullscreen" aria-hidden="true"></i>${this._data.content.fullscreen}
+                                </button>`);
 
     if (this.isVirtual()) {
       this.$playerElement.addClass("virtual");
@@ -141,12 +148,14 @@ export class CanvasInstance extends BaseComponent {
       this._$playButton,
       this._$nextButton,
       this._$timeDisplay,
+      this._$fullscreenButton,
       $volume
     );
     this._$canvasTimelineContainer.append(
       this._$canvasHoverPreview,
       this._$canvasHoverHighlight,
-      this._$durationHighlight
+      this._$durationHighlight,
+      this._$canvasLoadingProgress
     );
     this._$rangeTimelineContainer.append(
       this._$rangeHoverPreview,
@@ -313,6 +322,38 @@ export class CanvasInstance extends BaseComponent {
         );
       }
     });
+
+    this._$fullscreenButton[0].addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const fsDoc = <FsDocument> document;
+      
+      if (!fsDoc.fullscreenElement && !fsDoc.mozFullScreenElement && !fsDoc.webkitFullscreenElement && !fsDoc.msFullscreenElement) {
+          const fsDocElem = <FsDocumentElement> this.$playerElement.get(0);
+
+          this.fire(Events.FULLSCREEN, "on");
+
+          if (fsDocElem.requestFullscreen)
+              fsDocElem.requestFullscreen();
+          else if (fsDocElem.msRequestFullscreen)
+              fsDocElem.msRequestFullscreen();
+          else if (fsDocElem.mozRequestFullScreen)
+              fsDocElem.mozRequestFullScreen();
+          else if (fsDocElem.webkitRequestFullscreen)
+              fsDocElem.webkitRequestFullscreen();
+      } else {
+          this.fire(Events.FULLSCREEN, "off");
+
+          if (fsDoc.exitFullscreen) 
+              fsDoc.exitFullscreen();
+          else if (fsDoc.msExitFullscreen)
+              fsDoc.msExitFullscreen();
+          else if (fsDoc.mozCancelFullScreen)
+              fsDoc.mozCancelFullScreen();
+          else if (fsDoc.webkitExitFullscreen)
+              fsDoc.webkitExitFullscreen();
+      }
+    }, false);
 
     // create annotations
 
@@ -1040,6 +1081,17 @@ export class CanvasInstance extends BaseComponent {
       }
     });
 
+    $mediaElement.on('progress', () => {
+      if (media.buffered.length > 0) {
+          var duration =  media.duration;
+          var bufferedEnd = media.buffered.end(media.buffered.length - 1);
+
+          if (duration > 0) {
+            this._$optionsContainer.find(".loading-progress").width(((bufferedEnd / duration)*100) + "%");
+          }
+      }
+  });
+
     $mediaElement.attr("preload", "auto");
 
     (<any>$mediaElement.get(0)).load();
@@ -1684,4 +1736,20 @@ export class CanvasInstanceEvents {
   static PAUSECANVAS: string = "pause";
   static PLAYCANVAS: string = "play";
   static PREVIOUS_RANGE: string = "previousrange";
+}
+
+interface FsDocument extends HTMLDocument {
+  mozFullScreenElement?: Element;
+  msFullscreenElement?: Element;
+  webkitFullscreenElement?: Element;
+  msExitFullscreen?: () => void;
+  mozCancelFullScreen?: () => void;
+  webkitExitFullscreen?: () => void;
+}
+
+
+interface FsDocumentElement extends HTMLElement {
+  msRequestFullscreen?: () => void;
+  mozRequestFullScreen?: () => void;
+  webkitRequestFullscreen?: () => void;
 }

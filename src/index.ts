@@ -18,6 +18,7 @@ export interface IAVComponentContent {
   play: string;
   previous: string;
   unmute: string;
+  fullscreen: string;
 }
 
 export interface IAVComponentData {
@@ -94,7 +95,8 @@ export class AVComponent extends BaseComponent {
         pause: "Pause",
         play: "Play",
         previous: "Previous",
-        unmute: "Unmute"
+        unmute: "Unmute",
+        fullscreen: "Fullscreen"
       }
     };
   }
@@ -481,6 +483,23 @@ export class AVComponent extends BaseComponent {
       },
       false
     );
+
+    canvasInstance.on(
+      Events.MEDIA_ERROR, 
+      (error : MediaError) => {
+        clearInterval(this._checkAllMediaReadyInterval);
+        this.fire(Events.MEDIA_ERROR, error);
+      }, 
+      false
+    );
+
+    canvasInstance.on(
+      Events.FULLSCREEN, 
+      (state: string) => {
+        this.fire(Events.FULLSCREEN, state);
+      },
+      false
+    );
   }
 
   private _prevRange(): void {
@@ -717,8 +736,10 @@ export class AVComponent extends BaseComponent {
 
 export class Events {
   static MEDIA_READY: string = "mediaready";
+  static MEDIA_ERROR: string = 'mediaerror';
   static LOG: string = "log";
   static RANGE_CHANGED: string = "rangechanged";
   static WAVEFORM_READY: string = "waveformready";
   static WAVEFORMS_READY: string = "waveformsready";
+  static FULLSCREEN: string = 'fullscreen';
 }

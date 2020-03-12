@@ -2,6 +2,7 @@ interface Window {
     MediaSource: any;
     WebKitMediaSource: any;
     jQuery: any;
+    _Components: any;
 }
 
 declare global {
