@@ -1319,7 +1319,7 @@ namespace IIIFComponents {
         private getRangeTiming(): { start: number, end: number, duration: number, percent: number } {
             let durationObj: Manifesto.Duration | undefined;
             let start = 0;
-            let end = this._compositeWaveform.duration;
+            let end = this._compositeWaveform ? this._compositeWaveform.duration : -1;
             let duration = end;
 
             // This is very similar to
@@ -1331,6 +1331,10 @@ namespace IIIFComponents {
                 start = durationObj.start;
                 end = durationObj.end;
                 duration = end - start;
+            }
+
+            if (end === -1) {
+                console.log('Duration not found...');
             }
 
             return {
