@@ -21,7 +21,7 @@ namespace IIIFComponents {
         fastForward: string;
         fastRewind: string;
     }
-    
+
     export interface IAVComponentData {
         [key: string]: any;
         adaptiveAuthEnabled?: boolean;
@@ -38,7 +38,7 @@ namespace IIIFComponents {
         posterImageRatio?: number;
         rangeId?: string;
         virtualCanvasEnabled?: boolean;
-        waveformBarSpacing?: number; 
+        waveformBarSpacing?: number;
         waveformBarWidth?: number;
         waveformColor?: string;
         enableFastForward?: boolean;
@@ -55,7 +55,7 @@ namespace IIIFComponents {
     }
 
     export class AVVolumeControl extends _Components.BaseComponent {
-        
+
         private _$volumeSlider: JQuery;
         private _$volumeMute: JQuery;
 
@@ -117,20 +117,20 @@ namespace IIIFComponents {
                 max: 1,
                 animate: false,
                 create: function (evt: any, ui: any) {
- 
+
                 },
                 slide: function (evt: any, ui: any) {
 
                     // start reducer
                     that._data.volume = ui.value;
-    
+
                     if (that._data.volume === 0) {
                         that._lastVolume = 0;
                     }
                     // end reducer
-    
+
                     that.fire(VolumeEvents.VOLUME_CHANGED, that._data.volume);
-                    
+
                 },
                 stop: function (evt: any, ui: any) {
 
@@ -153,17 +153,17 @@ namespace IIIFComponents {
                 this._$volumeSlider.slider({
                     value: this._data.volume
                 });
-    
+
                 if (this._data.volume === 0) {
                     const label: string = this.options.data.content.unmute;
                     this._$volumeMute.prop('title', label);
-                    this._$volumeMute.find('i').switchClass('on', 'off');                
+                    this._$volumeMute.find('i').switchClass('on', 'off');
                 } else {
                     const label: string = this.options.data.content.mute;
                     this._$volumeMute.prop('title', label);
                     this._$volumeMute.find('i').switchClass('off', 'on');
                 }
-            }            
+            }
         }
 
         protected _resize(): void {
@@ -283,11 +283,11 @@ namespace IIIFComponents {
                                 </button>`);
             this._$fastForward = $(`
                                 <button class="btn" title="${this._data.content.next}">
-                                    <i class="av-icon av-icon-fast-forward" aria-hidden="true"></i>${this._data.content.fastForward}
+                                    <i class="av-icon av-icon-fast-forward" aria-hidden="true"></i>${this._data.content.fastForward || ''}
                                 </button>`);
             this._$fastRewind = $(`
                                 <button class="btn" title="${this._data.content.next}">
-                                    <i class="av-icon av-icon-fast-rewind" aria-hidden="true"></i>${this._data.content.fastRewind}
+                                    <i class="av-icon av-icon-fast-rewind" aria-hidden="true"></i>${this._data.content.fastRewind || ''}
                                 </button>`);
 
             this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
@@ -426,6 +426,7 @@ namespace IIIFComponents {
             });
 
             this._$fastForward.on('touchstart click', e => {
+                console.log('Fast forward');
                 const { end } = this.getRangeTiming();
                 const goToTime = this.getClockTime() + 20;
                 if (goToTime < end) {
@@ -527,7 +528,7 @@ namespace IIIFComponents {
                 //     const tmpItem = item;
                 //     item.body = tmpItem.body[0].items[0];
                 //     mediaSource = item.body.id.split('#')[0];
-                // } else 
+                // } else
 
                 if (type && type.toString() === 'textualbody') {
                     //mediaSource = (<any>body).value;
@@ -1008,7 +1009,7 @@ namespace IIIFComponents {
                     this._rewind();
                 }
             } else {
-                // not limited to range. 
+                // not limited to range.
                 // if there is a currentDuration, single click goes to previous range, double click clears current duration and rewinds.
                 // if there is no currentDuration, single and double click rewinds.
                 if (this._data.range) {
@@ -1118,7 +1119,7 @@ namespace IIIFComponents {
                     }
 
                     if (this._data.adaptiveAuthEnabled) {
-                        
+
                     }
 
                     hls.loadSource(data.source);
@@ -1961,7 +1962,7 @@ namespace IIIFComponents {
             });
             return changed;
         }
-        
+
         public static diff(a: any, b: any) {
             return Array.from(new Set(AVComponentUtils._compare(a, b).concat(AVComponentUtils._compare(b, a))));
         }
@@ -1978,7 +1979,7 @@ namespace IIIFComponents {
         }
 
         public static getFirstTargetedCanvasId(range: Manifesto.IRange): string | undefined {
-            
+
             let canvasId: string | undefined;
 
             if (range.canvases && range.canvases.length) {
@@ -2005,7 +2006,7 @@ namespace IIIFComponents {
         }
 
         public static retargetTemporalComponent(canvases: Manifesto.ICanvas[], target: string): string | undefined {
-            
+
             let t: number[] | null = Manifesto.Utils.getTemporalComponent(target);
 
             if (t) {
@@ -2064,13 +2065,13 @@ namespace IIIFComponents {
 
             // IE 10
             // ua = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
-            
+
             // IE 11
             // ua = 'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko';
-            
+
             // Edge 12 (Spartan)
             // ua = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Edge/12.0';
-            
+
             // Edge 13
             // ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586';
 
@@ -2147,11 +2148,11 @@ namespace IIIFComponents {
         public static normalise(num: number, min: number, max: number): number {
             return (num - min) / (max - min);
         }
-    
+
         public static isHLSFormat(format: Manifesto.MediaType) {
             return this.hlsMimeTypes.includes(format.toString());
         }
-    
+
         public static isMpegDashFormat(format: Manifesto.MediaType) {
             return format.toString() === 'application/dash+xml';
         }
@@ -2169,7 +2170,7 @@ namespace IIIFComponents {
     }
 
     export class VirtualCanvas {
-        
+
         public canvases: Manifesto.ICanvas[] = [];
         public id: string;
 
@@ -2201,14 +2202,14 @@ namespace IIIFComponents {
                             item.__jsonld.target += '#t=0,' + canvas.getDuration();
                         }
                     }
-                    
+
                 });
 
                 items.forEach((item: Manifesto.IAnnotation) => {
                     const target: string | null = item.getTarget();
 
                     if (target) {
-                        item.__jsonld.target = AVComponentUtils.retargetTemporalComponent(this.canvases, target);                        
+                        item.__jsonld.target = AVComponentUtils.retargetTemporalComponent(this.canvases, target);
                     }
                 });
 
@@ -2228,7 +2229,7 @@ namespace IIIFComponents {
                     duration += d;
                 }
             });
-            
+
             return duration;
         }
 
@@ -2345,7 +2346,7 @@ namespace IIIFComponents {
             if (diff.includes('limitToRange') && this._data.canvasId) {
 
                 this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({ 
+                    canvasInstance.set({
                         limitToRange: this._data.limitToRange
                     });
                 });
@@ -2354,7 +2355,7 @@ namespace IIIFComponents {
             if (diff.includes('constrainNavigationToRange') && this._data.canvasId) {
 
                 this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({ 
+                    canvasInstance.set({
                         constrainNavigationToRange: this._data.constrainNavigationToRange
                     });
                 });
@@ -2363,7 +2364,7 @@ namespace IIIFComponents {
             if (diff.includes('autoSelectRange') && this._data.canvasId) {
 
                 this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({ 
+                    canvasInstance.set({
                         autoSelectRange: this._data.autoSelectRange
                     });
                 });
@@ -2374,31 +2375,31 @@ namespace IIIFComponents {
                 const nextCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
 
                 if (nextCanvasInstance) {
-                    
+
                     this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
-                        // hide canvases that don't have the same id        
+                        // hide canvases that don't have the same id
                         if (canvasInstance.getCanvasId() !== nextCanvasInstance.getCanvasId()) {
-                            canvasInstance.set({ 
+                            canvasInstance.set({
                                 visible: false
                             });
                         } else {
 
                             if (diff.includes('range')) {
-                                canvasInstance.set({ 
+                                canvasInstance.set({
                                     visible: true,
                                     range: this._data.range ? jQuery.extend(true, {}, this._data.range) : undefined
                                 });
                             } else {
-                                canvasInstance.set({ 
+                                canvasInstance.set({
                                     visible: true
                                 });
                             }
-                            
+
                         }
                     });
 
                 }
-                
+
             }
 
             if (diff.includes('virtualCanvasEnabled')) {
@@ -2411,7 +2412,7 @@ namespace IIIFComponents {
                 // but when toggling off, you must call showCanvas to show the next canvas
                 if (this._data.virtualCanvasEnabled) {
 
-                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {   
+                    this.canvasInstances.forEach((canvasInstance: CanvasInstance) => {
                         if (canvasInstance.isVirtual()) {
                             this.set({
                                 canvasId: canvasInstance.getCanvasId(),
@@ -2420,10 +2421,10 @@ namespace IIIFComponents {
                         }
                     });
 
-                }            
+                }
 
             }
-            
+
             if (diff.includes('range') && this._data.range) {
 
                 let range: Manifesto.IRange | null = this._data.helper.getRangeById(this._data.range.id);
@@ -2438,10 +2439,10 @@ namespace IIIFComponents {
 
                         // get canvas by normalised id (without temporal part)
                         const canvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(canvasId);
-                        
+
                         if (canvasInstance) {
-                            
-                            if (canvasInstance.isVirtual() && this._data.virtualCanvasEnabled) {                                
+
+                            if (canvasInstance.isVirtual() && this._data.virtualCanvasEnabled) {
                                 if (canvasInstance.includesVirtualSubCanvas(canvasId)) {
                                     canvasId = canvasInstance.getCanvasId();
 
@@ -2457,8 +2458,8 @@ namespace IIIFComponents {
                                 }
                             }
 
-                            // if not using the correct canvasinstance, switch to it                    
-                            if (this._data.canvasId && 
+                            // if not using the correct canvasinstance, switch to it
+                            if (this._data.canvasId &&
                                 ((this._data.canvasId.includes('://')) ? Manifesto.Utils.normaliseUrl(this._data.canvasId) : this._data.canvasId) !== canvasId) {
 
                                 this.set({
@@ -2471,21 +2472,21 @@ namespace IIIFComponents {
                                 canvasInstance.set({
                                     range: jQuery.extend(true, {}, range)
                                 });
-    
+
                             }
-                            
+
                         }
                     }
                 }
-            } 
-            
+            }
+
             this._render();
             this._resize();
         }
 
         private _render(): void {
 
-            
+
         }
 
         public reset(): void {
@@ -2526,12 +2527,12 @@ namespace IIIFComponents {
 
                     this._initCanvas(virtualCanvas);
 
-                }                
+                }
 
                 // all canvases need to be individually navigable
                 canvases.forEach((canvas: Manifesto.ICanvas) => {
                     this._initCanvas(canvas);
-                });                
+                });
 
                 if (this.canvasInstances.length > 0) {
                     this._data.canvasId = <string>this.canvasInstances[0].getCanvasId()
@@ -2551,10 +2552,10 @@ namespace IIIFComponents {
                 `);
                 this._$posterImage.append(this._$posterExpandButton);
 
-                this._$posterImage.on('touchstart click', (e) => {    
-                    
+                this._$posterImage.on('touchstart click', (e) => {
+
                     e.preventDefault();
-                    
+
                     const target: any = this._getPosterImageCss(!this._posterImageExpanded);
                     //this._$posterImage.animate(target,"fast", "easein");
                     this._$posterImage.animate(target);
@@ -2571,7 +2572,7 @@ namespace IIIFComponents {
                             this._$posterExpandButton.find('i').switchClass('collapse', 'expand');
                         }
                     }
-                    
+
                 });
 
                 // poster canvas
@@ -2647,7 +2648,7 @@ namespace IIIFComponents {
             if (this._data.helper) {
                 return this._data.helper.getCanvases();
             }
-            
+
             return [];
         }
 
@@ -2747,7 +2748,7 @@ namespace IIIFComponents {
             const nextRange: Manifesto.IRange | null = this._data.helper.getNextRange();
 
             if (nextRange) {
-                this.playRange(nextRange.id);         
+                this.playRange(nextRange.id);
             }
         }
 
@@ -2765,23 +2766,23 @@ namespace IIIFComponents {
         }
 
         private _getCanvasInstanceById(canvasId: string): CanvasInstance | undefined {
-            
+
             canvasId = this._getNormaliseCanvasId(canvasId);
-    
+
             // if virtual canvas is enabled, check for that first
             if (this._data.virtualCanvasEnabled) {
 
                 for (let i = 0; i < this.canvasInstances.length; i++) {
-    
+
                     const canvasInstance: IIIFComponents.CanvasInstance = this.canvasInstances[i];
-                    
+
                     let currentCanvasId: string | undefined = canvasInstance.getCanvasId();
 
                     if (currentCanvasId) {
 
                         currentCanvasId = this._getNormaliseCanvasId(currentCanvasId);
 
-                        if ((canvasInstance.isVirtual() || this.canvasInstances.length === 1) && currentCanvasId === canvasId || 
+                        if ((canvasInstance.isVirtual() || this.canvasInstances.length === 1) && currentCanvasId === canvasId ||
                             canvasInstance.includesVirtualSubCanvas(canvasId)) {
                             return canvasInstance;
                         }
@@ -2817,19 +2818,19 @@ namespace IIIFComponents {
 
             return undefined;
         }
-        
+
         private _rewind(): void {
 
             if (this._data.limitToRange) {
                 return;
             }
-            
+
             const canvasInstance: CanvasInstance | undefined = this._getCurrentCanvas();
 
             if (canvasInstance) {
                 canvasInstance.set({
                     range: undefined
-                });             
+                });
             }
         }
 
@@ -2865,7 +2866,7 @@ namespace IIIFComponents {
         }
 
         public showCanvas(canvasId: string): void {
-            
+
             // if the passed canvas id is already the current canvas id, but the canvas isn't visible
             // (switching from virtual canvas)
 
@@ -2888,7 +2889,7 @@ namespace IIIFComponents {
         }
 
         private _getPosterImageCss(expanded: boolean): any {
-            
+
             const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
 
             if (currentCanvas) {
