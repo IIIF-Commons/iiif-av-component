@@ -1837,10 +1837,12 @@ namespace IIIFComponents {
                 if ((contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime)) {
 
 
-                    if (contentAnnotation.element[0].readyState < 3) {
-                        this._buffering = true;
-                    } else if (this._buffering) {
-                        this._buffering = false;
+                    if (this._isPlaying) {
+                        if (contentAnnotation.element[0].readyState < 3) {
+                            this._buffering = true;
+                        } else if (this._buffering) {
+                            this._buffering = false;
+                        }
                     }
 
                     const correctTime: number = (this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
