@@ -1334,6 +1334,12 @@ namespace IIIFComponents {
                 duration = end - start;
             }
 
+            if (end === -1 && durationObj) {
+                start = durationObj.start;
+                end = durationObj.end;
+                duration = end - start;
+            }
+
             if (end === -1) {
                 console.log('Duration not found...');
             }
