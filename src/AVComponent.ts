@@ -1533,6 +1533,10 @@ namespace IIIFComponents {
             //     return;
             // }
 
+            const {start, end} = this.getRangeTiming();
+            if (seconds < start || start > end) {
+                return;
+            }
             this._canvasClockTime = seconds; //secondsAsFloat;
             this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
 
