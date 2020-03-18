@@ -225,7 +225,8 @@ namespace IIIFComponents {
         //private _waveformNeedsRedraw: boolean = true;
         public ranges: Manifesto.IRange[] = [];
         public waveforms: string[] = [];
-
+        private _buffering = false;
+        private _bufferShown = false;
         public $playerElement: JQuery;
         public isOnlyCanvasInstance: boolean = false;
         public logMessage: (message: string) => void;
@@ -668,7 +669,7 @@ namespace IIIFComponents {
 
         private _getDuration(): number {
             if (this._data && this._data.canvas) {
-                return <number>this._data.canvas.getDuration();
+                return Math.floor(<number>this._data.canvas.getDuration());
             }
 
             return 0;
@@ -1406,7 +1407,7 @@ namespace IIIFComponents {
                 }
 
                 this._waveformCtx.fillStyle = colour;
-                this._waveformCtx.fillRect(xpos, ypos, barWidth, height);
+                this._waveformCtx.fillRect(xpos, ypos, barWidth, height | 0);
             }
         }
 
@@ -1641,6 +1642,9 @@ namespace IIIFComponents {
         }
 
         private _canvasClockUpdater(): void {
+            if (this._buffering) {
+                return;
+            }
             this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
 
             let duration: Manifesto.Duration | undefined;
@@ -1660,6 +1664,16 @@ namespace IIIFComponents {
         }
 
         private _highPriorityUpdater(): void {
+            if (this._bufferShown && !this._buffering) {
+                this.$playerElement.removeClass('player--loading');
+                this._bufferShown = false;
+            }
+            if (this._buffering && !this._bufferShown) {
+                console.log('buffering');
+                this.$playerElement.addClass('player--loading');
+                this._bufferShown = true;
+            }
+
             this._$rangeTimelineContainer.slider({
                 value: this._canvasClockTime
             });
@@ -1786,6 +1800,13 @@ namespace IIIFComponents {
                 contentAnnotation = this._contentAnnotations[i];
 
                 if ((contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime)) {
+
+
+                    if (contentAnnotation.element[0].readyState < 3) {
+                        this._buffering = true;
+                    } else if (this._buffering) {
+                        this._buffering = false;
+                    }
 
                     const correctTime: number = (this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset);
                     const factualTime: number = contentAnnotation.element[0].currentTime;
@@ -2236,7 +2257,7 @@ namespace IIIFComponents {
                 }
             });
 
-            return duration;
+            return Math.floor(duration);
         }
 
         getWidth(): number {
