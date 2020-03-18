@@ -1372,6 +1372,29 @@ namespace IIIFComponents {
             this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
             this._waveformCtx.fillStyle = <string>this._data.waveformColor;
 
+            var inc = canvasWidth / (end - start);
+            const listOfBuffers: Array<[number, number]> = [];
+            if (this._contentAnnotations) {
+                for (let i = 0; i < this._contentAnnotations.length; i++) {
+                    const contentAnnotation = this._contentAnnotations[i];
+                    if (contentAnnotation && contentAnnotation.element) {
+                        const element: HTMLAudioElement = contentAnnotation.element[0];
+                        const annoStart: number = contentAnnotation.start;
+                        const active: boolean = contentAnnotation.active;
+                        if (active) {
+                            for (let i = 0; i < element.buffered.length; i++) {
+                                const reverse = element.buffered.length - i - 1;
+                                const startX = element.buffered.start(reverse);
+                                const endX = element.buffered.end(reverse);
+                                listOfBuffers.push([
+                                    (((annoStart + startX)-start) * inc),
+                                    (((annoStart + endX)-start) * inc),
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
             for (let x = startpx; x < endpx; x += increment) {
                 const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
                 const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
@@ -1404,6 +1427,14 @@ namespace IIIFComponents {
                     // ======o-------T_____
                     //           ^ this colour
                     colour = '#86b3c3'; // lighter
+                } else {
+                    colour = '#8a9aa1';
+                    for (const [a, b] of listOfBuffers) {
+                        if (xpos > a && xpos < b) {
+                            colour = '#fff';
+                            break;
+                        }
+                    }
                 }
 
                 this._waveformCtx.fillStyle = colour;
