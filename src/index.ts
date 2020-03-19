@@ -485,6 +485,22 @@ export class AVComponent extends BaseComponent {
     );
 
     canvasInstance.on(
+      CanvasInstanceEvents.PLAYCANVAS, 
+      () => {
+        this.fire(CanvasInstanceEvents.PLAYCANVAS);
+      }, 
+      false
+    );
+
+    canvasInstance.on(
+      CanvasInstanceEvents.PAUSECANVAS, 
+      () => {
+        this.fire(CanvasInstanceEvents.PAUSECANVAS);
+      }, 
+      false
+    );
+
+    canvasInstance.on(
       Events.MEDIA_ERROR, 
       (error : MediaError) => {
         clearInterval(this._checkAllMediaReadyInterval);

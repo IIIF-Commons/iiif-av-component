@@ -338,6 +338,12 @@ var AVComponent = /** @class */ (function (_super) {
             _this._setCanvasInstanceVolumes(volume);
             _this.fire(VolumeEvents.VOLUME_CHANGED, volume);
         }, false);
+        canvasInstance.on(CanvasInstanceEvents.PLAYCANVAS, function () {
+            _this.fire(CanvasInstanceEvents.PLAYCANVAS);
+        }, false);
+        canvasInstance.on(CanvasInstanceEvents.PAUSECANVAS, function () {
+            _this.fire(CanvasInstanceEvents.PAUSECANVAS);
+        }, false);
         canvasInstance.on(Events.MEDIA_ERROR, function (error) {
             clearInterval(_this._checkAllMediaReadyInterval);
             _this.fire(Events.MEDIA_ERROR, error);
