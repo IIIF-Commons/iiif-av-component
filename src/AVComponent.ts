@@ -737,45 +737,46 @@ namespace IIIFComponents {
                         const duration: Manifesto.Duration | undefined = this._data.range.getDuration();
 
                         if (duration) {
-                        if (typeof duration !== 'undefined') {
+                            if (typeof duration !== 'undefined') {
 
-                            // Only change the current time if the current time is outside of the current time.
-                            if (duration.start >= this._canvasClockTime || duration.end <= this._canvasClockTime) {
-                                this._setCurrentTime(duration.start);
+                                // Only change the current time if the current time is outside of the current time.
+                                if (duration.start >= this._canvasClockTime || duration.end <= this._canvasClockTime) {
+                                    this._setCurrentTime(duration.start);
+                                }
+
+                                if (this._data.autoPlay) {
+                                    this.play();
+                                }
+
+                                this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id, this._data.range);
                             }
-
-                            if (this._data.autoPlay) {
-                                this.play();
-                            }
-
-                            this.fire(AVComponent.Events.RANGE_CHANGED, this._data.range.id, this._data.range);
                         }
+                    }
+
+                }
+
+                if (diff.includes('volume')) {
+                    this._contentAnnotations.forEach(($mediaElement: any) => {
+
+                        const volume: number = (this._data.volume !== undefined) ? this._data.volume : 1;
+
+                        $($mediaElement.element).prop('volume', volume);
+
+                        this._volume.set({
+                            volume: this._data.volume
+                        });
+                    });
+                } else {
+                    if (this.isVisible()) {
+                        this._render();
                     }
                 }
 
-            }
-
-            if (diff.includes('volume')) {
-                this._contentAnnotations.forEach(($mediaElement: any) => {
-
-                    const volume: number = (this._data.volume !== undefined) ? this._data.volume : 1;
-
-                    $($mediaElement.element).prop('volume', volume);
-
-                    this._volume.set({
-                        volume: this._data.volume
-                    });
-                });
-            } else {
-                if (this.isVisible()) {
+                if (diff.includes('limitToRange')) {
                     this._render();
                 }
-            }
 
-            if (diff.includes('limitToRange')) {
-                this._render();
             }
-
         }
 
         private _hasRangeChanged(): void {
