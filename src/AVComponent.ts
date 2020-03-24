@@ -2440,7 +2440,7 @@ namespace IIIFComponents {
                 });
             }
 
-            if (diff.includes('canvasId') && this._data.canvasId) {
+            if ((diff.includes('virtualCanvasEnabled') || diff.includes('canvasId')) && this._data.canvasId) {
 
                 const nextCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
 
@@ -2942,7 +2942,7 @@ namespace IIIFComponents {
 
             const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
 
-            if (currentCanvas && currentCanvas.getCanvasId() === canvasId && !currentCanvas.isVisible()) {
+            if (this._data.virtualCanvasEnabled && currentCanvas && currentCanvas.getCanvasId() === canvasId && !currentCanvas.isVisible()) {
                 currentCanvas.set({
                     visible: true
                 });
