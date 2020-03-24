@@ -737,6 +737,7 @@ namespace IIIFComponents {
                         const duration: Manifesto.Duration | undefined = this._data.range.getDuration();
 
                         if (duration) {
+                        if (typeof duration !== 'undefined') {
 
                             // Only change the current time if the current time is outside of the current time.
                             if (duration.start >= this._canvasClockTime || duration.end <= this._canvasClockTime) {
@@ -803,6 +804,10 @@ namespace IIIFComponents {
             for (let i = 0; i < ranges.length; i++) {
 
                 const range: Manifesto.IRange = ranges[i];
+                const rangeBehavior = range.getBehavior();
+                if (rangeBehavior && rangeBehavior.nonav()) {
+                    continue;
+                }
 
                 // if the range spans the current time, and is navigable, return it.
                 // otherwise, try to find a navigable child range.
