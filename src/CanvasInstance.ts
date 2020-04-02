@@ -287,7 +287,7 @@ export class CanvasInstance extends BaseComponent {
         // on create
       },
       slide: function(evt: any, ui: any) {
-        that._setCurrentTime(ui.value);
+        that.setCurrentTime(ui.value);
       },
       stop: function(evt: any, ui: any) {
         //this._setCurrentTime(ui.value);
@@ -636,7 +636,7 @@ export class CanvasInstance extends BaseComponent {
 
           if (duration) {
             if (!(<any>this._data.range).autoChanged) {
-              this._setCurrentTime(duration.start);
+              this.setCurrentTime(duration.start);
             }
 
             if (this._data.autoPlay) {
@@ -800,7 +800,7 @@ export class CanvasInstance extends BaseComponent {
             // on create
           },
           slide: function(evt: any, ui: any) {
-            that._setCurrentTime(ui.value);
+            that.setCurrentTime(ui.value);
           },
           stop: function(evt: any, ui: any) {
             //this._setCurrentTime(ui.value);
@@ -1068,7 +1068,7 @@ export class CanvasInstance extends BaseComponent {
 
       if (this._readyMediaCount === this._contentAnnotations.length) {
         //if (!this._data.range) {
-        this._setCurrentTime(0);
+        this.setCurrentTime(0);
         //}
 
         if (this._data.autoPlay) {
@@ -1311,7 +1311,7 @@ export class CanvasInstance extends BaseComponent {
     }
   }
 
-  private _setCurrentTime(seconds: number): void {
+  public setCurrentTime(seconds: number): void {
     // seconds was originally a string or a number - didn't seem necessary
 
     // const secondsAsFloat: number = parseFloat(seconds.toString());
@@ -1331,6 +1331,10 @@ export class CanvasInstance extends BaseComponent {
     this._highPriorityUpdater();
     this._lowPriorityUpdater();
     this._synchronizeMedia();
+  }
+
+  public getCurrentTime(): number {
+    return this._canvasClockTime;
   }
 
   private _rewind(withoutUpdate?: boolean): void {

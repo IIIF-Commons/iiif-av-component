@@ -92,7 +92,8 @@ export declare class CanvasInstance extends BaseComponent {
     private _updateCurrentTimeDisplay;
     private _updateDurationDisplay;
     private _renderSyncIndicator;
-    private _setCurrentTime;
+    setCurrentTime(seconds: number): void;
+    getCurrentTime(): number;
     private _rewind;
     private _fastforward;
     play(withoutUpdate?: boolean): void;

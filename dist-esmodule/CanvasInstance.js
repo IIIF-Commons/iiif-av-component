@@ -185,7 +185,7 @@ var CanvasInstance = /** @class */ (function (_super) {
                 // on create
             },
             slide: function (evt, ui) {
-                that._setCurrentTime(ui.value);
+                that.setCurrentTime(ui.value);
             },
             stop: function (evt, ui) {
                 //this._setCurrentTime(ui.value);
@@ -437,7 +437,7 @@ var CanvasInstance = /** @class */ (function (_super) {
                     var duration = this._data.range.getDuration();
                     if (duration) {
                         if (!this._data.range.autoChanged) {
-                            this._setCurrentTime(duration.start);
+                            this.setCurrentTime(duration.start);
                         }
                         if (this._data.autoPlay) {
                             this.play();
@@ -564,7 +564,7 @@ var CanvasInstance = /** @class */ (function (_super) {
                         // on create
                     },
                     slide: function (evt, ui) {
-                        that_1._setCurrentTime(ui.value);
+                        that_1.setCurrentTime(ui.value);
                     },
                     stop: function (evt, ui) {
                         //this._setCurrentTime(ui.value);
@@ -803,7 +803,7 @@ var CanvasInstance = /** @class */ (function (_super) {
             _this._readyMediaCount++;
             if (_this._readyMediaCount === _this._contentAnnotations.length) {
                 //if (!this._data.range) {
-                _this._setCurrentTime(0);
+                _this.setCurrentTime(0);
                 //}
                 if (_this._data.autoPlay) {
                     _this.play();
@@ -978,7 +978,7 @@ var CanvasInstance = /** @class */ (function (_super) {
             this._$timelineItemContainer.append($lineWrapper);
         }
     };
-    CanvasInstance.prototype._setCurrentTime = function (seconds) {
+    CanvasInstance.prototype.setCurrentTime = function (seconds) {
         // seconds was originally a string or a number - didn't seem necessary
         // const secondsAsFloat: number = parseFloat(seconds.toString());
         // if (isNaN(secondsAsFloat)) {
@@ -991,6 +991,9 @@ var CanvasInstance = /** @class */ (function (_super) {
         this._highPriorityUpdater();
         this._lowPriorityUpdater();
         this._synchronizeMedia();
+    };
+    CanvasInstance.prototype.getCurrentTime = function () {
+        return this._canvasClockTime;
     };
     CanvasInstance.prototype._rewind = function (withoutUpdate) {
         this.pause();
