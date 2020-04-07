@@ -957,6 +957,10 @@ export class CanvasInstance extends BaseComponent {
 
     const media: HTMLMediaElement = $mediaElement[0] as HTMLMediaElement;
 
+    media.onerror = () => {
+      this.fire(Events.MEDIA_ERROR, media.error);
+    }
+
     if (data.format && data.format.toString() === "application/dash+xml") {
       // dash
       $mediaElement.attr("data-dashjs-player", "");
@@ -1090,7 +1094,7 @@ export class CanvasInstance extends BaseComponent {
             this._$optionsContainer.find(".loading-progress").width(((bufferedEnd / duration)*100) + "%");
           }
       }
-  });
+    });
 
     $mediaElement.attr("preload", "auto");
 

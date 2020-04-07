@@ -705,6 +705,9 @@ var CanvasInstance = /** @class */ (function (_super) {
                 return;
         }
         var media = $mediaElement[0];
+        media.onerror = function () {
+            _this.fire(Events.MEDIA_ERROR, media.error);
+        };
         if (data.format && data.format.toString() === "application/dash+xml") {
             // dash
             $mediaElement.attr("data-dashjs-player", "");
