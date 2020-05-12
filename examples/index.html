@@ -170,41 +170,10 @@
                 successcb(helper);
 
                 resize();
-
-        avcomponent.on("mediaerror", function(error) {
-          $(".player").removeClass("player--loading");
-          var errormessage = "Error: ";
-          switch (error.code) {
-            case 1:
-              errormessage += "loading aborted";
-            break;
-            case 2: 
-              errormessage += "network error";
-            break;
-            case 3:
-              errormessage += "decoding of media failed";
-            break;
-            case 4:
-                errormessage += "media format not suppported by this browser";
-            break;
-            default: 
-              errormessage += "unknown";
-            break;
-          }
-
-          $(".canvas-container").append("<div class='anno errormessage'>"+errormessage+"</div>")
-        });
-
-        $ppc.on("click", function(e) {
-          e.preventDefault();
-          if (avcomponent._isPlaying) {
-            avcomponent.pause();
-            $ppc.innerText("play");
-          } else {
-            avcomponent.play();
-            $ppc.innerText("pause");
-          }
-        });
+            }).catch(function(e) {
+                errorcb(e);
+            });
+        }
 
         $(function() {
 
@@ -243,6 +212,30 @@
                 } else {
                     this.treecomponent.deselectCurrentNode();
                 }
+            });
+
+            avcomponent.on("mediaerror", function(error) {
+                $(".player").removeClass("player--loading");
+                var errormessage = "Error: ";
+                switch (error.code) {
+                    case 1:
+                    errormessage += "loading aborted";
+                    break;
+                    case 2: 
+                    errormessage += "network error";
+                    break;
+                    case 3:
+                    errormessage += "decoding of media failed";
+                    break;
+                    case 4:
+                        errormessage += "media format not suppported by this browser";
+                    break;
+                    default: 
+                    errormessage += "unknown";
+                    break;
+                }
+
+                $(".canvas-container").append("<div class='anno errormessage'>"+errormessage+"</div>")
             });
 
             treecomponent = new IIIFTreeComponent.TreeComponent({
