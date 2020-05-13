@@ -1,4 +1,1013 @@
+
 namespace IIIFComponents {
+
+    export type TimeStop = {
+        type: 'time-stop';
+        canvasIndex: number;
+        start: number;
+        end: number;
+        duration: number;
+        rangeId: string;
+        rawCanvasSelector: string;
+        rangeStack: string[];
+        canvasTime: {
+            start: number;
+            end: number;
+        };
+    };
+
+    export type TimePlan = {
+        type: 'time-plan';
+        duration: number;
+        start: number;
+        end: number;
+        stops: TimeStop[];
+        rangeId: string;
+        canvases: any[];
+        rangeStack: string[];
+        rangeOrder: string[];
+        items: Array<TimeStop | TimePlan>;
+    };
+
+    // Helper functions.
+    namespace AVHelpers {
+        export function createTimePlansFromManifest(manifest: Manifesto.Manifest, mediaElements: MediaElement[]) {
+            const parseRange = (
+              range: Manifesto.Range,
+              rangeStack: string[] = [],
+              startDuration: number = 0
+            ): TimePlan => {
+                const timePlan: TimePlan = {
+                    type: 'time-plan',
+                    canvases: [],
+                    duration: 0,
+                    items: [],
+                    stops: [],
+                    rangeOrder: [ range.id ],
+                    end: 0,
+                    start: startDuration,
+                    rangeId: range.id,
+                    rangeStack,
+                };
+
+                let runningDuration = startDuration;
+
+                const rangeRanges = [
+                    ...range.items,
+                    ...range.getCanvasIds(),
+                ];
+
+                for (
+                  let canvasIndex = 0;
+                  canvasIndex < rangeRanges.length;
+                  canvasIndex++
+                ) {
+                    const ro = rangeRanges[canvasIndex];
+
+                    if (typeof ro === 'string') {
+                        const [, canvasId, start, end] = ro.match(
+                          /(.*)#t=([0-9.]+),?([0-9.]+)?/
+                        ) || [undefined, ro, '0', '0'];
+
+                        // Skip invalid ranges.
+                        if (!canvasId || typeof start === 'undefined' || typeof end === 'undefined') continue;
+
+                        const canvas = manifest
+                          .getSequenceByIndex(0)
+                          .getCanvasById(canvasId);
+
+                        if (canvas === null) {
+                            throw new Error('Canvas not found..');
+                        }
+
+                        timePlan.canvases.push(canvas.id);
+
+                        const rStart = parseFloat(start || '0');
+                        const rEnd = parseFloat(end || '0');
+                        const rDuration = rEnd - rStart;
+
+                        runningDuration += rDuration;
+
+                        const timeStop: TimeStop = {
+                            type: 'time-stop',
+                            canvasIndex,
+                            start: runningDuration - rDuration,
+                            end: runningDuration,
+                            duration: rDuration,
+                            rangeId: range.id,
+                            rawCanvasSelector: ro,
+                            canvasTime: {
+                                start: rStart,
+                                end: rEnd,
+                            },
+                            rangeStack,
+                        };
+
+                        timePlan.stops.push(timeStop);
+                        timePlan.items.push(timeStop);
+                    } else {
+                        const behavior = (ro as Manifesto.Range).getBehavior();
+                        if (!behavior || !behavior.nonav()) {
+                            const rangeTimePlan = parseRange(
+                              ro as any,
+                              [...rangeStack, ro.id],
+                              runningDuration
+                            );
+
+                            runningDuration += rangeTimePlan.duration;
+
+                            timePlan.stops.push(
+                              ...rangeTimePlan.stops.map(stop => ({
+                                  ...stop,
+                                  canvasIndex: stop.canvasIndex + timePlan.canvases.length,
+                              }))
+                            );
+                            timePlan.canvases.push(...rangeTimePlan.canvases);
+                            timePlan.items.push(rangeTimePlan);
+                            timePlan.rangeOrder.push(...rangeTimePlan.rangeOrder);
+                        }
+                    }
+                }
+
+                timePlan.end = runningDuration;
+                timePlan.duration = timePlan.end - timePlan.start;
+
+                return timePlan;
+            };
+
+            let topLevels = manifest.getTopRanges();
+            const plans: TimePlan[] = [];
+
+            if (topLevels.length === 1 && !topLevels[0].id) {
+                topLevels = topLevels[0].getRanges();
+            }
+
+            for (let range of topLevels) {
+                if (range.id === range.getRanges()[0].id) {
+                    range = range.getRanges()[0];
+                }
+
+                const rangeTimePlan = parseRange(range as Manifesto.Range, [range.id]);
+                plans.push(rangeTimePlan);
+            }
+
+            return plans[0]; // @todo only one top level range.
+        }
+
+        export function extractMediaFromAnnotationBodies(annotation: Manifesto.IAnnotation) {
+            const bodies = annotation.getBody();
+            if (!bodies.length) {
+                return null;
+            }
+
+            // if there's an HLS format and HLS is supported in this browser
+            for (let i = 0; i < bodies.length; i++) {
+                const body: Manifesto.IAnnotationBody = bodies[i];
+                const format: Manifesto.MediaType | null = body.getFormat();
+
+                if (format) {
+                    if (AVComponentUtils.isHLSFormat(format) && AVComponentUtils.canPlayHls()) {
+                        return body;
+                    }
+                }
+            }
+
+            // if there's a Dash format and the browser isn't Safari
+            for (let i = 0; i < bodies.length; i++) {
+                const body: Manifesto.IAnnotationBody = bodies[i];
+                const format: Manifesto.MediaType | null = body.getFormat();
+
+                if (format) {
+                    if (AVComponentUtils.isMpegDashFormat(format) && !AVComponentUtils.isSafari()) {
+                        return body;
+                    }
+                }
+            }
+
+            // otherwise, return the first format that isn't HLS or Dash
+            for (let i = 0; i < bodies.length; i++) {
+                const body: Manifesto.IAnnotationBody = bodies[i];
+                const format: Manifesto.MediaType | null = body.getFormat();
+
+                if (format) {
+                    if (!AVComponentUtils.isHLSFormat(format) && !AVComponentUtils.isMpegDashFormat(format)) {
+                        return body;
+                    }
+                }
+            }
+
+            // couldn't find a suitable format
+            return null;
+        }
+
+        interface MediaSource {
+            type: Manifesto.ResourceType,
+            format?: Manifesto.MediaType,
+            mediaSource: string;
+            canvasId: string;
+            x?: number;
+            y?: number;
+            width?: number;
+            height?: number;
+            start: number;
+            end: number;
+            bodyId: string;
+            offsetStart?: number;
+            offsetEnd?: number;
+        }
+
+        export function getMediaSourceFromAnnotationBody(
+            annotation: Manifesto.IAnnotation,
+            body: Manifesto.IAnnotationBody,
+            canvasDimensions: { id: string; width: number; height: number, duration: number; }
+        ): MediaSource {
+            const type = body.getType();
+            const format = body.getFormat() || undefined;
+            const mediaSource = body.id.split('#')[0];
+            const target = annotation.getTarget();
+
+            if (!target) {
+                throw new Error('No target');
+            }
+
+            if (!type) {
+                throw new Error('Unknown media type');
+            }
+
+            const [x, y, width, height] = AVComponentUtils.getSpatialComponent(target) || [0, 0, canvasDimensions.width || 0, canvasDimensions.height || 0];
+            const [start, end]: any[] = Manifesto.Utils.getTemporalComponent(target) || [0, canvasDimensions.duration];
+
+
+            const [, bodyId, offsetStart, offsetEnd] = body.id.match(
+              /(.*)#t=([0-9.]+),?([0-9.]+)?/
+            ) || [undefined, body.id, undefined, undefined];
+
+            return {
+                type,
+                format,
+                mediaSource,
+                canvasId: canvasDimensions.id,
+                x,
+                y,
+                width: typeof width === 'undefined' ? undefined : parseInt(String(width), 10),
+                height: typeof height === 'undefined' ? undefined : parseInt(String(height), 10),
+                start: Number(Number(start).toFixed(2)),
+                end: Number(Number(end).toFixed(2)),
+                bodyId: bodyId as string,
+                offsetStart: typeof offsetStart === 'undefined' ? undefined : parseFloat(offsetStart),
+                offsetEnd: typeof offsetEnd === 'undefined' ? undefined : parseFloat(offsetEnd),
+            }
+        }
+
+        type MediaOptions = {
+            adaptiveAuthEnabled?: boolean
+            mediaSyncMarginSecs?: number;
+        }
+
+        export abstract class MediaFormat {
+            options: MediaOptions;
+            source: string;
+            protected constructor(source: string, options: MediaOptions = {}) {
+                this.source = source;
+                this.options = options;
+            }
+            attachTo(element: HTMLMediaElement) {
+                element.setAttribute('src', this.source);
+            }
+        }
+
+        export class DashFormat extends MediaFormat {
+            player: any;
+            constructor(source: string, options: MediaOptions = {}) {
+                super(source, options);
+                this.player = dashjs.MediaPlayer().create();
+                this.player.getDebug().setLogToBrowserConsole(false);
+                if (options.adaptiveAuthEnabled) {
+                    this.player.setXHRWithCredentialsForType('MPD', true); // send cookies
+                }
+            }
+            attachTo(element: HTMLMediaElement) {
+                this.player.initialize(element, this.source, false);
+            }
+            debug() {
+                this.player.getDebug().setLogToBrowserConsole(true);
+                this.player.getDebug().setLogLevel(4);
+            }
+        }
+
+        export class HlsFormat extends MediaFormat {
+            hls: any;
+            constructor(source: string, options: MediaOptions = {}) {
+                super(source, options);
+
+                if (options.adaptiveAuthEnabled) {
+                    this.hls = new Hls({
+                        xhrSetup: (xhr: any) => {
+                            xhr.withCredentials = true; // send cookies
+                        }
+                    });
+                } else {
+                    this.hls = new Hls();
+                }
+                this.hls.loadSource(this.source);
+            }
+            attachTo(element: HTMLMediaElement) {
+                this.hls.attachMedia(element);
+            }
+        }
+
+        export class MpegFormat extends MediaFormat {
+            constructor(source: string, options: MediaOptions = {}) {
+                super(source, options);
+            }
+            attachTo(element: HTMLMediaElement) {
+                element.src = this.source;
+            }
+        }
+
+        export class DefaultFormat extends MediaFormat {
+            constructor(source: string, options: MediaOptions = {}) {
+                super(source, options);
+            }
+        }
+
+        export class MediaElement {
+            type: string;
+            format?: string;
+            mediaSource: string;
+            source: MediaSource;
+            element: HTMLMediaElement;
+            instance: MediaFormat;
+            mediaSyncMarginSecs: number;
+            constructor(source: MediaSource, mediaOptions: MediaOptions = {}) {
+                this.source = source;
+                this.mediaSource = source.mediaSource;
+                this.type = source.type.toString().toLowerCase();
+                this.format = source.format ? source.format.toString() : undefined;
+                this.mediaSyncMarginSecs = mediaOptions.mediaSyncMarginSecs || 1;
+
+                switch (this.type) {
+                    case 'video':
+                        this.element = document.createElement('video');
+                        break;
+
+                    case 'sound':
+                    case 'audio':
+                        this.element = document.createElement('audio');
+                        break;
+                    default:
+                        return;
+                }
+
+                if (this.isDash()) {
+                    this.instance = new DashFormat(this.mediaSource, mediaOptions);
+                } else if (this.isHls()) {
+                    this.instance = new HlsFormat(this.mediaSource, mediaOptions);
+                } else if (this.isMpeg()) {
+                    this.instance = new MpegFormat(this.mediaSource, mediaOptions);
+                } else {
+                    this.instance = new DefaultFormat(this.mediaSource, mediaOptions);
+                }
+                this.element.classList.add('anno');
+                this.element.crossOrigin = 'anonymous';
+                this.element.preload = 'metadata';
+                this.element.pause();
+
+                this.instance.attachTo(this.element);
+                this.element.currentTime = this.source.start;
+            }
+
+            syncClock(time: number) {
+                if (Math.abs(this.element.currentTime - time) > this.mediaSyncMarginSecs) {
+                    this.element.currentTime = time;
+                }
+            }
+
+            getCanvasId() {
+                return this.source.canvasId;
+            }
+
+            isWithinRange(time: number) {
+                return this.source.start <= time && this.source.end >= time;
+            }
+
+            async load(withAudio: boolean = false): Promise<void> {
+                if (withAudio) {
+                    this.element.load();
+                }
+                await new Promise(resolve => {
+                    this.element.addEventListener('loadedmetadata', () => {
+                        resolve();
+                    })
+                })
+            }
+
+            setSize(top: number, left: number, width: number, height: number) {
+                $(this.element).css({
+                    top: `${top}%`,
+                    left: `${left}%`,
+                    width: `${width}%`,
+                    height: `${height}%`,
+                });
+            }
+
+            isDash() {
+                return this.format && this.format.toString() === 'application/dash+xml';
+            }
+
+            isHls() {
+                return (
+                  this.format &&
+                  this.format.toString() === 'application/vnd.apple.mpegurl' &&
+                  Hls && Hls.isSupported()
+                );
+            }
+
+            isMpeg(): boolean {
+                return this.element.canPlayType('application/vnd.apple.mpegurl') !== '';
+            }
+
+            stop() {
+                this.element.pause();
+                this.element.currentTime = this.source.start;
+            }
+
+            play(time?: number): Promise<void> {
+                if (time) {
+                    this.element.currentTime = time;
+                }
+                return this.element.play();
+            }
+
+            pause() {
+                this.element.pause();
+            }
+
+            isBuffering() {
+                return this.element.readyState < 3;
+            }
+        }
+
+        export class CompositeMediaElement {
+            elements: MediaElement[] = [];
+
+            activeElement: MediaElement;
+            playing: boolean = false;
+
+            canvasMap: {
+                [id: string]: MediaElement[];
+            } = {};
+
+            private _onPlay: Function[] = [];
+            private _onPause: Function[] = [];
+
+            constructor(mediaElements: MediaElement[]) {
+                // Add all elements.
+                this.elements = mediaElements;
+                for (const el of mediaElements) {
+                    const canvasId = el.getCanvasId();
+                    this.canvasMap[canvasId] = this.canvasMap[canvasId] ? this.canvasMap[canvasId] : [];
+                    this.canvasMap[canvasId].push(el);
+                    // Attach events.
+                    el.element.addEventListener('play', () => {
+                        this._onPlay.forEach(fn => fn(canvasId, el.element.currentTime, el));
+                    });
+                    el.element.addEventListener('pause', () => {
+                        this._onPause.forEach(fn => fn(canvasId, el.element.currentTime, el));
+                    });
+                }
+                this.activeElement = mediaElements[0];
+            }
+
+            syncClock(time: number) {
+                this.activeElement.syncClock(time);
+            }
+
+            onPlay(func: (canvasId: string, time: number, el: HTMLMediaElement) => void) {
+                this._onPlay.push(func);
+            }
+
+            onPause(func: (canvasId: string, time: number, el: HTMLMediaElement) => void) {
+                this._onPause.push(func);
+            }
+
+            findElementInRange(canvasId: string, time: number) {
+                if (!this.canvasMap[canvasId]) {
+                    return undefined;
+                }
+                for (const el of this.canvasMap[canvasId]) {
+                    if (el.isWithinRange(time)) {
+                        return el;
+                    }
+                }
+                return undefined;
+            }
+
+            appendTo($element: JQuery) {
+                console.log('Appending...', this.elements.map(
+                  media => media.element
+                ));
+                $element.append(
+                  this.elements.map(
+                    media => media.element
+                  )
+                );
+            }
+
+            async load() : Promise<void>{
+                await Promise.all(
+                  this.elements.map(element => element.load())
+                );
+            }
+
+            async seekTo(canvasId: string, time: number) {
+                const newElement = this.findElementInRange(canvasId, time);
+                if (newElement && newElement !== this.activeElement) {
+                    // Moving track.
+                    // Stop the current track.
+                    this.activeElement.stop();
+
+                    // Set new current track.
+                    this.activeElement = newElement;
+                }
+
+                if (this.playing) {
+                    await this.activeElement.play(time);
+                } else {
+                    this.activeElement.syncClock(time);
+                }
+            }
+
+            async play(canvasId?: string, time?: number) {
+                this.playing = true;
+                if (canvasId && typeof time !== 'undefined') {
+                    await this.seekTo(canvasId, time);
+                }
+                return this.activeElement.play(time);
+            }
+
+            pause() {
+                this.playing = false;
+                this.activeElement.pause();
+            }
+
+            setVolume(volume: number) {
+                for (const el of this.elements) {
+                    el.element.volume = volume;
+                }
+            }
+
+            isBuffering() {
+                return this.activeElement.isBuffering();
+            }
+        }
+
+        export class TimePlanPlayer {
+            plan: TimePlan;
+            fullPlan: TimePlan;
+            media: CompositeMediaElement;
+            currentStop: TimeStop;
+            currentRange: string;
+            continuous: boolean = true;
+            playing: boolean = false;
+            _time: number = 0;
+            notifyRangeChange: (rangeId: string, stops: {from: TimeStop, to: TimeStop}) => void;
+            notifyTimeChange: (time: number) => void;
+            notifyPlaying: (playing: boolean) => void;
+            logging: boolean;
+
+            constructor(
+              media: CompositeMediaElement,
+              plan: TimePlan,
+              notifyRangeChange: (rangeId: string, stops: {from: TimeStop, to: TimeStop}) => void,
+              notifyTimeChange: (time: number) => void,
+              notifyPlaying: (playing: boolean) => void
+            ) {
+                this.media = media;
+                this.plan = plan;
+                this.fullPlan = plan;
+                this.currentStop = plan.stops[0];
+                this.notifyRangeChange = notifyRangeChange;
+                this.notifyTimeChange = notifyTimeChange;
+                this.notifyPlaying = notifyPlaying;
+                this.logging = true;
+                this.currentRange = this.currentStop.rangeStack[0];
+
+                this.setTime(this.currentStop.start);
+
+                media.onPlay((canvasId, time, el) => {
+                    // Playing the right thing...
+                    if (canvasId === this.plan.canvases[this.currentStop.canvasIndex]) {
+                        if (!this.playing) {
+                            this.notifyPlaying(true);
+                        }
+                    } else {
+                        el.pause();
+                    }
+                })
+
+                media.onPause((canvasId) => {
+                    if (canvasId === this.plan.canvases[this.currentStop.canvasIndex]) {
+                        if (this.playing) {
+                            this.notifyPlaying(false);
+                        }
+                    }
+                })
+            }
+
+            selectPlan({ reset, rangeId }: { reset?: boolean; rangeId?: string } = {}) {
+                if (reset) {
+                    return this.initialisePlan(this.fullPlan);
+                }
+                if (rangeId) {
+                    let foundStack: string[] = [];
+                    for (const plan of this.fullPlan.stops) {
+                        const idx = plan.rangeStack.indexOf(rangeId);
+                        if (plan.rangeStack.indexOf(rangeId) !== -1) {
+                            foundStack = plan.rangeStack.slice(1, idx + 1);
+                        }
+                    }
+
+                    let plan = this.fullPlan;
+                    for (const id of foundStack) {
+                        for (const item of plan.items) {
+                            if (item.type === 'time-plan' && item.rangeId === id) {
+                                plan = item;
+                                break;
+                            }
+                        }
+                    }
+                    if (plan) {
+                        return this.initialisePlan(plan);
+                    }
+                }
+            }
+
+            initialisePlan(plan: TimePlan) {
+                this.plan = plan;
+            }
+
+            getCurrentRange() {
+                const rangeId = this.currentRange;
+                const isRangeWithStop = this.currentRange === this.currentStop.rangeId;
+                const stopsToCheck = isRangeWithStop ? this.plan.stops : this.fullPlan.stops;
+                const starting: number[] = [];
+                const ending: number[] = [];
+                for (const stop of stopsToCheck) {
+                    if (!isRangeWithStop) {
+                        if (stop.rangeStack.indexOf(rangeId) !== -1) {
+                            starting.push(stop.start);
+                            ending.push(stop.end);
+                        }
+                    } else if (stop.rangeId === rangeId) {
+                        starting.push(stop.start);
+                        ending.push(stop.end);
+                    }
+                }
+                const start = Math.min(...starting);
+                const end = Math.max(...ending);
+
+                console.log('Range', {
+                    rangeId,
+                    isRangeWithStop,
+                    stopsToCheck,
+                    start: start - this.plan.start,
+                    end: end - this.plan.start,
+                    duration: end - start,
+                });
+
+                return {
+                    start: start - this.plan.start,
+                    end: end - this.plan.start,
+                    duration: end - start,
+                };
+            }
+
+            getTime() {
+                return this._time;
+            }
+
+            setInternalTime(time: number) {
+                this._time = time;
+                this.notifyTimeChange(time);
+                return this._time;
+            }
+
+            log(...content: any[]) {
+                this.logging && console.log('TimePlanPlayer', ...content);
+            }
+
+            setContinuousPlayback(continuous: boolean) {
+                this.continuous = continuous;
+            }
+
+            setIsPlaying(playing: boolean) {
+                this.playing = playing;
+            }
+
+            play() {
+                this.log('Play', this.getTime());
+                this.setIsPlaying(true);
+                this.media.play(
+                  this.plan.canvases[this.currentStop.canvasIndex],
+                  this.currentMediaTime()
+                );
+
+                return this.getTime();
+            }
+
+            currentMediaTime() {
+                return this.getTime() - this.currentStop.start + this.currentStop.canvasTime.start;
+            }
+
+            pause() {
+                this.log('Pause', this.getTime());
+                this.setIsPlaying(false);
+                this.media.pause();
+
+                return this.getTime();
+            }
+
+            setVolume(volume: number) {
+                this.media.setVolume(volume)
+            }
+
+            findStop(time: number) {
+
+                // // First check current stop.
+                // if ((this.currentStop.start - 0.0001) <= time && (this.currentStop.end + 0.0001) > time) {
+                //     return this.currentStop;
+                // }
+                //
+                // // Then check next stop.
+                // const idx = this.plan.stops.indexOf(this.currentStop);
+                // const nextStop = idx !== -1 ? this.plan.stops[idx + 1] : undefined;
+                // if (nextStop && nextStop.start <= time && nextStop.end > time) {
+                //     return nextStop;
+                // }
+
+                // Fallback to checking all stops.
+                for (const stop of this.plan.stops) {
+                    if (stop.start - 0.001 <= time && stop.end - 0.001 > time) {
+                        return stop;
+                    }
+                }
+
+                if (this.plan.stops[this.plan.stops.length - 1].end === time) {
+                    return this.plan.stops[this.plan.stops.length - 1];
+                }
+
+                return;
+            }
+
+            // Time that is set by the user.
+            async setTime(time: number, setRange: boolean = true) {
+                console.groupCollapsed('set time');
+                console.trace();
+                console.log('USER SET TIME', time, setRange);
+                this.log('set time', {from: this.getTime(), to: time});
+                this.setInternalTime(time);
+
+                const stop = this.findStop(time);
+                if (stop && stop !== this.currentStop) {
+                    if (setRange) {
+                        this.currentRange = stop.rangeId;
+                    }
+                    await this.advanceToStop(this.currentStop, stop);
+                }
+                console.groupEnd();
+            }
+
+            next() {
+                const currentRangeIndex = this.plan.rangeOrder.indexOf(this.currentRange);
+                const isLast = currentRangeIndex >= 0 && currentRangeIndex === (this.plan.rangeOrder.length - 1)
+                const nextRangeIdx = !isLast ? this.plan.rangeOrder.indexOf(this.currentRange) + 1 : undefined;
+                let nextRange = typeof nextRangeIdx !== 'undefined' ? this.plan.rangeOrder[nextRangeIdx] : undefined;
+
+                const idx = this.plan.stops.indexOf(this.currentStop);
+                let offset = 0;
+                let nextStop: TimeStop;
+                while (true) {
+                    offset++;
+                    nextStop = this.plan.stops[idx + offset];
+                    if (!nextStop) {
+                        break;
+                    }
+                    if (nextStop.rangeId !== this.currentStop.rangeId) {
+                        break;
+                    }
+                }
+
+                if (this.playing && nextStop) {
+                    nextRange = nextStop.rangeId;
+                }
+
+                if (nextRange && nextStop && nextStop.rangeId !== nextRange) {
+                    if (this.playing || (this.currentStop.rangeStack.indexOf(nextRange) === -1 && nextStop.rangeStack.indexOf(nextRange) !== -1)) {
+                        this.currentRange = this.playing ? nextStop.rangeId : nextRange;
+                        this.setInternalTime(nextStop.start);
+                        this.advanceToStop(this.currentStop, nextStop, this.playing ? nextStop.rangeId : nextRange);
+                    } else {
+                        this.currentRange = nextRange;
+                        this.setInternalTime(this.currentStop.start);
+                        this.advanceToStop(this.currentStop, this.currentStop, nextRange);
+                    }
+                    return this.getTime();
+                }
+
+                if (nextStop) {
+                    this.setInternalTime(nextStop.start);
+                    this.currentRange = nextStop.rangeId;
+                    this.advanceToStop(this.currentStop, nextStop, nextStop.rangeId);
+                } else {
+                    this.setInternalTime(this.currentStop.end);
+                }
+
+                return this.getTime();
+            }
+
+            previous() {
+                const currentRangeIndex = this.plan.rangeOrder.indexOf(this.currentRange);
+                const isFirst = currentRangeIndex === 0;
+                const prevRangeIdx = !isFirst ? this.plan.rangeOrder.indexOf(this.currentRange) - 1 : undefined;
+                let prevRange = typeof prevRangeIdx !== 'undefined' ? this.plan.rangeOrder[prevRangeIdx] : undefined;
+
+
+                const idx = this.plan.stops.indexOf(this.currentStop);
+                let prevStop = this.plan.stops[idx - 1];
+                let negativeOffset = -1;
+                while (true) {
+                    let nextPrevStop = this.plan.stops[idx + negativeOffset];
+                    negativeOffset--; // start at -1
+                    if (!nextPrevStop) {
+                        break;
+                    }
+                    if (prevStop.rangeId !== nextPrevStop.rangeId) {
+                        break;
+                    }
+
+                    prevStop = nextPrevStop;
+                }
+
+                if (this.playing && prevStop) {
+                    prevRange = prevStop.rangeId;
+                }
+
+                // while (offset <= idx) {
+                //     let next = this.plan.stops[offset];
+                //     if (!prevStop) {
+                //         break;
+                //     }
+                //     if (next.rangeId === this.currentStop.rangeId) {
+                //         break;
+                //     }
+                //     prevStop = next;
+                //     offset++;
+                // }
+
+
+                // Case 1, at the start, but parent ranges possible.
+                if (idx === 0) {
+                    // Set the time to the start.
+                    this.setInternalTime(this.currentStop.start);
+                    // We are on the first item.
+                    if (prevRange && this.currentStop.rangeId !== prevRange) {
+                        // But we still want to change the range.
+                        this.currentRange = prevRange;
+                        this.advanceToStop(this.currentStop, this.currentStop, prevRange);
+                    }
+
+                    // And return the time.
+                    return this.getTime();
+                }
+
+
+                // Case 2, in the middle, but previous is a parent.
+                if (
+                  // If the range to navigate to isn't part of the current stop.
+                  prevRange && this.currentStop.rangeStack.indexOf(prevRange) === -1 &&
+                  // But it is in the previous.
+                  (prevStop.rangeStack.indexOf(prevRange) !== -1 || prevStop.rangeId === prevRange)
+                ) {
+                    // Then we navigate to the previous.
+                    this.setInternalTime(prevStop.start);
+                    this.currentRange = prevRange;
+                    this.advanceToStop(this.currentStop, prevStop, prevRange);
+                    // And time.
+                    return this.getTime();
+                }
+
+                // If the previous range is in the current ranges stack (i.e. a parent)
+                if (prevRange && this.currentStop.rangeStack.indexOf(prevRange) !== -1) {
+                    this.setInternalTime(this.currentStop.start);
+                    this.currentRange = prevRange;
+                    this.advanceToStop(this.currentStop, this.currentStop, prevRange);
+                    // And time.
+                    return this.getTime();
+                }
+
+                return this.getTime();
+            }
+
+            setRange(id: string) {
+
+                console.log('setRange', id);
+
+                if (id === this.currentRange) {
+                    return this.getTime();
+                }
+
+                this.currentRange = id;
+
+                if (id === this.currentStop.rangeId) {
+                    // Or the start of the range?
+                    return this.getTime();
+                }
+
+                for (const stop of this.plan.stops) {
+                    if (stop.rangeId === id) {
+                        this.setInternalTime(stop.start);
+                        this.advanceToStop(this.currentStop, stop, id);
+                        break;
+                    }
+                }
+                for (const stop of this.plan.stops) {
+                    if (stop.rangeStack.indexOf(id) !== -1) {
+                        this.setInternalTime(stop.start);
+                        this.advanceToStop(this.currentStop, stop, id);
+                        break;
+                    }
+                }
+
+                return this.getTime();
+            }
+
+            isBuffering() {
+                return this.media.isBuffering();
+            }
+
+            // Time that has ticked over.
+            advanceToTime(time: number) {
+                // this.log('advanceToTime', this.getTime().toFixed(0), time.toFixed(0));
+
+                const stop = this.findStop(time);
+                if (stop && this.currentStop !== stop) {
+                    this.advanceToStop(this.currentStop, stop);
+                    return { buffering: this.isBuffering(), time };
+                }
+                // User has selected top level range.
+                if (this.playing && this.currentRange !== this.currentStop.rangeId) {
+                    this.currentRange = this.currentStop.rangeId;
+                    console.log('Breaking here?');
+                    this.notifyRangeChange(this.currentStop.rangeId, { from: this.currentStop, to: this.currentStop });
+                }
+
+                if (!stop) {
+                    this.pause();
+                    this.setTime(this.currentStop.end);
+                    return { paused: true, buffering: this.isBuffering(), time: this.currentStop.end };
+                } else {
+                    this.setInternalTime(time);
+                    this.media.syncClock(this.currentMediaTime());
+                    return { time };
+                }
+            }
+
+            hasEnded() {
+                return this.currentStop.end === this.getTime();
+            }
+
+            async advanceToStop(from: TimeStop, to: TimeStop, rangeId?: string) {
+                if (from === to) {
+                    if (rangeId) {
+                        this.notifyRangeChange(rangeId ? rangeId : to.rangeId, {to, from})
+                    }
+                    return;
+                };
+                this.log('advanceToStop', to.start);
+                this.currentStop = to;
+
+                const promise = this.media.seekTo(
+                  this.plan.canvases[to.canvasIndex],
+                  this.currentMediaTime()
+                );
+
+                this.notifyRangeChange(rangeId ? rangeId : to.rangeId, { to, from });
+
+                await promise;
+            }
+
+            getStartTime() {
+                return this.plan.start;
+            }
+
+            getDuration() {
+                return this.plan.duration;
+            }
+
+        }
+
+    }
 
     export interface IAVCanvasInstanceData extends IAVComponentData {
         canvas?: Manifesto.ICanvas | VirtualCanvas;
@@ -230,6 +1239,7 @@ namespace IIIFComponents {
         public $playerElement: JQuery;
         public isOnlyCanvasInstance: boolean = false;
         public logMessage: (message: string) => void;
+        public timePlanPlayer: AVHelpers.TimePlanPlayer;
 
         constructor(options: _Components.IBaseComponentOptions) {
             super(options);
@@ -249,6 +1259,107 @@ namespace IIIFComponents {
 
         public getClockTime(): number {
             return this._canvasClockTime;
+        }
+
+
+        public createTimeStops() {
+            const helper = this._data.helper;
+            const canvas = this._data.canvas as VirtualCanvas;
+            if (!helper || !canvas) {
+                return;
+            }
+
+
+            this.ranges = [];
+            this._contentAnnotations = [];
+
+
+            const canvases = canvas.canvases;
+            const mediaElements: AVHelpers.MediaElement[] = [];
+            for (const canvas of canvases) {
+                const annotations = canvas.getContent();
+                for (const annotation of annotations) {
+                    const annotationBody = AVHelpers.extractMediaFromAnnotationBodies(annotation);
+                    if (!annotationBody) continue;
+                    const mediaSource = AVHelpers.getMediaSourceFromAnnotationBody(
+                      annotation,
+                      annotationBody,
+                      {
+                          id: canvas.id,
+                          duration: canvas.getDuration() || 0,
+                          height: canvas.getHeight(),
+                          width: canvas.getWidth()
+                      }
+                    );
+
+                    const mediaElement = new AVHelpers.MediaElement(mediaSource, {
+                        adaptiveAuthEnabled: this._data.adaptiveAuthEnabled,
+                    });
+
+                    mediaElement.setSize(
+                      this._convertToPercentage(mediaSource.x || 0, canvas.getHeight()),
+                      this._convertToPercentage(mediaSource.y || 0, canvas.getWidth()),
+                      this._convertToPercentage(mediaSource.width || canvas.getWidth(), canvas.getWidth()),
+                      this._convertToPercentage(mediaSource.height || canvas.getHeight(), canvas.getHeight())
+                    );
+
+                    mediaElements.push(mediaElement);
+
+                    const seeAlso: any = annotation.getProperty('seeAlso');
+                    if (seeAlso && seeAlso.length) {
+                        const dat: string = seeAlso[0].id;
+                        this.waveforms.push(dat);
+                    }
+                }
+            }
+
+            const compositeMediaElement = new AVHelpers.CompositeMediaElement(mediaElements);
+
+            compositeMediaElement.appendTo(this.$playerElement);
+
+            compositeMediaElement.load().then(() => {
+                // this._updateDurationDisplay();
+                this.fire(AVComponent.Events.MEDIA_READY);
+            });
+
+            // this._renderSyncIndicator(data)
+
+            const plan = AVHelpers.createTimePlansFromManifest(
+              helper.manifest as Manifesto.Manifest,
+              mediaElements,
+            );
+
+            // @ts-ignore
+            window.timePlanPlayer = this.timePlanPlayer = new AVHelpers.TimePlanPlayer(
+              compositeMediaElement,
+              plan,
+              (rangeId) => {
+                  this.setCurrentRangeId(rangeId, { autoChanged: true });
+              },
+              (time) => {
+                  this._canvasClockTime = time;
+              },
+              (isPlaying) => {
+                  if (isPlaying) {
+                      this.play();
+                  } else {
+                      this.pause();
+                  }
+              }
+            );
+
+            
+            // 1) DONE - Create list of all the media and load into the DOM.
+            // 2) DONE - Create the time stops, with references to the media.
+            // 3) Set canvas height and width
+            // 4) Attach button events (this this class)
+            // 5) Create slider and containers
+            // 6) Push wave forms
+
+
+            // this.fire(AVComponent.Events.MEDIA_READY);
+            // - Which increments a "number loaded"
+            // - Maybe change this.
         }
 
         public init() {
@@ -321,50 +1432,67 @@ namespace IIIFComponents {
             );
             this._$canvasTimelineContainer.append(this._$canvasHoverPreview, this._$canvasHoverHighlight, this._$durationHighlight);
             this._$rangeTimelineContainer.append(this._$rangeHoverPreview, this._$rangeHoverHighlight);
-            this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
+            this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$controlsContainer);
             this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
 
             this._$canvasHoverPreview.hide();
             this._$rangeHoverPreview.hide();
 
-            if (this._data && this._data.helper && this._data.canvas) {
+            const newRanges = this.isVirtual() && AVComponent.newRanges;
 
-                let ranges: Manifesto.IRange[] = [];
 
-                // if the canvas is virtual, get the ranges for all sub canvases
-                if (this.isVirtual()) {
-                    (<VirtualCanvas>this._data.canvas).canvases.forEach((canvas: Manifesto.ICanvas) => {
-                        if (this._data && this._data.helper) {
-                            let r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
-
-                            let clonedRanges: Manifesto.IRange[] = [];
-
-                            // shift the range targets forward by the duration of their previous canvases
-                            r.forEach((range: Manifesto.IRange) => {
-
-                                const clonedRange = jQuery.extend(true, {}, range);
-                                clonedRanges.push(clonedRange);
-
-                                if (clonedRange.canvases && clonedRange.canvases.length) {
-
-                                    for (let i = 0; i < clonedRange.canvases.length; i++) {
-                                        clonedRange.canvases[i] = <string>AVComponentUtils.retargetTemporalComponent((<VirtualCanvas>this._data.canvas).canvases, clonedRange.__jsonld.items[i].id);
-                                    }
-
-                                }
-                            });
-
-                            ranges.push(...clonedRanges);
-                        }
-                    });
-                } else {
-                    ranges = ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Manifesto.ICanvas));
-                }
-
-                ranges.forEach((range: Manifesto.IRange) => {
-                    this.ranges.push(range);
-                });
+            // Should bootstrap ranges and content.
+            if (newRanges) {
+                this.createTimeStops();
             }
+
+
+
+            if (!newRanges) {
+                if (this._data && this._data.helper && this._data.canvas) {
+
+                    let ranges: Manifesto.IRange[] = [];
+
+                    // if the canvas is virtual, get the ranges for all sub canvases
+                    if (this.isVirtual()) {
+
+                        // @todo - create time slices.
+
+
+                        (<VirtualCanvas>this._data.canvas).canvases.forEach((canvas: Manifesto.ICanvas) => {
+                            if (this._data && this._data.helper) {
+                                let r: Manifesto.IRange[] = this._data.helper.getCanvasRanges(canvas);
+
+                                let clonedRanges: Manifesto.IRange[] = [];
+
+                                // shift the range targets forward by the duration of their previous canvases
+                                r.forEach((range: Manifesto.IRange) => {
+
+                                    const clonedRange = jQuery.extend(true, {}, range);
+                                    clonedRanges.push(clonedRange);
+
+                                    if (clonedRange.canvases && clonedRange.canvases.length) {
+
+                                        for (let i = 0; i < clonedRange.canvases.length; i++) {
+                                            clonedRange.canvases[i] = <string>AVComponentUtils.retargetTemporalComponent((<VirtualCanvas>this._data.canvas).canvases, clonedRange.__jsonld.items[i].id);
+                                        }
+
+                                    }
+                                });
+
+                                ranges.push(...clonedRanges);
+                            }
+                        });
+                    } else {
+                        ranges = ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Manifesto.ICanvas));
+                    }
+
+                    ranges.forEach((range: Manifesto.IRange) => {
+                        this.ranges.push(range);
+                    });
+                }
+            }
+
 
             const canvasWidth: number = this._data.canvas.getWidth();
             const canvasHeight: number = this._data.canvas.getHeight();
@@ -427,41 +1555,55 @@ namespace IIIFComponents {
             });
 
             this._$fastForward.on('touchstart click', e => {
-                console.log('Fast forward');
                 const { end } = this.getRangeTiming();
                 const goToTime = this.getClockTime() + 20;
                 if (goToTime < end) {
-                    return this.setCurrentTime(goToTime)
+                    return this._setCurrentTime(goToTime)
                 }
-                return this.setCurrentTime(end)
+                return this._setCurrentTime(end)
             });
 
             this._$fastRewind.on('touchstart click', e => {
                 const { start } = this.getRangeTiming();
                 const goToTime = this.getClockTime() - 20;
                 if (goToTime >= start) {
-                    return this.setCurrentTime(goToTime)
+                    return this._setCurrentTime(goToTime)
                 }
-                return this.setCurrentTime(start);
+                return this._setCurrentTime(start);
             });
 
-            this._$canvasTimelineContainer.slider({
-                value: 0,
-                step: 0.01,
-                orientation: "horizontal",
-                range: "min",
-                max: that._getDuration(),
-                animate: false,
-                create: function (evt: any, ui: any) {
-                    // on create
-                },
-                slide: function (evt: any, ui: any) {
-                    that._setCurrentTime(ui.value);
-                },
-                stop: function (evt: any, ui: any) {
-                    //this._setCurrentTime(ui.value);
-                }
-            });
+            if (newRanges) {
+                this._$canvasTimelineContainer.slider({
+                    value: 0,
+                    step: 0.01,
+                    orientation: "horizontal",
+                    range: "min",
+                    min: 0,
+                    max: this.timePlanPlayer.getDuration(),
+                    animate: false,
+                    slide:  (evt: any, ui: any) => {
+                        this._setCurrentTime(this.timePlanPlayer.plan.start + ui.value);
+                    },
+                });
+            } else {
+                this._$canvasTimelineContainer.slider({
+                    value: 0,
+                    step: 0.01,
+                    orientation: "horizontal",
+                    range: "min",
+                    max: that._getDuration(),
+                    animate: false,
+                    create: function (evt: any, ui: any) {
+                        // on create
+                    },
+                    slide: function (evt: any, ui: any) {
+                        that._setCurrentTime(ui.value);
+                    },
+                    stop: function (evt: any, ui: any) {
+                        //this._setCurrentTime(ui.value);
+                    }
+                });
+            }
 
             this._$canvasTimelineContainer.mouseout(() => {
                 that._$canvasHoverHighlight.width(0);
@@ -474,17 +1616,28 @@ namespace IIIFComponents {
             });
 
             this._$canvasTimelineContainer.on("mousemove", (e) => {
-                this._updateHoverPreview(e, this._$canvasTimelineContainer, this._getDuration());
+                if (newRanges) {
+                    this._updateHoverPreview(e, this._$canvasTimelineContainer, this.timePlanPlayer.getDuration());
+                } else {
+                    this._updateHoverPreview(e, this._$canvasTimelineContainer, this._getDuration());
+                }
             });
 
             this._$rangeTimelineContainer.on("mousemove", (e) => {
-                if (this._data.range) {
+                if (newRanges) {
+                    this._updateHoverPreview(e, this._$canvasTimelineContainer, this.timePlanPlayer.getDuration());
+                } else if (this._data.range) {
                     const duration: Manifesto.Duration | undefined = this._data.range.getDuration();
                     this._updateHoverPreview(e, this._$rangeTimelineContainer, duration ? duration.getLength() : 0);
                 }
             });
 
-            // create annotations
+
+            if (newRanges) {
+                return
+            }
+
+                // create annotations
 
             this._contentAnnotations = [];
 
@@ -570,16 +1723,16 @@ namespace IIIFComponents {
                 }
 
                 const positionLeft = parseInt(String(xywh[0])),
-                    positionTop = parseInt(String(xywh[1])),
-                    mediaWidth = parseInt(String(xywh[2])),
-                    mediaHeight = parseInt(String(xywh[3])),
-                    startTime = parseInt(String(t[0])),
-                    endTime = parseInt(String(t[1]));
+                  positionTop = parseInt(String(xywh[1])),
+                  mediaWidth = parseInt(String(xywh[2])),
+                  mediaHeight = parseInt(String(xywh[3])),
+                  startTime = parseInt(String(t[0])),
+                  endTime = parseInt(String(t[1]));
 
                 const percentageTop = this._convertToPercentage(positionTop, this._canvasHeight),
-                    percentageLeft = this._convertToPercentage(positionLeft, this._canvasWidth),
-                    percentageWidth = this._convertToPercentage(mediaWidth, this._canvasWidth),
-                    percentageHeight = this._convertToPercentage(mediaHeight, this._canvasHeight);
+                  percentageLeft = this._convertToPercentage(positionLeft, this._canvasWidth),
+                  percentageWidth = this._convertToPercentage(mediaWidth, this._canvasWidth),
+                  percentageHeight = this._convertToPercentage(mediaHeight, this._canvasHeight);
 
                 const temporalOffsets: RegExpExecArray | null = /t=([^&]+)/g.exec(body.id);
 
@@ -592,7 +1745,7 @@ namespace IIIFComponents {
                 }
 
                 const offsetStart = (ot[0]) ? parseInt(<string>ot[0]) : ot[0],
-                    offsetEnd = (ot[1]) ? parseInt(<string>ot[1]) : ot[1];
+                  offsetEnd = (ot[1]) ? parseInt(<string>ot[1]) : ot[1];
 
                 // todo: type this
                 const itemData: any = {
@@ -668,6 +1821,10 @@ namespace IIIFComponents {
         }
 
         private _getDuration(): number {
+            if (this.isVirtual() && AVComponent.newRanges) {
+                return this.timePlanPlayer.getDuration();
+            }
+
             if (this._data && this._data.canvas) {
                 return Math.floor(<number>this._data.canvas.getDuration());
             }
@@ -705,12 +1862,95 @@ namespace IIIFComponents {
             return false;
         }
 
+        setVisibility(visibility: boolean) {
+            if (this._data.visible === visibility) {
+                return;
+            }
+
+            this._data.visible = visibility;
+            if (visibility) {
+                this._rewind();
+                this.$playerElement.show();
+            } else {
+                this.$playerElement.hide();
+                this.pause();
+            }
+            this.resize();
+        }
+
+
+
+        viewRange(rangeId: string) {
+            if (this.currentRange !== rangeId) {
+                console.log(`Switching range from ${this.currentRange} to ${rangeId}`);
+                this.setCurrentRangeId(rangeId);
+                // Entrypoint for changing a range. Only get's called when change came from external source.
+                this._setCurrentTime(this.timePlanPlayer.setRange(rangeId), true);
+
+                this._render();
+            }
+        }
+
+        limitToRange: boolean;
+        currentRange?: string;
+        setCurrentRangeId(range: null | string, {
+            autoChanged = false,
+            limitToRange = false
+        } : { autoChanged?: boolean, limitToRange?: boolean  } = {}) {
+            if (!this.currentRange && range && this.limitToRange) {
+                // @todo which case was this covering..
+                //this.limitToRange = false;
+            }
+
+            console.log('Setting current range id', range);
+
+
+            // This is the end of the chain for changing a range.
+            if (range && this.currentRange !== range) {
+                this.currentRange = range;
+                this.fire(AVComponent.Events.RANGE_CHANGED, range);
+            } else if (range === null) {
+                this.currentRange = undefined;
+                this.fire(AVComponent.Events.RANGE_CHANGED, null);
+            }
+
+            this._render();
+        }
+
+        setVolume(volume: number) {
+            this._volume.set({ volume });
+            this.timePlanPlayer.setVolume(volume);
+        }
+
+        setLimitToRange(limitToRange: boolean) {
+            console.log(this._data.constrainNavigationToRange);
+            if (this.limitToRange !== limitToRange) {
+                this.limitToRange = limitToRange;
+                this._render();
+            }
+        }
+
         public set(data: IAVCanvasInstanceData): void {
 
+            // Simplification of setting state.
+            if (AVComponent.newRanges && this.isVirtual()) {
+
+                if (typeof data.range !== 'undefined') this.setCurrentRangeId(data.range.id, {limitToRange: data.limitToRange});
+                if (typeof data.rangeId !== 'undefined') this.setCurrentRangeId(data.rangeId, {limitToRange: data.limitToRange});
+                if (typeof data.volume !== 'undefined') this.setVolume(data.volume);
+                if (typeof data.limitToRange !== 'undefined') this.setLimitToRange(data.limitToRange);
+                if (typeof data.visible !== 'undefined') this.setVisibility(data.visible);
+
+
+                return;
+            }
+            
+            
             const oldData: IAVCanvasInstanceData = Object.assign({}, this._data);
             this._data = Object.assign(this._data, data);
             const diff: string[] = AVComponentUtils.diff(oldData, this._data);
-
+            
+            
             if (diff.includes('visible')) {
 
                 if (this._data.canvas) {
@@ -780,11 +2020,15 @@ namespace IIIFComponents {
         }
 
         private _hasRangeChanged(): void {
+            if (this.isVirtual() && AVComponent.newRanges) {
+                return;
+            }
 
             const range: Manifesto.IRange | undefined = this._getRangeForCurrentTime();
 
             if (range && !this._data.limitToRange && (!this._data.range || (this._data.range && range.id !== this._data.range.id))) {
 
+                console.log('Did you change the range?', range);
                 this.set({
                     range: jQuery.extend(true, { autoChanged: true }, range)
                 });
@@ -860,6 +2104,62 @@ namespace IIIFComponents {
         }
 
         private _render(): void {
+            if (this.isVirtual() && AVComponent.newRanges && this.isVisible()) {
+
+                console.groupCollapsed('Rendering a new range!');
+                console.log({
+                    dataRange: this._data.rangeId,
+                    range: this.currentRange,
+                    newLimitToRange: this.limitToRange,
+                    constraintToRange: this._data.constrainNavigationToRange,
+                    autoSelectRange: this._data.autoSelectRange,
+                });
+
+
+                // 3 ways to render:
+                // Limit to range + no id = show everything
+                // Limit to range + id = show everything in context
+                // No limit to range = show everything
+                // No limit -> Limit (+ range) = show just range
+
+                // - Range id + limitToRange
+                // - Range id
+                // - nothing
+
+                if (this.limitToRange && this.currentRange) {
+                    console.log('Selecting plan...', this.currentRange);
+                    this.timePlanPlayer.selectPlan({ rangeId: this.currentRange });
+                } else {
+                    console.log('Resetting...');
+                    this.timePlanPlayer.selectPlan({ reset: true });
+                }
+
+
+                const ratio = this._$canvasTimelineContainer.width() / this.timePlanPlayer.getDuration();
+                this._$durationHighlight.show();
+
+                const { start, duration } = this.timePlanPlayer.getCurrentRange();
+
+                this._$canvasTimelineContainer.slider({
+                    value: this._canvasClockTime - this.timePlanPlayer.plan.start,
+                    max: this.timePlanPlayer.getDuration(),
+                });
+
+
+                // set the start position and width
+                this._$durationHighlight.css({
+                    left: start * ratio,
+                    width: duration * ratio
+                });
+
+                console.groupEnd();
+
+                this._updateCurrentTimeDisplay();
+                this._updateDurationDisplay();
+                this._drawWaveform();
+
+                return;
+            }
 
             // Hide/show UI elements regardless of visibility.
             if (this._data.limitToRange && this._data.range) {
@@ -883,20 +2183,21 @@ namespace IIIFComponents {
             }
 
             // Render otherwise.
-            if (this._data.range) {
+            if (this._data.range && !(this.isVirtual() && AVComponent.newRanges)) {
 
                 const duration: Manifesto.Duration | undefined = this._data.range.getDuration();
 
                 if (duration) {
 
                     // get the total length in seconds.
-                    const totalLength: number = this._getDuration();
+                    const totalDuration: number = this._getDuration();
 
                     // get the length of the timeline container
                     const timelineLength: number = <number>this._$canvasTimelineContainer.width();
 
                     // get the ratio of seconds to length
-                    const ratio: number = timelineLength / totalLength;
+                    const ratio: number = timelineLength / totalDuration;
+                    const totalLength = totalDuration * ratio;
                     const start: number = duration.start * ratio;
                     let end: number = duration.end * ratio;
 
@@ -1004,6 +2305,16 @@ namespace IIIFComponents {
         }
 
         private _previous(isDouble: boolean): void {
+            if (AVComponent.newRanges && this.isVirtual()) {
+                console.groupCollapsed('prev');
+                const newTime = this.timePlanPlayer.previous();
+                this._setCurrentTime(newTime);
+                console.log('new time -> ', newTime);
+                console.groupEnd()
+                return;
+            }
+
+
             if (this._data.limitToRange) {
                 // if only showing the range, single click rewinds, double click goes to previous range unless navigation is contrained to range
                 if (isDouble) {
@@ -1035,6 +2346,12 @@ namespace IIIFComponents {
         }
 
         private _next(): void {
+            if (AVComponent.newRanges && this.isVirtual()) {
+                console.groupCollapsed('next');
+                this._setCurrentTime(this.timePlanPlayer.next(), false);
+                console.groupEnd();
+                return;
+            }
             if (this._data.limitToRange) {
                 if (this._isNavigationConstrainedToRange()) {
                     this._fastforward();
@@ -1209,8 +2526,9 @@ namespace IIIFComponents {
                 }
             });
 
-            $mediaElement.attr('preload', 'auto');
+            $mediaElement.attr('preload', 'metadata');
 
+            // @todo why?
             (<any>$mediaElement.get(0)).load();
 
             this._renderSyncIndicator(data);
@@ -1305,7 +2623,7 @@ namespace IIIFComponents {
                     const width = this._waveformCanvas!.getBoundingClientRect().width || 0;
                     if (width) {
                         const { start, duration } = this.getRangeTiming();
-                        this.setCurrentTime(
+                        this._setCurrentTime(
                             start + (duration * (this.waveformDeltaX / width))
                         );
                     }
@@ -1325,6 +2643,15 @@ namespace IIIFComponents {
         }
 
         private getRangeTiming(): { start: number, end: number, duration: number, percent: number } {
+            if (AVComponent.newRanges && this.isVirtual()) {
+                return {
+                    start: this.timePlanPlayer.plan.start,
+                    end: this.timePlanPlayer.plan.end,
+                    duration: this.timePlanPlayer.plan.duration,
+                    percent: Math.min((this.timePlanPlayer.getTime() - this.timePlanPlayer.plan.start) / this.timePlanPlayer.plan.duration, 1),
+                };
+            }
+
             let durationObj: Manifesto.Duration | undefined;
             let start = 0;
             let end = this._compositeWaveform ? this._compositeWaveform.duration : -1;
@@ -1333,6 +2660,10 @@ namespace IIIFComponents {
             // This is very similar to
             if (this._data.range) {
                 durationObj = this._data.range.getDuration();
+            }
+
+            if (!this.isVirtual()) {
+               end = this._getDuration();
             }
 
             if (this._data.limitToRange && durationObj) {
@@ -1348,6 +2679,7 @@ namespace IIIFComponents {
             }
 
             if (end === -1) {
+                console.log('getRangeTiming', {start, end, duration, durationObj})
                 console.log('Duration not found...');
             }
 
@@ -1380,12 +2712,13 @@ namespace IIIFComponents {
 
             var inc = canvasWidth / (end - start);
             const listOfBuffers: Array<[number, number]> = [];
+
             if (this._contentAnnotations) {
                 for (let i = 0; i < this._contentAnnotations.length; i++) {
                     const contentAnnotation = this._contentAnnotations[i];
                     if (contentAnnotation && contentAnnotation.element) {
                         const element: HTMLAudioElement = contentAnnotation.element[0];
-                        const annoStart: number = contentAnnotation.start;
+                        const annoStart: number = contentAnnotation.startOffest || 0;
                         const active: boolean = contentAnnotation.active;
                         if (active) {
                             for (let i = 0; i < element.buffered.length; i++) {
@@ -1401,26 +2734,77 @@ namespace IIIFComponents {
                     }
                 }
             }
+
+            const newList: any[] = [];
+
+
+            if (this.isVirtual() && AVComponent.newRanges) {
+                const plan = this.timePlanPlayer.plan;
+
+                const compositeCanvas = this._data.canvas as VirtualCanvas;
+                for (const stop of plan.stops) {
+                    const map = compositeCanvas.durationMap[plan.canvases[stop.canvasIndex]];
+                    const canvasEndTime = map.runningDuration;
+                    const canvasStartTime = canvasEndTime - map.duration;
+
+                    // Start percentage.
+                    // End percentage.
+
+
+                    newList.push({
+                        start: (stop.start - plan.start) / plan.duration,
+                        end: (stop.end - plan.start) / plan.duration,
+                        duration: stop.duration,
+                        startTime: canvasStartTime + stop.canvasTime.start,
+                        endTime: canvasStartTime + stop.canvasTime.start + stop.canvasTime.end,
+                    });
+                }
+            } else {
+
+                newList.push({ start: 0, duration: end - start, end, startTime: start})
+            }
+
+            // console.log('new list', newList);
+
+            let current = 0;
             for (let x = startpx; x < endpx; x += increment) {
-                const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
-                const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
-                const ypos = (canvasHeight - height) / 2;
-                const xpos = canvasWidth * AVComponentUtils.normalise(x, startpx, endpx);
-                const pastCurrentTime = xpos/canvasWidth < percent;
-                const hoverWidth = this.waveformDeltaX/canvasWidth;
-                let colour = <string>this._data.waveformColor;
-                // For colours.
-                // ======o-------T_____
-                //       ^ current time
-                // ======o-------T_____
-                //               ^ cursor
+                const rangePercentage = AVComponentUtils.normalise(x, startpx, endpx);
+                const xpos = rangePercentage * canvasWidth;
+                if (newList[current].end < rangePercentage) {
+                    current++;
+                }
+                const section: { start: number, startTime: number; duration: number } = newList[current];
+
+                // range percent 0..1
+                // section.start = 1.73
+                // section.duration = 1806
+                // section.startTime = 1382
+                // section.endTime = 5003
                 //
+                // What I need
+                // - time in seconds for the current increment
+                // startTime + (0) - the first will always be the start time.
+                // startTime + ( rangePercentage *  )
+
+
+                const partPercent = (rangePercentage - section.start);
+                const toSample = Math.floor((section.startTime + (partPercent * (section.duration))) * this._compositeWaveform.pixelsPerSecond);
+
+                // console.log('sample seconds -> ', { sample: toSample/60, partPercent, rangePercentage })
+
+                const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, toSample, sampleSpacing);
+                const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
+                const pastCurrentTime = (xpos / canvasWidth) < percent;
+                const hoverWidth = this.waveformDeltaX / canvasWidth;
+                let colour = <string>this._data.waveformColor;
+                const ypos = (canvasHeight - height) / 2;
+
                 if (pastCurrentTime) {
                     if (this.waveformDeltaX === 0) {
                         // ======o_____
                         //   ^ this colour, no hover
                         colour = '#14A4C3';
-                    } else if (xpos/canvasWidth < hoverWidth) {
+                    } else if (xpos / canvasWidth < hoverWidth) {
                         // ======T---o_____
                         //    ^ this colour
                         colour = '#11758e'; // dark
@@ -1429,7 +2813,7 @@ namespace IIIFComponents {
                         //         ^ this colour
                         colour = '#14A4C3'; // normal
                     }
-                } else if (xpos/canvasWidth < hoverWidth) {
+                } else if (xpos / canvasWidth < hoverWidth) {
                     // ======o-------T_____
                     //           ^ this colour
                     colour = '#86b3c3'; // lighter
@@ -1446,6 +2830,63 @@ namespace IIIFComponents {
                 this._waveformCtx.fillStyle = colour;
                 this._waveformCtx.fillRect(xpos, ypos, barWidth, height | 0);
             }
+
+                return;
+//
+//
+//             // let i = 0;
+//             for (const [innerStartPx, innerEndPx, innerIncr, sectionWidth, offsetX] of startEndList) {
+//                 for (let x = innerStartPx; x < innerEndPx; x += innerIncr) {
+//                     const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
+//                     const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
+//                     const ypos = (canvasHeight - height) / 2;
+//                     const xpos = offsetX + (sectionWidth * AVComponentUtils.normalise(x, innerStartPx, innerEndPx));
+//                     const pastCurrentTime = xpos / canvasWidth < percent;
+//                     const hoverWidth = this.waveformDeltaX / canvasWidth;
+//                     let colour = <string>this._data.waveformColor;
+//  
+//                     // colour = ['#fff', 'red'][i % 2];
+//
+//                     // For colours.
+//                     // ======o-------T_____
+//                     //       ^ current time
+//                     // ======o-------T_____
+//                     //               ^ cursor
+//                     //
+//                     if (pastCurrentTime) {
+//                         if (this.waveformDeltaX === 0) {
+//                             // ======o_____
+//                             //   ^ this colour, no hover
+//                             colour = '#14A4C3';
+//                         } else if (xpos / canvasWidth < hoverWidth) {
+//                             // ======T---o_____
+//                             //    ^ this colour
+//                             colour = '#11758e'; // dark
+//                         } else {
+//                             // ======T---o_____
+//                             //         ^ this colour
+//                             colour = '#14A4C3'; // normal
+//                         }
+//                     } else if (xpos / canvasWidth < hoverWidth) {
+//                         // ======o-------T_____
+//                         //           ^ this colour
+//                         colour = '#86b3c3'; // lighter
+//                     } else {
+//                         colour = '#8a9aa1';
+//                         for (const [a, b] of listOfBuffers) {
+//                             if (xpos > a && xpos < b) {
+//                                 colour = '#fff';
+//                                 break;
+//                             }
+//                         }
+//                     }
+//
+//                     this._waveformCtx.fillStyle = colour;
+//                     this._waveformCtx.fillRect(xpos, ypos, barWidth, height | 0);
+//                 }
+//                 // i++;
+//             }
+
         }
 
         private _scaleY = (amplitude: number, height: number) => {
@@ -1474,7 +2915,23 @@ namespace IIIFComponents {
             return { max, min };
         }
 
+        public isLimitedToRange() {
+            return this._data.limitToRange;
+        }
+
+        public hasCurrentRange() {
+            return !!this._data.range;
+        }
+
         private _updateCurrentTimeDisplay(): void {
+            if (AVComponent.newRanges && this.isVirtual()) {
+
+                this._$canvasTime.text(AVComponentUtils.formatTime(
+                  this._canvasClockTime - this.timePlanPlayer.getStartTime()
+                ));
+
+                return;
+            }
 
             let duration: Manifesto.Duration | undefined;
 
@@ -1491,6 +2948,12 @@ namespace IIIFComponents {
         }
 
         private _updateDurationDisplay(): void {
+            if (AVComponent.newRanges && this.isVirtual()) {
+                this._$canvasDuration.text(AVComponentUtils.formatTime(
+                  this.timePlanPlayer.getDuration()
+                ));
+                return;
+            }
 
             let duration: Manifesto.Duration | undefined;
 
@@ -1506,11 +2969,15 @@ namespace IIIFComponents {
         }
 
         private _renderSyncIndicator(mediaElementData: any) {
+            if (AVComponent.newRanges && this.isVirtual()) {
+                console.log('_renderSyncIndicator');
+                return;
+            }
 
             const leftPercent: number = this._convertToPercentage(mediaElementData.start, this._getDuration());
             const widthPercent: number = this._convertToPercentage(mediaElementData.end - mediaElementData.start, this._getDuration());
 
-            const $timelineItem: JQuery = $('<div class="timeline-item" title="' + mediaElementData.source + '" data-start="' + mediaElementData.start + '" data-end="' + mediaElementData.end + '"></div>');
+            const $timelineItem: JQuery = $('<div class="timeline-item"></div>');
 
             $timelineItem.css({
                 left: leftPercent + '%',
@@ -1528,11 +2995,24 @@ namespace IIIFComponents {
             }
         }
 
-        public setCurrentTime(seconds: number): void {
-            return this._setCurrentTime(seconds);
+        public setCurrentTime(seconds: number): Promise<void> {
+            console.log('External set current time?');
+            return this._setCurrentTime(seconds, false);
         }
 
-        private _setCurrentTime(seconds: number): void { // seconds was originally a string or a number - didn't seem necessary
+        private async _setCurrentTime(seconds: number, setRange: boolean = true): Promise<void> {
+            if (AVComponent.newRanges && this.isVirtual()) {
+                this._buffering = true;
+                await this.timePlanPlayer.setTime(seconds, setRange);
+                this._buffering = false;
+                this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
+                this._canvasClockUpdater();
+                this._highPriorityUpdater();
+                this._lowPriorityUpdater();
+                this._synchronizeMedia();
+                return;
+            }
+            // seconds was originally a string or a number - didn't seem necessary
             // const secondsAsFloat: number = parseFloat(seconds.toString());
 
             // if (isNaN(secondsAsFloat)) {
@@ -1556,6 +3036,11 @@ namespace IIIFComponents {
 
         private _rewind(withoutUpdate?: boolean): void {
 
+            if (AVComponent.newRanges && this.isVirtual()) {
+                console.log('Rewind');
+                return;
+            }
+
             this.pause();
 
             let duration: Manifesto.Duration | undefined;
@@ -1565,9 +3050,9 @@ namespace IIIFComponents {
             }
 
             if (this._data.limitToRange && duration) {
-                this.setCurrentTime(duration.start)
+                this._setCurrentTime(duration.start)
             } else {
-                this.setCurrentTime(0);
+                this._setCurrentTime(0);
             }
 
             if (!this._data.limitToRange) {
@@ -1580,6 +3065,11 @@ namespace IIIFComponents {
         }
 
         private _fastforward(): void {
+
+            if (AVComponent.newRanges && this.isVirtual()) {
+                console.log('Fast forward');
+                return;
+            }
 
             let duration: Manifesto.Duration | undefined;
 
@@ -1598,22 +3088,32 @@ namespace IIIFComponents {
 
         // todo: can this be part of the _data state?
         // this._data.play = true?
-        public play(withoutUpdate?: boolean): void {
-
+        public async play(withoutUpdate?: boolean): Promise<void> {
             if (this._isPlaying) return;
 
-            let duration: Manifesto.Duration | undefined;
+            if (AVComponent.newRanges && this.isVirtual()) {
 
-            if (this._data.range) {
-                duration = this._data.range.getDuration();
-            }
+                if (this.timePlanPlayer.hasEnded()) {
+                    this._buffering = true;
+                    await this.timePlanPlayer.setTime(this.timePlanPlayer.currentStop.start);
+                    this._buffering = false;
+                }
+                this.timePlanPlayer.play();
 
-            if (this._data.limitToRange && duration && this._canvasClockTime >= duration.end) {
-                this._canvasClockTime = duration.start;
-            }
+            } else {
+                let duration: Manifesto.Duration | undefined;
 
-            if (this._canvasClockTime === this._getDuration()) {
-                this._canvasClockTime = 0;
+                if (this._data.range) {
+                    duration = this._data.range.getDuration();
+                }
+
+                if (this._data.limitToRange && duration && this._canvasClockTime >= duration.end) {
+                    this._canvasClockTime = duration.start;
+                }
+
+                if (this._canvasClockTime === this._getDuration()) {
+                    this._canvasClockTime = 0;
+                }
             }
 
             this._canvasClockStartDate = Date.now() - (this._canvasClockTime * 1000);
@@ -1670,6 +3170,10 @@ namespace IIIFComponents {
                 this._synchronizeMedia();
             }
 
+            if (AVComponent.newRanges && this.isVirtual()) {
+                this.timePlanPlayer.pause();
+            }
+
             const label: string = (this._data && this._data.content) ? this._data.content.play : '';
             this._$playButton.prop('title', label);
             this._$playButton.find('i').switchClass('pause', 'play');
@@ -1683,6 +3187,20 @@ namespace IIIFComponents {
         }
 
         private _canvasClockUpdater(): void {
+            if (AVComponent.newRanges && this.isVirtual()) {
+
+                if (this._buffering) {
+                    return;
+                }
+
+                const { paused } = this.timePlanPlayer.advanceToTime((Date.now() - this._canvasClockStartDate) / 1000);
+                if (paused) {
+                    this.pause();
+                }
+
+                // console.log('_canvasClockUpdater');
+                return;
+            }
             if (this._buffering) {
                 return;
             }
@@ -1710,18 +3228,27 @@ namespace IIIFComponents {
                 this._bufferShown = false;
             }
             if (this._buffering && !this._bufferShown) {
-                console.log('buffering');
                 this.$playerElement.addClass('player--loading');
                 this._bufferShown = true;
             }
 
-            this._$rangeTimelineContainer.slider({
-                value: this._canvasClockTime
-            });
+            if (AVComponent.newRanges && this.isVirtual()) {
+                this._$rangeTimelineContainer.slider({
+                    value: this._canvasClockTime - this.timePlanPlayer.plan.start,
+                });
 
-            this._$canvasTimelineContainer.slider({
-                value: this._canvasClockTime
-            });
+                this._$canvasTimelineContainer.slider({
+                    value: this._canvasClockTime - this.timePlanPlayer.plan.start,
+                });
+            } else {
+                this._$rangeTimelineContainer.slider({
+                    value: this._canvasClockTime
+                });
+
+                this._$canvasTimelineContainer.slider({
+                    value: this._canvasClockTime
+                });
+            }
 
             this._updateCurrentTimeDisplay();
             this._updateDurationDisplay();
@@ -1738,6 +3265,18 @@ namespace IIIFComponents {
         }
 
         private _updateMediaActiveStates(): void {
+            if (AVComponent.newRanges && this.isVirtual()) {
+                if (this._isPlaying) {
+                    if (this.timePlanPlayer.isBuffering()) {
+                        this._buffering = true;
+                        return;
+                    } else if (this._buffering) {
+                        this._buffering = false;
+                    }
+                    this.timePlanPlayer.advanceToTime(this._canvasClockTime);
+                }
+                return;
+            }
 
             let contentAnnotation;
 
@@ -1792,13 +3331,16 @@ namespace IIIFComponents {
         }
 
         private _setMediaCurrentTime(media: HTMLMediaElement, time: number): void {
-
             if (!isNaN(media.duration)) {
                 media.currentTime = time;
             }
         }
 
         private _synchronizeMedia(): void {
+            if (AVComponent.newRanges && this.isVirtual()) {
+                // console.log('_synchronizeMedia', this.timePlanPlayer.isBuffering());
+                return;
+            }
 
             let contentAnnotation;
 
@@ -1833,6 +3375,17 @@ namespace IIIFComponents {
         }
 
         private _checkMediaSynchronization(): void {
+            if (AVComponent.newRanges && this.isVirtual()) {
+                if (this._isPlaying) {
+                    if (this.timePlanPlayer.isBuffering()) {
+                        this._buffering = true;
+                    } else if (this._buffering) {
+                        this._buffering = false;
+                    }
+                }
+
+                return;
+            }
 
             let contentAnnotation;
 
@@ -2239,10 +3792,19 @@ namespace IIIFComponents {
 
     }
 
+    // @todo - change for time-slicing, or add new types of virtual canvas
     export class VirtualCanvas {
 
         public canvases: Manifesto.ICanvas[] = [];
         public id: string;
+
+        public durationMap: {
+            [id: string]: {
+                duration: number;
+                runningDuration: number;
+            }
+        } = {};
+        public totalDuration: number = 0;
 
         constructor() {
             // generate an id
@@ -2252,6 +3814,12 @@ namespace IIIFComponents {
         public addCanvas(canvas: Manifesto.ICanvas): void {
             // canvases need to be deep copied including functions
             this.canvases.push(jQuery.extend(true, {}, canvas));
+            const duration = canvas.getDuration() || 0;
+            this.totalDuration += duration;
+            this.durationMap[canvas.id] = {
+                duration: duration,
+                runningDuration: this.totalDuration,
+            };
         }
 
         public getContent(): Manifesto.IAnnotation[] {
@@ -2326,6 +3894,7 @@ namespace IIIFComponents {
 
     export class AVComponent extends _Components.BaseComponent {
 
+        static newRanges = true;
         private _data: IAVComponentData = this.data();
         public options: _Components.IBaseComponentOptions;
         public canvasInstances: CanvasInstance[] = [];
@@ -2398,6 +3967,9 @@ namespace IIIFComponents {
 
         public set(data: IAVComponentData): void {
 
+            console.groupCollapsed('Setting AV Component');
+            console.log('Data');
+
             const oldData: IAVComponentData = Object.assign({}, this._data);
             this._data = Object.assign(this._data, data);
             const diff: string[] = AVComponentUtils.diff(oldData, this._data);
@@ -2413,32 +3985,24 @@ namespace IIIFComponents {
                 return;
             }
 
-            if (diff.includes('limitToRange') && this._data.canvasId) {
+            this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
 
-                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({
-                        limitToRange: this._data.limitToRange
-                    });
-                });
-            }
+                const toSet: any = {};
 
-            if (diff.includes('constrainNavigationToRange') && this._data.canvasId) {
+                if (diff.includes('limitToRange') && this._data.canvasId) {
+                    toSet.limitToRange = this._data.limitToRange;
+                }
 
-                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({
-                        constrainNavigationToRange: this._data.constrainNavigationToRange
-                    });
-                });
-            }
+                if (diff.includes('constrainNavigationToRange') && this._data.canvasId) {
+                    toSet.constrainNavigationToRange = this._data.constrainNavigationToRange;
+                }
 
-            if (diff.includes('autoSelectRange') && this._data.canvasId) {
+                if (diff.includes('autoSelectRange') && this._data.canvasId) {
+                    toSet.autoSelectRange = this._data.autoSelectRange;
+                }
 
-                this.canvasInstances.forEach((canvasInstance: CanvasInstance, index: number) => {
-                    canvasInstance.set({
-                        autoSelectRange: this._data.autoSelectRange
-                    });
-                });
-            }
+                canvasInstance.set(toSet);
+            });
 
             if ((diff.includes('virtualCanvasEnabled') || diff.includes('canvasId')) && this._data.canvasId) {
 
@@ -2552,6 +4116,7 @@ namespace IIIFComponents {
 
             this._render();
             this._resize();
+            console.groupEnd();
         }
 
         private _render(): void {
@@ -2588,6 +4153,8 @@ namespace IIIFComponents {
                 const canvases: Manifesto.ICanvas[] = this._getCanvases();
 
                 if (behavior && behavior.toString() === manifesto.Behavior.autoadvance().toString()) {
+
+                    // @todo - use time-slices to create many virtual canvases with support for sliced canvases with start and end times.
 
                     const virtualCanvas: VirtualCanvas = new VirtualCanvas();
 
@@ -2671,11 +4238,12 @@ namespace IIIFComponents {
 
         }
 
-        public setCurrentTime(time: number): void {
+        public async setCurrentTime(time: number): Promise<void> {
             const canvas: CanvasInstance | undefined = this._getCurrentCanvas();
             if (canvas) {
                 return canvas.setCurrentTime(time);
             }
+            return;
         }
 
         public getCurrentTime(): number {
@@ -2715,6 +4283,7 @@ namespace IIIFComponents {
         }
 
         private _getCanvases(): Manifesto.ICanvas[] {
+            // @todo - figure out when this is used and if it needs time slicing considerations.
             if (this._data.helper) {
                 return this._data.helper.getCanvases();
             }
@@ -2723,6 +4292,8 @@ namespace IIIFComponents {
         }
 
         private _initCanvas(canvas: Manifesto.ICanvas | VirtualCanvas): void {
+
+            // @todo - change these events for time-slicing
 
             const canvasInstance: CanvasInstance = new CanvasInstance({
                 target: document.createElement('div'),
@@ -2778,6 +4349,7 @@ namespace IIIFComponents {
         }
 
         public getCurrentRange(): Manifesto.IRange | null {
+            // @todo - change for time-slicing
             const rangeId = this._data!.helper!.getCurrentRange()!.id;
             return this._getCurrentCanvas()!.ranges.find((range) => {
                 return range.id === rangeId;
@@ -2785,6 +4357,7 @@ namespace IIIFComponents {
         }
 
         private _prevRange(): void {
+            // @todo - change for time-slicing
             if (!this._data || !this._data.helper) {
                 return;
             }
@@ -2811,6 +4384,7 @@ namespace IIIFComponents {
         }
 
         private _nextRange(): void {
+            // @todo - change for time-slicing
             if (!this._data || !this._data.helper) {
                 return;
             }
@@ -2836,6 +4410,8 @@ namespace IIIFComponents {
         }
 
         private _getCanvasInstanceById(canvasId: string): CanvasInstance | undefined {
+
+            // @todo - figure out when this is used and if it needs time slicing considerations.
 
             canvasId = this._getNormaliseCanvasId(canvasId);
 
@@ -2882,6 +4458,8 @@ namespace IIIFComponents {
         }
 
         private _getCurrentCanvas(): CanvasInstance | undefined {
+
+            // @todo - use time slices to get current virtual canvas
             if (this._data.canvasId) {
                 return this._getCanvasInstanceById(this._data.canvasId);
             }
@@ -2912,6 +4490,14 @@ namespace IIIFComponents {
             }
         }
 
+        viewRange(rangeId: string) {
+            const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
+
+            if (currentCanvas) {
+                currentCanvas.viewRange(rangeId);
+            }
+        }
+
         public pause(): void {
             const currentCanvas: CanvasInstance | undefined = this._getCurrentCanvas();
 
@@ -2921,7 +4507,6 @@ namespace IIIFComponents {
         }
 
         public playRange(rangeId: string, autoChanged: boolean = false): void {
-
             if (!this._data.helper) {
                 return;
             }
@@ -2936,6 +4521,8 @@ namespace IIIFComponents {
         }
 
         public showCanvas(canvasId: string): void {
+
+            // @todo - change for time-slicing, see where it's used and probably not used it.
 
             // if the passed canvas id is already the current canvas id, but the canvas isn't visible
             // (switching from virtual canvas)

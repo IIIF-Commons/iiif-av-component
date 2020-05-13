@@ -11,6 +11,7 @@
         "noUnusedParameters": false,
         "strictNullChecks": true,
         "lib": ["es6", "dom"],
+        "target": "es5",
         "types": [
             "manifesto.js",
             "@iiif/manifold",
