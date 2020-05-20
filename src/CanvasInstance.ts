@@ -173,7 +173,7 @@ export class CanvasInstance extends BaseComponent {
     this._$rangeHoverPreview.hide();
 
     if (this._data && this._data.helper && this._data.canvas) {
-      this.$playerElement.attr('id', this._data.canvas.id);
+      this.$playerElement.attr('data-id', this._data.canvas.id);
       let ranges: Range[] = [];
 
       // if the canvas is virtual, get the ranges for all sub canvases

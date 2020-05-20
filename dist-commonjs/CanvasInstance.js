@@ -96,7 +96,7 @@ var CanvasInstance = /** @class */ (function (_super) {
         this._$canvasHoverPreview.hide();
         this._$rangeHoverPreview.hide();
         if (this._data && this._data.helper && this._data.canvas) {
-            this.$playerElement.attr('id', this._data.canvas.id);
+            this.$playerElement.attr('data-id', this._data.canvas.id);
             var ranges_1 = [];
             // if the canvas is virtual, get the ranges for all sub canvases
             if (this.isVirtual()) {
