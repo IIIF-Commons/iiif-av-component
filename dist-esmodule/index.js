@@ -346,7 +346,7 @@ var AVComponent = /** @class */ (function (_super) {
         }, false);
         canvasInstance.on(Events.MEDIA_ERROR, function (error) {
             clearInterval(_this._checkAllMediaReadyInterval);
-            _this.fire(Events.MEDIA_ERROR, error);
+            _this.fire(Events.MEDIA_ERROR, error, canvas.id);
         }, false);
         canvasInstance.on(Events.FULLSCREEN, function (state) {
             _this.fire(Events.FULLSCREEN, state);

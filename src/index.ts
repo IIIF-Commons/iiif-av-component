@@ -504,7 +504,7 @@ export class AVComponent extends BaseComponent {
       Events.MEDIA_ERROR, 
       (error : MediaError) => {
         clearInterval(this._checkAllMediaReadyInterval);
-        this.fire(Events.MEDIA_ERROR, error);
+        this.fire(Events.MEDIA_ERROR, error, canvas.id);
       }, 
       false
     );
