@@ -88,7 +88,7 @@ var CanvasInstance = /** @class */ (function (_super) {
         this._volume.on(VolumeControl_1.VolumeEvents.VOLUME_CHANGED, function (value) {
             _this.fire(VolumeControl_1.VolumeEvents.VOLUME_CHANGED, value);
         }, false);
-        this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, this._$fullscreenButton, $volume);
+        this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume, this._$fullscreenButton);
         this._$canvasTimelineContainer.append(this._$canvasHoverPreview, this._$canvasHoverHighlight, this._$durationHighlight, this._$canvasLoadingProgress);
         this._$rangeTimelineContainer.append(this._$rangeHoverPreview, this._$rangeHoverHighlight);
         this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);

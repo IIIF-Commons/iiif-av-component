@@ -148,8 +148,8 @@ export class CanvasInstance extends BaseComponent {
       this._$playButton,
       this._$nextButton,
       this._$timeDisplay,
-      this._$fullscreenButton,
-      $volume
+      $volume,
+      this._$fullscreenButton
     );
     this._$canvasTimelineContainer.append(
       this._$canvasHoverPreview,
