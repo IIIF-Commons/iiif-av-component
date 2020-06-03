@@ -40,6 +40,7 @@ var CanvasInstance = /** @class */ (function (_super) {
         _this._wasPlaying = false;
         _this.ranges = [];
         _this.waveforms = [];
+        _this._mediaDuration = 0;
         _this.isOnlyCanvasInstance = false;
         _this._scaleY = function (amplitude, height) {
             var range = 256;
@@ -378,7 +379,11 @@ var CanvasInstance = /** @class */ (function (_super) {
     };
     CanvasInstance.prototype._getDuration = function () {
         if (this._data && this._data.canvas) {
-            return this._data.canvas.getDuration();
+            var duration = this._data.canvas.getDuration();
+            if (isNaN(duration) || duration <= 0) {
+                duration = this._mediaDuration;
+            }
+            return duration;
         }
         return 0;
     };
@@ -804,17 +809,32 @@ var CanvasInstance = /** @class */ (function (_super) {
             //data.checkForStall();
         });
         $mediaElement.on("loadedmetadata", function () {
-            _this._readyMediaCount++;
-            if (_this._readyMediaCount === _this._contentAnnotations.length) {
-                //if (!this._data.range) {
-                _this.setCurrentTime(0);
-                //}
-                if (_this._data.autoPlay) {
-                    _this.play();
+            var duration = _this._getDuration();
+            //when we have incorrect timing so we set it according to the media source
+            if (isNaN(duration) || duration <= 0) {
+                _this._mediaDuration = media.duration;
+                //needed for the video to show for the whole duration
+                _this._contentAnnotations.forEach(function (contentAnnotation) {
+                    if (contentAnnotation.element[0].src == media.src) {
+                        contentAnnotation.end = media.duration;
+                    }
+                });
+                //updates the display timing
+                if (_this._data.helper && _this._data.helper.manifest && _this._data.helper.manifest.items[0].items) {
+                    var items = _this._data.helper.manifest.items[0].items;
+                    for (var i = 0; i < items.length; i++) {
+                        if (items[i].__jsonld.items[0].items[0].body.id == media.src) {
+                            items[i].__jsonld.duration = media.duration;
+                            _this.set({
+                                helper: _this._data.helper
+                            });
+                            break;
+                        }
+                    }
                 }
-                _this._updateDurationDisplay();
-                _this.fire(Events.MEDIA_READY);
             }
+            //makes the slider scrubable for the entire duration
+            _this._$canvasTimelineContainer.slider("option", "max", media.duration);
         });
         $mediaElement.on('progress', function () {
             if (media.buffered.length > 0) {
@@ -823,6 +843,18 @@ var CanvasInstance = /** @class */ (function (_super) {
                 if (duration > 0) {
                     _this._$optionsContainer.find(".loading-progress").width(((bufferedEnd / duration) * 100) + "%");
                 }
+            }
+        });
+        $mediaElement.on("canplaythrough", function () {
+            _this._readyMediaCount++;
+            if (_this._readyMediaCount === _this._contentAnnotations.length) {
+                //if (!this._data.range) {
+                _this.setCurrentTime(0);
+                //}
+                if (_this._data.autoPlay) {
+                    _this.play();
+                }
+                _this.fire(Events.MEDIA_READY);
             }
         });
         $mediaElement.attr("preload", "auto");

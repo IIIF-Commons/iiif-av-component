@@ -278,9 +278,9 @@ var AVComponent = /** @class */ (function (_super) {
         }
     };
     AVComponent.prototype._checkAllMediaReady = function () {
-        console.log("loading media");
+        //console.log("loading media");
         if (this._readyMedia === this.canvasInstances.length) {
-            console.log("all media ready");
+            //console.log("all media ready");
             clearInterval(this._checkAllMediaReadyInterval);
             //that._logMessage('CREATED CANVAS: ' + canvasInstance.canvasClockDuration + ' seconds, ' + canvasInstance.canvasWidth + ' x ' + canvasInstance.canvasHeight + ' px.');
             this.fire(Events.MEDIA_READY);
@@ -288,9 +288,9 @@ var AVComponent = /** @class */ (function (_super) {
         }
     };
     AVComponent.prototype._checkAllWaveformsReady = function () {
-        console.log("loading waveforms");
+        //console.log("loading waveforms");
         if (this._readyWaveforms === this._getCanvasInstancesWithWaveforms().length) {
-            console.log("waveforms ready");
+            //console.log("waveforms ready");
             clearInterval(this._checkAllWaveformsReadyInterval);
             this.fire(Events.WAVEFORMS_READY);
             this.resize();

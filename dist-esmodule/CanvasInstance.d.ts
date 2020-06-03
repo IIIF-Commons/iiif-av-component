@@ -60,6 +60,7 @@ export declare class CanvasInstance extends BaseComponent {
     waveforms: string[];
     private _$canvasLoadingProgress;
     private _$fullscreenButton;
+    private _mediaDuration;
     $playerElement: JQuery;
     isOnlyCanvasInstance: boolean;
     logMessage: (message: string) => void;
