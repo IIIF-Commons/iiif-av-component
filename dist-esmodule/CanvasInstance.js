@@ -35,7 +35,7 @@ var CanvasInstance = /** @class */ (function (_super) {
         _this._lowPriorityFrequency = 250;
         _this._mediaSyncMarginSecs = 1;
         _this._rangeSpanPadding = 0.25;
-        _this._readyMediaCount = 0;
+        //private _readyMediaCount: number = 0;
         _this._stallRequestedBy = []; //todo: type
         _this._wasPlaying = false;
         _this.ranges = [];
@@ -69,7 +69,7 @@ var CanvasInstance = /** @class */ (function (_super) {
         this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
         this._$controlsContainer = $('<div class="controls-container"></div>');
         this._$prevButton = $("\n                            <button class=\"btn\" title=\"" + this._data.content.previous + "\">\n                                <i class=\"av-icon av-icon-previous\" aria-hidden=\"true\"></i>" + this._data.content.previous + "\n                            </button>");
-        this._$playButton = $("\n                            <button class=\"btn button-play\" title=\"" + this._data.content.play + "\">\n                                <i class=\"av-icon av-icon-play play\" aria-hidden=\"true\"></i>" + this._data.content.play + "\n                            </button>");
+        this._$playButton = $("\n                            <button class=\"btn button-play\" disabled=\"disabled\" title=\"" + this._data.content.play + "\">\n                                <i class=\"av-icon av-icon-play play\" aria-hidden=\"true\"></i>" + this._data.content.play + "\n                            </button>");
         this._$nextButton = $("\n                            <button class=\"btn\" title=\"" + this._data.content.next + "\">\n                                <i class=\"av-icon av-icon-next\" aria-hidden=\"true\"></i>" + this._data.content.next + "\n                            </button>");
         this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
         this._$canvasTime = this._$timeDisplay.find(".canvas-time");
@@ -423,6 +423,13 @@ var CanvasInstance = /** @class */ (function (_super) {
             if (this._data.canvas) {
                 if (this._data.visible) {
                     this._rewind();
+                    //add preload=auto
+                    if (this.$playerElement.find("video")) {
+                        this.$playerElement.find("video").attr("preload", "auto");
+                    }
+                    if (this.$playerElement.find("audio")) {
+                        this.$playerElement.find("audio").attr("preload", "auto");
+                    }
                     this.$playerElement.show();
                     //console.log('show ' + this._data.canvas.id);
                 }
@@ -832,9 +839,9 @@ var CanvasInstance = /** @class */ (function (_super) {
                         }
                     }
                 }
+                //makes the slider scrubable for the entire duration
+                _this._$canvasTimelineContainer.slider("option", "max", media.duration);
             }
-            //makes the slider scrubable for the entire duration
-            _this._$canvasTimelineContainer.slider("option", "max", media.duration);
         });
         $mediaElement.on('progress', function () {
             if (media.buffered.length > 0) {
@@ -846,8 +853,10 @@ var CanvasInstance = /** @class */ (function (_super) {
             }
         });
         $mediaElement.on("canplaythrough", function () {
-            _this._readyMediaCount++;
-            if (_this._readyMediaCount === _this._contentAnnotations.length) {
+            //this._readyMediaCount++;
+            _this._$playButton.prop("disabled", false);
+            if (_this.isVisible()) {
+                $mediaElement.attr("preload", "auto");
                 //if (!this._data.range) {
                 _this.setCurrentTime(0);
                 //}
@@ -856,8 +865,10 @@ var CanvasInstance = /** @class */ (function (_super) {
                 }
                 _this.fire(Events.MEDIA_READY);
             }
+            //if (this._readyMediaCount === this._contentAnnotations.length) {
+            //}
         });
-        $mediaElement.attr("preload", "auto");
+        $mediaElement.attr("preload", "metadata");
         $mediaElement.get(0).load();
         this._renderSyncIndicator(data);
     };

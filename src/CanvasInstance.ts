@@ -55,7 +55,7 @@ export class CanvasInstance extends BaseComponent {
   private _lowPriorityInterval: number;
   private _mediaSyncMarginSecs: number = 1;
   private _rangeSpanPadding: number = 0.25;
-  private _readyMediaCount: number = 0;
+  //private _readyMediaCount: number = 0;
   private _stallRequestedBy: any[] = []; //todo: type
   private _volume: AVVolumeControl;
   private _wasPlaying: boolean = false;
@@ -108,7 +108,7 @@ export class CanvasInstance extends BaseComponent {
                                 <i class="av-icon av-icon-previous" aria-hidden="true"></i>${this._data.content.previous}
                             </button>`);
     this._$playButton = $(`
-                            <button class="btn button-play" title="${this._data.content.play}">
+                            <button class="btn button-play" disabled="disabled" title="${this._data.content.play}">
                                 <i class="av-icon av-icon-play play" aria-hidden="true"></i>${this._data.content.play}
                             </button>`);
     this._$nextButton = $(`
@@ -620,6 +620,13 @@ export class CanvasInstance extends BaseComponent {
       if (this._data.canvas) {
         if (this._data.visible) {
           this._rewind();
+          if (this.$playerElement.find("video")) {
+            this.$playerElement.find("video").attr("preload", "auto");
+          } 
+          if (this.$playerElement.find("audio")) {
+            this.$playerElement.find("audio").attr("preload", "auto");
+          }
+ 
           this.$playerElement.show();
           //console.log('show ' + this._data.canvas.id);
         } else {
@@ -1100,10 +1107,10 @@ export class CanvasInstance extends BaseComponent {
             }
           }
         }
-      }
 
-      //makes the slider scrubable for the entire duration
-      this._$canvasTimelineContainer.slider("option", "max", media.duration);
+        //makes the slider scrubable for the entire duration
+        this._$canvasTimelineContainer.slider("option", "max", media.duration);
+      }
     });
 
     $mediaElement.on('progress', () => {
@@ -1118,22 +1125,30 @@ export class CanvasInstance extends BaseComponent {
     });
 
     $mediaElement.on("canplaythrough", () => {
-      this._readyMediaCount++;
+      //this._readyMediaCount++;
 
-      if (this._readyMediaCount === this._contentAnnotations.length) {
-        //if (!this._data.range) {
-        this.setCurrentTime(0);
-        //}
+      this._$playButton.prop("disabled", false);
 
-        if (this._data.autoPlay) {
-          this.play();
-        }
+      if (this.isVisible()) {
+        $mediaElement.attr("preload", "auto");
 
-        this.fire(Events.MEDIA_READY);
+         //if (!this._data.range) {
+          this.setCurrentTime(0);
+          //}
+  
+          if (this._data.autoPlay) {
+            this.play();
+          }
+  
+          this.fire(Events.MEDIA_READY);
       }
+
+      //if (this._readyMediaCount === this._contentAnnotations.length) {
+       
+      //}
     });
 
-    $mediaElement.attr("preload", "auto");
+    $mediaElement.attr("preload", "metadata");
 
     (<any>$mediaElement.get(0)).load();
 

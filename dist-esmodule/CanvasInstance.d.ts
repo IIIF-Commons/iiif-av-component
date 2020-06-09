@@ -50,7 +50,6 @@ export declare class CanvasInstance extends BaseComponent {
     private _lowPriorityInterval;
     private _mediaSyncMarginSecs;
     private _rangeSpanPadding;
-    private _readyMediaCount;
     private _stallRequestedBy;
     private _volume;
     private _wasPlaying;
