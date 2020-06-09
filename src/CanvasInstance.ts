@@ -55,7 +55,7 @@ export class CanvasInstance extends BaseComponent {
   private _lowPriorityInterval: number;
   private _mediaSyncMarginSecs: number = 1;
   private _rangeSpanPadding: number = 0.25;
-  //private _readyMediaCount: number = 0;
+  private _readyMediaCount: number = 0;
   private _stallRequestedBy: any[] = []; //todo: type
   private _volume: AVVolumeControl;
   private _wasPlaying: boolean = false;
@@ -1079,7 +1079,21 @@ export class CanvasInstance extends BaseComponent {
       //data.checkForStall();
     });
 
-    $mediaElement.on("loadedmetadata", () => {      
+    $mediaElement.on("loadedmetadata", () => {
+      this._readyMediaCount++;
+      
+      if (this._readyMediaCount === this._contentAnnotations.length) {
+        //if (!this._data.range) {
+          this.setCurrentTime(0);
+          //}
+  
+          if (this._data.autoPlay) {
+            this.play();
+          }
+
+        this._updateDurationDisplay();
+      }
+
       const duration = this._getDuration();
 
       //when we have incorrect timing so we set it according to the media source
@@ -1125,27 +1139,13 @@ export class CanvasInstance extends BaseComponent {
     });
 
     $mediaElement.on("canplaythrough", () => {
-      //this._readyMediaCount++;
-
       this._$playButton.prop("disabled", false);
 
       if (this.isVisible()) {
         $mediaElement.attr("preload", "auto");
 
-         //if (!this._data.range) {
-          this.setCurrentTime(0);
-          //}
-  
-          if (this._data.autoPlay) {
-            this.play();
-          }
-  
           this.fire(Events.MEDIA_READY);
       }
-
-      //if (this._readyMediaCount === this._contentAnnotations.length) {
-       
-      //}
     });
 
     $mediaElement.attr("preload", "metadata");

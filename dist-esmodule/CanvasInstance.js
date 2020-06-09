@@ -35,7 +35,7 @@ var CanvasInstance = /** @class */ (function (_super) {
         _this._lowPriorityFrequency = 250;
         _this._mediaSyncMarginSecs = 1;
         _this._rangeSpanPadding = 0.25;
-        //private _readyMediaCount: number = 0;
+        _this._readyMediaCount = 0;
         _this._stallRequestedBy = []; //todo: type
         _this._wasPlaying = false;
         _this.ranges = [];
@@ -423,7 +423,6 @@ var CanvasInstance = /** @class */ (function (_super) {
             if (this._data.canvas) {
                 if (this._data.visible) {
                     this._rewind();
-                    //add preload=auto
                     if (this.$playerElement.find("video")) {
                         this.$playerElement.find("video").attr("preload", "auto");
                     }
@@ -816,6 +815,16 @@ var CanvasInstance = /** @class */ (function (_super) {
             //data.checkForStall();
         });
         $mediaElement.on("loadedmetadata", function () {
+            _this._readyMediaCount++;
+            if (_this._readyMediaCount === _this._contentAnnotations.length) {
+                //if (!this._data.range) {
+                _this.setCurrentTime(0);
+                //}
+                if (_this._data.autoPlay) {
+                    _this.play();
+                }
+                _this._updateDurationDisplay();
+            }
             var duration = _this._getDuration();
             //when we have incorrect timing so we set it according to the media source
             if (isNaN(duration) || duration <= 0) {
@@ -853,20 +862,11 @@ var CanvasInstance = /** @class */ (function (_super) {
             }
         });
         $mediaElement.on("canplaythrough", function () {
-            //this._readyMediaCount++;
             _this._$playButton.prop("disabled", false);
             if (_this.isVisible()) {
                 $mediaElement.attr("preload", "auto");
-                //if (!this._data.range) {
-                _this.setCurrentTime(0);
-                //}
-                if (_this._data.autoPlay) {
-                    _this.play();
-                }
                 _this.fire(Events.MEDIA_READY);
             }
-            //if (this._readyMediaCount === this._contentAnnotations.length) {
-            //}
         });
         $mediaElement.attr("preload", "metadata");
         $mediaElement.get(0).load();
