@@ -1092,6 +1092,8 @@ export class CanvasInstance extends BaseComponent {
           }
 
         this._updateDurationDisplay();
+
+        this.fire(Events.MEDIA_READY);
       }
 
       const duration = this._getDuration();
@@ -1143,8 +1145,6 @@ export class CanvasInstance extends BaseComponent {
 
       if (this.isVisible()) {
         $mediaElement.attr("preload", "auto");
-
-          this.fire(Events.MEDIA_READY);
       }
     });
 

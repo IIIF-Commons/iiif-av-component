@@ -824,6 +824,7 @@ var CanvasInstance = /** @class */ (function (_super) {
                     _this.play();
                 }
                 _this._updateDurationDisplay();
+                _this.fire(Events.MEDIA_READY);
             }
             var duration = _this._getDuration();
             //when we have incorrect timing so we set it according to the media source
@@ -865,7 +866,6 @@ var CanvasInstance = /** @class */ (function (_super) {
             _this._$playButton.prop("disabled", false);
             if (_this.isVisible()) {
                 $mediaElement.attr("preload", "auto");
-                _this.fire(Events.MEDIA_READY);
             }
         });
         $mediaElement.attr("preload", "metadata");
