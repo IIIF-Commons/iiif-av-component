@@ -65,6 +65,7 @@ export class CanvasInstance extends BaseComponent {
   public waveforms: string[] = [];
   private _$canvasLoadingProgress: JQuery;
   private _$fullscreenButton: JQuery;
+  private _mediaDuration: number = 0;
 
   public $playerElement: JQuery;
   public isOnlyCanvasInstance: boolean = false;
@@ -107,7 +108,7 @@ export class CanvasInstance extends BaseComponent {
                                 <i class="av-icon av-icon-previous" aria-hidden="true"></i>${this._data.content.previous}
                             </button>`);
     this._$playButton = $(`
-                            <button class="btn button-play" title="${this._data.content.play}">
+                            <button class="btn button-play" disabled="disabled" title="${this._data.content.play}">
                                 <i class="av-icon av-icon-play play" aria-hidden="true"></i>${this._data.content.play}
                             </button>`);
     this._$nextButton = $(`
@@ -148,8 +149,8 @@ export class CanvasInstance extends BaseComponent {
       this._$playButton,
       this._$nextButton,
       this._$timeDisplay,
-      this._$fullscreenButton,
-      $volume
+      $volume,
+      this._$fullscreenButton
     );
     this._$canvasTimelineContainer.append(
       this._$canvasHoverPreview,
@@ -173,6 +174,7 @@ export class CanvasInstance extends BaseComponent {
     this._$rangeHoverPreview.hide();
 
     if (this._data && this._data.helper && this._data.canvas) {
+      this.$playerElement.attr('data-id', this._data.canvas.id);
       let ranges: Range[] = [];
 
       // if the canvas is virtual, get the ranges for all sub canvases
@@ -562,9 +564,12 @@ export class CanvasInstance extends BaseComponent {
 
   private _getDuration(): number {
     if (this._data && this._data.canvas) {
-      return <number>this._data.canvas.getDuration();
+      let duration = <number>this._data.canvas.getDuration();
+      if (isNaN(duration) || duration <= 0) {
+        duration = this._mediaDuration;
+      }
+      return duration;
     }
-
     return 0;
   }
 
@@ -615,6 +620,13 @@ export class CanvasInstance extends BaseComponent {
       if (this._data.canvas) {
         if (this._data.visible) {
           this._rewind();
+          if (this.$playerElement.find("video")) {
+            this.$playerElement.find("video").attr("preload", "auto");
+          } 
+          if (this.$playerElement.find("audio")) {
+            this.$playerElement.find("audio").attr("preload", "auto");
+          }
+ 
           this.$playerElement.show();
           //console.log('show ' + this._data.canvas.id);
         } else {
@@ -1069,19 +1081,51 @@ export class CanvasInstance extends BaseComponent {
 
     $mediaElement.on("loadedmetadata", () => {
       this._readyMediaCount++;
-
+      
       if (this._readyMediaCount === this._contentAnnotations.length) {
         //if (!this._data.range) {
-        this.setCurrentTime(0);
-        //}
-
-        if (this._data.autoPlay) {
-          this.play();
-        }
+          this.setCurrentTime(0);
+          //}
+  
+          if (this._data.autoPlay) {
+            this.play();
+          }
 
         this._updateDurationDisplay();
 
         this.fire(Events.MEDIA_READY);
+      }
+
+      const duration = this._getDuration();
+
+      //when we have incorrect timing so we set it according to the media source
+      if (isNaN(duration) || duration <= 0) {
+        this._mediaDuration = media.duration;
+
+        //needed for the video to show for the whole duration
+        this._contentAnnotations.forEach((contentAnnotation: any) => {
+          if (contentAnnotation.element[0].src == media.src) {
+            contentAnnotation.end = media.duration;
+          }
+        });
+
+        //updates the display timing
+        if (this._data.helper && this._data.helper.manifest && this._data.helper.manifest.items[0].items) {
+          const items : Canvas[] = this._data.helper.manifest.items[0].items;
+        
+          for (let i = 0; i < items.length; i++) {
+            if (items[i].__jsonld.items[0].items[0].body.id == media.src) {
+              items[i].__jsonld.duration = media.duration;
+              this.set({
+                helper: this._data.helper
+              });
+              break;
+            }
+          }
+        }
+
+        //makes the slider scrubable for the entire duration
+        this._$canvasTimelineContainer.slider("option", "max", media.duration);
       }
     });
 
@@ -1096,7 +1140,15 @@ export class CanvasInstance extends BaseComponent {
       }
     });
 
-    $mediaElement.attr("preload", "auto");
+    $mediaElement.on("canplaythrough", () => {
+      this._$playButton.prop("disabled", false);
+
+      if (this.isVisible()) {
+        $mediaElement.attr("preload", "auto");
+      }
+    });
+
+    $mediaElement.attr("preload", "metadata");
 
     (<any>$mediaElement.get(0)).load();
 

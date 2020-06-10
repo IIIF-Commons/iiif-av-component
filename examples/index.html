@@ -214,7 +214,7 @@
                 }
             });
 
-            avcomponent.on("mediaerror", function(error) {
+            avcomponent.on("mediaerror", function(error, canvas) {
                 $(".player").removeClass("player--loading");
                 var errormessage = "Error: ";
                 switch (error.code) {
@@ -235,7 +235,7 @@
                     break;
                 }
 
-                $(".canvas-container").append("<div class='anno errormessage'>"+errormessage+"</div>")
+                $(".player[data-id='"+canvas+"'] > .canvas-container").append("<div class='anno errormessage'>"+errormessage+"</div>")
             });
 
             treecomponent = new IIIFTreeComponent.TreeComponent({

@@ -40,6 +40,7 @@ var CanvasInstance = /** @class */ (function (_super) {
         _this._wasPlaying = false;
         _this.ranges = [];
         _this.waveforms = [];
+        _this._mediaDuration = 0;
         _this.isOnlyCanvasInstance = false;
         _this._scaleY = function (amplitude, height) {
             var range = 256;
@@ -68,7 +69,7 @@ var CanvasInstance = /** @class */ (function (_super) {
         this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
         this._$controlsContainer = $('<div class="controls-container"></div>');
         this._$prevButton = $("\n                            <button class=\"btn\" title=\"" + this._data.content.previous + "\">\n                                <i class=\"av-icon av-icon-previous\" aria-hidden=\"true\"></i>" + this._data.content.previous + "\n                            </button>");
-        this._$playButton = $("\n                            <button class=\"btn button-play\" title=\"" + this._data.content.play + "\">\n                                <i class=\"av-icon av-icon-play play\" aria-hidden=\"true\"></i>" + this._data.content.play + "\n                            </button>");
+        this._$playButton = $("\n                            <button class=\"btn button-play\" disabled=\"disabled\" title=\"" + this._data.content.play + "\">\n                                <i class=\"av-icon av-icon-play play\" aria-hidden=\"true\"></i>" + this._data.content.play + "\n                            </button>");
         this._$nextButton = $("\n                            <button class=\"btn\" title=\"" + this._data.content.next + "\">\n                                <i class=\"av-icon av-icon-next\" aria-hidden=\"true\"></i>" + this._data.content.next + "\n                            </button>");
         this._$timeDisplay = $('<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>');
         this._$canvasTime = this._$timeDisplay.find(".canvas-time");
@@ -86,7 +87,7 @@ var CanvasInstance = /** @class */ (function (_super) {
         this._volume.on(VolumeEvents.VOLUME_CHANGED, function (value) {
             _this.fire(VolumeEvents.VOLUME_CHANGED, value);
         }, false);
-        this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, this._$fullscreenButton, $volume);
+        this._$controlsContainer.append(this._$prevButton, this._$playButton, this._$nextButton, this._$timeDisplay, $volume, this._$fullscreenButton);
         this._$canvasTimelineContainer.append(this._$canvasHoverPreview, this._$canvasHoverHighlight, this._$durationHighlight, this._$canvasLoadingProgress);
         this._$rangeTimelineContainer.append(this._$rangeHoverPreview, this._$rangeHoverHighlight);
         this._$optionsContainer.append(this._$canvasTimelineContainer, this._$rangeTimelineContainer, this._$timelineItemContainer, this._$controlsContainer);
@@ -94,6 +95,7 @@ var CanvasInstance = /** @class */ (function (_super) {
         this._$canvasHoverPreview.hide();
         this._$rangeHoverPreview.hide();
         if (this._data && this._data.helper && this._data.canvas) {
+            this.$playerElement.attr('data-id', this._data.canvas.id);
             var ranges_1 = [];
             // if the canvas is virtual, get the ranges for all sub canvases
             if (this.isVirtual()) {
@@ -377,7 +379,11 @@ var CanvasInstance = /** @class */ (function (_super) {
     };
     CanvasInstance.prototype._getDuration = function () {
         if (this._data && this._data.canvas) {
-            return this._data.canvas.getDuration();
+            var duration = this._data.canvas.getDuration();
+            if (isNaN(duration) || duration <= 0) {
+                duration = this._mediaDuration;
+            }
+            return duration;
         }
         return 0;
     };
@@ -417,6 +423,12 @@ var CanvasInstance = /** @class */ (function (_super) {
             if (this._data.canvas) {
                 if (this._data.visible) {
                     this._rewind();
+                    if (this.$playerElement.find("video")) {
+                        this.$playerElement.find("video").attr("preload", "auto");
+                    }
+                    if (this.$playerElement.find("audio")) {
+                        this.$playerElement.find("audio").attr("preload", "auto");
+                    }
                     this.$playerElement.show();
                     //console.log('show ' + this._data.canvas.id);
                 }
@@ -814,6 +826,32 @@ var CanvasInstance = /** @class */ (function (_super) {
                 _this._updateDurationDisplay();
                 _this.fire(Events.MEDIA_READY);
             }
+            var duration = _this._getDuration();
+            //when we have incorrect timing so we set it according to the media source
+            if (isNaN(duration) || duration <= 0) {
+                _this._mediaDuration = media.duration;
+                //needed for the video to show for the whole duration
+                _this._contentAnnotations.forEach(function (contentAnnotation) {
+                    if (contentAnnotation.element[0].src == media.src) {
+                        contentAnnotation.end = media.duration;
+                    }
+                });
+                //updates the display timing
+                if (_this._data.helper && _this._data.helper.manifest && _this._data.helper.manifest.items[0].items) {
+                    var items = _this._data.helper.manifest.items[0].items;
+                    for (var i = 0; i < items.length; i++) {
+                        if (items[i].__jsonld.items[0].items[0].body.id == media.src) {
+                            items[i].__jsonld.duration = media.duration;
+                            _this.set({
+                                helper: _this._data.helper
+                            });
+                            break;
+                        }
+                    }
+                }
+                //makes the slider scrubable for the entire duration
+                _this._$canvasTimelineContainer.slider("option", "max", media.duration);
+            }
         });
         $mediaElement.on('progress', function () {
             if (media.buffered.length > 0) {
@@ -824,7 +862,13 @@ var CanvasInstance = /** @class */ (function (_super) {
                 }
             }
         });
-        $mediaElement.attr("preload", "auto");
+        $mediaElement.on("canplaythrough", function () {
+            _this._$playButton.prop("disabled", false);
+            if (_this.isVisible()) {
+                $mediaElement.attr("preload", "auto");
+            }
+        });
+        $mediaElement.attr("preload", "metadata");
         $mediaElement.get(0).load();
         this._renderSyncIndicator(data);
     };
