@@ -1,1 +1,0 @@
-{"version":3,"file":"is-virtual.js","sourceRoot":"","sources":["../../src/helpers/is-virtual.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,4BAA4B,CAAC;AAG3D,MAAM,UAAU,SAAS,CAAC,MAA0C;IAClE,IAAI,CAAC,MAAM,EAAE;QACX,OAAO,KAAK,CAAC;KACd;IACD,OAAO,MAAM,YAAY,aAAa,CAAC;AACzC,CAAC"}

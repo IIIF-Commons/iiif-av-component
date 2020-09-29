@@ -7,3 +7,9 @@ debug.log
 typings
 dist
 *.log
+dist-commonjs
+dist-css
+dist-esmodule
+dist-umd
+dist-var
+types
