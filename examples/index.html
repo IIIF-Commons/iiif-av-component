@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="../dist/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../dist-css/styles.css" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
@@ -15,12 +15,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsviews/0.9.76/jsviews.min.js"></script>
     <script src="https://unpkg.com/proxy-observe@0.0.21/browser/proxy-observe.min.js"></script>
 
-    <script src="https://unpkg.com/@iiif/base-component/dist/BaseComponent.js"></script>
-    <script src="../dist/AVComponent.js"></script>
-    <script src="https://unpkg.com/@iiif/iiif-tree-component/dist/TreeComponent.js"></script>
+    <script src="https://unpkg.com/@iiif/base-component@2.0.1/dist-umd/basecomponent.js"></script>
+    <script src="../dist-umd/IIIFAVComponent.js"></script>
+    <script src="https://unpkg.com/@iiif/iiif-tree-component/dist-umd/IIIFTreeComponent.js"></script>
 
-    <script src="https://unpkg.com/manifesto.js@3.0.9/dist/client/manifesto.bundle.js"></script>
-    <script src="https://unpkg.com/@iiif/manifold@1.2.36/dist/manifold.js"></script>
+    <script src="https://unpkg.com/manifesto.js/dist-umd/manifesto.js"></script>
+    <script src="https://unpkg.com/@iiif/manifold/dist-umd/manifold.js"></script>
     <script src="https://unpkg.com/jquery-binarytransport"></script>
 
     <!--<script src="https://rawgit.com/iiif-commons/manifesto/end-before-start/dist/client/manifesto.bundle.js"></script>-->
@@ -147,8 +147,8 @@
 
         function loadManifest(manifest, successcb, errorcb) {
 
-            Manifold.loadManifest({
-                iiifResourceUri: manifest,
+            manifold.loadManifest({
+                manifestUri: manifest,
                 collectionIndex: 0,
                 manifestIndex: 0,
                 sequenceIndex: 0,
@@ -183,7 +183,7 @@
 
         $(function() {
 
-            avcomponent = new IIIFComponents.AVComponent({
+            avcomponent = new IIIFAVComponent.AVComponent({
                 target: document.querySelector('#av')
             });
 
@@ -238,7 +238,7 @@
                 }
             });
 
-            treecomponent = new IIIFComponents.TreeComponent({
+            treecomponent = new IIIFTreeComponent.TreeComponent({
                 target: document.querySelector('#tree')
             });
 

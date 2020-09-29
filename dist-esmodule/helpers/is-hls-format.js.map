@@ -1,0 +1,1 @@
+{"version":3,"file":"is-hls-format.js","sourceRoot":"","sources":["../../src/helpers/is-hls-format.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,YAAY,EAAE,MAAM,mBAAmB,CAAC;AAEjD,MAAM,UAAU,WAAW,CAAC,MAAiB;IAC3C,OAAO,YAAY,CAAC,QAAQ,CAAC,MAAM,CAAC,QAAQ,EAAE,CAAC,CAAC;AAClD,CAAC"}
