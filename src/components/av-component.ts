@@ -10,6 +10,7 @@ import { CanvasInstance } from './canvas-instance';
 import { diffData } from '../helpers/diff-data';
 import { getFirstTargetedCanvasId } from '../helpers/get-first-targeted-canvas-id';
 import { Events } from '../events/av-component-events';
+import { Logger } from '../helpers/logger';
 
 export class AVComponent extends BaseComponent {
   static newRanges = true;
@@ -42,7 +43,7 @@ export class AVComponent extends BaseComponent {
     this._$element = $(this.el);
 
     if (!success) {
-      console.error('Component failed to initialise');
+      Logger.error('Component failed to initialise');
     }
 
     return success;
@@ -86,8 +87,8 @@ export class AVComponent extends BaseComponent {
   }
 
   public set(data: IAVComponentData): void {
-    console.groupCollapsed('Setting AV Component');
-    console.log('Data');
+    Logger.groupCollapsed('AVComponent.set()');
+    Logger.log('Data', data);
 
     const oldData: IAVComponentData = Object.assign({}, this._data);
     this._data = Object.assign(this._data, data);
@@ -100,7 +101,7 @@ export class AVComponent extends BaseComponent {
     }
 
     if (!this._data.helper) {
-      console.warn('must pass a helper object');
+      Logger.warn('must pass a helper object');
       return;
     }
 
@@ -171,7 +172,7 @@ export class AVComponent extends BaseComponent {
       let range: Range | null = this._data.helper.getRangeById(this._data.range.id);
 
       if (!range) {
-        console.warn('range not found');
+        Logger.warn('range not found', { id: this._data.range.id });
       } else {
         let canvasId: string | undefined = getFirstTargetedCanvasId(range);
 
@@ -218,7 +219,7 @@ export class AVComponent extends BaseComponent {
 
     this._render();
     this._resize();
-    console.groupEnd();
+    Logger.groupEnd();
   }
 
   private _render(): void {

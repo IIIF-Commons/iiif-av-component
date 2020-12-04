@@ -1,4 +1,5 @@
 import { MediaElement } from './media-element';
+import { Logger } from '../helpers/logger';
 
 export class CompositeMediaElement {
   elements: MediaElement[] = [];
@@ -14,6 +15,7 @@ export class CompositeMediaElement {
   private _onPause: Function[] = [];
 
   constructor(mediaElements: MediaElement[]) {
+    Logger.log('Composite media element', mediaElements);
     // Add all elements.
     this.elements = mediaElements;
     for (const el of mediaElements) {
@@ -32,7 +34,15 @@ export class CompositeMediaElement {
   }
 
   syncClock(time: number) {
+    Logger.group('CompositeMediaElement.syncClock');
+    Logger.log(`syncClock: ${time}`);
+    Logger.log({
+      fromTime: time,
+      toTime: time,
+      instance: this,
+    });
     this.activeElement.syncClock(time);
+    Logger.groupEnd();
   }
 
   onPlay(func: (canvasId: string, time: number, el: HTMLMediaElement) => void) {
@@ -56,7 +66,7 @@ export class CompositeMediaElement {
   }
 
   appendTo($element: JQuery) {
-    console.log(
+    Logger.log(
       'Appending...',
       this.elements.map((media) => media.element)
     );
@@ -69,6 +79,11 @@ export class CompositeMediaElement {
 
   async seekTo(canvasId: string, time: number) {
     const newElement = this.findElementInRange(canvasId, time);
+    Logger.log('CompositeMediaElement.seekTo()', {
+      canvasId: newElement ? newElement.source.canvasId : null,
+      newElement,
+    });
+
     if (newElement && newElement !== this.activeElement) {
       // Moving track.
       // Stop the current track.

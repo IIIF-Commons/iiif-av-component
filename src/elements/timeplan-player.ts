@@ -1,6 +1,7 @@
 import { TimePlan } from '../types/time-plan';
 import { CompositeMediaElement } from './composite-media-element';
 import { TimeStop } from '../types/time-stop';
+import { Logger } from '../helpers/logger';
 
 export class TimePlanPlayer {
   plan: TimePlan;
@@ -107,7 +108,7 @@ export class TimePlanPlayer {
     const start = Math.min(...starting);
     const end = Math.max(...ending);
 
-    console.log('Range', {
+    Logger.log('Range', {
       rangeId,
       isRangeWithStop,
       stopsToCheck,
@@ -135,7 +136,7 @@ export class TimePlanPlayer {
 
   log(...content: any[]) {
     if (this.logging) {
-      console.log('TimePlanPlayer', ...content);
+      Logger.log('TimePlanPlayer', ...content);
     }
   }
 

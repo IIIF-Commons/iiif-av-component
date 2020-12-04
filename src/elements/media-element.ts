@@ -5,6 +5,7 @@ import { HlsFormat } from '../media-formats/hls-format';
 import { MpegFormat } from '../media-formats/mpeg-format';
 import { DefaultFormat } from '../media-formats/default-format';
 import { MediaSource } from '../types/media-source';
+import { Logger } from '../helpers/logger';
 
 export class MediaElement {
   type: string;
@@ -53,6 +54,11 @@ export class MediaElement {
   }
 
   syncClock(time: number) {
+    if (time > this.element.duration) {
+      Logger.error(`Clock synced out of bounds (max: ${this.element.duration}, got: ${time})`);
+      return;
+    }
+
     if (Math.abs(this.element.currentTime - time) > this.mediaSyncMarginSecs) {
       this.element.currentTime = time;
     }
@@ -105,6 +111,9 @@ export class MediaElement {
 
   play(time?: number): Promise<void> {
     if (time) {
+    Logger.log(`MediaElement.play(${time})`);
+
+    if (typeof time !== 'undefined') {
       this.element.currentTime = time;
     }
     return this.element.play();

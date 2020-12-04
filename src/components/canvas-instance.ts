@@ -26,6 +26,7 @@ import { isSafari } from '../helpers/is-safari';
 import { normalise } from '../helpers/normalise-number';
 import { diffData } from '../helpers/diff-data';
 import { isVirtual } from '../helpers/is-virtual';
+import { Logger } from '../helpers/logger';
 
 export class CanvasInstance extends BaseComponent {
   private _$canvasContainer: JQuery;
@@ -185,7 +186,7 @@ export class CanvasInstance extends BaseComponent {
 
   public init() {
     if (!this._data || !this._data.content || !this._data.canvas) {
-      console.warn('unable to initialise, missing canvas or content');
+      Logger.warn('unable to initialise, missing canvas or content');
       return;
     }
 
@@ -491,7 +492,7 @@ export class CanvasInstance extends BaseComponent {
       const bodies: AnnotationBody[] = item.getBody();
 
       if (!bodies.length) {
-        console.warn('item has no body');
+        Logger.warn('item has no body');
         return;
       }
 
@@ -499,7 +500,7 @@ export class CanvasInstance extends BaseComponent {
 
       if (!body) {
         // if no suitable format was found for the current browser, skip this item.
-        console.warn('unable to find suitable format for', item.id);
+        Logger.warn('unable to find suitable format for', item.id);
         continue;
       }
 
@@ -710,7 +711,7 @@ export class CanvasInstance extends BaseComponent {
 
   viewRange(rangeId: string) {
     if (this.currentRange !== rangeId) {
-      console.log(`Switching range from ${this.currentRange} to ${rangeId}`);
+      Logger.log(`Switching range from ${this.currentRange} to ${rangeId}`);
       this.setCurrentRangeId(rangeId);
       // Entrypoint for changing a range. Only get's called when change came from external source.
       this._setCurrentTime(this.timePlanPlayer.setRange(rangeId), true);
@@ -730,7 +731,7 @@ export class CanvasInstance extends BaseComponent {
       //this.limitToRange = false;
     }
 
-    console.log('Setting current range id', range);
+    Logger.log('Setting current range id', range);
 
     // This is the end of the chain for changing a range.
     if (range && this.currentRange !== range) {
@@ -750,7 +751,7 @@ export class CanvasInstance extends BaseComponent {
   }
 
   setLimitToRange(limitToRange: boolean) {
-    console.log(this._data.constrainNavigationToRange);
+    Logger.log(this._data.constrainNavigationToRange);
     if (this.limitToRange !== limitToRange) {
       this.limitToRange = limitToRange;
       this._render();
@@ -851,7 +852,6 @@ export class CanvasInstance extends BaseComponent {
       !this._data.limitToRange &&
       (!this._data.range || (this._data.range && range.id !== this._data.range.id))
     ) {
-      console.log('Did you change the range?', range);
       this.set({
         range: jQuery.extend(true, { autoChanged: true }, range),
       });
@@ -921,8 +921,8 @@ export class CanvasInstance extends BaseComponent {
 
   private _render(): void {
     if (this.isVirtual() && AVComponent.newRanges && this.isVisible()) {
-      console.groupCollapsed('Rendering a new range!');
-      console.log({
+      Logger.groupCollapsed('CanvasInstance._render()');
+      Logger.log({
         dataRange: this._data.rangeId,
         range: this.currentRange,
         newLimitToRange: this.limitToRange,
@@ -941,10 +941,10 @@ export class CanvasInstance extends BaseComponent {
       // - nothing
 
       if (this.limitToRange && this.currentRange) {
-        console.log('Selecting plan...', this.currentRange);
+        Logger.log('Selecting plan...', this.currentRange);
         this.timePlanPlayer.selectPlan({ rangeId: this.currentRange });
       } else {
-        console.log('Resetting...');
+        Logger.log('Resetting...');
         this.timePlanPlayer.selectPlan({ reset: true });
       }
 
@@ -964,7 +964,7 @@ export class CanvasInstance extends BaseComponent {
         width: duration * ratio,
       });
 
-      console.groupEnd();
+      Logger.groupEnd();
 
       this._updateCurrentTimeDisplay();
       this._updateDurationDisplay();
@@ -1116,11 +1116,11 @@ export class CanvasInstance extends BaseComponent {
 
   private _previous(isDouble: boolean): void {
     if (AVComponent.newRanges && this.isVirtual()) {
-      console.groupCollapsed('prev');
+      Logger.groupCollapsed('prev');
       const newTime = this.timePlanPlayer.previous();
       this._setCurrentTime(newTime);
-      console.log('new time -> ', newTime);
-      console.groupEnd();
+      Logger.log('CanvasInstance.previous()', newTime);
+      Logger.groupEnd();
       return;
     }
 
@@ -1156,9 +1156,11 @@ export class CanvasInstance extends BaseComponent {
 
   private _next(): void {
     if (AVComponent.newRanges && this.isVirtual()) {
-      console.groupCollapsed('next');
-      this._setCurrentTime(this.timePlanPlayer.next(), false);
-      console.groupEnd();
+      Logger.groupCollapsed('next');
+      const newTime = this.timePlanPlayer.next();
+      Logger.log('CanvasInstance.previous()', newTime);
+      this._setCurrentTime(newTime, false);
+      Logger.groupEnd();
       return;
     }
     if (this._data.limitToRange) {
@@ -1440,7 +1442,7 @@ export class CanvasInstance extends BaseComponent {
         }
       })
       .catch(() => {
-        console.warn('Could not load wave forms.');
+        Logger.warn('Could not load wave forms.');
       });
   }
 
@@ -1489,8 +1491,7 @@ export class CanvasInstance extends BaseComponent {
     }
 
     if (end === -1) {
-      console.log('getRangeTiming', { start, end, duration, durationObj });
-      console.log('Duration not found...');
+      Logger.warn('Duration not found...', { start, end, duration, durationObj });
     }
 
     return {
@@ -1773,7 +1774,7 @@ export class CanvasInstance extends BaseComponent {
 
   private _renderSyncIndicator(mediaElementData: any) {
     if (AVComponent.newRanges && this.isVirtual()) {
-      console.log('_renderSyncIndicator');
+      Logger.log('_renderSyncIndicator');
       return;
     }
 
@@ -1801,8 +1802,8 @@ export class CanvasInstance extends BaseComponent {
     }
   }
 
-  public setCurrentTime(seconds: number): Promise<void> {
-    console.log('External set current time?');
+  public setCurrentTime(seconds: TimelineTime): Promise<void> {
+    Logger.log('External set current time?');
     return this._setCurrentTime(seconds, false);
   }
 
@@ -1842,7 +1843,7 @@ export class CanvasInstance extends BaseComponent {
 
   private _rewind(withoutUpdate?: boolean): void {
     if (AVComponent.newRanges && this.isVirtual()) {
-      console.log('Rewind');
+      Logger.log('Rewind');
       return;
     }
 
@@ -1871,7 +1872,7 @@ export class CanvasInstance extends BaseComponent {
 
   private _fastforward(): void {
     if (AVComponent.newRanges && this.isVirtual()) {
-      console.log('Fast forward');
+      Logger.log('Fast forward');
       return;
     }
 
@@ -1996,8 +1997,6 @@ export class CanvasInstance extends BaseComponent {
       if (paused) {
         this.pause();
       }
-
-      // console.log('_canvasClockUpdater');
       return;
     }
     if (this._buffering) {
@@ -2106,8 +2105,6 @@ export class CanvasInstance extends BaseComponent {
         }
       }
     }
-
-    //this.logMessage('UPDATE MEDIA ACTIVE STATES at: '+ this._canvasClockTime + ' seconds.');
   }
 
   private _pauseMedia(media: HTMLMediaElement): void {
@@ -2133,7 +2130,6 @@ export class CanvasInstance extends BaseComponent {
 
   private _synchronizeMedia(): void {
     if (AVComponent.newRanges && this.isVirtual()) {
-      // console.log('_synchronizeMedia', this.timePlanPlayer.isBuffering());
       return;
     }
 

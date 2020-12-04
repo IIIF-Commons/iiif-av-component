@@ -1,6 +1,7 @@
 import { IAVVolumeControlState } from '../interfaces/volume-control-state';
 import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
 import { VolumeEvents } from '../events/volume-events';
+import { Logger } from '../helpers/logger';
 
 export class AVVolumeControl extends BaseComponent {
   private _$volumeSlider: JQuery;
@@ -25,7 +26,7 @@ export class AVVolumeControl extends BaseComponent {
     this._$element = $(this.el);
 
     if (!success) {
-      console.error('Component failed to initialise');
+      Logger.error('Component failed to initialise');
     }
 
     this._$volumeMute = $(`
