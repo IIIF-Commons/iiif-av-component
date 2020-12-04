@@ -88,7 +88,7 @@
             padding: 5px;
             color: #fff;
         }
-        
+
         .pointer {
             height: 6px;
             position: relative;
@@ -118,6 +118,7 @@
         position: absolute;
         background: @highlight-color;
         height: 4px;
+        transition: left .5s, width .5s;
     }
 
     .timeline-item-container {
@@ -218,7 +219,7 @@
         border: none;
         border-radius: 0;
         background-color: rgba(255, 255, 255, 0.25);
-        
+
         .ui-slider-handle {
             width: 1px;
             .ui-slider-handle-hidden();
@@ -228,7 +229,7 @@
             .ui-slider-range-scrub();
             background-color: #fff;
         }
-    
+
     }
 
     .btn {
@@ -270,7 +271,7 @@
         &.pause {
             background-image: data-uri('@{img-path}pause.png');
         }
-        
+
     }
 
     .av-icon-fast-forward {
@@ -294,7 +295,7 @@
         &.collapse {
             background-image: data-uri('@{img-path}collapse.png');
         }
-        
+
     }
 
 }
@@ -321,6 +322,7 @@
     z-index: 2;
 
     cursor: pointer;
+    transition: left .5s;
 
     &:focus {
         outline-width: 0;
