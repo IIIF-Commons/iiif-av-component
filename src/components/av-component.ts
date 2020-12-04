@@ -1,5 +1,5 @@
 import { Canvas, Range, Utils } from 'manifesto.js';
-import { Behavior } from '@iiif/vocabulary';
+import { Behavior } from '@iiif/vocabulary/dist-commonjs';
 import { CanvasInstanceEvents } from '../events/canvas-instance-events';
 import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
 import { IAVComponentData } from '../interfaces/component-data';
