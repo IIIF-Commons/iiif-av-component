@@ -1,6 +1,7 @@
 import { Utils, Annotation, AnnotationBody } from 'manifesto.js';
 import { getSpatialComponent } from './get-spatial-component';
 import { MediaSource } from '../types/media-source';
+import { annotationTime, canvasTime } from './relative-time';
 
 export function getMediaSourceFromAnnotationBody(
   annotation: Annotation,
@@ -49,10 +50,10 @@ export function getMediaSourceFromAnnotationBody(
     y,
     width: typeof width === 'undefined' ? undefined : parseInt(String(width), 10),
     height: typeof height === 'undefined' ? undefined : parseInt(String(height), 10),
-    start: Number(Number(start).toFixed(2)),
-    end: Number(Number(end).toFixed(2)),
+    start: annotationTime(Number(Number(start).toFixed(2))),
+    end: annotationTime(Number(Number(end).toFixed(2))),
     bodyId: bodyId as string,
-    offsetStart: typeof offsetStart === 'undefined' ? undefined : parseFloat(offsetStart),
-    offsetEnd: typeof offsetEnd === 'undefined' ? undefined : parseFloat(offsetEnd),
+    offsetStart: typeof offsetStart === 'undefined' ? undefined : canvasTime(parseFloat(offsetStart)),
+    offsetEnd: typeof offsetEnd === 'undefined' ? undefined : canvasTime(parseFloat(offsetEnd)),
   };
 }

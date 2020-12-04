@@ -1,10 +1,11 @@
 import { TimeStop } from './time-stop';
+import { TimelineTime } from '../helpers/relative-time';
 
 export type TimePlan = {
   type: 'time-plan';
-  duration: number;
-  start: number;
-  end: number;
+  duration: TimelineTime;
+  start: TimelineTime;
+  end: TimelineTime;
   stops: TimeStop[];
   rangeId: string;
   canvases: any[];

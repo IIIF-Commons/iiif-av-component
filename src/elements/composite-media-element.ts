@@ -1,4 +1,5 @@
 import { MediaElement } from './media-element';
+import { AnnotationTime } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
 
 export class CompositeMediaElement {
@@ -33,7 +34,7 @@ export class CompositeMediaElement {
     this.activeElement = mediaElements[0];
   }
 
-  syncClock(time: number) {
+  syncClock(time: AnnotationTime) {
     Logger.group('CompositeMediaElement.syncClock');
     Logger.log(`syncClock: ${time}`);
     Logger.log({
@@ -77,8 +78,17 @@ export class CompositeMediaElement {
     await Promise.all(this.elements.map((element) => element.load()));
   }
 
-  async seekTo(canvasId: string, time: number) {
+  async seekToMediaTime(realTime: AnnotationTime) {
+    if (this.playing) {
+      await this.activeElement.play(realTime);
+    } else {
+      this.activeElement.syncClock(realTime);
+    }
+  }
+
+  async seekTo(canvasId: string, time: AnnotationTime) {
     const newElement = this.findElementInRange(canvasId, time);
+
     Logger.log('CompositeMediaElement.seekTo()', {
       canvasId: newElement ? newElement.source.canvasId : null,
       newElement,
@@ -93,14 +103,10 @@ export class CompositeMediaElement {
       this.activeElement = newElement;
     }
 
-    if (this.playing) {
-      await this.activeElement.play(time);
-    } else {
-      this.activeElement.syncClock(time);
-    }
+    return this.seekToMediaTime(time);
   }
 
-  async play(canvasId?: string, time?: number) {
+  async play(canvasId?: string, time?: AnnotationTime) {
     this.playing = true;
     if (canvasId && typeof time !== 'undefined') {
       await this.seekTo(canvasId, time);

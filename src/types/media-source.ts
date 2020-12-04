@@ -1,4 +1,5 @@
 import { MediaType } from '@iiif/vocabulary';
+import { AnnotationTime, CanvasTime } from '../helpers/relative-time';
 
 export interface MediaSource {
   type: string;
@@ -9,9 +10,9 @@ export interface MediaSource {
   y?: number;
   width?: number;
   height?: number;
-  start: number;
-  end: number;
+  start: AnnotationTime;
+  end: AnnotationTime;
   bodyId: string;
-  offsetStart?: number;
-  offsetEnd?: number;
+  offsetStart?: CanvasTime;
+  offsetEnd?: CanvasTime;
 }

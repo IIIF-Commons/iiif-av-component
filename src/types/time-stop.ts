@@ -1,14 +1,16 @@
+import { CanvasTime, TimelineTime } from '../helpers/relative-time';
+
 export type TimeStop = {
   type: 'time-stop';
   canvasIndex: number;
-  start: number;
-  end: number;
-  duration: number;
+  start: TimelineTime;
+  end: TimelineTime;
+  duration: TimelineTime;
   rangeId: string;
   rawCanvasSelector: string;
   rangeStack: string[];
   canvasTime: {
-    start: number;
-    end: number;
+    start: CanvasTime;
+    end: CanvasTime;
   };
 };

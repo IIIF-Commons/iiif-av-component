@@ -2,17 +2,22 @@ import { Manifest, Range } from 'manifesto.js';
 import { TimePlan } from '../types/time-plan';
 import { MediaElement } from '../elements/media-element';
 import { TimeStop } from '../types/time-stop';
+import { addTime, canvasTime, minusTime, TimelineTime, timelineTime } from './relative-time';
 
 export function createTimePlansFromManifest(manifest: Manifest, mediaElements: MediaElement[]) {
-  const parseRange = (range: Range, rangeStack: string[] = [], startDuration = 0): TimePlan => {
+  const parseRange = (
+    range: Range,
+    rangeStack: string[] = [],
+    startDuration: TimelineTime = timelineTime(0)
+  ): TimePlan => {
     const timePlan: TimePlan = {
       type: 'time-plan',
       canvases: [],
-      duration: 0,
+      duration: timelineTime(0),
       items: [],
       stops: [],
       rangeOrder: [range.id],
-      end: 0,
+      end: timelineTime(0),
       start: startDuration,
       rangeId: range.id,
       rangeStack,
@@ -39,16 +44,16 @@ export function createTimePlansFromManifest(manifest: Manifest, mediaElements: M
 
         timePlan.canvases.push(canvas.id);
 
-        const rStart = parseFloat(start || '0');
-        const rEnd = parseFloat(end || '0');
-        const rDuration = rEnd - rStart;
+        const rStart = canvasTime(parseFloat(start || '0'));
+        const rEnd = canvasTime(parseFloat(end || '0'));
+        const rDuration = timelineTime(rEnd - rStart);
 
-        runningDuration += rDuration;
+        runningDuration = addTime(rDuration, runningDuration);
 
         const timeStop: TimeStop = {
           type: 'time-stop',
           canvasIndex,
-          start: runningDuration - rDuration,
+          start: minusTime(runningDuration, rDuration),
           end: runningDuration,
           duration: rDuration,
           rangeId: range.id,
@@ -67,7 +72,7 @@ export function createTimePlansFromManifest(manifest: Manifest, mediaElements: M
         if (!behavior || behavior !== 'no-nav') {
           const rangeTimePlan = parseRange(ro as any, [...rangeStack, ro.id], runningDuration);
 
-          runningDuration += rangeTimePlan.duration;
+          runningDuration = addTime(runningDuration, rangeTimePlan.duration);
 
           timePlan.stops.push(
             ...rangeTimePlan.stops.map((stop) => ({
@@ -83,7 +88,7 @@ export function createTimePlansFromManifest(manifest: Manifest, mediaElements: M
     }
 
     timePlan.end = runningDuration;
-    timePlan.duration = timePlan.end - timePlan.start;
+    timePlan.duration = timelineTime(timePlan.end - timePlan.start);
 
     return timePlan;
   };

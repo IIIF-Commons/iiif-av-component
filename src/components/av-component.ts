@@ -10,6 +10,7 @@ import { CanvasInstance } from './canvas-instance';
 import { diffData } from '../helpers/diff-data';
 import { getFirstTargetedCanvasId } from '../helpers/get-first-targeted-canvas-id';
 import { Events } from '../events/av-component-events';
+import { TimelineTime } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
 
 export class AVComponent extends BaseComponent {
@@ -336,7 +337,7 @@ export class AVComponent extends BaseComponent {
   public async setCurrentTime(time: number): Promise<void> {
     const canvas: CanvasInstance | undefined = this._getCurrentCanvas();
     if (canvas) {
-      return canvas.setCurrentTime(time);
+      return canvas.setCurrentTime(time as TimelineTime);
     }
     return;
   }
@@ -496,7 +497,7 @@ export class AVComponent extends BaseComponent {
       const startTime = currentRange.getDuration()!.start || 0;
       // 5 = 5 seconds before going back to current range.
       if (currentTime - startTime > 5) {
-        this.setCurrentTime(startTime);
+        this.setCurrentTime(startTime as TimelineTime);
         return;
       }
     }

@@ -1,6 +1,14 @@
 import { TimePlan } from '../types/time-plan';
 import { CompositeMediaElement } from './composite-media-element';
 import { TimeStop } from '../types/time-stop';
+import {
+  addTime,
+  annotationTime,
+  AnnotationTime,
+  minusTime,
+  timelineTime,
+  TimelineTime,
+} from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
 
 export class TimePlanPlayer {
@@ -11,9 +19,9 @@ export class TimePlanPlayer {
   currentRange: string;
   continuous = true;
   playing = false;
-  _time = 0;
+  _time: TimelineTime = timelineTime(0);
   notifyRangeChange: (rangeId: string, stops: { from: TimeStop; to: TimeStop }) => void;
-  notifyTimeChange: (time: number) => void;
+  notifyTimeChange: (time: TimelineTime) => void;
   notifyPlaying: (playing: boolean) => void;
   logging: boolean;
 
@@ -21,7 +29,7 @@ export class TimePlanPlayer {
     media: CompositeMediaElement,
     plan: TimePlan,
     notifyRangeChange: (rangeId: string, stops: { from: TimeStop; to: TimeStop }) => void,
-    notifyTimeChange: (time: number) => void,
+    notifyTimeChange: (time: TimelineTime) => void,
     notifyPlaying: (playing: boolean) => void
   ) {
     this.media = media;
@@ -124,11 +132,11 @@ export class TimePlanPlayer {
     };
   }
 
-  getTime() {
+  getTime(): TimelineTime {
     return this._time;
   }
 
-  setInternalTime(time: number) {
+  setInternalTime(time: TimelineTime): TimelineTime {
     this._time = time;
     this.notifyTimeChange(time);
     return this._time;
@@ -148,19 +156,33 @@ export class TimePlanPlayer {
     this.playing = playing;
   }
 
-  play() {
+  play(): TimelineTime {
     this.log('Play', this.getTime());
     this.setIsPlaying(true);
-    this.media.play(this.plan.canvases[this.currentStop.canvasIndex], this.currentMediaTime());
+    this.media.play(this.plan.canvases[this.currentStop.canvasIndex]);
 
     return this.getTime();
   }
 
-  currentMediaTime() {
-    return this.getTime() - this.currentStop.start + this.currentStop.canvasTime.start;
+  currentTimelineTime(): TimelineTime {
+    return this.getTime();
   }
 
-  pause() {
+  currentMediaTime(): AnnotationTime {
+    Logger.log(
+      `Current media time:
+  - Current start: ${this.currentStop.start}
+  - Current canvas: ${this.currentStop.canvasTime.start}
+  - Current time: ${this.getTime()}
+    `,
+      this
+    );
+
+    const time = minusTime(this.getTime(), this.currentStop.start);
+    return annotationTime(addTime(time, timelineTime(this.currentStop.canvasTime.start)));
+  }
+
+  pause(): TimelineTime {
     this.log('Pause', this.getTime());
     this.setIsPlaying(false);
     this.media.pause();
@@ -200,24 +222,27 @@ export class TimePlanPlayer {
   }
 
   // Time that is set by the user.
-  async setTime(time: number, setRange = true) {
-    console.groupCollapsed('set time');
-    console.trace();
-    console.log('USER SET TIME', time, setRange);
-    this.log('set time', { from: this.getTime(), to: time });
-    this.setInternalTime(time);
+  async setTime(time: TimelineTime, setRange = true) {
+    Logger.groupCollapsed(`TimeplanPlayer.setTime(${time}, ${setRange ? 'true' : 'false'})`);
 
-    const stop = this.findStop(time);
-    if (stop && stop !== this.currentStop) {
-      if (setRange) {
-        this.currentRange = stop.rangeId;
+    // Early exit?
+    const start = this.getTime();
+    if (start !== time) {
+      this.log('set time', { from: this.getTime(), to: time });
+      this.setInternalTime(time);
+
+      const stop = this.findStop(time);
+      if (stop && stop !== this.currentStop) {
+        if (setRange) {
+          this.currentRange = stop.rangeId;
+        }
+        await this.advanceToStop(this.currentStop, stop);
       }
-      await this.advanceToStop(this.currentStop, stop);
     }
-    console.groupEnd();
+    Logger.groupEnd();
   }
 
-  next() {
+  next(): TimelineTime {
     const currentRangeIndex = this.plan.rangeOrder.indexOf(this.currentRange);
     const isLast = currentRangeIndex >= 0 && currentRangeIndex === this.plan.rangeOrder.length - 1;
     const nextRangeIdx = !isLast ? this.plan.rangeOrder.indexOf(this.currentRange) + 1 : undefined;
@@ -271,7 +296,7 @@ export class TimePlanPlayer {
     return this.getTime();
   }
 
-  previous() {
+  previous(): TimelineTime {
     const currentRangeIndex = this.plan.rangeOrder.indexOf(this.currentRange);
     const isFirst = currentRangeIndex === 0;
     const prevRangeIdx = !isFirst ? this.plan.rangeOrder.indexOf(this.currentRange) - 1 : undefined;
@@ -355,8 +380,8 @@ export class TimePlanPlayer {
     return this.getTime();
   }
 
-  setRange(id: string) {
-    console.log('setRange', id);
+  setRange(id: string): TimelineTime {
+    Logger.log('setRange', id);
 
     if (id === this.currentRange) {
       return this.getTime();
@@ -392,18 +417,27 @@ export class TimePlanPlayer {
   }
 
   // Time that has ticked over.
-  advanceToTime(time: number) {
+  advanceToTime(
+    time: TimelineTime
+  ): {
+    paused?: boolean;
+    buffering?: boolean;
+    time: TimelineTime | undefined;
+  } {
+    Logger.group(`TimeplanPlayer.advanceToTime(${time})`);
+
     // this.log('advanceToTime', this.getTime().toFixed(0), time.toFixed(0));
 
     const stop = this.findStop(time);
     if (stop && this.currentStop !== stop) {
+      Logger.log('advanceToTime.a');
+
       this.advanceToStop(this.currentStop, stop);
       return { buffering: this.isBuffering(), time };
     }
     // User has selected top level range.
     if (this.playing && this.currentRange !== this.currentStop.rangeId) {
       this.currentRange = this.currentStop.rangeId;
-      console.log('Breaking here?');
       this.notifyRangeChange(this.currentStop.rangeId, {
         from: this.currentStop,
         to: this.currentStop,
@@ -411,16 +445,24 @@ export class TimePlanPlayer {
     }
 
     if (!stop) {
+      Logger.log('advanceToTime.b');
+
       this.pause();
       this.setTime(this.currentStop.end);
+      Logger.groupEnd();
       return {
         paused: true,
         buffering: this.isBuffering(),
         time: this.currentStop.end,
       };
     } else {
+      Logger.log('advanceToTime.c', {
+        time: this.getTime(),
+      });
+
       this.setInternalTime(time);
       this.media.syncClock(this.currentMediaTime());
+      Logger.groupEnd();
       return { time };
     }
   }
@@ -430,6 +472,11 @@ export class TimePlanPlayer {
   }
 
   async advanceToStop(from: TimeStop, to: TimeStop, rangeId?: string) {
+    Logger.log('TimeplanPlayer.advanceToStop', {
+      from,
+      to,
+      rangeId,
+    });
     if (from === to) {
       if (rangeId) {
         this.notifyRangeChange(rangeId ? rangeId : to.rangeId, {
@@ -442,18 +489,18 @@ export class TimePlanPlayer {
     this.log('advanceToStop', to.start);
     this.currentStop = to;
 
-    const promise = this.media.seekTo(this.plan.canvases[to.canvasIndex], this.currentMediaTime());
+    const promise = this.media.seekToMediaTime(this.currentMediaTime());
 
     this.notifyRangeChange(rangeId ? rangeId : to.rangeId, { to, from });
 
     await promise;
   }
 
-  getStartTime() {
+  getStartTime(): TimelineTime {
     return this.plan.start;
   }
 
-  getDuration() {
+  getDuration(): TimelineTime {
     return this.plan.duration;
   }
 }

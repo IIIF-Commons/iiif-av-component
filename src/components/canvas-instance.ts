@@ -26,6 +26,16 @@ import { isSafari } from '../helpers/is-safari';
 import { normalise } from '../helpers/normalise-number';
 import { diffData } from '../helpers/diff-data';
 import { isVirtual } from '../helpers/is-virtual';
+import {
+  addTime,
+  fromMs,
+  minusTime,
+  multiplyTime,
+  timelineTime,
+  TimelineTime,
+  TimelineTimeMs,
+  toMs,
+} from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
 
 export class CanvasInstance extends BaseComponent {
@@ -51,8 +61,8 @@ export class CanvasInstance extends BaseComponent {
   private _$timelineItemContainer: JQuery;
   private _canvasClockFrequency = 25;
   private _canvasClockInterval: number;
-  private _canvasClockStartDate = 0;
-  private _canvasClockTime = 0;
+  private _canvasClockStartDate: TimelineTimeMs = 0 as TimelineTimeMs;
+  private _canvasClockTime: TimelineTime = 0 as TimelineTime;
   private _canvasHeight = 0;
   private _canvasWidth = 0;
   private _compositeWaveform: CompositeWaveform;
@@ -102,7 +112,7 @@ export class CanvasInstance extends BaseComponent {
     return this._isPlaying;
   }
 
-  public getClockTime(): number {
+  public getClockTime(): TimelineTime {
     return this._canvasClockTime;
   }
 
@@ -176,9 +186,9 @@ export class CanvasInstance extends BaseComponent {
       },
       (isPlaying) => {
         if (isPlaying) {
-          this.play();
+          this.play(true);
         } else {
-          this.pause();
+          this.pause(true);
         }
       }
     );
@@ -388,7 +398,7 @@ export class CanvasInstance extends BaseComponent {
 
     this._$fastForward.on('touchstart click', (e) => {
       const { end } = this.getRangeTiming();
-      const goToTime = this.getClockTime() + 20;
+      const goToTime = addTime(this.getClockTime(), 20 as TimelineTime);
       if (goToTime < end) {
         return this._setCurrentTime(goToTime);
       }
@@ -397,7 +407,7 @@ export class CanvasInstance extends BaseComponent {
 
     this._$fastRewind.on('touchstart click', (e) => {
       const { start } = this.getRangeTiming();
-      const goToTime = this.getClockTime() - 20;
+      const goToTime = minusTime(this.getClockTime(), 20 as TimelineTime);
       if (goToTime >= start) {
         return this._setCurrentTime(goToTime);
       }
@@ -475,18 +485,10 @@ export class CanvasInstance extends BaseComponent {
     const items: Annotation[] = this._data.canvas.getContent(); // (<any>this._data.canvas).__jsonld.content[0].items;
 
     // always hide timelineItemContainer for now
-    //if (items.length === 1) {
     this._$timelineItemContainer.hide();
-    //}
 
     for (let i = 0; i < items.length; i++) {
       const item: Annotation = items[i];
-
-      /*
-              if (item.motivation != 'painting') {
-                  return null;
-              }
-              */
 
       let mediaSource: any;
       const bodies: AnnotationBody[] = item.getBody();
@@ -507,37 +509,16 @@ export class CanvasInstance extends BaseComponent {
       const type: string | null = body.getType();
       const format: MediaType | null = body.getFormat();
 
-      // if (type && type.toString() === 'choice') {
-      //     // Choose first "Choice" item as body
-      //     const tmpItem = item;
-      //     item.body = tmpItem.body[0].items[0];
-      //     mediaSource = item.body.id.split('#')[0];
-      // } else
-
       if (type && type.toString() === 'textualbody') {
         //mediaSource = (<any>body).value;
       } else {
         mediaSource = body.id.split('#')[0];
       }
 
-      /*
-              var targetFragment = (item.target.indexOf('#') != -1) ? item.target.split('#t=')[1] : '0, '+ canvasClockDuration,
-                  fragmentTimings = targetFragment.split(','),
-                  startTime = parseFloat(fragmentTimings[0]),
-                  endTime = parseFloat(fragmentTimings[1]);
-
-              //TODO: Check format (in "target" as MFID or in "body" as "width", "height" etc.)
-              var fragmentPosition = [0, 0, 100, 100],
-                  positionTop = fragmentPosition[1],
-                  positionLeft = fragmentPosition[0],
-                  mediaWidth = fragmentPosition[2],
-                  mediaHeight = fragmentPosition[3];
-              */
-
       const target: string | null = item.getTarget();
 
       if (!target) {
-        console.warn('item has no target');
+        Logger.warn('item has no target');
         return;
       }
 
@@ -596,7 +577,6 @@ export class CanvasInstance extends BaseComponent {
       this._renderMediaElement(itemData);
 
       // waveform
-
       // todo: create annotation.getSeeAlso
       const seeAlso: any = item.getProperty('seeAlso');
 
@@ -648,16 +628,16 @@ export class CanvasInstance extends BaseComponent {
     return null;
   }
 
-  private _getDuration(): number {
+  private _getDuration(): TimelineTime {
     if (this.isVirtual() && AVComponent.newRanges) {
       return this.timePlanPlayer.getDuration();
     }
 
     if (this._data && this._data.canvas) {
-      return Math.floor(this._data.canvas.getDuration() as number);
+      return Math.floor(this._data.canvas.getDuration() as number) as TimelineTime;
     }
 
-    return 0;
+    return 0 as TimelineTime;
   }
 
   public data(): IAVCanvasInstanceData {
@@ -805,7 +785,7 @@ export class CanvasInstance extends BaseComponent {
             if (typeof duration !== 'undefined') {
               // Only change the current time if the current time is outside of the current time.
               if (duration.start >= this._canvasClockTime || duration.end <= this._canvasClockTime) {
-                this._setCurrentTime(duration.start);
+                this._setCurrentTime(duration.start as TimelineTime);
               }
 
               if (this._data.autoPlay) {
@@ -1072,7 +1052,7 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private _updateHoverPreview(e: any, $container: JQuery, duration: number): void {
-    const offset = $container.offset();
+    const offset = $container.offset() || { left: 0 };
 
     const x = e.pageX - offset.left;
 
@@ -1342,23 +1322,6 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private _getWaveformData(url: string): Promise<any> {
-    // return new Promise(function (resolve, reject) {
-    //     const xhr = new XMLHttpRequest();
-    //     xhr.responseType = 'arraybuffer';
-    //     xhr.open('GET', url);
-    //     xhr.addEventListener('load', (progressEvent: any) => {
-    //         if (xhr.status == 200) {
-    //             resolve(WaveformData.create(progressEvent.target.response));
-    //         } else {
-    //             reject(new Error(xhr.statusText));
-    //         }
-    //     });
-    //     xhr.onerror = function () {
-    //         reject(new Error("Network Error"));
-    //     };
-    //     xhr.send();
-    // });
-
     // must use this for IE11
     return new Promise(function (resolve, reject) {
       $.ajax({
@@ -1429,7 +1392,15 @@ export class CanvasInstance extends BaseComponent {
           const width = this._waveformCanvas!.getBoundingClientRect().width || 0;
           if (width) {
             const { start, duration } = this.getRangeTiming();
-            this._setCurrentTime(start + duration * (this.waveformDeltaX / width));
+            this._setCurrentTime(
+              // Multiply
+              multiplyTime(
+                // Add start and duration
+                addTime(start, duration),
+                // Multiply by percent through
+                this.waveformDeltaX / width
+              )
+            );
           }
         });
 
@@ -1447,9 +1418,9 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private getRangeTiming(): {
-    start: number;
-    end: number;
-    duration: number;
+    start: TimelineTime;
+    end: TimelineTime;
+    duration: TimelineTime;
     percent: number;
   } {
     if (AVComponent.newRanges && this.isVirtual()) {
@@ -1465,8 +1436,8 @@ export class CanvasInstance extends BaseComponent {
     }
 
     let durationObj: Duration | undefined;
-    let start = 0;
-    let end = this._compositeWaveform ? this._compositeWaveform.duration : -1;
+    let start = 0 as TimelineTime;
+    let end = timelineTime(this._compositeWaveform ? this._compositeWaveform.duration : -1);
     let duration = end;
 
     // This is very similar to
@@ -1475,19 +1446,19 @@ export class CanvasInstance extends BaseComponent {
     }
 
     if (!this.isVirtual()) {
-      end = this._getDuration();
+      end = this._getDuration() as TimelineTime;
     }
 
     if (this._data.limitToRange && durationObj) {
-      start = durationObj.start;
-      end = durationObj.end;
-      duration = end - start;
+      start = durationObj.start as TimelineTime;
+      end = durationObj.end as TimelineTime;
+      duration = minusTime(end, start);
     }
 
     if (end === -1 && durationObj) {
-      start = durationObj.start;
-      end = durationObj.end;
-      duration = end - start;
+      start = durationObj.start as TimelineTime;
+      end = durationObj.end as TimelineTime;
+      duration = minusTime(end, start);
     }
 
     if (end === -1) {
@@ -1497,7 +1468,7 @@ export class CanvasInstance extends BaseComponent {
     return {
       start,
       end,
-      duration: end - start,
+      duration: minusTime(end, start),
       percent: Math.min((this.getClockTime() - start) / duration, 1),
     };
   }
@@ -1574,8 +1545,6 @@ export class CanvasInstance extends BaseComponent {
       });
     }
 
-    // console.log('new list', newList);
-
     let current = 0;
     for (let x = startpx; x < endpx; x += increment) {
       const rangePercentage = normalise(x, startpx, endpx);
@@ -1600,8 +1569,6 @@ export class CanvasInstance extends BaseComponent {
       const toSample = Math.floor(
         (section.startTime + partPercent * section.duration) * this._compositeWaveform.pixelsPerSecond
       );
-
-      // console.log('sample seconds -> ', { sample: toSample/60, partPercent, rangePercentage })
 
       const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, toSample, sampleSpacing);
       const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
@@ -1643,60 +1610,6 @@ export class CanvasInstance extends BaseComponent {
     }
 
     return;
-    //
-    //
-    //             // let i = 0;
-    //             for (const [innerStartPx, innerEndPx, innerIncr, sectionWidth, offsetX] of startEndList) {
-    //                 for (let x = innerStartPx; x < innerEndPx; x += innerIncr) {
-    //                     const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
-    //                     const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
-    //                     const ypos = (canvasHeight - height) / 2;
-    //                     const xpos = offsetX + (sectionWidth * normalise(x, innerStartPx, innerEndPx));
-    //                     const pastCurrentTime = xpos / canvasWidth < percent;
-    //                     const hoverWidth = this.waveformDeltaX / canvasWidth;
-    //                     let colour = <string>this._data.waveformColor;
-    //
-    //                     // colour = ['#fff', 'red'][i % 2];
-    //
-    //                     // For colours.
-    //                     // ======o-------T_____
-    //                     //       ^ current time
-    //                     // ======o-------T_____
-    //                     //               ^ cursor
-    //                     //
-    //                     if (pastCurrentTime) {
-    //                         if (this.waveformDeltaX === 0) {
-    //                             // ======o_____
-    //                             //   ^ this colour, no hover
-    //                             colour = '#14A4C3';
-    //                         } else if (xpos / canvasWidth < hoverWidth) {
-    //                             // ======T---o_____
-    //                             //    ^ this colour
-    //                             colour = '#11758e'; // dark
-    //                         } else {
-    //                             // ======T---o_____
-    //                             //         ^ this colour
-    //                             colour = '#14A4C3'; // normal
-    //                         }
-    //                     } else if (xpos / canvasWidth < hoverWidth) {
-    //                         // ======o-------T_____
-    //                         //           ^ this colour
-    //                         colour = '#86b3c3'; // lighter
-    //                     } else {
-    //                         colour = '#8a9aa1';
-    //                         for (const [a, b] of listOfBuffers) {
-    //                             if (xpos > a && xpos < b) {
-    //                                 colour = '#fff';
-    //                                 break;
-    //                             }
-    //                         }
-    //                     }
-    //
-    //                     this._waveformCtx.fillStyle = colour;
-    //                     this._waveformCtx.fillRect(xpos, ypos, barWidth, height | 0);
-    //                 }
-    //                 // i++;
-    //             }
   }
 
   private _scaleY = (amplitude: number, height: number) => {
@@ -1807,12 +1720,20 @@ export class CanvasInstance extends BaseComponent {
     return this._setCurrentTime(seconds, false);
   }
 
-  private async _setCurrentTime(seconds: number, setRange = true): Promise<void> {
+  now(): TimelineTime {
+    return fromMs(Date.now() as TimelineTimeMs);
+  }
+
+  nowMs(): TimelineTimeMs {
+    return Date.now() as TimelineTimeMs;
+  }
+
+  private async _setCurrentTime(seconds: TimelineTime, setRange = true): Promise<void> {
     if (AVComponent.newRanges && this.isVirtual()) {
       this._buffering = true;
       await this.timePlanPlayer.setTime(seconds, setRange);
       this._buffering = false;
-      this._canvasClockStartDate = Date.now() - this._canvasClockTime * 1000;
+      this._canvasClockStartDate = toMs(minusTime(this.now(), this._canvasClockTime));
       this._canvasClockUpdater();
       this._highPriorityUpdater();
       this._lowPriorityUpdater();
@@ -1831,7 +1752,7 @@ export class CanvasInstance extends BaseComponent {
       return;
     }
     this._canvasClockTime = seconds; //secondsAsFloat;
-    this._canvasClockStartDate = Date.now() - this._canvasClockTime * 1000;
+    this._canvasClockStartDate = toMs(minusTime(this.now(), this._canvasClockTime));
 
     this.logMessage('SET CURRENT TIME to: ' + this._canvasClockTime + ' seconds.');
 
@@ -1856,9 +1777,9 @@ export class CanvasInstance extends BaseComponent {
     }
 
     if (this._data.limitToRange && duration) {
-      this._setCurrentTime(duration.start);
+      this._setCurrentTime(duration.start as TimelineTime);
     } else {
-      this._setCurrentTime(0);
+      this._setCurrentTime(0 as TimelineTime);
     }
 
     if (!this._data.limitToRange) {
@@ -1883,7 +1804,7 @@ export class CanvasInstance extends BaseComponent {
     }
 
     if (this._data.limitToRange && duration) {
-      this._canvasClockTime = duration.end;
+      this._canvasClockTime = timelineTime(duration.end);
     } else {
       this._canvasClockTime = this._getDuration();
     }
@@ -1911,15 +1832,15 @@ export class CanvasInstance extends BaseComponent {
       }
 
       if (this._data.limitToRange && duration && this._canvasClockTime >= duration.end) {
-        this._canvasClockTime = duration.start;
+        this._canvasClockTime = duration.start as TimelineTime;
       }
 
       if (this._canvasClockTime === this._getDuration()) {
-        this._canvasClockTime = 0;
+        this._canvasClockTime = 0 as TimelineTime;
       }
     }
 
-    this._canvasClockStartDate = Date.now() - this._canvasClockTime * 1000;
+    this._canvasClockStartDate = toMs(minusTime(this.now(), this._canvasClockTime));
 
     if (this._highPriorityInterval) {
       clearInterval(this._highPriorityInterval);
@@ -1993,16 +1914,25 @@ export class CanvasInstance extends BaseComponent {
         return;
       }
 
-      const { paused } = this.timePlanPlayer.advanceToTime((Date.now() - this._canvasClockStartDate) / 1000);
+      const startDate = fromMs(this._canvasClockStartDate);
+
+      Logger.log('CanvasInstance._canvasClockUpdater()', {
+        startDate,
+        advanceToTime: minusTime(this.now(), startDate),
+      });
+
+      const { paused } = this.timePlanPlayer.advanceToTime(minusTime(this.now(), startDate));
       if (paused) {
         this.pause();
       }
       return;
     }
+
     if (this._buffering) {
       return;
     }
-    this._canvasClockTime = (Date.now() - this._canvasClockStartDate) / 1000;
+    const startDate = fromMs(this._canvasClockStartDate);
+    this._canvasClockTime = minusTime(this.now(), startDate);
 
     let duration: Duration | undefined;
 
@@ -2109,17 +2039,6 @@ export class CanvasInstance extends BaseComponent {
 
   private _pauseMedia(media: HTMLMediaElement): void {
     media.pause();
-
-    // const playPromise = media.play();
-
-    // if (playPromise !== undefined) {
-    //     playPromise.then(_ => {
-    //         // https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
-    //         media.pause();
-    //     });
-    // } else {
-    //     media.pause();
-    // }
   }
 
   private _setMediaCurrentTime(media: HTMLMediaElement, time: number): void {
