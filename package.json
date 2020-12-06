@@ -52,10 +52,10 @@
   },
   "dependencies": {
     "@iiif/base-component": "2.*",
-    "@iiif/manifold": "2.*",
-    "manifesto.js": "4.*",
+    "@iiif/manifold": "^2.0.3",
     "@types/jquery": "2.0.34",
     "@types/jqueryui": "^1.11.36",
-    "exjs": "BSick7/exjs#0.5.1"
+    "exjs": "BSick7/exjs#0.5.1",
+    "manifesto.js": "^4.2.1"
   }
 }
