@@ -94,6 +94,9 @@ export class CanvasInstance extends BaseComponent {
   public isOnlyCanvasInstance = false;
   public logMessage: (message: string) => void;
   public timePlanPlayer: TimePlanPlayer;
+  private _$canvasLoadingProgress: JQuery;
+  private _$fullscreenButton: JQuery;
+  private _mediaDuration: number = 0;
 
   constructor(options: IBaseComponentOptions) {
     super(options);
@@ -219,7 +222,7 @@ export class CanvasInstance extends BaseComponent {
                                     <i class="av-icon av-icon-previous" aria-hidden="true"></i>${this._data.content.previous}
                                 </button>`);
     this._$playButton = $(`
-                                <button class="btn" title="${this._data.content.play}">
+                                <button class="btn button-play" disabled="disabled" title="${this._data.content.play}">
                                     <i class="av-icon av-icon-play play" aria-hidden="true"></i>${this._data.content.play}
                                 </button>`);
     this._$nextButton = $(`
@@ -244,6 +247,11 @@ export class CanvasInstance extends BaseComponent {
     );
     this._$canvasTime = this._$timeDisplay.find('.canvas-time');
     this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
+    this._$canvasLoadingProgress = $('<div class="loading-progress"></div>');
+    this._$fullscreenButton = $(`
+                                <button class="btn button-fullscreen" title="${this._data.content.fullscreen}">
+                                    <i class="av-icon av-icon-fullscreen" aria-hidden="true"></i>${this._data.content.fullscreen}
+                                </button>`);
 
     if (this.isVirtual()) {
       this.$playerElement.addClass('virtual');
@@ -271,12 +279,14 @@ export class CanvasInstance extends BaseComponent {
       this._data.enableFastForward ? this._$fastForward : null,
       this._$nextButton,
       this._$timeDisplay,
-      $volume
+      $volume,
+      this._$fullscreenButton
     );
     this._$canvasTimelineContainer.append(
       this._$canvasHoverPreview,
       this._$canvasHoverHighlight,
-      this._$durationHighlight
+      this._$durationHighlight,
+      this._$canvasLoadingProgress
     );
     this._$rangeTimelineContainer.append(this._$rangeHoverPreview, this._$rangeHoverHighlight);
     this._$optionsContainer.append(
@@ -298,6 +308,7 @@ export class CanvasInstance extends BaseComponent {
 
     if (!newRanges) {
       if (this._data && this._data.helper && this._data.canvas) {
+        this.$playerElement.attr('data-id', this._data.canvas.id);
         let ranges: Range[] = [];
 
         // if the canvas is virtual, get the ranges for all sub canvases
@@ -439,7 +450,7 @@ export class CanvasInstance extends BaseComponent {
           // on create
         },
         slide: function (evt: any, ui: any) {
-          that._setCurrentTime(ui.value);
+          that.setCurrentTime(ui.value);
         },
         stop: function (evt: any, ui: any) {
           //this._setCurrentTime(ui.value);
@@ -473,6 +484,38 @@ export class CanvasInstance extends BaseComponent {
         this._updateHoverPreview(e, this._$rangeTimelineContainer, duration ? duration.getLength() : 0);
       }
     });
+
+    this._$fullscreenButton[0].addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const fsDoc = <FsDocument> document;
+
+      if (!fsDoc.fullscreenElement && !fsDoc.mozFullScreenElement && !fsDoc.webkitFullscreenElement && !fsDoc.msFullscreenElement) {
+          const fsDocElem = <FsDocumentElement> this.$playerElement.get(0);
+
+          this.fire(Events.FULLSCREEN, "on");
+
+          if (fsDocElem.requestFullscreen)
+              fsDocElem.requestFullscreen();
+          else if (fsDocElem.msRequestFullscreen)
+              fsDocElem.msRequestFullscreen();
+          else if (fsDocElem.mozRequestFullScreen)
+              fsDocElem.mozRequestFullScreen();
+          else if (fsDocElem.webkitRequestFullscreen)
+              fsDocElem.webkitRequestFullscreen();
+      } else {
+          this.fire(Events.FULLSCREEN, "off");
+
+          if (fsDoc.exitFullscreen) 
+              fsDoc.exitFullscreen();
+          else if (fsDoc.msExitFullscreen)
+              fsDoc.msExitFullscreen();
+          else if (fsDoc.mozCancelFullScreen)
+              fsDoc.mozCancelFullScreen();
+          else if (fsDoc.webkitExitFullscreen)
+              fsDoc.webkitExitFullscreen();
+      }
+    }, false);
 
     if (newRanges) {
       return;
@@ -545,7 +588,7 @@ export class CanvasInstance extends BaseComponent {
         percentageWidth = this._convertToPercentage(mediaWidth, this._canvasWidth),
         percentageHeight = this._convertToPercentage(mediaHeight, this._canvasHeight);
 
-      const temporalOffsets: RegExpExecArray | null = /t=([^&]+)/g.exec(body.id);
+      const temporalOffsets: RegExpExecArray | null = /[\?|&]t=([^&]+)/g.exec(body.id);
 
       let ot;
 
@@ -634,7 +677,11 @@ export class CanvasInstance extends BaseComponent {
     }
 
     if (this._data && this._data.canvas) {
-      return Math.floor(this._data.canvas.getDuration() as number) as TimelineTime;
+      let duration = <number>this._data.canvas.getDuration();
+      if (isNaN(duration) || duration <= 0) {
+        duration = this._mediaDuration;
+      }
+      return Math.floor(duration as number) as TimelineTime;
     }
 
     return 0 as TimelineTime;
@@ -764,6 +811,13 @@ export class CanvasInstance extends BaseComponent {
       if (this._data.canvas) {
         if (this._data.visible) {
           this._rewind();
+          if (this.$playerElement.find("video")) {
+            this.$playerElement.find("video").attr("preload", "auto");
+          } 
+          if (this.$playerElement.find("audio")) {
+            this.$playerElement.find("audio").attr("preload", "auto");
+          }
+
           this.$playerElement.show();
         } else {
           this.$playerElement.hide();
@@ -1029,7 +1083,7 @@ export class CanvasInstance extends BaseComponent {
             // on create
           },
           slide: function (evt: any, ui: any) {
-            that._setCurrentTime(ui.value);
+            that.setCurrentTime(ui.value);
           },
           stop: function (evt: any, ui: any) {
             //this._setCurrentTime(ui.value);
@@ -1205,6 +1259,10 @@ export class CanvasInstance extends BaseComponent {
     // source.connect(panNode);
     // panNode.connect(audioCtx.destination);
 
+    media.onerror = () => {
+      this.fire(Events.MEDIA_ERROR, media.error);
+    }
+
     if (data.format && data.format.toString() === 'application/dash+xml') {
       // dash
       $mediaElement.attr('data-dashjs-player', '');
@@ -1301,6 +1359,8 @@ export class CanvasInstance extends BaseComponent {
       this._readyMediaCount++;
 
       if (this._readyMediaCount === this._contentAnnotations.length) {
+        this._setCurrentTime(0 as TimelineTime);
+
         if (this._data.autoPlay) {
           this.play();
         } else {
@@ -1310,6 +1370,60 @@ export class CanvasInstance extends BaseComponent {
         this._updateDurationDisplay();
 
         this.fire(Events.MEDIA_READY);
+      }
+      
+      const duration = this._getDuration();
+
+      //when we have incorrect timing so we set it according to the media source
+      if (isNaN(duration) || duration <= 0) {
+        this._mediaDuration = media.duration;
+
+        //needed for the video to show for the whole duration
+        this._contentAnnotations.forEach((contentAnnotation: any) => {
+          if (contentAnnotation.element[0].src == media.src) {
+            contentAnnotation.end = media.duration;
+          }
+        });
+
+        //updates the display timing
+        if (this._data.helper && this._data.helper.manifest && this._data.helper.manifest.items[0].items) {
+          const items : Canvas[] = this._data.helper.manifest.items[0].items;
+        
+          for (let i = 0; i < items.length; i++) {
+            if (items[i].__jsonld.items[0].items[0].body.id == media.src) {
+              items[i].__jsonld.duration = media.duration;
+                this.set({
+                  helper: this._data.helper
+                });
+              break;
+            }
+          }
+        }
+      
+        //makes the slider scrubable for the entire duration
+        this._$canvasTimelineContainer.slider("option", "max", media.duration);
+
+      }
+    });
+
+    $mediaElement.on('progress', () => {
+      Logger.log("mediaelement progress");
+      if (media.buffered.length > 0) {
+          var duration =  media.duration;
+          var bufferedEnd = media.buffered.end(media.buffered.length - 1);
+
+          if (duration > 0) {
+            this._$optionsContainer.find(".loading-progress").width(((bufferedEnd / duration)*100) + "%");
+          }
+      }
+    });
+
+    $mediaElement.on("canplaythrough", () => {
+      Logger.log("mediaelement canplaythrough");
+      this._$playButton.prop("disabled", false);
+
+      if (this.isVisible()) {
+        $mediaElement.attr("preload", "auto");
       }
     });
 
@@ -1716,8 +1830,11 @@ export class CanvasInstance extends BaseComponent {
   }
 
   public setCurrentTime(seconds: TimelineTime): Promise<void> {
-    Logger.log('External set current time?');
     return this._setCurrentTime(seconds, false);
+  }
+
+  public getCurrentTime(): number {
+    return this._canvasClockTime;
   }
 
   now(): TimelineTime {
@@ -2205,4 +2322,20 @@ export class CanvasInstance extends BaseComponent {
       this._drawWaveform();
     }
   }
+}
+
+interface FsDocument extends HTMLDocument {
+  mozFullScreenElement?: Element;
+  msFullscreenElement?: Element;
+  webkitFullscreenElement?: Element;
+  msExitFullscreen?: () => void;
+  mozCancelFullScreen?: () => void;
+  webkitExitFullscreen?: () => void;
+}
+
+
+interface FsDocumentElement extends HTMLElement {
+  msRequestFullscreen?: () => void;
+  mozRequestFullScreen?: () => void;
+  webkitRequestFullscreen?: () => void;
 }

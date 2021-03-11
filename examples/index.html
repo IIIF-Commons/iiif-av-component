@@ -23,8 +23,8 @@
     <script src="https://unpkg.com/@iiif/manifold/dist-umd/manifold.js"></script>
     <script src="https://unpkg.com/jquery-binarytransport"></script>
 
-    <!--<script src="https://rawgit.com/iiif-commons/manifesto/end-before-start/dist/client/manifesto.bundle.js"></script>-->
-    <!--<script src="https://rawgit.com/iiif-commons/manifold/master/dist/manifold.js"></script>-->
+    <!-- <script src="https://rawgit.com/iiif-commons/manifesto/end-before-start/dist/client/manifesto.bundle.js"></script>
+    <script src="https://rawgit.com/iiif-commons/manifold/master/dist/manifold.js"></script> -->
 
     <script src="https://unpkg.com/dashjs@2.6.6/dist/dash.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
@@ -70,7 +70,7 @@
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C615_70.json">Tamas Vasary piano</button>
         <button class="testFixture" data-json="https://edsilv.github.io/biiif-test-manifests/sound-manifest/index.json">Somali Love Song</button>
     </div>
-    
+
     <input type="text" name="manifestInput" id="manifestInput"/>
     <button id="parseManifestButton">Parse Manifest</button>
     <button id="viewManifestButton">View Manifest</button>
@@ -87,10 +87,6 @@
     </div>
 
     <div id="options">
-
-        <button id="play-pause-combo" disabled="disabled">
-            loading...
-        </button>
         <button id="play">Play</button>
         <button id="pause">Pause</button>
         <input id="limitToRangeCheckbox" type="checkbox"><label for="limitToRangeCheckbox">Limit to Range</label>
@@ -175,7 +171,6 @@
                 successcb(helper);
 
                 resize();
-
             }).catch(function(e) {
                 errorcb(e);
             });
@@ -202,24 +197,6 @@
                 //avcomponent.playRange('https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100055540263.0x000011');
             });
 
-            var $ppc = $('#play-pause-combo');
-            avcomponent.on('medialoaded', function() {
-              $ppc.text('play');
-              $ppc.removeAttr('disabled');
-            });
-
-            $ppc.on('click', function(e) {
-              e.preventDefault();
-              if (avcomponent._isPlaying) {
-                avcomponent.pause();
-                $ppc.innerText('play');
-              } else {
-                avcomponent.play();
-                $ppc.innerText('pause');
-              }
-            })
-
-
             avcomponent.on('rangechanged', function(rangeid) {
                 helper.rangeId = rangeid;
                 console.log('range changed', rangeid);
@@ -238,6 +215,30 @@
                 }
             });
 
+            avcomponent.on("mediaerror", function(error, canvas) {
+                $(".player").removeClass("player--loading");
+                var errormessage = "Error: ";
+                switch (error.code) {
+                    case 1:
+                    errormessage += "loading aborted";
+                    break;
+                    case 2:
+                    errormessage += "network error";
+                    break;
+                    case 3:
+                    errormessage += "decoding of media failed";
+                    break;
+                    case 4:
+                        errormessage += "media format not suppported by this browser";
+                    break;
+                    default:
+                    errormessage += "unknown";
+                    break;
+                }
+
+                $(".player[data-id='"+canvas+"'] > .canvas-container").append("<div class='anno errormessage'>"+errormessage+"</div>")
+            });
+
             treecomponent = new IIIFTreeComponent.TreeComponent({
                 target: document.querySelector('#tree')
             });
@@ -247,10 +248,10 @@
                 $('.canvasNavigationContainer').empty();
 
                 for (var i = 0; i < canvases.length; i++) {
-                    
+
                     var canvasLabel = i + 1;
                     var canvasNavigationButton = $('<button class="canvasNavigationButton" data-canvas-id="'+ canvases[i].id +'">Canvas '+ canvasLabel +'</button>');
-                    
+
                     canvasNavigationButton.click(function() {
 
                         state.virtualCanvasEnabled = false;
@@ -269,7 +270,7 @@
                 //     var firstID = avcomponent.canvasInstances[0].options.data.canvas.id;
                 //     avcomponent.showCanvas(firstID);
                 // }, 10);
-                
+
             }
 
             function showWorkingIndicator(targetElement) {
@@ -324,7 +325,7 @@
                 var absoluteManifestURL = $('#manifestInput').val();
                 window.open(absoluteManifestURL, '_blank', 'location=yes,height=600,width=580,scrollbars=yes,status=yes');
             });
-            
+
             $('#parseManifestButton').click(function() {
 
                 var manifestURL = $('#manifestInput').val();
@@ -345,12 +346,12 @@
                     } else {
                         $('.canvasNavigationContainer').hide();
                     }
-                    
+
                 }, function(error) {
 
                     $('.title').text('ERROR: Could not load manifest data.');
                     $('.description').text('');
-                    
+
                     logMessage('ERROR: Could not load manifest data.', error);
 
                 });
@@ -390,7 +391,7 @@
                 avcomponent.playRange(node.data.id);
             });
 
-            // loadManifest("https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_P3.json", 
+            // loadManifest("https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_P3.json",
             // function(msg){
             //     console.log(msg);
             // }, function(msg){

@@ -81,6 +81,7 @@ export class AVComponent extends BaseComponent {
         play: 'Play',
         previous: 'Previous',
         unmute: 'Unmute',
+        fullscreen: 'Fullscreen',
       } as IAVComponentContent,
       enableFastForward: true,
       enableFastRewind: true,
@@ -473,6 +474,40 @@ export class AVComponent extends BaseComponent {
       },
       false
     );
+
+    canvasInstance.on(
+      CanvasInstanceEvents.PLAYCANVAS, 
+      () => {
+        this.fire(CanvasInstanceEvents.PLAYCANVAS);
+      }, 
+      false
+    );
+
+    canvasInstance.on(
+      CanvasInstanceEvents.PAUSECANVAS, 
+      () => {
+        this.fire(CanvasInstanceEvents.PAUSECANVAS);
+      }, 
+      false
+    );
+
+    canvasInstance.on(
+      Events.MEDIA_ERROR, 
+      (error : MediaError) => {
+        clearInterval(this._checkAllMediaReadyInterval);
+        this.fire(Events.MEDIA_ERROR, error, canvas.id);
+      }, 
+      false
+    );
+
+    canvasInstance.on(
+      Events.FULLSCREEN, 
+      (state: string) => {
+        this.fire(Events.FULLSCREEN, state);
+      },
+      false
+    );
+
   }
 
   public getCurrentRange(): Range | null {

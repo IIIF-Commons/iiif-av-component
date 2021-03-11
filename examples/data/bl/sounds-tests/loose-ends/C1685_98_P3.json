@@ -43,7 +43,7 @@
 	 	{
 	 	 	"label":{"en":["Link to catalogue"]},
 	 	 	"value":{"en":["<a href=http://explore.bl.uk/BLVU1:LSCOP-ALL:BLLSA8030616>View the catalogue record</a>"]}
-	 	}
+		}
 	],
 	"requiredStatement": {
 		"label": { "en": [ "Important information" ] },
