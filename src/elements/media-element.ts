@@ -77,7 +77,7 @@ export class MediaElement {
     if (withAudio) {
       this.element.load();
     }
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       this.element.addEventListener('loadedmetadata', () => {
         resolve();
       });

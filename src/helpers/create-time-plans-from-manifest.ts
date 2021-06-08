@@ -1,10 +1,9 @@
 import { Manifest, Range } from 'manifesto.js';
 import { TimePlan } from '../types/time-plan';
-import { MediaElement } from '../elements/media-element';
 import { TimeStop } from '../types/time-stop';
 import { addTime, canvasTime, minusTime, TimelineTime, timelineTime } from './relative-time';
 
-export function createTimePlansFromManifest(manifest: Manifest, mediaElements: MediaElement[]) {
+export function createTimePlansFromManifest(manifest: Manifest) {
   const parseRange = (
     range: Range,
     rangeStack: string[] = [],

@@ -47,6 +47,7 @@ export class CompositeWaveform {
 
   _find(index: number) {
     if (typeof this.timeIndex[index] === 'undefined') {
+      // eslint-disable-next-line no-shadow
       const waveform = this._waveforms.find((waveform) => {
         return index >= waveform.start && index < waveform.end;
       });

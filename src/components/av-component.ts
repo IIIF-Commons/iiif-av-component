@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import { Canvas, Range, Utils } from 'manifesto.js';
 import { Behavior } from '@iiif/vocabulary/dist-commonjs';
 import { CanvasInstanceEvents } from '../events/canvas-instance-events';
@@ -55,8 +58,9 @@ export class AVComponent extends BaseComponent {
     if (!range) {
       return null;
     }
+    // @ts-ignore
     const canvasId: string | undefined = getFirstTargetedCanvasId(range);
-
+    // @ts-ignore
     return canvasId ? this._data.helper!.getCanvasById(canvasId) : null;
   }
 
@@ -170,6 +174,7 @@ export class AVComponent extends BaseComponent {
     }
 
     if (diff.includes('range') && this._data.range) {
+      // @ts-ignore
       let range: Range | null = this._data.helper.getRangeById(this._data.range.id);
 
       if (!range) {
@@ -312,6 +317,7 @@ export class AVComponent extends BaseComponent {
       });
 
       // poster canvas
+      // @ts-ignore
       const posterCanvas: Canvas | null = this._data.helper.getPosterCanvas();
 
       if (posterCanvas) {
@@ -381,6 +387,7 @@ export class AVComponent extends BaseComponent {
   private _getCanvases(): Canvas[] {
     // @todo - figure out when this is used and if it needs time slicing considerations.
     if (this._data.helper) {
+      // @ts-ignore
       return this._data.helper.getCanvases();
     }
 
@@ -502,6 +509,7 @@ export class AVComponent extends BaseComponent {
       }
     }
 
+    // @ts-ignore
     const prevRange: Range | null = this._data.helper.getPreviousRange();
 
     if (prevRange) {
@@ -518,6 +526,7 @@ export class AVComponent extends BaseComponent {
       return;
     }
 
+    // @ts-ignore
     const nextRange: Range | null = this._data.helper.getNextRange();
 
     if (nextRange) {
@@ -630,6 +639,7 @@ export class AVComponent extends BaseComponent {
       return;
     }
 
+    // @ts-ignore
     const range: Range | null = this._data.helper.getRangeById(rangeId);
 
     if (range) {

@@ -417,9 +417,7 @@ export class TimePlanPlayer {
   }
 
   // Time that has ticked over.
-  advanceToTime(
-    time: TimelineTime
-  ): {
+  advanceToTime(time: TimelineTime): {
     paused?: boolean;
     buffering?: boolean;
     time: TimelineTime | undefined;

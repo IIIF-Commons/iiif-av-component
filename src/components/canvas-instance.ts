@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import { Annotation, AnnotationBody, Canvas, Duration, Range, Utils } from 'manifesto.js';
 import { Behavior, MediaType } from '@iiif/vocabulary';
 import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
@@ -172,6 +175,7 @@ export class CanvasInstance extends BaseComponent {
 
     // this._renderSyncIndicator(data)
 
+    // @ts-ignore
     const plan = createTimePlansFromManifest(helper.manifest as any, mediaElements);
 
     // @ts-ignore
@@ -304,6 +308,7 @@ export class CanvasInstance extends BaseComponent {
         if (isVirtual(this._data.canvas)) {
           this._data.canvas.canvases.forEach((canvas: Canvas) => {
             if (this._data && this._data.helper) {
+              // @ts-ignore
               const r: Range[] = this._data.helper.getCanvasRanges(canvas);
 
               const clonedRanges: Range[] = [];
@@ -329,6 +334,7 @@ export class CanvasInstance extends BaseComponent {
             }
           });
         } else {
+          // @ts-ignore
           ranges = ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Canvas));
         }
 

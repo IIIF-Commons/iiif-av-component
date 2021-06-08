@@ -1,22 +1,32 @@
-import { BaseComponent, IBaseComponentOptions } from "@iiif/base-component";
-import { Annotation, AnnotationBody, Canvas, Duration, Range, Utils } from "manifesto.js";
-import { IAVComponentData, Events } from ".";
-import { VirtualCanvas } from "./VirtualCanvas";
-import { CompositeWaveform } from "./CompositeWaveform";
-import { AVVolumeControl, VolumeEvents } from "./VolumeControl";
-import { AVComponentUtils } from "./Utils";
-import { ExternalResourceType, MediaType, Behavior } from "@iiif/vocabulary";
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/no-this-alias */
+/* eslint-disable no-shadow */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable keyword-spacing */
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
+import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
+import { Annotation, AnnotationBody, Canvas, Duration, Range, Utils } from 'manifesto.js';
+import { IAVComponentData, Events } from '.';
+import { VirtualCanvas } from './VirtualCanvas';
+import { CompositeWaveform } from './CompositeWaveform';
+import { AVVolumeControl, VolumeEvents } from './VolumeControl';
+import { AVComponentUtils } from './Utils';
+import { ExternalResourceType, MediaType, Behavior } from '@iiif/vocabulary';
 
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IMaxMin {
   max: number;
   min: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IAVCanvasInstanceData extends IAVComponentData {
-	canvas?: Canvas | VirtualCanvas;
-	range?: Range;
-	visible?: boolean;
-	volume?: number;
+  canvas?: Canvas | VirtualCanvas;
+  range?: Range;
+  visible?: boolean;
+  volume?: number;
 }
 
 export class CanvasInstance extends BaseComponent {
@@ -38,34 +48,34 @@ export class CanvasInstance extends BaseComponent {
   private _$rangeTimelineContainer: JQuery;
   private _$timeDisplay: JQuery;
   private _$timelineItemContainer: JQuery;
-  private _canvasClockFrequency: number = 25;
+  private _canvasClockFrequency = 25;
   private _canvasClockInterval: number;
-  private _canvasClockStartDate: number = 0;
-  private _canvasClockTime: number = 0;
-  private _canvasHeight: number = 0;
-  private _canvasWidth: number = 0;
+  private _canvasClockStartDate = 0;
+  private _canvasClockTime = 0;
+  private _canvasHeight = 0;
+  private _canvasWidth = 0;
   private _compositeWaveform: CompositeWaveform;
   private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
   private _data: IAVCanvasInstanceData = this.data();
-  private _highPriorityFrequency: number = 25;
+  private _highPriorityFrequency = 25;
   private _highPriorityInterval: number;
-  private _isPlaying: boolean = false;
-  private _isStalled: boolean = false;
-  private _lowPriorityFrequency: number = 250;
+  private _isPlaying = false;
+  private _isStalled = false;
+  private _lowPriorityFrequency = 250;
   private _lowPriorityInterval: number;
-  private _mediaSyncMarginSecs: number = 1;
-  private _rangeSpanPadding: number = 0.25;
-  private _readyMediaCount: number = 0;
+  private _mediaSyncMarginSecs = 1;
+  private _rangeSpanPadding = 0.25;
+  private _readyMediaCount = 0;
   private _stallRequestedBy: any[] = []; //todo: type
   private _volume: AVVolumeControl;
-  private _wasPlaying: boolean = false;
+  private _wasPlaying = false;
   private _waveformCanvas: HTMLCanvasElement | null;
   private _waveformCtx: CanvasRenderingContext2D | null;
   public ranges: Range[] = [];
   public waveforms: string[] = [];
 
   public $playerElement: JQuery;
-  public isOnlyCanvasInstance: boolean = false;
+  public isOnlyCanvasInstance = false;
   public logMessage: (message: string) => void;
 
   constructor(options: IBaseComponentOptions) {
@@ -76,7 +86,7 @@ export class CanvasInstance extends BaseComponent {
 
   public init() {
     if (!this._data || !this._data.content || !this._data.canvas) {
-      console.warn("unable to initialise, missing canvas or content");
+      console.warn('unable to initialise, missing canvas or content');
       return;
     }
 
@@ -85,20 +95,14 @@ export class CanvasInstance extends BaseComponent {
     );
     this._$canvasContainer = $('<div class="canvas-container"></div>');
     this._$optionsContainer = $('<div class="options-container"></div>');
-    this._$rangeTimelineContainer = $(
-      '<div class="range-timeline-container"></div>'
-    );
-    this._$canvasTimelineContainer = $(
-      '<div class="canvas-timeline-container"></div>'
-    );
+    this._$rangeTimelineContainer = $('<div class="range-timeline-container"></div>');
+    this._$canvasTimelineContainer = $('<div class="canvas-timeline-container"></div>');
     this._$canvasHoverPreview = this._$hoverPreviewTemplate.clone();
     this._$canvasHoverHighlight = $('<div class="hover-highlight"></div>');
     this._$rangeHoverPreview = this._$hoverPreviewTemplate.clone();
     this._$rangeHoverHighlight = $('<div class="hover-highlight"></div>');
     this._$durationHighlight = $('<div class="duration-highlight"></div>');
-    this._$timelineItemContainer = $(
-      '<div class="timeline-item-container"></div>'
-    );
+    this._$timelineItemContainer = $('<div class="timeline-item-container"></div>');
     this._$controlsContainer = $('<div class="controls-container"></div>');
     this._$prevButton = $(`
                             <button class="btn" title="${this._data.content.previous}">
@@ -115,17 +119,17 @@ export class CanvasInstance extends BaseComponent {
     this._$timeDisplay = $(
       '<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>'
     );
-    this._$canvasTime = this._$timeDisplay.find(".canvas-time");
-    this._$canvasDuration = this._$timeDisplay.find(".canvas-duration");
+    this._$canvasTime = this._$timeDisplay.find('.canvas-time');
+    this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
 
     if (this.isVirtual()) {
-      this.$playerElement.addClass("virtual");
+      this.$playerElement.addClass('virtual');
     }
 
     const $volume: JQuery = $('<div class="volume"></div>');
     this._volume = new AVVolumeControl({
       target: $volume[0],
-      data: Object.assign({}, this._data)
+      data: Object.assign({}, this._data),
     });
 
     this._volume.on(
@@ -148,10 +152,7 @@ export class CanvasInstance extends BaseComponent {
       this._$canvasHoverHighlight,
       this._$durationHighlight
     );
-    this._$rangeTimelineContainer.append(
-      this._$rangeHoverPreview,
-      this._$rangeHoverHighlight
-    );
+    this._$rangeTimelineContainer.append(this._$rangeHoverPreview, this._$rangeHoverHighlight);
     this._$optionsContainer.append(
       this._$canvasTimelineContainer,
       this._$rangeTimelineContainer,
@@ -168,38 +169,37 @@ export class CanvasInstance extends BaseComponent {
 
       // if the canvas is virtual, get the ranges for all sub canvases
       if (this.isVirtual()) {
-        (<VirtualCanvas>this._data.canvas).canvases.forEach(
-          (canvas: Canvas) => {
-            if (this._data && this._data.helper) {
-              let r: Range[] = this._data.helper.getCanvasRanges(canvas);
+        // eslint-disable-next-line keyword-spacing
+        (<VirtualCanvas>this._data.canvas).canvases.forEach((canvas: Canvas) => {
+          if (this._data && this._data.helper) {
+            // @ts-ignore
+            const r: Range[] = this._data.helper.getCanvasRanges(canvas);
 
-              let clonedRanges: Range[] = [];
+            const clonedRanges: Range[] = [];
 
-              // shift the range targets forward by the duration of their previous canvases
-              r.forEach((range: Range) => {
-                const clonedRange = jQuery.extend(true, {}, range);
-                clonedRanges.push(clonedRange);
+            // shift the range targets forward by the duration of their previous canvases
+            r.forEach((range: Range) => {
+              const clonedRange = jQuery.extend(true, {}, range);
+              clonedRanges.push(clonedRange);
 
-                if (clonedRange.canvases && clonedRange.canvases.length) {
-                  for (let i = 0; i < clonedRange.canvases.length; i++) {
-                    clonedRange.canvases[i] = <string>(
-                      AVComponentUtils.retargetTemporalComponent(
-                        (<VirtualCanvas>this._data.canvas).canvases,
-                        clonedRange.__jsonld.items[i].id
-                      )
-                    );
-                  }
+              if (clonedRange.canvases && clonedRange.canvases.length) {
+                for (let i = 0; i < clonedRange.canvases.length; i++) {
+                  clonedRange.canvases[i] = <string>(
+                    AVComponentUtils.retargetTemporalComponent(
+                      (<VirtualCanvas>this._data.canvas).canvases,
+                      clonedRange.__jsonld.items[i].id
+                    )
+                  );
                 }
-              });
+              }
+            });
 
-              ranges.push(...clonedRanges);
-            }
+            ranges.push(...clonedRanges);
           }
-        );
+        });
       } else {
-        ranges = ranges.concat(
-          this._data.helper.getCanvasRanges(this._data.canvas as Canvas)
-        );
+        // @ts-ignore
+        ranges = ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Canvas));
       }
 
       ranges.forEach((range: Range) => {
@@ -217,18 +217,18 @@ export class CanvasInstance extends BaseComponent {
     }
 
     if (!canvasHeight) {
-      this._canvasHeight =
-        this._canvasWidth * <number>this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
+      this._canvasHeight = this._canvasWidth * <number>this._data.defaultAspectRatio; //this._data.defaultCanvasHeight;
     } else {
       this._canvasHeight = canvasHeight;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that = this;
 
-    let prevClicks: number = 0;
-    let prevTimeout: number = 0;
+    let prevClicks = 0;
+    let prevTimeout = 0;
 
-    this._$prevButton.on("touchstart click", e => {
+    this._$prevButton.on('touchstart click', (e) => {
       e.preventDefault();
 
       prevClicks++;
@@ -251,7 +251,7 @@ export class CanvasInstance extends BaseComponent {
       }
     });
 
-    this._$playButton.on("touchstart click", e => {
+    this._$playButton.on('touchstart click', (e) => {
       e.preventDefault();
 
       if (this._isPlaying) {
@@ -261,7 +261,7 @@ export class CanvasInstance extends BaseComponent {
       }
     });
 
-    this._$nextButton.on("touchstart click", e => {
+    this._$nextButton.on('touchstart click', (e) => {
       e.preventDefault();
 
       this._next();
@@ -270,19 +270,19 @@ export class CanvasInstance extends BaseComponent {
     this._$canvasTimelineContainer.slider({
       value: 0,
       step: 0.01,
-      orientation: "horizontal",
-      range: "min",
+      orientation: 'horizontal',
+      range: 'min',
       max: that._getDuration(),
       animate: false,
-      create: function(evt: any, ui: any) {
+      create: function (evt: any, ui: any) {
         // on create
       },
-      slide: function(evt: any, ui: any) {
+      slide: function (evt: any, ui: any) {
         that._setCurrentTime(ui.value);
       },
-      stop: function(evt: any, ui: any) {
+      stop: function (evt: any, ui: any) {
         //this._setCurrentTime(ui.value);
-      }
+      },
     });
 
     this._$canvasTimelineContainer.mouseout(() => {
@@ -295,22 +295,14 @@ export class CanvasInstance extends BaseComponent {
       that._$rangeHoverPreview.hide();
     });
 
-    this._$canvasTimelineContainer.on("mousemove", e => {
-      this._updateHoverPreview(
-        e,
-        this._$canvasTimelineContainer,
-        this._getDuration()
-      );
+    this._$canvasTimelineContainer.on('mousemove', (e) => {
+      this._updateHoverPreview(e, this._$canvasTimelineContainer, this._getDuration());
     });
 
-    this._$rangeTimelineContainer.on("mousemove", e => {
+    this._$rangeTimelineContainer.on('mousemove', (e) => {
       if (this._data.range) {
         const duration: Duration | undefined = this._data.range.getDuration();
-        this._updateHoverPreview(
-          e,
-          this._$rangeTimelineContainer,
-          duration ? duration.getLength() : 0
-        );
+        this._updateHoverPreview(e, this._$rangeTimelineContainer, duration ? duration.getLength() : 0);
       }
     });
 
@@ -338,7 +330,7 @@ export class CanvasInstance extends BaseComponent {
       const bodies: AnnotationBody[] = item.getBody();
 
       if (!bodies.length) {
-        console.warn("item has no body");
+        console.warn('item has no body');
         return;
       }
 
@@ -346,7 +338,7 @@ export class CanvasInstance extends BaseComponent {
 
       if (!body) {
         // if no suitable format was found for the current browser, skip this item.
-        console.warn("unable to find suitable format for", item.id);
+        console.warn('unable to find suitable format for', item.id);
         continue;
       }
 
@@ -360,10 +352,10 @@ export class CanvasInstance extends BaseComponent {
       //     mediaSource = item.body.id.split('#')[0];
       // } else
 
-      if (type && type.toString() === "textualbody") {
+      if (type && type.toString() === 'textualbody') {
         //mediaSource = (<any>body).value;
       } else {
-        mediaSource = body.id.split("#")[0];
+        mediaSource = body.id.split('#')[0];
       }
 
       /*
@@ -383,7 +375,7 @@ export class CanvasInstance extends BaseComponent {
       const target: string | null = item.getTarget();
 
       if (!target) {
-        console.warn("item has no target");
+        console.warn('item has no target');
         return;
       }
 
@@ -405,31 +397,17 @@ export class CanvasInstance extends BaseComponent {
         startTime = parseInt(String(t[0])),
         endTime = parseInt(String(t[1]));
 
-      const percentageTop = this._convertToPercentage(
-          positionTop,
-          this._canvasHeight
-        ),
-        percentageLeft = this._convertToPercentage(
-          positionLeft,
-          this._canvasWidth
-        ),
-        percentageWidth = this._convertToPercentage(
-          mediaWidth,
-          this._canvasWidth
-        ),
-        percentageHeight = this._convertToPercentage(
-          mediaHeight,
-          this._canvasHeight
-        );
+      const percentageTop = this._convertToPercentage(positionTop, this._canvasHeight),
+        percentageLeft = this._convertToPercentage(positionLeft, this._canvasWidth),
+        percentageWidth = this._convertToPercentage(mediaWidth, this._canvasWidth),
+        percentageHeight = this._convertToPercentage(mediaHeight, this._canvasHeight);
 
-      const temporalOffsets: RegExpExecArray | null = /t=([^&]+)/g.exec(
-        body.id
-      );
+      const temporalOffsets: RegExpExecArray | null = /t=([^&]+)/g.exec(body.id);
 
       let ot;
 
       if (temporalOffsets && temporalOffsets[1]) {
-        ot = temporalOffsets[1].split(",");
+        ot = temporalOffsets[1].split(',');
       } else {
         ot = [null, null];
       }
@@ -450,7 +428,7 @@ export class CanvasInstance extends BaseComponent {
         startOffset: offsetStart,
         top: percentageTop,
         type: type,
-        width: percentageWidth
+        width: percentageWidth,
       };
 
       this._renderMediaElement(itemData);
@@ -458,7 +436,7 @@ export class CanvasInstance extends BaseComponent {
       // waveform
 
       // todo: create annotation.getSeeAlso
-      const seeAlso: any = item.getProperty("seeAlso");
+      const seeAlso: any = item.getProperty('seeAlso');
 
       if (seeAlso && seeAlso.length) {
         const dat: string = seeAlso[0].id;
@@ -476,10 +454,7 @@ export class CanvasInstance extends BaseComponent {
       const format: MediaType | null = body.getFormat();
 
       if (format) {
-        if (
-          AVComponentUtils.isHLSFormat(format) &&
-          AVComponentUtils.canPlayHls()
-        ) {
+        if (AVComponentUtils.isHLSFormat(format) && AVComponentUtils.canPlayHls()) {
           return body;
         }
       }
@@ -491,10 +466,7 @@ export class CanvasInstance extends BaseComponent {
       const format: MediaType | null = body.getFormat();
 
       if (format) {
-        if (
-          AVComponentUtils.isMpegDashFormat(format) &&
-          !AVComponentUtils.isSafari()
-        ) {
+        if (AVComponentUtils.isMpegDashFormat(format) && !AVComponentUtils.isSafari()) {
           return body;
         }
       }
@@ -506,10 +478,7 @@ export class CanvasInstance extends BaseComponent {
       const format: MediaType | null = body.getFormat();
 
       if (format) {
-        if (
-          !AVComponentUtils.isHLSFormat(format) &&
-          !AVComponentUtils.isMpegDashFormat(format)
-        ) {
+        if (!AVComponentUtils.isHLSFormat(format) && !AVComponentUtils.isMpegDashFormat(format)) {
           return body;
         }
       }
@@ -529,10 +498,10 @@ export class CanvasInstance extends BaseComponent {
 
   public data(): IAVCanvasInstanceData {
     return <IAVCanvasInstanceData>{
-      waveformColor: "#fff",
+      waveformColor: '#fff',
       waveformBarSpacing: 4,
       waveformBarWidth: 2,
-      volume: 1
+      volume: 1,
     };
   }
 
@@ -545,16 +514,8 @@ export class CanvasInstance extends BaseComponent {
   }
 
   public includesVirtualSubCanvas(canvasId: string): boolean {
-    if (
-      this.isVirtual() &&
-      this._data.canvas &&
-      (<VirtualCanvas>this._data.canvas).canvases
-    ) {
-      for (
-        let i = 0;
-        i < (<VirtualCanvas>this._data.canvas).canvases.length;
-        i++
-      ) {
+    if (this.isVirtual() && this._data.canvas && (<VirtualCanvas>this._data.canvas).canvases) {
+      for (let i = 0; i < (<VirtualCanvas>this._data.canvas).canvases.length; i++) {
         const canvas: Canvas = (<VirtualCanvas>this._data.canvas).canvases[i];
         if (Utils.normaliseUrl(canvas.id) === canvasId) {
           return true;
@@ -570,7 +531,7 @@ export class CanvasInstance extends BaseComponent {
     this._data = Object.assign(this._data, data);
     const diff: string[] = AVComponentUtils.diff(oldData, this._data);
 
-    if (diff.includes("visible")) {
+    if (diff.includes('visible')) {
       if (this._data.canvas) {
         if (this._data.visible) {
           this._rewind();
@@ -586,7 +547,7 @@ export class CanvasInstance extends BaseComponent {
       }
     }
 
-    if (diff.includes("range")) {
+    if (diff.includes('range')) {
       if (this._data.helper) {
         if (!this._data.range) {
           this.fire(Events.RANGE_CHANGED, null);
@@ -608,22 +569,21 @@ export class CanvasInstance extends BaseComponent {
       }
     }
 
-    if (diff.includes("volume")) {
+    if (diff.includes('volume')) {
       this._contentAnnotations.forEach(($mediaElement: any) => {
-        const volume: number =
-          this._data.volume !== undefined ? this._data.volume : 1;
+        const volume: number = this._data.volume !== undefined ? this._data.volume : 1;
 
-        $($mediaElement.element).prop("volume", volume);
+        $($mediaElement.element).prop('volume', volume);
 
         this._volume.set({
-          volume: this._data.volume
+          volume: this._data.volume,
         });
       });
     } else {
       this._render();
     }
 
-    if (diff.includes("limitToRange")) {
+    if (diff.includes('limitToRange')) {
       this._render();
     }
   }
@@ -634,11 +594,10 @@ export class CanvasInstance extends BaseComponent {
     if (
       range &&
       !this._data.limitToRange &&
-      (!this._data.range ||
-        (this._data.range && range.id !== this._data.range.id))
+      (!this._data.range || (this._data.range && range.id !== this._data.range.id))
     ) {
       this.set({
-        range: jQuery.extend(true, { autoChanged: true }, range)
+        range: jQuery.extend(true, { autoChanged: true }, range),
       });
     }
   }
@@ -683,9 +642,7 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private _rangeSpansCurrentTime(range: Range): boolean {
-    if (
-      range.spansTime(Math.ceil(this._canvasClockTime) + this._rangeSpanPadding)
-    ) {
+    if (range.spansTime(Math.ceil(this._canvasClockTime) + this._rangeSpanPadding)) {
       return true;
     }
 
@@ -711,9 +668,7 @@ export class CanvasInstance extends BaseComponent {
         const totalLength: number = this._getDuration();
 
         // get the length of the timeline container
-        const timelineLength: number = <number>(
-          this._$canvasTimelineContainer.width()
-        );
+        const timelineLength: number = <number>this._$canvasTimelineContainer.width();
 
         // get the ratio of seconds to length
         const ratio: number = timelineLength / totalLength;
@@ -734,7 +689,7 @@ export class CanvasInstance extends BaseComponent {
           // set the start position and width
           this._$durationHighlight.css({
             left: start,
-            width: width
+            width: width,
           });
         } else {
           this._$durationHighlight.hide();
@@ -743,27 +698,27 @@ export class CanvasInstance extends BaseComponent {
         const that = this;
 
         // try to destroy existing rangeTimelineContainer
-        if (this._$rangeTimelineContainer.data("ui-sortable")) {
-          this._$rangeTimelineContainer.slider("destroy");
+        if (this._$rangeTimelineContainer.data('ui-sortable')) {
+          this._$rangeTimelineContainer.slider('destroy');
         }
 
         this._$rangeTimelineContainer.slider({
           value: duration.start,
           step: 0.01,
-          orientation: "horizontal",
-          range: "min",
+          orientation: 'horizontal',
+          range: 'min',
           min: duration.start,
           max: duration.end,
           animate: false,
-          create: function(evt: any, ui: any) {
+          create: function (evt: any, ui: any) {
             // on create
           },
-          slide: function(evt: any, ui: any) {
+          slide: function (evt: any, ui: any) {
             that._setCurrentTime(ui.value);
           },
-          stop: function(evt: any, ui: any) {
+          stop: function (evt: any, ui: any) {
             //this._setCurrentTime(ui.value);
-          }
+          },
         });
       }
     } else {
@@ -791,25 +746,21 @@ export class CanvasInstance extends BaseComponent {
     return undefined;
   }
 
-  private _updateHoverPreview(
-    e: any,
-    $container: JQuery,
-    duration: number
-  ): void {
+  private _updateHoverPreview(e: any, $container: JQuery, duration: number): void {
     const offset = <any>$container.offset();
 
     const x = e.pageX - offset.left;
 
-    const $hoverArrow: JQuery = $container.find(".arrow");
-    const $hoverHighlight: JQuery = $container.find(".hover-highlight");
-    const $hoverPreview: JQuery = $container.find(".hover-preview");
+    const $hoverArrow: JQuery = $container.find('.arrow');
+    const $hoverHighlight: JQuery = $container.find('.hover-highlight');
+    const $hoverPreview: JQuery = $container.find('.hover-preview');
 
     $hoverHighlight.width(x);
 
     const fullWidth: number = <number>$container.width();
     const ratio: number = x / fullWidth;
     const seconds: number = Math.min(duration * ratio);
-    $hoverPreview.find(".label").text(AVComponentUtils.formatTime(seconds));
+    $hoverPreview.find('.label').text(AVComponentUtils.formatTime(seconds));
     const hoverPreviewWidth: number = <number>$hoverPreview.outerWidth();
     const hoverPreviewHeight: number = <number>$hoverPreview.outerHeight();
 
@@ -829,12 +780,12 @@ export class CanvasInstance extends BaseComponent {
     $hoverPreview
       .css({
         left: left,
-        top: hoverPreviewHeight * -1 + "px"
+        top: hoverPreviewHeight * -1 + 'px',
       })
       .show();
 
     $hoverArrow.css({
-      left: arrowLeft
+      left: arrowLeft,
     });
   }
 
@@ -857,7 +808,7 @@ export class CanvasInstance extends BaseComponent {
       if (this._data.range) {
         if (isDouble) {
           this.set({
-            range: undefined
+            range: undefined,
           });
           this._rewind();
         } else {
@@ -894,14 +845,14 @@ export class CanvasInstance extends BaseComponent {
 
   private _renderMediaElement(data: any): void {
     let $mediaElement;
-    let type: string = data.type.toString().toLowerCase();
+    const type: string = data.type.toString().toLowerCase();
 
     switch (type) {
-      case "video":
+      case 'video':
         $mediaElement = $('<video class="anno" />');
         break;
-      case "sound":
-      case "audio":
+      case 'sound':
+      case 'audio':
         $mediaElement = $('<audio class="anno" />');
         break;
       // case 'textualbody':
@@ -916,19 +867,16 @@ export class CanvasInstance extends BaseComponent {
 
     const media: HTMLMediaElement = $mediaElement[0] as HTMLMediaElement;
 
-    if (data.format && data.format.toString() === "application/dash+xml") {
+    if (data.format && data.format.toString() === 'application/dash+xml') {
       // dash
-      $mediaElement.attr("data-dashjs-player", "");
+      $mediaElement.attr('data-dashjs-player', '');
       const player = dashjs.MediaPlayer().create();
       player.getDebug().setLogToBrowserConsole(false);
       if (this._data.adaptiveAuthEnabled) {
-        player.setXHRWithCredentialsForType("MPD", true); // send cookies
+        player.setXHRWithCredentialsForType('MPD', true); // send cookies
       }
       player.initialize(media, data.source);
-    } else if (
-      data.format &&
-      data.format.toString() === "application/vnd.apple.mpegurl"
-    ) {
+    } else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
       // hls
       if (Hls.isSupported()) {
         let hls = new Hls();
@@ -937,14 +885,14 @@ export class CanvasInstance extends BaseComponent {
           hls = new Hls({
             xhrSetup: (xhr: any) => {
               xhr.withCredentials = true; // send cookies
-            }
+            },
           });
         } else {
           hls = new Hls();
         }
 
-        if (this._data.adaptiveAuthEnabled) {
-        }
+        // if (this._data.adaptiveAuthEnabled) {
+        // }
 
         hls.loadSource(data.source);
         hls.attachMedia(media);
@@ -955,22 +903,22 @@ export class CanvasInstance extends BaseComponent {
       // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
       // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
       // This is using the built-in support of the plain video element, without using hls.js.
-      else if (media.canPlayType("application/vnd.apple.mpegurl")) {
+      else if (media.canPlayType('application/vnd.apple.mpegurl')) {
         media.src = data.source;
         //media.addEventListener('canplay', function () {
         //media.play();
         //});
       }
     } else {
-      $mediaElement.attr("src", data.source);
+      $mediaElement.attr('src', data.source);
     }
 
     $mediaElement
       .css({
-        top: data.top + "%",
-        left: data.left + "%",
-        width: data.width + "%",
-        height: data.height + "%"
+        top: data.top + '%',
+        left: data.left + '%',
+        width: data.width + '%',
+        height: data.height + '%',
       })
       .hide();
 
@@ -980,7 +928,7 @@ export class CanvasInstance extends BaseComponent {
 
     const that = this;
 
-    data.checkForStall = function() {
+    data.checkForStall = function () {
       const self = this;
 
       if (this.active) {
@@ -992,7 +940,7 @@ export class CanvasInstance extends BaseComponent {
           if (this.timeout) {
             window.clearTimeout(this.timeout);
           }
-          this.timeout = window.setTimeout(function() {
+          this.timeout = window.setTimeout(function () {
             self.checkForStall();
           }, 1000);
         }
@@ -1007,22 +955,22 @@ export class CanvasInstance extends BaseComponent {
       this._$canvasContainer.append($mediaElement);
     }
 
-    $mediaElement.on("loadstart", () => {
+    $mediaElement.on('loadstart', () => {
       //console.log('loadstart');
       //data.checkForStall();
     });
 
-    $mediaElement.on("waiting", () => {
+    $mediaElement.on('waiting', () => {
       //console.log('waiting');
       //data.checkForStall();
     });
 
-    $mediaElement.on("seeking", () => {
+    $mediaElement.on('seeking', () => {
       //console.log('seeking');
       //data.checkForStall();
     });
 
-    $mediaElement.on("loadedmetadata", () => {
+    $mediaElement.on('loadedmetadata', () => {
       this._readyMediaCount++;
 
       if (this._readyMediaCount === this._contentAnnotations.length) {
@@ -1040,7 +988,7 @@ export class CanvasInstance extends BaseComponent {
       }
     });
 
-    $mediaElement.attr("preload", "auto");
+    $mediaElement.attr('preload', 'auto');
 
     (<any>$mediaElement.get(0)).load();
 
@@ -1066,19 +1014,19 @@ export class CanvasInstance extends BaseComponent {
     // });
 
     // must use this for IE11
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       $.ajax(<any>{
         url: url,
-        type: "GET",
-        dataType: "binary",
-        responseType: "arraybuffer",
-        processData: false
+        type: 'GET',
+        dataType: 'binary',
+        responseType: 'arraybuffer',
+        processData: false,
       })
-        .done(function(data) {
+        .done(function (data) {
           resolve(WaveformData.create(data));
         })
-        .fail(function(err) {
-          reject(new Error("Network Error"));
+        .fail(function (err) {
+          reject(new Error('Network Error'));
         });
     });
   }
@@ -1086,15 +1034,15 @@ export class CanvasInstance extends BaseComponent {
   private _renderWaveform(): void {
     if (!this.waveforms.length) return;
 
-    const promises = this.waveforms.map(url => {
+    const promises = this.waveforms.map((url) => {
       return this._getWaveformData(url);
     });
 
-    Promise.all(promises).then(waveforms => {
-      this._waveformCanvas = document.createElement("canvas");
-      this._waveformCanvas.classList.add("waveform");
+    Promise.all(promises).then((waveforms) => {
+      this._waveformCanvas = document.createElement('canvas');
+      this._waveformCanvas.classList.add('waveform');
       this._$canvasContainer.append(this._waveformCanvas);
-      this._waveformCtx = this._waveformCanvas.getContext("2d");
+      this._waveformCtx = this._waveformCanvas.getContext('2d');
 
       if (this._waveformCtx) {
         this._waveformCtx.fillStyle = <string>this._data.waveformColor;
@@ -1110,7 +1058,7 @@ export class CanvasInstance extends BaseComponent {
     if (!this._waveformCtx) return;
 
     let duration: Duration | undefined;
-    let start: number = 0;
+    let start = 0;
     let end: number = this._compositeWaveform.duration;
 
     if (this._data.range) {
@@ -1128,20 +1076,14 @@ export class CanvasInstance extends BaseComponent {
     const canvasHeight: number = this._waveformCtx.canvas.height;
     const barSpacing: number = <number>this._data.waveformBarSpacing;
     const barWidth: number = <number>this._data.waveformBarWidth;
-    const increment: number = Math.floor(
-      ((endpx - startpx) / canvasWidth) * barSpacing
-    );
+    const increment: number = Math.floor(((endpx - startpx) / canvasWidth) * barSpacing);
     const sampleSpacing: number = canvasWidth / barSpacing;
 
     this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
     this._waveformCtx.fillStyle = <string>this._data.waveformColor;
 
     for (let x = startpx; x < endpx; x += increment) {
-      const maxMin = this._getWaveformMaxAndMin(
-        this._compositeWaveform,
-        x,
-        sampleSpacing
-      );
+      const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, x, sampleSpacing);
       const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
       const ypos = (canvasHeight - height) / 2;
       const xpos = canvasWidth * AVComponentUtils.normalise(x, startpx, endpx);
@@ -1152,19 +1094,12 @@ export class CanvasInstance extends BaseComponent {
 
   private _scaleY = (amplitude: number, height: number) => {
     const range = 256;
-    return Math.max(
-      <number>this._data.waveformBarWidth,
-      (amplitude * height) / range
-    );
+    return Math.max(<number>this._data.waveformBarWidth, (amplitude * height) / range);
   };
 
-  private _getWaveformMaxAndMin(
-    waveform: CompositeWaveform,
-    index: number,
-    sampleSpacing: number
-  ): IMaxMin {
-    let max: number = -127;
-    let min: number = 128;
+  private _getWaveformMaxAndMin(waveform: CompositeWaveform, index: number, sampleSpacing: number): IMaxMin {
+    let max = -127;
+    let min = 128;
 
     for (let x = index; x < index + sampleSpacing; x++) {
       if (waveform.max(x) > max) {
@@ -1190,9 +1125,7 @@ export class CanvasInstance extends BaseComponent {
       const rangeClockTime: number = this._canvasClockTime - duration.start;
       this._$canvasTime.text(AVComponentUtils.formatTime(rangeClockTime));
     } else {
-      this._$canvasTime.text(
-        AVComponentUtils.formatTime(this._canvasClockTime)
-      );
+      this._$canvasTime.text(AVComponentUtils.formatTime(this._canvasClockTime));
     }
   }
 
@@ -1204,13 +1137,9 @@ export class CanvasInstance extends BaseComponent {
     }
 
     if (this._data.limitToRange && duration) {
-      this._$canvasDuration.text(
-        AVComponentUtils.formatTime(duration.getLength())
-      );
+      this._$canvasDuration.text(AVComponentUtils.formatTime(duration.getLength()));
     } else {
-      this._$canvasDuration.text(
-        AVComponentUtils.formatTime(this._getDuration())
-      );
+      this._$canvasDuration.text(AVComponentUtils.formatTime(this._getDuration()));
     }
   }
 
@@ -1224,10 +1153,7 @@ export class CanvasInstance extends BaseComponent {
   // }
 
   private _renderSyncIndicator(mediaElementData: any) {
-    const leftPercent: number = this._convertToPercentage(
-      mediaElementData.start,
-      this._getDuration()
-    );
+    const leftPercent: number = this._convertToPercentage(mediaElementData.start, this._getDuration());
     const widthPercent: number = this._convertToPercentage(
       mediaElementData.end - mediaElementData.start,
       this._getDuration()
@@ -1244,8 +1170,8 @@ export class CanvasInstance extends BaseComponent {
     );
 
     $timelineItem.css({
-      left: leftPercent + "%",
-      width: widthPercent + "%"
+      left: leftPercent + '%',
+      width: widthPercent + '%',
     });
 
     const $lineWrapper: JQuery = $('<div class="line-wrapper"></div>');
@@ -1271,9 +1197,7 @@ export class CanvasInstance extends BaseComponent {
     this._canvasClockTime = seconds; //secondsAsFloat;
     this._canvasClockStartDate = Date.now() - this._canvasClockTime * 1000;
 
-    this.logMessage(
-      "SET CURRENT TIME to: " + this._canvasClockTime + " seconds."
-    );
+    this.logMessage('SET CURRENT TIME to: ' + this._canvasClockTime + ' seconds.');
 
     this._canvasClockUpdater();
     this._highPriorityUpdater();
@@ -1299,7 +1223,7 @@ export class CanvasInstance extends BaseComponent {
     if (!this._data.limitToRange) {
       if (this._data && this._data.helper) {
         this.set({
-          range: undefined
+          range: undefined,
         });
       }
     }
@@ -1334,11 +1258,7 @@ export class CanvasInstance extends BaseComponent {
       duration = this._data.range.getDuration();
     }
 
-    if (
-      this._data.limitToRange &&
-      duration &&
-      this._canvasClockTime >= duration.end
-    ) {
+    if (this._data.limitToRange && duration && this._canvasClockTime >= duration.end) {
       this._canvasClockTime = duration.start;
     }
 
@@ -1366,13 +1286,12 @@ export class CanvasInstance extends BaseComponent {
       this._synchronizeMedia();
     }
 
-    const label: string =
-      this._data && this._data.content ? this._data.content.pause : "";
-    this._$playButton.prop("title", label);
-    this._$playButton.find("i").switchClass("play", "pause");
+    const label: string = this._data && this._data.content ? this._data.content.pause : '';
+    this._$playButton.prop('title', label);
+    this._$playButton.find('i').switchClass('play', 'pause');
 
     this.fire(CanvasInstanceEvents.PLAYCANVAS);
-    this.logMessage("PLAY canvas");
+    this.logMessage('PLAY canvas');
   }
 
   // todo: can this be part of the _data state?
@@ -1390,13 +1309,12 @@ export class CanvasInstance extends BaseComponent {
       this._synchronizeMedia();
     }
 
-    const label: string =
-      this._data && this._data.content ? this._data.content.play : "";
-    this._$playButton.prop("title", label);
-    this._$playButton.find("i").switchClass("pause", "play");
+    const label: string = this._data && this._data.content ? this._data.content.play : '';
+    this._$playButton.prop('title', label);
+    this._$playButton.find('i').switchClass('pause', 'play');
 
     this.fire(CanvasInstanceEvents.PAUSECANVAS);
-    this.logMessage("PAUSE canvas");
+    this.logMessage('PAUSE canvas');
   }
 
   private _isNavigationConstrainedToRange(): boolean {
@@ -1412,11 +1330,7 @@ export class CanvasInstance extends BaseComponent {
       duration = this._data.range.getDuration();
     }
 
-    if (
-      this._data.limitToRange &&
-      duration &&
-      this._canvasClockTime >= duration.end
-    ) {
+    if (this._data.limitToRange && duration && this._canvasClockTime >= duration.end) {
       this.pause();
     }
 
@@ -1428,11 +1342,11 @@ export class CanvasInstance extends BaseComponent {
 
   private _highPriorityUpdater(): void {
     this._$rangeTimelineContainer.slider({
-      value: this._canvasClockTime
+      value: this._canvasClockTime,
     });
 
     this._$canvasTimelineContainer.slider({
-      value: this._canvasClockTime
+      value: this._canvasClockTime,
     });
 
     this._updateCurrentTimeDisplay();
@@ -1442,11 +1356,7 @@ export class CanvasInstance extends BaseComponent {
   private _lowPriorityUpdater(): void {
     this._updateMediaActiveStates();
 
-    if (
-      this._isPlaying &&
-      this._data.autoSelectRange &&
-      (this.isVirtual() || this.isOnlyCanvasInstance)
-    ) {
+    if (this._isPlaying && this._data.autoSelectRange && (this.isVirtual() || this.isOnlyCanvasInstance)) {
       this._hasRangeChanged();
     }
   }
@@ -1457,17 +1367,14 @@ export class CanvasInstance extends BaseComponent {
     for (let i = 0; i < this._contentAnnotations.length; i++) {
       contentAnnotation = this._contentAnnotations[i];
 
-      if (
-        contentAnnotation.start <= this._canvasClockTime &&
-        contentAnnotation.end >= this._canvasClockTime
-      ) {
+      if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
         this._checkMediaSynchronization();
 
         if (!contentAnnotation.active) {
           this._synchronizeMedia();
           contentAnnotation.active = true;
           contentAnnotation.element.show();
-          contentAnnotation.timelineElement.addClass("active");
+          contentAnnotation.timelineElement.addClass('active');
         }
 
         if (
@@ -1480,7 +1387,7 @@ export class CanvasInstance extends BaseComponent {
         if (contentAnnotation.active) {
           contentAnnotation.active = false;
           contentAnnotation.element.hide();
-          contentAnnotation.timelineElement.removeClass("active");
+          contentAnnotation.timelineElement.removeClass('active');
           this._pauseMedia(contentAnnotation.element[0]);
         }
       }
@@ -1518,20 +1425,15 @@ export class CanvasInstance extends BaseComponent {
 
       this._setMediaCurrentTime(
         contentAnnotation.element[0],
-        this._canvasClockTime -
-          contentAnnotation.start +
-          contentAnnotation.startOffset
+        this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset
       );
 
-      if (
-        contentAnnotation.start <= this._canvasClockTime &&
-        contentAnnotation.end >= this._canvasClockTime
-      ) {
+      if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
         if (this._isPlaying) {
           if (contentAnnotation.element[0].paused) {
             const promise = contentAnnotation.element[0].play();
             if (promise) {
-              promise.catch(function() {});
+              promise.catch(function () {});
             }
           }
         } else {
@@ -1549,7 +1451,7 @@ export class CanvasInstance extends BaseComponent {
       }
     }
 
-    this.logMessage("SYNC MEDIA at: " + this._canvasClockTime + " seconds.");
+    this.logMessage('SYNC MEDIA at: ' + this._canvasClockTime + ' seconds.');
   }
 
   private _checkMediaSynchronization(): void {
@@ -1558,14 +1460,8 @@ export class CanvasInstance extends BaseComponent {
     for (let i = 0, l = this._contentAnnotations.length; i < l; i++) {
       contentAnnotation = this._contentAnnotations[i];
 
-      if (
-        contentAnnotation.start <= this._canvasClockTime &&
-        contentAnnotation.end >= this._canvasClockTime
-      ) {
-        const correctTime: number =
-          this._canvasClockTime -
-          contentAnnotation.start +
-          contentAnnotation.startOffset;
+      if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
+        const correctTime: number = this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset;
         const factualTime: number = contentAnnotation.element[0].currentTime;
 
         // off by 0.2 seconds
@@ -1574,7 +1470,7 @@ export class CanvasInstance extends BaseComponent {
           //this.playbackStalled(true, contentAnnotation);
 
           const lag: number = Math.abs(factualTime - correctTime);
-          this.logMessage("DETECTED synchronization lag: " + Math.abs(lag));
+          this.logMessage('DETECTED synchronization lag: ' + Math.abs(lag));
           this._setMediaCurrentTime(contentAnnotation.element[0], correctTime);
           //this.synchronizeMedia();
         } else {
@@ -1585,10 +1481,7 @@ export class CanvasInstance extends BaseComponent {
     }
   }
 
-  private _playbackStalled(
-    aBoolean: boolean,
-    syncMediaRequestingStall: any
-  ): void {
+  private _playbackStalled(aBoolean: boolean, syncMediaRequestingStall: any): void {
     if (aBoolean) {
       if (this._stallRequestedBy.indexOf(syncMediaRequestingStall) < 0) {
         this._stallRequestedBy.push(syncMediaRequestingStall);
@@ -1604,9 +1497,7 @@ export class CanvasInstance extends BaseComponent {
         this._isStalled = aBoolean;
       }
     } else {
-      const idx: number = this._stallRequestedBy.indexOf(
-        syncMediaRequestingStall
-      );
+      const idx: number = this._stallRequestedBy.indexOf(syncMediaRequestingStall);
 
       if (idx >= 0) {
         this._stallRequestedBy.splice(idx, 1);
@@ -1647,7 +1538,7 @@ export class CanvasInstance extends BaseComponent {
         //const resizeFactorY: number = containerWidth / this.canvasWidth;
         //$canvasContainer.height(this.canvasHeight * resizeFactorY);
 
-        const $options: JQuery = this.$playerElement.find(".options-container");
+        const $options: JQuery = this.$playerElement.find('.options-container');
 
         // if in the watch metric, make sure the canvasContainer isn't more than half the height to allow
         // room between buttons
@@ -1655,14 +1546,9 @@ export class CanvasInstance extends BaseComponent {
           this._data.halveAtWidth !== undefined &&
           <number>this.$playerElement.parent().width() < this._data.halveAtWidth
         ) {
-          this._$canvasContainer.height(
-            <number>this.$playerElement.parent().height() / 2
-          );
+          this._$canvasContainer.height(<number>this.$playerElement.parent().height() / 2);
         } else {
-          this._$canvasContainer.height(
-            <number>this.$playerElement.parent().height() -
-              <number>$options.height()
-          );
+          this._$canvasContainer.height(<number>this.$playerElement.parent().height() - <number>$options.height());
         }
       }
 
@@ -1680,8 +1566,8 @@ export class CanvasInstance extends BaseComponent {
 }
 
 export class CanvasInstanceEvents {
-  static NEXT_RANGE: string = "nextrange";
-  static PAUSECANVAS: string = "pause";
-  static PLAYCANVAS: string = "play";
-  static PREVIOUS_RANGE: string = "previousrange";
+  static NEXT_RANGE = 'nextrange';
+  static PAUSECANVAS = 'pause';
+  static PLAYCANVAS = 'play';
+  static PREVIOUS_RANGE = 'previousrange';
 }
