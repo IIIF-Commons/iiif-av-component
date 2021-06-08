@@ -88,7 +88,7 @@
             padding: 5px;
             color: #fff;
         }
-        
+
         .pointer {
             height: 6px;
             position: relative;
@@ -118,6 +118,7 @@
         position: absolute;
         background: @highlight-color;
         height: 4px;
+        transition: left .5s, width .5s;
     }
 
     .timeline-item-container {
@@ -200,7 +201,6 @@
 
     .controls-container .volume {
         float: left;
-        overflow: hidden;
         width: 180px;
     }
 
@@ -219,7 +219,7 @@
         border: none;
         border-radius: 0;
         background-color: rgba(255, 255, 255, 0.25);
-        
+
         .ui-slider-handle {
             width: 1px;
             .ui-slider-handle-hidden();
@@ -229,7 +229,7 @@
             .ui-slider-range-scrub();
             background-color: #fff;
         }
-    
+
     }
 
     .btn {
@@ -271,7 +271,15 @@
         &.pause {
             background-image: data-uri('@{img-path}pause.png');
         }
-        
+
+    }
+
+    .av-icon-fast-forward {
+        background-image: data-uri('@{img-path}fast-forward.svg');
+    }
+
+    .av-icon-fast-rewind {
+        background-image: data-uri('@{img-path}fast-rewind.svg');
     }
 
     .av-icon-next {
@@ -287,7 +295,7 @@
         &.collapse {
             background-image: data-uri('@{img-path}collapse.png');
         }
-        
+
     }
 
 }
@@ -314,6 +322,7 @@
     z-index: 2;
 
     cursor: pointer;
+    transition: left .5s;
 
     &:focus {
         outline-width: 0;
