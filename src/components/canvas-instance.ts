@@ -780,6 +780,22 @@ export class CanvasInstance extends BaseComponent {
       }
     }
 
+    if (diff.includes('volume')) {
+      this._contentAnnotations.forEach(($mediaElement: any) => {
+        const volume: number = this._data.volume !== undefined ? this._data.volume : 1;
+
+        $($mediaElement.element).prop('volume', volume);
+
+        this._volume.set({
+          volume: this._data.volume,
+        });
+      });
+    } else {
+      if (this.isVisible()) {
+        this._render();
+      }
+    }
+
     if (diff.includes('range')) {
       if (this._data.helper) {
         if (!this._data.range) {
@@ -801,22 +817,6 @@ export class CanvasInstance extends BaseComponent {
               this.fire(Events.RANGE_CHANGED, this._data.range.id, this._data.range);
             }
           }
-        }
-      }
-
-      if (diff.includes('volume')) {
-        this._contentAnnotations.forEach(($mediaElement: any) => {
-          const volume: number = this._data.volume !== undefined ? this._data.volume : 1;
-
-          $($mediaElement.element).prop('volume', volume);
-
-          this._volume.set({
-            volume: this._data.volume,
-          });
-        });
-      } else {
-        if (this.isVisible()) {
-          this._render();
         }
       }
 
