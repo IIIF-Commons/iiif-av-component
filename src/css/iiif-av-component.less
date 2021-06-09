@@ -228,6 +228,7 @@
         .ui-slider-range {
             .ui-slider-range-scrub();
             background-color: #fff;
+            height: 6px;
         }
 
     }
@@ -307,15 +308,26 @@
     box-sizing: border-box;
     border-radius: 0;
     cursor: pointer;
+    left: 0;
+    top: 0;
+    height: 4px;
+    z-index: 1;
+    font-size: .7em;
+    display: block;
+    border: 0;
+    border-radius: 0;
+    background-color: #fff;
     //border-right: 2px solid #000000;
     //.opacity(.6);
 }
 
 .circular-slider-handle() {
+    position: absolute;
+    margin-top: -6px;
     width: 16px;
     height: 16px;
     margin-left: -8px;
-    margin-top: -2px;
+    margin-top: -11px;
     border: none;
     border-radius: 8px;
     background-color: @highlight-color;
