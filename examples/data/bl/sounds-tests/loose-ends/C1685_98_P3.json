@@ -78,6 +78,34 @@
 	 	 	}
 	 	]
 	},
+	"accompanyingCanvas": {
+		"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/c/poster",
+		"type":"Canvas",
+		"label":{"en":["world"]},
+		"width":962,
+		"height":962,
+		"items": [
+			 {
+					"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/c/poster/p1",
+					"type":"AnnotationPage",
+					"items": [
+						 {
+								"id":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/c/poster/p1/a1",
+								"type":"Annotation",
+								"motivation":"painting",
+								"target":"https://api.bl.uk/metadata/iiif/ark:/81055/vdc_100052359795.0x000002/c/poster",
+								"body": {
+									 "id":"https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/posters/world.jpg",
+									 "type":"Image",
+									 "width":962,
+									 "height":962,
+									 "format":"image/jpeg"
+								}
+						 }
+					]
+			 }
+		]
+ 	},
 	"homepage": {
 		"id":"http://access.bl.uk/item/viewer/ark:/81055/vdc_100052359795.0x000002",
 		"type":"Text",

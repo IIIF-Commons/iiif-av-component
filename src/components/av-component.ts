@@ -316,13 +316,19 @@ export class AVComponent extends BaseComponent {
         }
       });
 
+      console.log('get accompanying canvas');
+
       // poster canvas
       // @ts-ignore
-      const posterCanvas: Canvas | null = this._data.helper.getPosterCanvas();
+      let accompanyingCanvas: Canvas | null = this._data.helper.getAccompanyingCanvas();
 
-      if (posterCanvas) {
-        this._posterCanvasWidth = posterCanvas.getWidth();
-        this._posterCanvasHeight = posterCanvas.getHeight();
+      if (!accompanyingCanvas) {
+        accompanyingCanvas = this._data.helper.getPosterCanvas();
+      }
+
+      if (accompanyingCanvas) {
+        this._posterCanvasWidth = accompanyingCanvas.getWidth();
+        this._posterCanvasHeight = accompanyingCanvas.getHeight();
 
         const posterImage: string | null = this._data.helper.getPosterImage();
 
