@@ -94,11 +94,16 @@ export class MediaElement {
   }
 
   isDash() {
-    return this.format && this.format.toString() === 'application/dash+xml';
+    return this.format && this.format.toString() === 'application/dash+xml' && typeof dashjs !== 'undefined';
   }
 
   isHls() {
-    return this.format && this.format.toString() === 'application/vnd.apple.mpegurl' && Hls && Hls.isSupported();
+    return (
+      this.format &&
+      this.format.toString() === 'application/vnd.apple.mpegurl' &&
+      typeof Hls !== 'undefined' &&
+      Hls.isSupported()
+    );
   }
 
   isMpeg(): boolean {

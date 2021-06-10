@@ -1,5 +1,5 @@
 import { Annotation, AnnotationBody, Canvas, Duration, Range, Utils } from 'manifesto.js';
-import { Behavior, MediaType } from '@iiif/vocabulary';
+import { Behavior, MediaType } from '@iiif/vocabulary/dist-commonjs';
 import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
 import { IAVCanvasInstanceData } from '../interfaces/canvas-instance-data';
 import { MediaElement } from '../elements/media-element';
@@ -507,7 +507,7 @@ export class CanvasInstance extends BaseComponent {
       }
 
       const type: string | null = body.getType();
-      const format: MediaType | null = body.getFormat();
+      const format = body.getFormat();
 
       if (type && type.toString() === 'textualbody') {
         //mediaSource = (<any>body).value;
@@ -1096,7 +1096,7 @@ export class CanvasInstance extends BaseComponent {
 
   private _previous(isDouble: boolean): void {
     if (AVComponent.newRanges && this.isVirtual()) {
-      Logger.groupCollapsed('prev');
+      Logger.group('prev');
       const newTime = this.timePlanPlayer.previous();
       this._setCurrentTime(newTime);
       Logger.log('CanvasInstance.previous()', newTime);

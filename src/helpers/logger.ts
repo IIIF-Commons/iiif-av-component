@@ -1,4 +1,4 @@
-const IS_DEV = process.env.NODE !== 'production';
+const IS_DEV = process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test';
 
 declare global {
   interface Window {

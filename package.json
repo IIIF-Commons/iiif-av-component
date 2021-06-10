@@ -17,7 +17,9 @@
     "build": "npm run clean && npm run build:css && npm run build:commonjs && npm run build:esmodule && npm run build:umd && npm run build:var && npm run build:types",
     "clean": "rimraf -rf dist-css dist-umd dist-commonjs dist-esmodule dist-var types",
     "prepublishOnly": "npm run build && npm run test",
-    "start": "npx serve"
+    "start": "npx serve",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -30,9 +32,11 @@
   },
   "homepage": "https://github.com/iiif-commons/iiif-av-component#readme",
   "devDependencies": {
+    "@iiif/vocabulary": "^1.0.20",
     "@fesk/eslint-config-standard": "1.4.0-pr.b6dc2fa3",
     "@types/node": "^8.10.52",
     "@types/jquery": "2.0.34",
+    "@types/jest": "^24.9.1",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
     "awesome-typescript-loader": "^5.2.1",
@@ -48,7 +52,9 @@
     "typescript": "3.6.3",
     "uglify-js": "3.4.9",
     "webpack-cli": "^3.1.2",
-    "webpack": "^4.28.3"
+    "webpack": "^4.28.3",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.4"
   },
   "dependencies": {
     "@iiif/base-component": "2.*",
