@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
@@ -92,6 +93,7 @@ export class AVComponent extends BaseComponent {
   }
 
   public set(data: IAVComponentData): void {
+    // eslint-disable-next-line no-debugger
     Logger.groupCollapsed('AVComponent.set()');
     Logger.log('Data', data);
 
@@ -316,11 +318,13 @@ export class AVComponent extends BaseComponent {
         }
       });
 
-      console.log('get accompanying canvas');
+      // this._logMessage('get accompanying canvas');
 
       // poster canvas
       // @ts-ignore
       let accompanyingCanvas: Canvas | null = this._data.helper.getAccompanyingCanvas();
+
+      //this._logMessage(accompanyingCanvas);
 
       if (!accompanyingCanvas) {
         accompanyingCanvas = this._data.helper.getPosterCanvas();
@@ -330,7 +334,11 @@ export class AVComponent extends BaseComponent {
         this._posterCanvasWidth = accompanyingCanvas.getWidth();
         this._posterCanvasHeight = accompanyingCanvas.getHeight();
 
-        const posterImage: string | null = this._data.helper.getPosterImage();
+        let posterImage: string | null = this._data.helper.getPosterImage();
+
+        if (!posterImage) {
+          posterImage = this._data.helper.getAccompanyingCanvasImage();
+        }
 
         if (posterImage) {
           this._$posterContainer.append(this._$posterImage);
