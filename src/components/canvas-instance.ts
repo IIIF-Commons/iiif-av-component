@@ -700,7 +700,9 @@ export class CanvasInstance extends BaseComponent {
       Logger.log(`Switching range from ${this.currentRange} to ${rangeId}`);
       this.setCurrentRangeId(rangeId);
       // Entrypoint for changing a range. Only get's called when change came from external source.
-      this._setCurrentTime(this.timePlanPlayer.setRange(rangeId), true);
+      if (AVComponent.newRanges && this.isVirtual()) {
+        this._setCurrentTime(this.timePlanPlayer.setRange(rangeId), true);
+      }
 
       this._render();
     }
@@ -733,7 +735,9 @@ export class CanvasInstance extends BaseComponent {
 
   setVolume(volume: number) {
     this._volume.set({ volume });
-    this.timePlanPlayer.setVolume(volume);
+    if (AVComponent.newRanges && this.isVirtual()) {
+      this.timePlanPlayer.setVolume(volume);
+    }
   }
 
   setLimitToRange(limitToRange: boolean) {
