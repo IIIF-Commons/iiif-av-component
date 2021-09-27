@@ -28,17 +28,20 @@ export class TimePlanPlayer {
   constructor(
     media: CompositeMediaElement,
     plan: TimePlan,
-    notifyRangeChange: (rangeId: string, stops: { from: TimeStop; to: TimeStop }) => void,
-    notifyTimeChange: (time: TimelineTime) => void,
-    notifyPlaying: (playing: boolean) => void
+    notifyRangeChange?: (rangeId: string, stops: { from: TimeStop; to: TimeStop }) => void,
+    notifyTimeChange?: (time: TimelineTime) => void,
+    notifyPlaying?: (playing: boolean) => void
   ) {
     this.media = media;
     this.plan = plan;
     this.fullPlan = plan;
     this.currentStop = plan.stops[0];
-    this.notifyRangeChange = notifyRangeChange;
-    this.notifyTimeChange = notifyTimeChange;
-    this.notifyPlaying = notifyPlaying;
+    const noop = () => {
+      // no-op.
+    };
+    this.notifyRangeChange = notifyRangeChange || noop;
+    this.notifyTimeChange = notifyTimeChange || noop;
+    this.notifyPlaying = notifyPlaying || noop;
     this.logging = true;
     this.currentRange = this.currentStop.rangeStack[0];
 
@@ -290,10 +293,43 @@ export class TimePlanPlayer {
       this.currentRange = nextStop.rangeId;
       this.advanceToStop(this.currentStop, nextStop, nextStop.rangeId);
     } else {
-      this.setInternalTime(this.currentStop.end);
+      this.goToEndOfRange(this.currentStop.rangeId);
     }
 
     return this.getTime();
+  }
+
+  goToEndOfRange(rangeId: string) {
+    let state: TimeStop | undefined = undefined;
+
+    for (let i = 0; i < this.plan.stops.length; i++) {
+      const stop = this.plan.stops[i];
+      if (stop.rangeId === rangeId && (!state || (stop.canvasIndex >= state.canvasIndex && stop.end > state.end))) {
+        state = stop;
+      }
+    }
+
+    if (state) {
+      this.advanceToStop(this.currentStop, state, rangeId);
+      this.setInternalTime(state.end);
+    }
+  }
+  goToStartOfRange(rangeId: string) {
+    let state: TimeStop | undefined = undefined;
+    const length = this.plan.stops.length;
+    for (let i = length - 1; i >= 0; i--) {
+      const stop = this.plan.stops[i];
+      if (stop.rangeId === rangeId && (!state || (stop.canvasIndex <= state.canvasIndex && stop.start < state.start))) {
+        state = stop;
+      }
+    }
+
+    if (state) {
+      if (state !== this.currentStop) {
+        this.advanceToStop(this.currentStop, state, rangeId);
+      }
+      this.setInternalTime(state.start);
+    }
   }
 
   previous(): TimelineTime {
@@ -301,51 +337,64 @@ export class TimePlanPlayer {
     const isFirst = currentRangeIndex === 0;
     const prevRangeIdx = !isFirst ? this.plan.rangeOrder.indexOf(this.currentRange) - 1 : undefined;
     let prevRange = typeof prevRangeIdx !== 'undefined' ? this.plan.rangeOrder[prevRangeIdx] : undefined;
-
+    let currentStopHead = this.currentStop;
     const idx = this.plan.stops.indexOf(this.currentStop);
+    let newIdx = idx;
     let prevStop = this.plan.stops[idx - 1];
-    let negativeOffset = -1;
     let running = true;
     while (running) {
-      const nextPrevStop = this.plan.stops[idx + negativeOffset];
-      negativeOffset--; // start at -1
+      const nextPrevStop = this.plan.stops[newIdx - 1];
       if (!nextPrevStop) {
         running = false;
         break;
+      }
+      if (nextPrevStop.rangeId === this.currentRange) {
+        currentStopHead = nextPrevStop;
       }
       if (prevStop.rangeId !== nextPrevStop.rangeId) {
         running = false;
         break;
       }
 
-      prevStop = nextPrevStop;
+      if (nextPrevStop) {
+        prevStop = nextPrevStop;
+        newIdx = newIdx - 1;
+      }
     }
 
-    if (this.playing && prevStop) {
+    const goBackToStartOfRange = this._time - (currentStopHead.start + 2) > 0;
+    const isPreviousRangeDifferent = this.playing && prevStop && prevStop.rangeId !== this.currentStop.rangeId;
+    const isDefinitelyFirstRange = idx === 0 || (!prevRange && newIdx === 0);
+    const isPreviousRangeNotAParent =
+      prevRange &&
+      this.currentStop.rangeStack.indexOf(prevRange) === -1 &&
+      // But it is in the previous.
+      (prevStop.rangeStack.indexOf(prevRange) !== -1 || prevStop.rangeId === prevRange);
+    const isPreviousRangeInStack = prevRange && this.currentStop.rangeStack.indexOf(prevRange) !== -1;
+
+
+    if (goBackToStartOfRange) {
+      if (currentStopHead !== this.currentStop) {
+        this.advanceToStop(this.currentStop, currentStopHead, currentStopHead.rangeId);
+      }
+      this.setInternalTime(currentStopHead.start);
+
+      return this.getTime();
+    }
+
+    if (isPreviousRangeDifferent) {
       prevRange = prevStop.rangeId;
     }
 
-    // while (offset <= idx) {
-    //     let next = this.plan.stops[offset];
-    //     if (!prevStop) {
-    //         break;
-    //     }
-    //     if (next.rangeId === this.currentStop.rangeId) {
-    //         break;
-    //     }
-    //     prevStop = next;
-    //     offset++;
-    // }
-
     // Case 1, at the start, but parent ranges possible.
-    if (idx === 0) {
+    if (isDefinitelyFirstRange) {
       // Set the time to the start.
-      this.setInternalTime(this.currentStop.start);
+      this.goToStartOfRange(prevRange ? prevRange : this.currentStop.rangeId);
       // We are on the first item.
       if (prevRange && this.currentStop.rangeId !== prevRange) {
         // But we still want to change the range.
         this.currentRange = prevRange;
-        this.advanceToStop(this.currentStop, this.currentStop, prevRange);
+        this.advanceToStop(this.currentStop, currentStopHead, prevRange);
       }
 
       // And return the time.
@@ -353,13 +402,7 @@ export class TimePlanPlayer {
     }
 
     // Case 2, in the middle, but previous is a parent.
-    if (
-      // If the range to navigate to isn't part of the current stop.
-      prevRange &&
-      this.currentStop.rangeStack.indexOf(prevRange) === -1 &&
-      // But it is in the previous.
-      (prevStop.rangeStack.indexOf(prevRange) !== -1 || prevStop.rangeId === prevRange)
-    ) {
+    if (prevRange && isPreviousRangeNotAParent) {
       // Then we navigate to the previous.
       this.setInternalTime(prevStop.start);
       this.currentRange = prevRange;
@@ -369,10 +412,10 @@ export class TimePlanPlayer {
     }
 
     // If the previous range is in the current ranges stack (i.e. a parent)
-    if (prevRange && this.currentStop.rangeStack.indexOf(prevRange) !== -1) {
+    if (prevRange && isPreviousRangeInStack) {
       this.setInternalTime(this.currentStop.start);
       this.currentRange = prevRange;
-      this.advanceToStop(this.currentStop, this.currentStop, prevRange);
+      this.advanceToStop(this.currentStop, currentStopHead, prevRange);
       // And time.
       return this.getTime();
     }
@@ -422,7 +465,7 @@ export class TimePlanPlayer {
     buffering?: boolean;
     time: TimelineTime | undefined;
   } {
-    Logger.group(`TimeplanPlayer.advanceToTime(${time})`);
+    Logger.groupCollapsed(`TimeplanPlayer.advanceToTime(${time})`);
 
     // this.log('advanceToTime', this.getTime().toFixed(0), time.toFixed(0));
 

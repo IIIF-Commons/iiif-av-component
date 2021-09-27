@@ -1,11 +1,13 @@
 import { MediaElement } from './media-element';
 import { AnnotationTime } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
+// @ts-ignore
+import { JQueryStatic } from 'jquery';
 
 export class CompositeMediaElement {
   elements: MediaElement[] = [];
 
-  activeElement: MediaElement;
+  activeElement?: MediaElement;
   playing = false;
 
   canvasMap: {
@@ -42,7 +44,9 @@ export class CompositeMediaElement {
       toTime: time,
       instance: this,
     });
-    this.activeElement.syncClock(time);
+    if (this.activeElement) {
+      this.activeElement.syncClock(time);
+    }
     Logger.groupEnd();
   }
 
@@ -66,7 +70,7 @@ export class CompositeMediaElement {
     return undefined;
   }
 
-  appendTo($element: JQuery) {
+  appendTo($element: JQueryStatic) {
     Logger.log(
       'Appending...',
       this.elements.map((media) => media.element)
@@ -79,10 +83,12 @@ export class CompositeMediaElement {
   }
 
   async seekToMediaTime(realTime: AnnotationTime) {
-    if (this.playing) {
-      await this.activeElement.play(realTime);
-    } else {
-      this.activeElement.syncClock(realTime);
+    if (this.activeElement) {
+      if (this.playing) {
+        await this.activeElement.play(realTime);
+      } else {
+        this.activeElement.syncClock(realTime);
+      }
     }
   }
 
@@ -94,7 +100,7 @@ export class CompositeMediaElement {
       newElement,
     });
 
-    if (newElement && newElement !== this.activeElement) {
+    if (this.activeElement && newElement && newElement !== this.activeElement) {
       // Moving track.
       // Stop the current track.
       this.activeElement.stop();
@@ -111,12 +117,16 @@ export class CompositeMediaElement {
     if (canvasId && typeof time !== 'undefined') {
       await this.seekTo(canvasId, time);
     }
-    return this.activeElement.play(time);
+    if (this.activeElement) {
+      return this.activeElement.play(time);
+    }
   }
 
   pause() {
     this.playing = false;
-    this.activeElement.pause();
+    if (this.activeElement) {
+      this.activeElement.pause();
+    }
   }
 
   setVolume(volume: number) {
@@ -126,6 +136,6 @@ export class CompositeMediaElement {
   }
 
   isBuffering() {
-    return this.activeElement.isBuffering();
+    return this.activeElement ? this.activeElement.isBuffering() : false;
   }
 }
