@@ -372,7 +372,6 @@ export class TimePlanPlayer {
       (prevStop.rangeStack.indexOf(prevRange) !== -1 || prevStop.rangeId === prevRange);
     const isPreviousRangeInStack = prevRange && this.currentStop.rangeStack.indexOf(prevRange) !== -1;
 
-
     if (goBackToStartOfRange) {
       if (currentStopHead !== this.currentStop) {
         this.advanceToStop(this.currentStop, currentStopHead, currentStopHead.rangeId);

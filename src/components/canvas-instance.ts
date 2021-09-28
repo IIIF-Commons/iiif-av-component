@@ -702,6 +702,12 @@ export class CanvasInstance extends BaseComponent {
       // Entrypoint for changing a range. Only get's called when change came from external source.
       if (AVComponent.newRanges && this.isVirtual()) {
         this._setCurrentTime(this.timePlanPlayer.setRange(rangeId), true);
+      } else {
+        // this is called when timePlanPlayer isn't available (it's not a virtual canvas)
+        const range = this._data!.helper!.getRangeById(rangeId);
+        this.set({
+          range: jQuery.extend(true, { autoChanged: true }, range),
+        });
       }
 
       this._render();
@@ -1739,6 +1745,7 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private async _setCurrentTime(seconds: TimelineTime, setRange = true): Promise<void> {
+    console.log('setCurrentTime');
     if (AVComponent.newRanges && this.isVirtual()) {
       this._buffering = true;
       await this.timePlanPlayer.setTime(seconds, setRange);

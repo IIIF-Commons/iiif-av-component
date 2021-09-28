@@ -44,6 +44,8 @@
 <body>
 
     <div class="testFixtureSelection">
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_P3.json">Loose ends</button>
+        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/lunchroom-manners.json">Lunchroom Manners</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/01_gapless_audio.json">Test 1</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/02_gapless_video.json">Test 2</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/03_synchronised_video.json">Test 3</button>
@@ -51,11 +53,9 @@
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/05_synchronised_av_text.json">Test 5</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/fire.json">Test 6</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/mahler-symphony.json">Symphony no. 3 - Mahler, Gustav</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/lunchroom-manners.json">Lunchroom Manners</button>
         <button class="testFixture" data-json="https://britishlibrary.github.io/iiif-av-samples/symphony/manifest.json">Test 9</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/02.json">Test 10</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/iiif/16.json">Test 11</button>
-        <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_P3.json">Loose ends</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/no-poster-canvas.json?adsf">No Poster Canvas (accompanyingCanvas)</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C308_8.json">C308_8 Brian Hayes programme</button>
         <button class="testFixture" data-json="https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/C728_241.json">C728_241 [Demo]</button>
@@ -366,7 +366,8 @@
 
             treecomponent.on('treeNodeSelected', function(node) {
                 console.log('selected: ' + node.label);
-                avcomponent.playRange(node.data.id);
+                //avcomponent.playRange(node.data.id);
+                avcomponent.viewRange(node.data.id);
             });
 
             // loadManifest("https://iiif-commons.github.io/iiif-av-component/examples/data/bl/sounds-tests/loose-ends/C1685_98_P3.json", 
