@@ -1745,7 +1745,6 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private async _setCurrentTime(seconds: TimelineTime, setRange = true): Promise<void> {
-    console.log('setCurrentTime');
     if (AVComponent.newRanges && this.isVirtual()) {
       this._buffering = true;
       await this.timePlanPlayer.setTime(seconds, setRange);
