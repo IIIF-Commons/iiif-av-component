@@ -220,27 +220,36 @@ export class CanvasInstance extends BaseComponent {
     this._$controlsContainer = $('<div class="controls-container"></div>');
     this._$prevButton = $(`
                                 <button class="btn" title="${this._data.content.previous}">
-                                    <i class="av-icon av-icon-previous" aria-hidden="true"></i>${this._data.content.previous}
+                                    <i class="av-icon av-icon-previous" aria-hidden="true"></i>
+                                    <span class="sr-only>${this._data.content.previous}</span>
                                 </button>`);
     this._$playButton = $(`
                                 <button class="btn" title="${this._data.content.play}">
-                                    <i class="av-icon av-icon-play play" aria-hidden="true"></i>${this._data.content.play}
+                                    <i class="av-icon av-icon-play play" aria-hidden="true"></i>
+                                    <span class="sr-only>${this._data.content.play}</span>
                                 </button>`);
     this._$nextButton = $(`
                                 <button class="btn" title="${this._data.content.next}">
-                                    <i class="av-icon av-icon-next" aria-hidden="true"></i>${this._data.content.next}
+                                    <i class="av-icon av-icon-next" aria-hidden="true"></i>
+                                    <span class="sr-only>${this._data.content.next}</span>
                                 </button>`);
     this._$fastForward = $(`
                                 <button class="btn" title="${this._data.content.next}">
-                                    <i class="av-icon av-icon-fast-forward" aria-hidden="true"></i>${
+                                    <i class="av-icon av-icon-fast-forward" aria-hidden="true"></i>
+                                    <span class="sr-only>
+                                    ${
                                       this._data.content.fastForward || ''
                                     }
+                                    </span>
                                 </button>`);
     this._$fastRewind = $(`
                                 <button class="btn" title="${this._data.content.next}">
-                                    <i class="av-icon av-icon-fast-rewind" aria-hidden="true"></i>${
+                                    <i class="av-icon av-icon-fast-rewind" aria-hidden="true"></i>
+                                    <span class="sr-only>
+                                    ${
                                       this._data.content.fastRewind || ''
                                     }
+                                    </span>
                                 </button>`);
 
     this._$timeDisplay = $(

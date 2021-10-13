@@ -290,7 +290,7 @@ export class AVComponent extends BaseComponent {
       this._$posterImage = $('<div class="poster-image"></div>');
       this._$posterExpandButton = $(`
                     <button class="btn" title="${this._data && this._data.content ? this._data.content.expand : ''}">
-                        <i class="av-icon  av-icon-expand expand" aria-hidden="true"></i><span>${
+                        <i class="av-icon  av-icon-expand expand" aria-hidden="true"></i><span class="sr-only">${
                           this._data && this._data.content ? this._data.content.expand : ''
                         }</span>
                     </button>

@@ -32,7 +32,8 @@ export class AVVolumeControl extends BaseComponent {
 
     this._$volumeMute = $(`
       <button class="btn volume-mute" title="${this.options.data.content.mute}">
-          <i class="av-icon av-icon-mute on" aria-hidden="true"></i>${this.options.data.content.mute}
+          <i class="av-icon av-icon-mute on" aria-hidden="true"></i>
+          <span class="sr-only>${this.options.data.content.mute}</span>
       </button>
     `);
 
