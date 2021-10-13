@@ -1,6 +1,6 @@
 {
   "name": "@iiif/iiif-av-component",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "",
   "main": "./dist-commonjs/index.js",
   "module": "./dist-esmodule/index.js",
@@ -16,7 +16,7 @@
     "build:var": "cross-env NODE_WEBPACK_LIBRARY_PATH=dist-var NODE_WEBPACK_LIBRARY_TARGET=var webpack",
     "build": "npm run clean && npm run build:css && npm run build:commonjs && npm run build:esmodule && npm run build:umd && npm run build:var && npm run build:types",
     "clean": "rimraf -rf dist-css dist-umd dist-commonjs dist-esmodule dist-var types",
-    "prepublishOnly": "npm run build && npm run test",
+    "prepublishOnly": "npm run build",
     "start": "npx serve",
     "test": "jest",
     "test:watch": "jest --watch"
