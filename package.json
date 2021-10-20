@@ -32,7 +32,6 @@
   },
   "homepage": "https://github.com/iiif-commons/iiif-av-component#readme",
   "devDependencies": {
-    "@fesk/eslint-config-standard": "1.4.0-pr.b6dc2fa3",
     "@iiif/vocabulary": "^1.0.20",
     "@types/jest": "^24.9.1",
     "@types/jquery": "2.0.34",
@@ -60,6 +59,8 @@
     "@types/jquery": "2.0.34",
     "@types/jqueryui": "^1.11.36",
     "exjs": "BSick7/exjs#0.5.1",
-    "manifesto.js": "^4.2.4"
+    "manifesto.js": "^4.2.4",
+    "waveform-data": "^2.0.1",
+    "dashjs": "2.6.7"
   }
 }

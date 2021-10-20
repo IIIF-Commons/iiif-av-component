@@ -1,5 +1,6 @@
 import { Waveform } from './waveform';
 
+// todo: migrate to latest version: https://github.com/bbc/waveform-data.js/blob/master/doc/migration-guide.md
 export class CompositeWaveform {
   private _waveforms: Waveform[];
   public length = 0;

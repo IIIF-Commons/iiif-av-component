@@ -40,6 +40,7 @@ import {
   toMs,
 } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
+import * as WaveformData from 'waveform-data';
 
 export class CanvasInstance extends BaseComponent {
   private _$canvasContainer: JQuery;
@@ -1499,6 +1500,7 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private _drawWaveform(): void {
+    console.log("draw waveform");
     this._renderWaveform();
 
     //if (!this._waveformCtx || !this._waveformNeedsRedraw) return;

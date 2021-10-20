@@ -16,6 +16,7 @@ import { getFirstTargetedCanvasId } from '../helpers/get-first-targeted-canvas-i
 import { Events } from '../events/av-component-events';
 import { TimelineTime } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
+import "dashjs";
 
 export class AVComponent extends BaseComponent {
   static newRanges = true;
@@ -130,6 +131,7 @@ export class AVComponent extends BaseComponent {
       canvasInstance.set(toSet);
     });
 
+    // todo: this is causing waveforms not to be visible on first load
     if ((diff.includes('virtualCanvasEnabled') || diff.includes('canvasId')) && this._data.canvasId) {
       const nextCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
 
