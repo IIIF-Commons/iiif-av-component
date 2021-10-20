@@ -2,6 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
+const $ = require("jquery");
+require("jquery-ui-dist/jquery-ui");
+require("jquery-ui-dist/jquery-ui.css");
 import { Canvas, Range, Utils } from 'manifesto.js';
 import { Behavior } from '@iiif/vocabulary/dist-commonjs';
 import { CanvasInstanceEvents } from '../events/canvas-instance-events';
@@ -17,6 +20,7 @@ import { Events } from '../events/av-component-events';
 import { TimelineTime } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
 import "dashjs";
+import "../css/styles.less";
 
 export class AVComponent extends BaseComponent {
   static newRanges = true;
@@ -133,6 +137,9 @@ export class AVComponent extends BaseComponent {
 
     // todo: this is causing waveforms not to be visible on first load
     if ((diff.includes('virtualCanvasEnabled') || diff.includes('canvasId')) && this._data.canvasId) {
+      
+      console.log("show canvas");
+      
       const nextCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
 
       if (nextCanvasInstance) {

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
+const $ = require("jquery");
 import { Annotation, AnnotationBody, Canvas, Duration, Range, Utils } from 'manifesto.js';
 import { Behavior, MediaType } from '@iiif/vocabulary/dist-commonjs';
 import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
@@ -1505,6 +1506,7 @@ export class CanvasInstance extends BaseComponent {
 
     //if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
     if (!this._waveformCtx || !this.isVisible()) return;
+    // if (!this._waveformCtx) return;
 
     const { start, end, percent } = this.getRangeTiming();
     const startpx = start * this._compositeWaveform.pixelsPerSecond;

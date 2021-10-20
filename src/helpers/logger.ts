@@ -9,33 +9,34 @@ declare global {
 const isDev = () => IS_DEV || (window && window.__DEBUG_AV_COMPONENT__);
 
 export const Logger = {
+  enabled: false,
   log(...args) {
-    if (isDev()) {
+    if (this.enabled && isDev()) {
       console.log(...args);
     }
   },
   warn(...args) {
-    if (isDev()) {
+    if (this.enabled && isDev()) {
       console.warn(...args);
     }
   },
   error(...args) {
-    if (isDev()) {
+    if (this.enabled && isDev()) {
       console.error(...args);
     }
   },
   groupCollapsed(...args) {
-    if (isDev()) {
+    if (this.enabled && isDev()) {
       console.groupCollapsed(...args);
     }
   },
   group(...args) {
-    if (isDev()) {
+    if (this.enabled && isDev()) {
       console.group(...args);
     }
   },
   groupEnd() {
-    if (isDev()) {
+    if (this.enabled && isDev()) {
       console.groupEnd();
     }
   },

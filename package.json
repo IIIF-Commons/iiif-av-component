@@ -17,7 +17,7 @@
     "build": "npm run clean && npm run build:css && npm run build:commonjs && npm run build:esmodule && npm run build:umd && npm run build:var && npm run build:types",
     "clean": "rimraf -rf dist-css dist-umd dist-commonjs dist-esmodule dist-var types",
     "prepublishOnly": "npm run build",
-    "start": "npx serve",
+    "start": "npx webpack serve -c webpack.dev-server.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -38,29 +38,39 @@
     "@types/node": "^8.10.52",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
+    "@webpack-cli/serve": "^1.6.0",
     "awesome-typescript-loader": "^5.2.1",
     "cross-env": "^5.2.1",
     "dts-bundle-generator": "^2.1.0",
     "eslint": "^6.8.0",
     "eslint-plugin-babel": "^5.3.0",
+    "html-webpack-plugin": "^4.5.2",
     "jest": "^26.6.3",
     "less": "^3.8.1",
     "rimraf": "^2.6.2",
     "serve": "^10.0.2",
     "ts-jest": "^26.5.4",
+    "ts-loader": "^6.2.1",
     "typescript": "3.6.3",
     "uglify-js": "3.4.9",
-    "webpack": "^4.28.3",
-    "webpack-cli": "^3.1.2"
+    "webpack": "^4.44.2",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
     "@iiif/base-component": "2.*",
     "@iiif/manifold": "^2.0.5",
     "@types/jquery": "2.0.34",
     "@types/jqueryui": "^1.11.36",
+    "css-loader": "^5.2.7",
+    "dashjs": "2.6.7",
     "exjs": "BSick7/exjs#0.5.1",
+    "jquery": "^3.5.0",
+    "jquery-ui-dist": "^1.12.1",
+    "less-loader": "^7.3.0",
     "manifesto.js": "^4.2.4",
-    "waveform-data": "^2.0.1",
-    "dashjs": "2.6.7"
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "waveform-data": "^2.0.1"
   }
 }

@@ -1,3 +1,4 @@
+const $ = require("jquery");
 import { MediaFormat } from '../media-formats/abstract-media-format';
 import { MediaOptions } from '../types/media-options';
 import { DashFormat } from '../media-formats/dash-format';

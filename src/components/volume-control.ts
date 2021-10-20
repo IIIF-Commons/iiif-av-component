@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+const $ = require("jquery");
 import { IAVVolumeControlState } from '../interfaces/volume-control-state';
 import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
 import { VolumeEvents } from '../events/volume-events';

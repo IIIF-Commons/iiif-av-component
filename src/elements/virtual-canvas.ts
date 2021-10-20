@@ -1,3 +1,4 @@
+require("jquery");
 import { Canvas, Annotation, Utils } from 'manifesto.js';
 import { getTimestamp } from '../helpers/get-timestamp';
 import { retargetTemporalComponent } from '../helpers/retarget-temporal-component';
