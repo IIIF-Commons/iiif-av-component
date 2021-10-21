@@ -66,6 +66,7 @@
     "dashjs": "2.6.7",
     "exjs": "BSick7/exjs#0.5.1",
     "jquery": "^3.5.0",
+    "jquery-binarytransport": "^1.0.0",
     "jquery-ui-dist": "^1.12.1",
     "less-loader": "^7.3.0",
     "manifesto.js": "^4.2.4",

@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 const $ = require("jquery");
+import "jquery-binarytransport";
 import { Annotation, AnnotationBody, Canvas, Duration, Range, Utils } from 'manifesto.js';
 import { Behavior, MediaType } from '@iiif/vocabulary/dist-commonjs';
 import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
@@ -1371,77 +1372,89 @@ export class CanvasInstance extends BaseComponent {
   private waveformPageX = 0;
   private waveFormInit = false;
 
-  private _renderWaveform(forceRender = false): void {
-    if (this.waveFormInit && !forceRender) {
-      return;
-    }
-    this.waveFormInit = true;
+  private _renderWaveform(forceRender = false) {
+  
+    //return new Promise<void>((resolve) => {
 
-    if (!this.waveforms.length) return;
+      if (this.waveFormInit && !forceRender) {
+        return;
+      }
 
-    const promises = this.waveforms.map((url) => {
-      return this._getWaveformData(url);
-    });
+      if (!this.waveforms.length) return;
+  
+      // stops this getting called more than once.
+      this.waveFormInit = true;
 
-    Promise.all(promises)
-      .then((waveforms) => {
-        this._waveformCanvas = document.createElement('canvas');
-        this._waveformCanvas.classList.add('waveform');
-        this._$canvasContainer.append(this._waveformCanvas);
-        this.waveformPageX = this._waveformCanvas.getBoundingClientRect().left;
-        const raf = this._drawWaveform.bind(this);
-
-        // Mouse in and out we reset the delta
-        this._waveformCanvas.addEventListener('mousein', () => {
-          this.waveformDeltaX = 0;
-        });
-        this._$canvasTimelineContainer.on('mouseout', () => {
-          this.waveformDeltaX = 0;
-          requestAnimationFrame(raf);
-        });
-        this._waveformCanvas.addEventListener('mouseout', () => {
-          this.waveformDeltaX = 0;
-          requestAnimationFrame(raf);
-        });
-
-        // When mouse moves over waveform, we render
-        this._waveformCanvas.addEventListener('mousemove', (e) => {
-          this.waveformDeltaX = e.clientX - this.waveformPageX;
-          requestAnimationFrame(raf);
-        });
-        this._$canvasTimelineContainer.on('mousemove', (e) => {
-          this.waveformDeltaX = e.clientX - this.waveformPageX;
-          requestAnimationFrame(raf);
-        });
-
-        // When we click the waveform, it should navigate
-        this._waveformCanvas.addEventListener('click', () => {
-          const width = this._waveformCanvas!.getBoundingClientRect().width || 0;
-          if (width) {
-            const { start, duration } = this.getRangeTiming();
-            this._setCurrentTime(
-              // Multiply
-              multiplyTime(
-                // Add start and duration
-                addTime(start, duration),
-                // Multiply by percent through
-                this.waveformDeltaX / width
-              )
-            );
-          }
-        });
-
-        this._waveformCtx = this._waveformCanvas.getContext('2d');
-
-        if (this._waveformCtx) {
-          this._waveformCtx.fillStyle = this._data.waveformColor || '#fff';
-          this._compositeWaveform = new CompositeWaveform(waveforms);
-          this.fire(Events.WAVEFORM_READY);
-        }
-      })
-      .catch(() => {
-        Logger.warn('Could not load wave forms.');
+      const promises = this.waveforms.map((url) => {
+        return this._getWaveformData(url);
       });
+  
+      Promise.all(promises)
+        .then((waveforms) => {
+          this._waveformCanvas = document.createElement('canvas');
+          this._waveformCanvas.classList.add('waveform');
+          this._$canvasContainer.append(this._waveformCanvas);
+          this.waveformPageX = this._waveformCanvas.getBoundingClientRect().left;
+          const raf = this._drawWaveform.bind(this);
+  
+          // Mouse in and out we reset the delta
+          this._waveformCanvas.addEventListener('mousein', () => {
+            this.waveformDeltaX = 0;
+          });
+
+          this._$canvasTimelineContainer.on('mouseout', () => {
+            this.waveformDeltaX = 0;
+            requestAnimationFrame(raf);
+          });
+
+          this._waveformCanvas.addEventListener('mouseout', () => {
+            this.waveformDeltaX = 0;
+            requestAnimationFrame(raf);
+          });
+  
+          // When mouse moves over waveform, we render
+          this._waveformCanvas.addEventListener('mousemove', (e) => {
+            this.waveformDeltaX = e.clientX - this.waveformPageX;
+            requestAnimationFrame(raf);
+          });
+
+          this._$canvasTimelineContainer.on('mousemove', (e) => {
+            this.waveformDeltaX = e.clientX - this.waveformPageX;
+            requestAnimationFrame(raf);
+          });
+  
+          // When we click the waveform, it should navigate
+          this._waveformCanvas.addEventListener('click', () => {
+            const width = this._waveformCanvas!.getBoundingClientRect().width || 0;
+            if (width) {
+              const { start, duration } = this.getRangeTiming();
+              this._setCurrentTime(
+                // Multiply
+                multiplyTime(
+                  // Add start and duration
+                  addTime(start, duration),
+                  // Multiply by percent through
+                  this.waveformDeltaX / width
+                )
+              );
+            }
+          });
+  
+          this._waveformCtx = this._waveformCanvas.getContext('2d');
+  
+          if (this._waveformCtx) {
+            this._waveformCtx.fillStyle = this._data.waveformColor || '#fff';
+            this._compositeWaveform = new CompositeWaveform(waveforms);
+            this.fire(Events.WAVEFORM_READY);
+          }
+
+          //resolve();
+        })
+        .catch(() => {
+          Logger.warn('Could not load wave forms.');
+          //resolve();
+        });
+    //});
   }
 
   private getRangeTiming(): {
@@ -1500,13 +1513,13 @@ export class CanvasInstance extends BaseComponent {
     };
   }
 
-  private _drawWaveform(): void {
-    console.log("draw waveform");
+  private _drawWaveform() {
+    
     this._renderWaveform();
 
     //if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
     if (!this._waveformCtx || !this.isVisible()) return;
-    // if (!this._waveformCtx) return;
+    //if (!this._waveformCtx) return;
 
     const { start, end, percent } = this.getRangeTiming();
     const startpx = start * this._compositeWaveform.pixelsPerSecond;
