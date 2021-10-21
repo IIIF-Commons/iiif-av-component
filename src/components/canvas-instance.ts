@@ -1518,8 +1518,9 @@ export class CanvasInstance extends BaseComponent {
     this._renderWaveform();
 
     //if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
-    if (!this._waveformCtx || !this.isVisible()) return;
-    //if (!this._waveformCtx) return;
+    // todo: this is causing waveforms not to be visible on first load
+    //if (!this._waveformCtx || !this.isVisible()) return;
+    if (!this._waveformCtx) return;
 
     const { start, end, percent } = this.getRangeTiming();
     const startpx = start * this._compositeWaveform.pixelsPerSecond;

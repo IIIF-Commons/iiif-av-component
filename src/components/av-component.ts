@@ -135,7 +135,6 @@ export class AVComponent extends BaseComponent {
       canvasInstance.set(toSet);
     });
 
-    // todo: this is causing waveforms not to be visible on first load
     if ((diff.includes('virtualCanvasEnabled') || diff.includes('canvasId')) && this._data.canvasId) {
       
       console.log("show canvas");
