@@ -137,8 +137,6 @@ export class AVComponent extends BaseComponent {
 
     if ((diff.includes('virtualCanvasEnabled') || diff.includes('canvasId')) && this._data.canvasId) {
       
-      console.log("show canvas");
-      
       const nextCanvasInstance: CanvasInstance | undefined = this._getCanvasInstanceById(this._data.canvasId);
 
       if (nextCanvasInstance) {

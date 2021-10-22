@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 const $ = require("jquery");
-import "jquery-binarytransport";
 import { Annotation, AnnotationBody, Canvas, Duration, Range, Utils } from 'manifesto.js';
 import { Behavior, MediaType } from '@iiif/vocabulary/dist-commonjs';
 import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
@@ -1350,21 +1349,10 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private _getWaveformData(url: string): Promise<any> {
-    // must use this for IE11
-    return new Promise(function (resolve, reject) {
-      $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'binary',
-        responseType: 'arraybuffer',
-        processData: false,
-      } as any)
-        .done(function (data) {
-          resolve(WaveformData.create(data));
-        })
-        .fail(function () {
-          reject(new Error('Network Error'));
-        });
+    return new Promise(function (resolve) {
+      fetch(url)
+        .then(response => response.arrayBuffer())
+        .then(buffer => resolve(WaveformData.create(buffer)))
     });
   }
 
@@ -1388,9 +1376,12 @@ export class CanvasInstance extends BaseComponent {
       const promises = this.waveforms.map((url) => {
         return this._getWaveformData(url);
       });
+
+      console.log("loading waveforms");
   
       Promise.all(promises)
         .then((waveforms) => {
+          console.log("waveforms loaded");
           this._waveformCanvas = document.createElement('canvas');
           this._waveformCanvas.classList.add('waveform');
           this._$canvasContainer.append(this._waveformCanvas);
