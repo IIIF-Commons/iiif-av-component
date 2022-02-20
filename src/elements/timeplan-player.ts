@@ -526,10 +526,18 @@ export class TimePlanPlayer {
       }
       return;
     }
+
+    let promise
+
     this.log('advanceToStop', to.start);
+    const changeCanvas = this.currentStop.canvasIndex !== to.canvasIndex;
     this.currentStop = to;
 
-    const promise = this.media.seekToMediaTime(this.currentMediaTime());
+    if (changeCanvas) {
+      promise = this.media.play(this.plan.canvases[this.currentStop.canvasIndex], this.currentMediaTime());
+    } else {
+      promise = this.media.seekToMediaTime(this.currentMediaTime());
+    }
 
     this.notifyRangeChange(rangeId ? rangeId : to.rangeId, { to, from });
 

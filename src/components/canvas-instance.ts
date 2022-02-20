@@ -41,6 +41,7 @@ import {
   toMs,
 } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
+// @ts-ignore
 import * as WaveformData from 'waveform-data';
 
 export class CanvasInstance extends BaseComponent {
