@@ -95,7 +95,7 @@ export class CompositeMediaElement {
   async seekTo(canvasId: string, time: AnnotationTime) {
     const newElement = this.findElementInRange(canvasId, time);
 
-    Logger.log('CompositeMediaElement.seekTo()', {
+    Logger.log(`CompositeMediaElement.seekTo(canvasId: ${canvasId}, time: ${time})`, {
       canvasId: newElement ? newElement.source.canvasId : null,
       newElement,
     });
