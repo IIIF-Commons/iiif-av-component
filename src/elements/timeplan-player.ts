@@ -239,7 +239,7 @@ export class TimePlanPlayer {
         if (setRange) {
           this.currentRange = stop.rangeId;
         }
-        await this.advanceToStop(this.currentStop, stop);
+        await this.advanceToStop(this.currentStop, stop, undefined, time);
       }
     }
     Logger.groupEnd();
@@ -372,7 +372,16 @@ export class TimePlanPlayer {
       (prevStop.rangeStack.indexOf(prevRange) !== -1 || prevStop.rangeId === prevRange);
     const isPreviousRangeInStack = prevRange && this.currentStop.rangeStack.indexOf(prevRange) !== -1;
 
+    Logger.log('TimePlanPlayer.previous() => variables', {
+      goBackToStartOfRange,
+      isPreviousRangeDifferent,
+      isDefinitelyFirstRange,
+      isPreviousRangeNotAParent,
+      isPreviousRangeInStack,
+    });
+
     if (goBackToStartOfRange) {
+      Logger.log('TimePlanPlayer.previous() => goBackToStartOfRange', { currentStopHead });
       if (currentStopHead !== this.currentStop) {
         this.advanceToStop(this.currentStop, currentStopHead, currentStopHead.rangeId);
       }
@@ -472,7 +481,9 @@ export class TimePlanPlayer {
     if (stop && this.currentStop !== stop) {
       Logger.log('advanceToTime.a');
 
+      this.setInternalTime(time);
       this.advanceToStop(this.currentStop, stop);
+      Logger.groupEnd();
       return { buffering: this.isBuffering(), time };
     }
     // User has selected top level range.
@@ -511,7 +522,7 @@ export class TimePlanPlayer {
     return this.currentStop.end === this.getTime();
   }
 
-  async advanceToStop(from: TimeStop, to: TimeStop, rangeId?: string) {
+  async advanceToStop(from: TimeStop, to: TimeStop, rangeId?: string, time?: TimelineTime) {
     Logger.log('TimeplanPlayer.advanceToStop', {
       from,
       to,
@@ -532,6 +543,7 @@ export class TimePlanPlayer {
     this.log('advanceToStop', to.start);
     const changeCanvas = this.currentStop.canvasIndex !== to.canvasIndex;
     this.currentStop = to;
+    this.setInternalTime(typeof time !== 'undefined' ? time : to.start);
 
     if (changeCanvas) {
       promise = this.media.play(this.plan.canvases[this.currentStop.canvasIndex], this.currentMediaTime());

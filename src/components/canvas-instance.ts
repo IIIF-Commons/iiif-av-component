@@ -1124,7 +1124,7 @@ export class CanvasInstance extends BaseComponent {
 
   private _previous(isDouble: boolean): void {
     if (AVComponent.newRanges && this.isVirtual()) {
-      Logger.group('prev');
+      Logger.group('CanvasInstance.previous()');
       const newTime = this.timePlanPlayer.previous();
       this._setCurrentTime(newTime);
       Logger.log('CanvasInstance.previous()', newTime);
