@@ -1,4 +1,5 @@
 const path = require('path');
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 function resolvePath(p) {
   return path.resolve(__dirname, p);
@@ -8,6 +9,7 @@ const config = {
   entry: {
     IIIFAVComponent: ['./src/index.ts'],
   },
+  mode: 'production',
   externals: {
     'node-fetch': 'node-fetch',
     'fetch-cookie/node-fetch': 'fetch-cookie/node-fetch',
@@ -25,7 +27,15 @@ const config = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    fallback: {
+      zlib: false,
+      stream: false,
+      buffer: require.resolve('buffer/'),
+    },
   },
+  plugins: [
+    new NodePolyfillPlugin()
+  ],
   optimization: {
     minimize: true,
   },

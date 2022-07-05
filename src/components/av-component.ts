@@ -19,7 +19,7 @@ import { getFirstTargetedCanvasId } from '../helpers/get-first-targeted-canvas-i
 import { Events } from '../events/av-component-events';
 import { TimelineTime } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
-import "dashjs";
+import "dashjs/dist/dash.mediaplayer.min";
 import "../css/styles.less";
 
 export class AVComponent extends BaseComponent {
