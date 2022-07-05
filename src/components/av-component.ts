@@ -78,6 +78,7 @@ export class AVComponent extends BaseComponent {
       doubleClickMS: 350,
       halveAtWidth: 200,
       limitToRange: false,
+      autoAdvanceRanges: true,
       posterImageRatio: 0.3,
       virtualCanvasEnabled: true,
       content: {
@@ -122,6 +123,9 @@ export class AVComponent extends BaseComponent {
 
       if (diff.includes('limitToRange') && this._data.canvasId) {
         toSet.limitToRange = this._data.limitToRange;
+      }
+      if (diff.includes('autoAdvanceRanges') && this._data.canvasId) {
+        toSet.autoAdvanceRanges = this._data.autoAdvanceRanges;
       }
 
       if (diff.includes('constrainNavigationToRange') && this._data.canvasId) {
@@ -425,6 +429,9 @@ export class AVComponent extends BaseComponent {
     canvasInstance.logMessage = this._logMessage.bind(this);
     canvasInstance.isOnlyCanvasInstance = this._getCanvases().length === 1;
     this._$element.append(canvasInstance.$playerElement);
+
+    canvasInstance.autoAdvanceRanges = this._data.autoAdvanceRanges === false ? this._data.autoAdvanceRanges : true;
+    canvasInstance.limitToRange = this._data.limitToRange || false;
 
     canvasInstance.init();
     this.canvasInstances.push(canvasInstance);

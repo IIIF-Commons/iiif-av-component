@@ -727,14 +727,14 @@ export class CanvasInstance extends BaseComponent {
   }
 
   limitToRange: boolean;
+  autoAdvanceRanges = true;
   currentRange?: string;
   setCurrentRangeId(
     range: null | string,
     { autoChanged = false, limitToRange = false }: { autoChanged?: boolean; limitToRange?: boolean } = {}
   ) {
-    if (!this.currentRange && range && this.limitToRange) {
-      // @todo which case was this covering..
-      //this.limitToRange = false;
+    if (autoChanged && !this.autoAdvanceRanges) {
+      return;
     }
 
     Logger.log('Setting current range id', range);
