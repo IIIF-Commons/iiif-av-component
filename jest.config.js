@@ -1,6 +1,7 @@
 module.exports = {
     preset: 'ts-jest/presets/js-with-babel',
-    testEnvironment: 'jsdom',
+    testEnvironment: '@happy-dom/jest-environment',
+    testMatch: ['**/__tests__/**/?(*.)+(spec|test).[jt]s?(x)'],
     cacheDirectory: 'node_modules/.jest-cache',
     coveragePathIgnorePatterns: [
         '/node_modules/',

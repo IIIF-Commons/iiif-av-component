@@ -17,3 +17,4 @@ interface Window {
 declare let dashjs: any;
 declare let Hls: any;
 declare let WaveformData: any;
+declare let jQuery: any;

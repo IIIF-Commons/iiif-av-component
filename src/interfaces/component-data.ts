@@ -15,6 +15,7 @@ export interface IAVComponentData {
   helper?: Helper;
   halveAtWidth?: number;
   limitToRange?: boolean;
+  autoAdvanceRanges?: boolean;
   posterImageRatio?: number;
   rangeId?: string;
   virtualCanvasEnabled?: boolean;
