@@ -1352,8 +1352,15 @@ export class CanvasInstance extends BaseComponent {
   private _getWaveformData(url: string): Promise<any> {
     return new Promise(function (resolve) {
       fetch(url)
+        .then(resp => {
+          if (resp.ok) {
+            return resp;
+          }
+          throw new Error("Unable to request waveform");
+        })
         .then(response => response.arrayBuffer())
         .then(buffer => resolve(WaveformData.create(buffer)))
+        .catch(() => resolve({error: true}))
     });
   }
 
@@ -1381,7 +1388,8 @@ export class CanvasInstance extends BaseComponent {
       console.log("loading waveforms");
   
       Promise.all(promises)
-        .then((waveforms) => {
+        .then((_waveforms) => {
+          const waveforms = _waveforms.filter(e => !e.error);
           console.log("waveforms loaded");
           this._waveformCanvas = document.createElement('canvas');
           this._waveformCanvas.classList.add('waveform');
