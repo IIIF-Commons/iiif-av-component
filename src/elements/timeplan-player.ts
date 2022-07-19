@@ -32,6 +32,7 @@ export class TimePlanPlayer {
     notifyTimeChange?: (time: TimelineTime) => void,
     notifyPlaying?: (playing: boolean) => void
   ) {
+    Logger.log('TimePlanPlayer', { media, plan })
     this.media = media;
     this.plan = plan;
     this.fullPlan = plan;
@@ -161,8 +162,13 @@ export class TimePlanPlayer {
 
   play(): TimelineTime {
     this.log('Play', this.getTime());
-    this.setIsPlaying(true);
-    this.media.play(this.plan.canvases[this.currentStop.canvasIndex]);
+    if (!this.playing) {
+      this.setIsPlaying(true);
+      this.media.play(this.plan.canvases[this.currentStop.canvasIndex]).catch(() => {
+        this.setIsPlaying(false);
+        this.notifyPlaying(false);
+      });
+    }
 
     return this.getTime();
   }
@@ -239,7 +245,7 @@ export class TimePlanPlayer {
         if (setRange) {
           this.currentRange = stop.rangeId;
         }
-        await this.advanceToStop(this.currentStop, stop, undefined, time);
+        await this.advanceToStop(this.currentStop, stop, undefined, time, setRange);
       }
     }
     Logger.groupEnd();
@@ -468,12 +474,12 @@ export class TimePlanPlayer {
   }
 
   // Time that has ticked over.
-  advanceToTime(time: TimelineTime): {
+  advanceToTime(time: TimelineTime, paused?: boolean): {
     paused?: boolean;
     buffering?: boolean;
     time: TimelineTime | undefined;
   } {
-    Logger.groupCollapsed(`TimeplanPlayer.advanceToTime(${time})`);
+    Logger.groupCollapsed(`TimeplanPlayer.advanceToTime(${time}, ${paused ? 'true' : 'false'})`);
 
     // this.log('advanceToTime', this.getTime().toFixed(0), time.toFixed(0));
 
@@ -482,7 +488,7 @@ export class TimePlanPlayer {
       Logger.log('advanceToTime.a');
 
       this.setInternalTime(time);
-      this.advanceToStop(this.currentStop, stop);
+      this.advanceToStop(this.currentStop, stop, undefined, undefined, paused);
       Logger.groupEnd();
       return { buffering: this.isBuffering(), time };
     }
@@ -522,7 +528,7 @@ export class TimePlanPlayer {
     return this.currentStop.end === this.getTime();
   }
 
-  async advanceToStop(from: TimeStop, to: TimeStop, rangeId?: string, time?: TimelineTime) {
+  async advanceToStop(from: TimeStop, to: TimeStop, rangeId?: string, time?: TimelineTime, paused?: boolean) {
     Logger.log('TimeplanPlayer.advanceToStop', {
       from,
       to,
@@ -545,7 +551,7 @@ export class TimePlanPlayer {
     this.currentStop = to;
     this.setInternalTime(typeof time !== 'undefined' ? time : to.start);
 
-    if (changeCanvas) {
+    if (changeCanvas && !paused) {
       promise = this.media.play(this.plan.canvases[this.currentStop.canvasIndex], this.currentMediaTime());
     } else {
       promise = this.media.seekToMediaTime(this.currentMediaTime());

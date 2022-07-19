@@ -7,7 +7,7 @@
   "browser": "./dist-umd/IIIFAVComponent.js",
   "types": "./dist-commonjs/index.d.ts",
   "scripts": {
-    "build:css": "cross-env mkdir dist-css && npx lessc ./src/css/styles.less > ./dist-css/styles.css && cross-env cp ./dist-css/styles.css ./dist-css/styles.less",
+    "build:css": "cross-env mkdir -p dist-css && cross-env mkdir -p dist-esmodule/css && cross-env mkdir -p dist-commonjs/css && npx lessc ./src/css/styles.less > ./dist-css/styles.css && cross-env cp ./dist-css/styles.css ./dist-css/styles.less && cross-env cp ./dist-css/styles.css ./dist-commonjs/css/styles.less && cross-env cp ./dist-css/styles.css ./dist-esmodule/css/styles.less",
     "build:commonjs": "tsc",
     "build:docs": "rimraf -rf docs && typedoc --out docs --name IIIFAVComponent --theme default --ignoreCompilerErrors --experimentalDecorators --emitDecoratorMetadata --target ES6 --moduleResolution node --preserveConstEnums --stripInternal --suppressExcessPropertyErrors --suppressImplicitAnyIndexErrors --module commonjs src/ && touch docs/.nojekyll",
     "build:esmodule": "tsc -m es6 --outDir dist-esmodule",

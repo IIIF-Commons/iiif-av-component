@@ -1,5 +1,5 @@
-import { Canvas, Range, Utils } from "manifesto.js";
-import { MediaType } from "@iiif/vocabulary";
+import { Canvas, Range, Utils } from 'manifesto.js';
+import { MediaType } from '@iiif/vocabulary';
 
 export class AVComponentUtils {
   private static _compare(a: any, b: any): string[] {
@@ -153,9 +153,7 @@ export class AVComponentUtils {
 
   public static isSafari() {
     // https://stackoverflow.com/questions/7944460/detect-safari-browser?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    console.log("isSafari", isSafari);
-    return isSafari;
+    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   }
 
   public static debounce(fn: any, debounceDuration: number): any {

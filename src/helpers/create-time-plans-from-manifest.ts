@@ -51,7 +51,7 @@ export function createTimePlansFromManifest(manifest: Manifest) {
 
         const timeStop: TimeStop = {
           type: 'time-stop',
-          canvasIndex,
+          canvasIndex: timePlan.canvases.indexOf(canvas.id),
           start: minusTime(runningDuration, rDuration),
           end: runningDuration,
           duration: rDuration,
