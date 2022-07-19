@@ -85,8 +85,10 @@ export class CompositeMediaElement {
   async seekToMediaTime(realTime: AnnotationTime) {
     if (this.activeElement) {
       if (this.playing) {
-        await this.activeElement.play(realTime);
         Logger.log(`CompositeMediaElement.seekToMediaItem(${realTime})`)
+        await this.activeElement.play(realTime).catch(() => {
+          this.playing = false;
+        });
       } else {
         this.activeElement.syncClock(realTime);
       }
@@ -119,13 +121,16 @@ export class CompositeMediaElement {
       await this.seekTo(canvasId, time);
     }
     if (this.activeElement) {
-      return this.activeElement.play(time);
+      Logger.log(`CompositeMediaElement.play(${canvasId}, ${time})`)
+      return this.activeElement.play(time).catch(() => {
+        this.playing = false;
+      });
     }
   }
 
   pause() {
     this.playing = false;
-    if (this.activeElement) {
+    if (this.activeElement && !this.activeElement.element.paused) {
       this.activeElement.pause();
     }
   }
