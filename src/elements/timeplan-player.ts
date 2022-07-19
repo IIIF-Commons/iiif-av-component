@@ -32,6 +32,7 @@ export class TimePlanPlayer {
     notifyTimeChange?: (time: TimelineTime) => void,
     notifyPlaying?: (playing: boolean) => void
   ) {
+    Logger.log('TimePlanPlayer', { media, plan })
     this.media = media;
     this.plan = plan;
     this.fullPlan = plan;

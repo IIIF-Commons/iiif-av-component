@@ -86,6 +86,7 @@ export class CompositeMediaElement {
     if (this.activeElement) {
       if (this.playing) {
         await this.activeElement.play(realTime);
+        Logger.log(`CompositeMediaElement.seekToMediaItem(${realTime})`)
       } else {
         this.activeElement.syncClock(realTime);
       }

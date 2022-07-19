@@ -6,10 +6,10 @@ declare global {
   }
 }
 
-const isDev = () => IS_DEV || (window && window.__DEBUG_AV_COMPONENT__);
+const isDev = () => IS_DEV && (window && window.__DEBUG_AV_COMPONENT__);
 
 export const Logger = {
-  enabled: false,
+  enabled: true,
   log(...args) {
     if (this.enabled && isDev()) {
       console.log(...args);

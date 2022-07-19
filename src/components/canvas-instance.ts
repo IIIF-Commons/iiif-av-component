@@ -1569,19 +1569,20 @@ export class CanvasInstance extends BaseComponent {
       const compositeCanvas = this._data.canvas as VirtualCanvas;
       for (const stop of plan.stops) {
         const map = compositeCanvas.durationMap[plan.canvases[stop.canvasIndex]];
-        const canvasEndTime = map.runningDuration;
-        const canvasStartTime = canvasEndTime - map.duration;
+        if (map) {
+          const canvasEndTime = map.runningDuration;
+          const canvasStartTime = canvasEndTime - map.duration;
 
-        // Start percentage.
-        // End percentage.
-
-        newList.push({
-          start: (stop.start - plan.start) / plan.duration,
-          end: (stop.end - plan.start) / plan.duration,
-          duration: stop.duration,
-          startTime: canvasStartTime + stop.canvasTime.start,
-          endTime: canvasStartTime + stop.canvasTime.start + stop.canvasTime.end,
-        });
+          newList.push({
+            start: (stop.start - plan.start) / plan.duration,
+            end: (stop.end - plan.start) / plan.duration,
+            duration: stop.duration,
+            startTime: canvasStartTime + stop.canvasTime.start,
+            endTime: canvasStartTime + stop.canvasTime.start + stop.canvasTime.end,
+          });
+        } else {
+          Logger.error(`Canvas index not found`, { stop, plan });
+        }
       }
     } else {
       newList.push({
@@ -1863,6 +1864,7 @@ export class CanvasInstance extends BaseComponent {
   // this._data.play = true?
   public async play(withoutUpdate?: boolean): Promise<void> {
     if (this._isPlaying) return;
+    Logger.log(`CanvasInstance.play(${withoutUpdate})`);
 
     if (AVComponent.newRanges && this.isVirtual()) {
       if (this.timePlanPlayer.hasEnded()) {
@@ -1927,6 +1929,7 @@ export class CanvasInstance extends BaseComponent {
   // todo: can this be part of the _data state?
   // this._data.play = false?
   public pause(withoutUpdate?: boolean): void {
+    Logger.log(`CanvasInstance.pause(${withoutUpdate})`);
     window.clearInterval(this._highPriorityInterval);
     window.clearInterval(this._lowPriorityInterval);
     window.clearInterval(this._canvasClockInterval);
