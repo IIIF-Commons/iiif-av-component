@@ -1568,7 +1568,7 @@ export class CanvasInstance extends BaseComponent {
 
       const compositeCanvas = this._data.canvas as VirtualCanvas;
       for (const stop of plan.stops) {
-        const map = compositeCanvas.durationMap[plan.canvases[stop.canvasIndex]];
+        const map = compositeCanvas.durationMap[stop.canvasId];
         if (map) {
           const canvasEndTime = map.runningDuration;
           const canvasStartTime = canvasEndTime - map.duration;

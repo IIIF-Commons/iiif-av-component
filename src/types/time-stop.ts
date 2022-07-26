@@ -7,6 +7,7 @@ export type TimeStop = {
   end: TimelineTime;
   duration: TimelineTime;
   rangeId: string;
+  canvasId: string;
   rawCanvasSelector: string;
   rangeStack: string[];
   canvasTime: {

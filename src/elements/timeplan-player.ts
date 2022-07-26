@@ -50,7 +50,7 @@ export class TimePlanPlayer {
 
     media.onPlay((canvasId, time, el) => {
       // Playing the right thing...
-      if (canvasId === this.plan.canvases[this.currentStop.canvasIndex]) {
+      if (canvasId === this.currentStop.canvasId) {
         if (!this.playing) {
           this.notifyPlaying(true);
         }
@@ -60,7 +60,7 @@ export class TimePlanPlayer {
     });
 
     media.onPause((canvasId) => {
-      if (canvasId === this.plan.canvases[this.currentStop.canvasIndex]) {
+      if (canvasId === this.currentStop.canvasId) {
         if (this.playing) {
           this.notifyPlaying(false);
         }
@@ -164,7 +164,7 @@ export class TimePlanPlayer {
     this.log('Play', this.getTime());
     if (!this.playing) {
       this.setIsPlaying(true);
-      this.media.play(this.plan.canvases[this.currentStop.canvasIndex]).catch(() => {
+      this.media.play(this.currentStop.canvasId).catch(() => {
         this.setIsPlaying(false);
         this.notifyPlaying(false);
       });
@@ -547,12 +547,12 @@ export class TimePlanPlayer {
     let promise
 
     this.log('advanceToStop', to.start);
-    const changeCanvas = this.currentStop.canvasIndex !== to.canvasIndex;
+    const changeCanvas = this.currentStop.canvasId !== to.canvasId;
     this.currentStop = to;
     this.setInternalTime(typeof time !== 'undefined' ? time : to.start);
 
     if (changeCanvas && !paused) {
-      promise = this.media.play(this.plan.canvases[this.currentStop.canvasIndex], this.currentMediaTime());
+      promise = this.media.play(this.currentStop.canvasId, this.currentMediaTime());
     } else {
       promise = this.media.seekToMediaTime(this.currentMediaTime());
     }

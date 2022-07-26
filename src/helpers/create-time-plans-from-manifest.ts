@@ -33,7 +33,9 @@ export function createTimePlansFromManifest(manifest: Manifest) {
         const [, canvasId, start, end] = ro.match(/(.*)#t=([0-9.]+),?([0-9.]+)?/) || [undefined, ro, '0', '0'];
 
         // Skip invalid ranges.
-        if (!canvasId || typeof start === 'undefined' || typeof end === 'undefined') continue;
+        if (!canvasId || typeof start === 'undefined' || typeof end === 'undefined') {
+          continue;
+        }
 
         const canvas = manifest.getSequenceByIndex(0).getCanvasById(canvasId);
 
@@ -41,7 +43,11 @@ export function createTimePlansFromManifest(manifest: Manifest) {
           throw new Error('Canvas not found..');
         }
 
-        timePlan.canvases.push(canvas.id);
+        let canvasIdx = timePlan.canvases.indexOf(canvasId);
+        if (canvasIdx === -1) {
+          timePlan.canvases.push(canvasId);
+          canvasIdx = timePlan.canvases.indexOf(canvasId);
+        }
 
         const rStart = canvasTime(parseFloat(start || '0'));
         const rEnd = canvasTime(parseFloat(end || '0'));
@@ -51,11 +57,12 @@ export function createTimePlansFromManifest(manifest: Manifest) {
 
         const timeStop: TimeStop = {
           type: 'time-stop',
-          canvasIndex: timePlan.canvases.indexOf(canvas.id),
+          canvasIndex: canvasIdx,
           start: minusTime(runningDuration, rDuration),
           end: runningDuration,
           duration: rDuration,
           rangeId: range.id,
+          canvasId: canvasId,
           rawCanvasSelector: ro,
           canvasTime: {
             start: rStart,
@@ -73,13 +80,22 @@ export function createTimePlansFromManifest(manifest: Manifest) {
 
           runningDuration = addTime(runningDuration, rangeTimePlan.duration);
 
+          for (const rangeTimePlanCanvasId of rangeTimePlan.canvases) {
+            if (timePlan.canvases.indexOf(rangeTimePlanCanvasId) === -1) {
+              timePlan.canvases.push(rangeTimePlanCanvasId);
+            }
+          }
+
+          console.log(timePlan.canvases);
+
           timePlan.stops.push(
+            // ...rangeTimePlan.stops
+            // Unsure what this does..
             ...rangeTimePlan.stops.map((stop) => ({
               ...stop,
-              canvasIndex: stop.canvasIndex + timePlan.canvases.length,
+              canvasIndex: timePlan.canvases.indexOf(stop.canvasId),
             }))
           );
-          timePlan.canvases.push(...rangeTimePlan.canvases);
           timePlan.items.push(rangeTimePlan);
           timePlan.rangeOrder.push(...rangeTimePlan.rangeOrder);
         }
