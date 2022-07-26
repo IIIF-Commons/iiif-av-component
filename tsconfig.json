@@ -17,8 +17,7 @@
         "sourceMap": true,
         "strictNullChecks": true,
         "suppressImplicitAnyIndexErrors": true,
-        "target": "ES2015",
-        "types": ["vitest/globals"]
+        "target": "ES2015"
     },
     "include": [
         "src/**/*"
