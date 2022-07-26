@@ -23,7 +23,7 @@
             "node",
             "manifesto.js",
             "@iiif/vocabulary",
-            "@types/jest"
+            "@types/vitest"
         ]
     },
     "include": [

@@ -16,3 +16,4 @@ dist-esmodule
 dist-umd
 dist-var
 types
+.vitest-result.json

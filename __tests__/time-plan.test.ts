@@ -5,9 +5,70 @@ import { plan5 } from './fixtures/plan-5';
 import { plan12 } from './fixtures/plan-12';
 import { plan16 } from './fixtures/plan-16';
 import { plan18 } from './fixtures/plan-18';
+import { describe } from 'vitest';
+import row3 from './fixtures/row3.json';
+import row4 from './fixtures/row4.json';
+import row9 from './fixtures/row9.json';
+import row10 from './fixtures/row10.json';
+import { createTimePlansFromManifest } from '../src/helpers/create-time-plans-from-manifest';
+import { Manifest } from 'manifesto.js';
+import { TimePlan } from '../src/types/time-plan';
+import { TimeStop } from '../src/types/time-stop';
 
 describe('Time plan', () => {
   const mediaElements = new CompositeMediaElement([]);
+
+  describe('Create valid timeplans', function () {
+    function validTimeStop(item: TimePlan, stop: TimeStop) {
+      expect(stop.canvasIndex).toBeDefined();
+      // expect(stop.canvasId).toBeDefined();
+      expect(item.canvases[stop.canvasIndex]).toBeDefined();
+      // expect(item.canvases[stop.canvasIndex]).toContain(stop.canvasId);
+    }
+
+    function validTimePlan(item: TimePlan) {
+      if (item.type === 'time-plan') {
+        for (const stop of item.stops) {
+          validTimeStop(item, stop);
+        }
+        for (const stop of item.items) {
+          if (stop.type === 'time-stop') {
+            validTimeStop(item, stop);
+          } else {
+            validTimePlan(stop);
+          }
+        }
+      }
+    }
+
+    test('row 3 contains valid canvas indexes', () => {
+      const manifest = new Manifest(row3);
+      const plan = createTimePlansFromManifest(manifest);
+
+      validTimePlan(plan as any);
+
+      expect(plan).toMatchSnapshot();
+    });
+    test('row 4 contains valid canvas indexes', () => {
+      const manifest = new Manifest(row4);
+      const plan = createTimePlansFromManifest(manifest);
+
+      validTimePlan(plan as any);
+    });
+    test('row 9 contains valid canvas indexes', () => {
+      const manifest = new Manifest(row9);
+      const plan = createTimePlansFromManifest(manifest);
+
+      validTimePlan(plan as any);
+    });
+
+    test('row 10 contains valid canvas indexes', () => {
+      const manifest = new Manifest(row10);
+      const plan = createTimePlansFromManifest(manifest);
+
+      validTimePlan(plan as any);
+    });
+  });
 
   describe('Fixture 5 bugs', () => {
     test('next then previous', () => {
@@ -66,7 +127,7 @@ describe('Time plan', () => {
       }
 
       expect(times).toMatchInlineSnapshot(`
-        Array [
+        [
           0,
           148.76,
           276.59999999999997,
@@ -90,7 +151,7 @@ describe('Time plan', () => {
         ]
       `);
       expect(ranges).toMatchInlineSnapshot(`
-        Array [
+        [
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000007",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000009",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x00000b",
@@ -145,7 +206,7 @@ describe('Time plan', () => {
       }
 
       expect(times).toMatchInlineSnapshot(`
-        Array [
+        [
           2590.84,
           2328.04,
           2185.8,
@@ -169,7 +230,7 @@ describe('Time plan', () => {
         ]
       `);
       expect(ranges).toMatchInlineSnapshot(`
-        Array [
+        [
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000021",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000020",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x00001f",
@@ -310,7 +371,7 @@ describe('Time plan', () => {
       }
 
       expect(times).toMatchInlineSnapshot(`
-        Array [
+        [
           0,
           97.04,
           165.8,
@@ -343,7 +404,7 @@ describe('Time plan', () => {
         ]
       `);
       expect(ranges).toMatchInlineSnapshot(`
-        Array [
+        [
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100094400914.0x000006",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100094400914.0x000008",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100094400914.0x00000a",
@@ -410,7 +471,7 @@ describe('Time plan', () => {
       }
 
       expect(times).toMatchInlineSnapshot(`
-        Array [
+        [
           88.11999999999989,
           0,
           0,
@@ -418,7 +479,7 @@ describe('Time plan', () => {
         ]
       `);
       expect(ranges).toMatchInlineSnapshot(`
-        Array [
+        [
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048367656.0x000009",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048367656.0x000007",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100048367656.0x000002/top",
