@@ -85,9 +85,6 @@ export function createTimePlansFromManifest(manifest: Manifest) {
               timePlan.canvases.push(rangeTimePlanCanvasId);
             }
           }
-
-          console.log(timePlan.canvases);
-
           timePlan.stops.push(
             // ...rangeTimePlan.stops
             // Unsure what this does..
