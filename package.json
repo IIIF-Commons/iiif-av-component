@@ -1,6 +1,6 @@
 {
   "name": "@iiif/iiif-av-component",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "",
   "main": "./dist-commonjs/index.js",
   "module": "./dist-esmodule/index.js",
