@@ -32,7 +32,7 @@ export class TimePlanPlayer {
     notifyTimeChange?: (time: TimelineTime) => void,
     notifyPlaying?: (playing: boolean) => void
   ) {
-    Logger.log('TimePlanPlayer', { media, plan })
+    Logger.log('TimePlanPlayer', { media, plan });
     this.media = media;
     this.plan = plan;
     this.fullPlan = plan;
@@ -474,7 +474,10 @@ export class TimePlanPlayer {
   }
 
   // Time that has ticked over.
-  advanceToTime(time: TimelineTime, paused?: boolean): {
+  advanceToTime(
+    time: TimelineTime,
+    paused?: boolean
+  ): {
     paused?: boolean;
     buffering?: boolean;
     time: TimelineTime | undefined;
@@ -488,7 +491,8 @@ export class TimePlanPlayer {
       Logger.log('advanceToTime.a');
 
       this.setInternalTime(time);
-      this.advanceToStop(this.currentStop, stop, undefined, undefined, paused);
+
+      this.advanceToStop(this.currentStop, stop, undefined, time, paused);
       Logger.groupEnd();
       return { buffering: this.isBuffering(), time };
     }
@@ -544,7 +548,7 @@ export class TimePlanPlayer {
       return;
     }
 
-    let promise
+    let promise;
 
     this.log('advanceToStop', to.start);
     const changeCanvas = this.currentStop.canvasId !== to.canvasId;

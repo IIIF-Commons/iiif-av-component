@@ -1,4 +1,4 @@
-const $ = require("jquery");
+const $ = require('jquery');
 import { MediaFormat } from '../media-formats/abstract-media-format';
 import { MediaOptions } from '../types/media-options';
 import { DashFormat } from '../media-formats/dash-format';
@@ -49,10 +49,18 @@ export class MediaElement {
     this.element.classList.add('anno');
     this.element.crossOrigin = 'anonymous';
     this.element.preload = 'metadata';
-    this.element.pause();
+    this._pauseElement();
 
     this.instance.attachTo(this.element);
     this.element.currentTime = this.source.start;
+  }
+
+  _pauseElement() {
+    try {
+      this.element.pause();
+    } catch (e) {
+      // ignore error.
+    }
   }
 
   syncClock(time: AnnotationTime) {
@@ -108,11 +116,14 @@ export class MediaElement {
   }
 
   isMpeg(): boolean {
+    if (!this.element.canPlayType) {
+      return true;
+    }
     return this.element.canPlayType('application/vnd.apple.mpegurl') !== '';
   }
 
   stop() {
-    this.element.pause();
+    this._pauseElement();
     this.element.currentTime = this.source.start;
   }
 
@@ -126,7 +137,7 @@ export class MediaElement {
   }
 
   pause() {
-    this.element.pause();
+    this._pauseElement();
   }
 
   isBuffering() {

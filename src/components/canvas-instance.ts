@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
-const $ = require("jquery");
+import { convertToPercentage } from '../helpers/convert-to-percentage';
+
+const $ = require('jquery');
 import { Annotation, AnnotationBody, Canvas, Duration, Range, Utils } from 'manifesto.js';
 import { Behavior, MediaType } from '@iiif/vocabulary/dist-commonjs';
 import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
@@ -138,7 +140,9 @@ export class CanvasInstance extends BaseComponent {
       const annotations = canvas.getContent();
       for (const annotation of annotations) {
         const annotationBody = extractMediaFromAnnotationBodies(annotation);
-        if (!annotationBody) continue;
+        if (!annotationBody) {
+          continue;
+        }
         const mediaSource = getMediaSourceFromAnnotationBody(annotation, annotationBody, {
           id: canvas.id,
           duration: canvas.getDuration() || 0,
@@ -240,18 +244,14 @@ export class CanvasInstance extends BaseComponent {
                                 <button class="btn" title="${this._data.content.next}">
                                     <i class="av-icon av-icon-fast-forward" aria-hidden="true"></i>
                                     <span class="sr-only>
-                                    ${
-                                      this._data.content.fastForward || ''
-                                    }
+                                    ${this._data.content.fastForward || ''}
                                     </span>
                                 </button>`);
     this._$fastRewind = $(`
                                 <button class="btn" title="${this._data.content.next}">
                                     <i class="av-icon av-icon-fast-rewind" aria-hidden="true"></i>
                                     <span class="sr-only>
-                                    ${
-                                      this._data.content.fastRewind || ''
-                                    }
+                                    ${this._data.content.fastRewind || ''}
                                     </span>
                                 </button>`);
 
@@ -769,17 +769,25 @@ export class CanvasInstance extends BaseComponent {
   public set(data: IAVCanvasInstanceData): void {
     // Simplification of setting state.
     if (AVComponent.newRanges && this.isVirtual()) {
-      if (typeof data.range !== 'undefined')
+      if (typeof data.range !== 'undefined') {
         this.setCurrentRangeId(data.range.id, {
           limitToRange: data.limitToRange,
         });
-      if (typeof data.rangeId !== 'undefined')
+      }
+      if (typeof data.rangeId !== 'undefined') {
         this.setCurrentRangeId(data.rangeId, {
           limitToRange: data.limitToRange,
         });
-      if (typeof data.volume !== 'undefined') this.setVolume(data.volume);
-      if (typeof data.limitToRange !== 'undefined') this.setLimitToRange(data.limitToRange);
-      if (typeof data.visible !== 'undefined') this.setVisibility(data.visible);
+      }
+      if (typeof data.volume !== 'undefined') {
+        this.setVolume(data.volume);
+      }
+      if (typeof data.limitToRange !== 'undefined') {
+        this.setLimitToRange(data.limitToRange);
+      }
+      if (typeof data.visible !== 'undefined') {
+        this.setVisibility(data.visible);
+      }
 
       return;
     }
@@ -1189,8 +1197,7 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private _convertToPercentage(pixelValue: number, maxValue: number): number {
-    const percentage: number = (pixelValue / maxValue) * 100;
-    return percentage;
+    return convertToPercentage(pixelValue, maxValue);
   }
 
   private _renderMediaElement(data: any): void {
@@ -1352,15 +1359,15 @@ export class CanvasInstance extends BaseComponent {
   private _getWaveformData(url: string): Promise<any> {
     return new Promise(function (resolve) {
       fetch(url)
-        .then(resp => {
+        .then((resp) => {
           if (resp.ok) {
             return resp;
           }
-          throw new Error("Unable to request waveform");
+          throw new Error('Unable to request waveform');
         })
-        .then(response => response.arrayBuffer())
-        .then(buffer => resolve(WaveformData.create(buffer)))
-        .catch(() => resolve({error: true}))
+        .then((response) => response.arrayBuffer())
+        .then((buffer) => resolve(WaveformData.create(buffer)))
+        .catch(() => resolve({ error: true }));
     });
   }
 
@@ -1369,95 +1376,90 @@ export class CanvasInstance extends BaseComponent {
   private waveFormInit = false;
 
   private _renderWaveform(forceRender = false) {
-
     //return new Promise<void>((resolve) => {
 
-      if (this.waveFormInit && !forceRender) {
-        return;
-      }
+    if (this.waveFormInit && !forceRender) {
+      return;
+    }
 
-      if (!this.waveforms.length) return;
+    if (!this.waveforms.length) {
+      return;
+    }
 
-      // stops this getting called more than once.
-      this.waveFormInit = true;
+    // stops this getting called more than once.
+    this.waveFormInit = true;
 
-      const promises = this.waveforms.map((url) => {
-        return this._getWaveformData(url);
-      });
+    const promises = this.waveforms.map((url) => {
+      return this._getWaveformData(url);
+    });
 
-      Logger.log("loading waveforms");
+    Logger.log('loading waveforms');
 
-      Promise.all(promises)
-        .then((_waveforms) => {
-          const waveforms = _waveforms.filter(e => !e.error);
-          Logger.log("Waveforms loaded");
-          this._waveformCanvas = document.createElement('canvas');
-          this._waveformCanvas.classList.add('waveform');
-          this._$canvasContainer.append(this._waveformCanvas);
-          this.waveformPageX = this._waveformCanvas.getBoundingClientRect().x;
-          const raf = this._drawWaveform.bind(this);
+    Promise.all(promises)
+      .then((_waveforms) => {
+        const waveforms = _waveforms.filter((e) => !e.error);
+        Logger.log('Waveforms loaded');
+        this._waveformCanvas = document.createElement('canvas');
+        this._waveformCanvas.classList.add('waveform');
+        this._$canvasContainer.append(this._waveformCanvas);
+        this.waveformPageX = this._waveformCanvas.getBoundingClientRect().x;
+        const raf = this._drawWaveform.bind(this);
 
-          // Mouse in and out we reset the delta
-          this._waveformCanvas.addEventListener('mousein', () => {
-            this.waveformDeltaX = 0;
-          });
-
-          this._$canvasTimelineContainer.on('mouseout', () => {
-            this.waveformDeltaX = 0;
-            requestAnimationFrame(raf);
-          });
-
-          this._waveformCanvas.addEventListener('mouseout', () => {
-            this.waveformDeltaX = 0;
-            requestAnimationFrame(raf);
-          });
-
-          // When mouse moves over waveform, we render
-          this._waveformCanvas.addEventListener('mousemove', (e) => {
-            this.waveformDeltaX = e.pageX - this.waveformPageX;
-            requestAnimationFrame(raf);
-          });
-
-          this._$canvasTimelineContainer.on('mousemove', (e) => {
-            this.waveformDeltaX = e.pageX - this.waveformPageX;
-            requestAnimationFrame(raf);
-          });
-
-          // When we click the waveform, it should navigate
-          this._waveformCanvas.addEventListener('click', async (e) => {
-            const rect = this._waveformCanvas!.getBoundingClientRect();
-            if (rect) {
-              this.waveformPageX = rect.x;
-              const width = rect.width || 0;
-              if (width) {
-                const { start, end } = this.getRangeTiming();
-                await this._setCurrentTime(
-                  addTime(
-                    start,
-                    multiplyTime(
-                      minusTime(end, start),
-                      (e.pageX - this.waveformPageX) / width
-                    )
-                  )
-                )
-              }
-            }
-          });
-
-          this._waveformCtx = this._waveformCanvas.getContext('2d');
-
-          if (this._waveformCtx) {
-            this._waveformCtx.fillStyle = this._data.waveformColor || '#fff';
-            this._compositeWaveform = new CompositeWaveform(waveforms);
-            this.fire(Events.WAVEFORM_READY);
-          }
-
-          //resolve();
-        })
-        .catch(() => {
-          Logger.warn('Could not load wave forms.');
-          //resolve();
+        // Mouse in and out we reset the delta
+        this._waveformCanvas.addEventListener('mousein', () => {
+          this.waveformDeltaX = 0;
         });
+
+        this._$canvasTimelineContainer.on('mouseout', () => {
+          this.waveformDeltaX = 0;
+          requestAnimationFrame(raf);
+        });
+
+        this._waveformCanvas.addEventListener('mouseout', () => {
+          this.waveformDeltaX = 0;
+          requestAnimationFrame(raf);
+        });
+
+        // When mouse moves over waveform, we render
+        this._waveformCanvas.addEventListener('mousemove', (e) => {
+          this.waveformDeltaX = e.pageX - this.waveformPageX;
+          requestAnimationFrame(raf);
+        });
+
+        this._$canvasTimelineContainer.on('mousemove', (e) => {
+          this.waveformDeltaX = e.pageX - this.waveformPageX;
+          requestAnimationFrame(raf);
+        });
+
+        // When we click the waveform, it should navigate
+        this._waveformCanvas.addEventListener('click', async (e) => {
+          const rect = this._waveformCanvas!.getBoundingClientRect();
+          if (rect) {
+            this.waveformPageX = rect.x;
+            const width = rect.width || 0;
+            if (width) {
+              const { start, end } = this.getRangeTiming();
+              await this._setCurrentTime(
+                addTime(start, multiplyTime(minusTime(end, start), (e.pageX - this.waveformPageX) / width))
+              );
+            }
+          }
+        });
+
+        this._waveformCtx = this._waveformCanvas.getContext('2d');
+
+        if (this._waveformCtx) {
+          this._waveformCtx.fillStyle = this._data.waveformColor || '#fff';
+          this._compositeWaveform = new CompositeWaveform(waveforms);
+          this.fire(Events.WAVEFORM_READY);
+        }
+
+        //resolve();
+      })
+      .catch(() => {
+        Logger.warn('Could not load wave forms.');
+        //resolve();
+      });
     //});
   }
 
@@ -1518,13 +1520,14 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private _drawWaveform() {
-
     this._renderWaveform();
 
     //if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
     // todo: this is causing waveforms not to be visible on first load
     //if (!this._waveformCtx || !this.isVisible()) return;
-    if (!this._waveformCtx) return;
+    if (!this._waveformCtx) {
+      return;
+    }
 
     const { start, end, percent } = this.getRangeTiming();
     const startpx = start * this._compositeWaveform.pixelsPerSecond;
@@ -1863,7 +1866,9 @@ export class CanvasInstance extends BaseComponent {
   // todo: can this be part of the _data state?
   // this._data.play = true?
   public async play(withoutUpdate?: boolean): Promise<void> {
-    if (this._isPlaying) return;
+    if (this._isPlaying) {
+      return;
+    }
     Logger.log(`CanvasInstance.play(${withoutUpdate})`);
 
     if (AVComponent.newRanges && this.isVirtual()) {

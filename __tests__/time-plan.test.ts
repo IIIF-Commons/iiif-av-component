@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { TimePlanPlayer } from '../src/elements/timeplan-player';
 import { CompositeMediaElement } from '../src/elements/composite-media-element';
 import { timelineTime } from '../src/helpers/relative-time';
@@ -5,11 +6,11 @@ import { plan5 } from './fixtures/plan-5';
 import { plan12 } from './fixtures/plan-12';
 import { plan16 } from './fixtures/plan-16';
 import { plan18 } from './fixtures/plan-18';
-import { describe } from 'vitest';
 import row3 from './fixtures/row3.json';
 import row4 from './fixtures/row4.json';
 import row9 from './fixtures/row9.json';
 import row10 from './fixtures/row10.json';
+import beethoven from './fixtures/beethoven.json';
 import { createTimePlansFromManifest } from '../src/helpers/create-time-plans-from-manifest';
 import { Manifest } from 'manifesto.js';
 import { TimePlan } from '../src/types/time-plan';
@@ -65,6 +66,15 @@ describe('Time plan', () => {
     test('row 10 contains valid canvas indexes', () => {
       const manifest = new Manifest(row10);
       const plan = createTimePlansFromManifest(manifest);
+
+      validTimePlan(plan as any);
+    });
+
+    test('beethoven contains valid canvas indexes', () => {
+      const manifest = new Manifest(beethoven);
+      const plan = createTimePlansFromManifest(manifest);
+
+      console.log(plan);
 
       validTimePlan(plan as any);
     });
