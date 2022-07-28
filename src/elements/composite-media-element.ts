@@ -1,5 +1,5 @@
 import { MediaElement } from './media-element';
-import { AnnotationTime } from '../helpers/relative-time';
+import { AnnotationTime, minusTime } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
 // @ts-ignore
 import { JQueryStatic } from 'jquery';
@@ -14,8 +14,9 @@ export class CompositeMediaElement {
     [id: string]: MediaElement[];
   } = {};
 
-  private _onPlay: Function[] = [];
-  private _onPause: Function[] = [];
+  private _onPlay: ((canvasId: string, time: number, el: MediaElement) => void)[] = [];
+  private _onPause: ((canvasId: string, time: number, el: MediaElement) => void)[] = [];
+  private _onBuffering: ((canvasId: string, time: number, el: MediaElement) => void)[] = [];
 
   constructor(mediaElements: MediaElement[]) {
     Logger.log('Composite media element', mediaElements);
@@ -27,10 +28,19 @@ export class CompositeMediaElement {
       this.canvasMap[canvasId].push(el);
       // Attach events.
       el.element.addEventListener('play', () => {
-        this._onPlay.forEach((fn) => fn(canvasId, el.element.currentTime, el));
+        if (el === this.activeElement) {
+          this._onPlay.forEach((fn) => fn(canvasId, el.element.currentTime, el));
+        }
       });
       el.element.addEventListener('pause', () => {
-        this._onPause.forEach((fn) => fn(canvasId, el.element.currentTime, el));
+        if (el === this.activeElement) {
+          this._onPause.forEach((fn) => fn(canvasId, el.element.currentTime, el));
+        }
+      });
+      el.element.addEventListener('waiting', () => {
+        if (el === this.activeElement) {
+          this._onBuffering.forEach((fn) => fn(canvasId, el.element.currentTime, el));
+        }
       });
     }
     this.activeElement = mediaElements[0];
@@ -47,7 +57,8 @@ export class CompositeMediaElement {
 
     if (this.activeElement) {
       this.updateActiveElement(this.activeElement.getCanvasId(), time);
-      this.activeElement.syncClock(time);
+      const realTime = minusTime(time, this.activeElement.source.start);
+      this.activeElement.syncClock(realTime);
     }
     Logger.groupEnd();
   }
@@ -70,12 +81,16 @@ export class CompositeMediaElement {
     }
   }
 
-  onPlay(func: (canvasId: string, time: number, el: HTMLMediaElement) => void) {
+  onPlay(func: (canvasId: string, time: number, el: MediaElement) => void) {
     this._onPlay.push(func);
   }
 
-  onPause(func: (canvasId: string, time: number, el: HTMLMediaElement) => void) {
+  onPause(func: (canvasId: string, time: number, el: MediaElement) => void) {
     this._onPause.push(func);
+  }
+
+  onBuffering(func: (canvasId: string, time: number, el: MediaElement) => void) {
+    this._onBuffering.push(func);
   }
 
   findElementInRange(canvasId: string, time: number) {
@@ -102,14 +117,39 @@ export class CompositeMediaElement {
     await Promise.all(this.elements.map((element) => element.load()));
   }
 
-  async seekToMediaTime(realTime: AnnotationTime) {
+  async seekToMediaTime(annotationTime: AnnotationTime) {
+    const prevActiveElement = this.activeElement;
+
     if (this.activeElement) {
-      this.updateActiveElement(this.activeElement.getCanvasId(), realTime);
+      this.updateActiveElement(this.activeElement.getCanvasId(), annotationTime);
+
+      const realTime = minusTime(annotationTime, this.activeElement.source.start);
+
+
+      let defer;
+      const promise = new Promise((resolve) => (defer = resolve));
+
       if (this.playing) {
-        Logger.log(`CompositeMediaElement.seekToMediaItem(${realTime})`);
-        await this.activeElement.play(realTime).catch(() => {
+        Logger.log(`CompositeMediaElement.seekToMediaItem(${annotationTime})`);
+
+        await this.activeElement.play(realTime).catch((e) => {
+          console.log('ERROR', e);
           this.playing = false;
         });
+
+        if (prevActiveElement !== this.activeElement) {
+          if (this.activeElement.isBuffering() || this.activeElement.element.paused) {
+            const cb = () => {
+              if (!this.isBuffering()) {
+                defer();
+              }
+            };
+            const interval = setInterval(cb, 200);
+            await promise;
+            clearInterval(interval);
+            await this.activeElement.element.play();
+          }
+        }
       } else {
         this.activeElement.syncClock(realTime);
       }
@@ -136,6 +176,7 @@ export class CompositeMediaElement {
   }
 
   pause() {
+    Logger.log('Composite.pause()');
     this.playing = false;
     if (this.activeElement && !this.activeElement.element.paused) {
       this.activeElement.pause();

@@ -6,7 +6,7 @@ import { HlsFormat } from '../media-formats/hls-format';
 import { MpegFormat } from '../media-formats/mpeg-format';
 import { DefaultFormat } from '../media-formats/default-format';
 import { MediaSource } from '../types/media-source';
-import { AnnotationTime } from '../helpers/relative-time';
+import { AnnotationTime, minusTime } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
 
 export class MediaElement {
@@ -64,6 +64,9 @@ export class MediaElement {
   }
 
   syncClock(time: AnnotationTime) {
+    // time here is always annotation time, but the resource could start later on.
+    // const time = minusTime(annotationTime, this.source.start);
+
     if (time > this.element.duration) {
       Logger.error(`Clock synced out of bounds (max: ${this.element.duration}, got: ${time})`);
       return;
@@ -136,11 +139,29 @@ export class MediaElement {
     return this.element.play();
   }
 
+  lastPause = 0;
+  isPausing = false;
+
   pause() {
+    const now = Date.now();
+    if (this.lastPause + 1000 > now) {
+      if (this.isPausing) {
+        return;
+      }
+      this.isPausing = true;
+      setTimeout(() => {
+        this._pauseElement();
+        this.isPausing = false;
+        this.lastPause = Date.now();
+      }, 500);
+      return;
+    }
+
+    this.lastPause = Date.now();
     this._pauseElement();
   }
 
   isBuffering() {
-    return this.element.readyState < 3;
+    return this.element.readyState <= 3;
   }
 }

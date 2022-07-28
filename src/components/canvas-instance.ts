@@ -196,11 +196,17 @@ export class CanvasInstance extends BaseComponent {
         this._canvasClockTime = time;
       },
       (isPlaying) => {
+        if (this._buffering) {
+          return;
+        }
         if (isPlaying) {
           this.play(true);
         } else {
           this.pause(true);
         }
+      },
+      () => {
+        this._buffering = true;
       }
     );
   }

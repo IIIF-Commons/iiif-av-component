@@ -23,6 +23,7 @@ export class TimePlanPlayer {
   notifyRangeChange: (rangeId: string, stops: { from: TimeStop; to: TimeStop }) => void;
   notifyTimeChange: (time: TimelineTime) => void;
   notifyPlaying: (playing: boolean) => void;
+  notifyBuffering: () => void;
   logging: boolean;
 
   constructor(
@@ -30,7 +31,8 @@ export class TimePlanPlayer {
     plan: TimePlan,
     notifyRangeChange?: (rangeId: string, stops: { from: TimeStop; to: TimeStop }) => void,
     notifyTimeChange?: (time: TimelineTime) => void,
-    notifyPlaying?: (playing: boolean) => void
+    notifyPlaying?: (playing: boolean) => void,
+    notifyBuffering?: () => void
   ) {
     Logger.log('TimePlanPlayer', { media, plan });
     this.media = media;
@@ -43,6 +45,7 @@ export class TimePlanPlayer {
     this.notifyRangeChange = notifyRangeChange || noop;
     this.notifyTimeChange = notifyTimeChange || noop;
     this.notifyPlaying = notifyPlaying || noop;
+    this.notifyBuffering = notifyBuffering || noop;
     this.logging = true;
     this.currentRange = this.currentStop.rangeStack[0];
 
@@ -55,11 +58,19 @@ export class TimePlanPlayer {
           this.notifyPlaying(true);
         }
       } else {
-        el.pause();
+        // el.pause();
       }
     });
 
-    media.onPause((canvasId) => {
+    media.onBuffering(() => {
+      this.notifyBuffering();
+    });
+
+    media.onPause((canvasId, time, el) => {
+      if (el.isBuffering()) {
+        return;
+      }
+
       if (canvasId === this.currentStop.canvasId) {
         if (this.playing) {
           this.notifyPlaying(false);
