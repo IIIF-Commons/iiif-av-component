@@ -65,12 +65,10 @@ const config = {
     ],
   },
   devServer: {
-    contentBase: path.join(__dirname),
     compress: true,
     port: 5021,
-    setup(app) {
-      app.use('/styles.css',
-          express.static(path.join(__dirname, 'examples', 'styles.css')));
+    static: {
+      directory: path.join(__dirname, 'examples'),
     }
   },
   plugins: [

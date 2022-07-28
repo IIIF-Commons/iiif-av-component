@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { TimePlanPlayer } from '../src/elements/timeplan-player';
 import { CompositeMediaElement } from '../src/elements/composite-media-element';
 import { timelineTime } from '../src/helpers/relative-time';
@@ -5,11 +6,11 @@ import { plan5 } from './fixtures/plan-5';
 import { plan12 } from './fixtures/plan-12';
 import { plan16 } from './fixtures/plan-16';
 import { plan18 } from './fixtures/plan-18';
-import { describe } from 'vitest';
 import row3 from './fixtures/row3.json';
 import row4 from './fixtures/row4.json';
 import row9 from './fixtures/row9.json';
 import row10 from './fixtures/row10.json';
+import beethoven from './fixtures/beethoven.json';
 import { createTimePlansFromManifest } from '../src/helpers/create-time-plans-from-manifest';
 import { Manifest } from 'manifesto.js';
 import { TimePlan } from '../src/types/time-plan';
@@ -68,10 +69,17 @@ describe('Time plan', () => {
 
       validTimePlan(plan as any);
     });
+
+    test('beethoven contains valid canvas indexes', () => {
+      const manifest = new Manifest(beethoven);
+      const plan = createTimePlansFromManifest(manifest);
+
+      validTimePlan(plan as any);
+    });
   });
 
   describe('Fixture 5 bugs', () => {
-    test('next then previous', () => {
+    test('next then previous', async () => {
       const player = new TimePlanPlayer(mediaElements, plan5);
 
       // On the first top level.
@@ -109,19 +117,19 @@ describe('Time plan', () => {
       expect(player.getTime()).toEqual(0);
       expect(player.currentRange).toEqual('http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000002/top');
     });
-    test('Can sequentially go through all of the ranges', () => {
+    test('Can sequentially go through all of the ranges', async () => {
       const player = new TimePlanPlayer(mediaElements, plan5, (rangeId) => {
         player.setRange(rangeId);
       });
 
-      player.setTime(timelineTime(0));
+      await player.setTime(timelineTime(0));
 
       const iterations = 20;
       const times: number[] = [];
       const ranges: string[] = [];
 
       for (let i = 0; i < iterations; i++) {
-        player.next();
+        await player.next();
         times.push(player.getTime());
         ranges.push(player.currentRange);
       }
@@ -353,19 +361,19 @@ describe('Time plan', () => {
       expect(player.getTime()).toEqual(1361.4);
       expect(player.currentStop.canvasIndex).toEqual(14);
     });
-    test('sequentially through ranges', () => {
+    test('sequentially through ranges', async () => {
       const player = new TimePlanPlayer(mediaElements, plan16, (rangeId) => {
         player.setRange(rangeId);
       });
 
-      player.setTime(timelineTime(0));
+      await player.setTime(timelineTime(0));
 
       const iterations = plan16.items.length + 2;
       const times: number[] = [];
       const ranges: string[] = [];
 
       for (let i = 0; i < iterations; i++) {
-        player.next();
+        await player.next();
         times.push(player.getTime());
         ranges.push(player.currentRange);
       }

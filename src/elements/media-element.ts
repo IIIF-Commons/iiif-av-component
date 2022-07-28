@@ -1,4 +1,4 @@
-const $ = require("jquery");
+const $ = require('jquery');
 import { MediaFormat } from '../media-formats/abstract-media-format';
 import { MediaOptions } from '../types/media-options';
 import { DashFormat } from '../media-formats/dash-format';
@@ -14,7 +14,7 @@ export class MediaElement {
   format?: string;
   mediaSource: string;
   source: MediaSource;
-  element: HTMLMediaElement;
+  private element: HTMLMediaElement;
   instance: MediaFormat;
   mediaSyncMarginSecs: number;
   constructor(source: MediaSource, mediaOptions: MediaOptions = {}) {
@@ -49,13 +49,53 @@ export class MediaElement {
     this.element.classList.add('anno');
     this.element.crossOrigin = 'anonymous';
     this.element.preload = 'metadata';
-    this.element.pause();
-
     this.instance.attachTo(this.element);
     this.element.currentTime = this.source.start;
+
+    this.element.addEventListener('play', () => {
+      setTimeout(() => {
+        this.playWasRequested = false;
+        this.pauseWasRequested = false;
+      }, 0);
+    });
+    this.element.addEventListener('pause', () => {
+      setTimeout(() => {
+        this.playWasRequested = false;
+        this.pauseWasRequested = false;
+      }, 0);
+    });
+
+    this._pauseElement();
+  }
+
+  playWasRequested = false;
+  _playElement() {
+    this.playWasRequested = true;
+    if (this.pauseWasRequested) {
+      this.pauseWasRequested = false;
+    }
+    Logger.log(`HTMLElement.play() request - ${this.element.src}`);
+    return this.element.play();
+  }
+
+  pauseWasRequested = false;
+  _pauseElement() {
+    this.pauseWasRequested = true;
+    if (this.playWasRequested) {
+      this.playWasRequested = false;
+    }
+    Logger.log(`HTMLElement.pause() request - ${this.element.src}`);
+    try {
+      this.element.pause();
+    } catch (e) {
+      // ignore error.
+    }
   }
 
   syncClock(time: AnnotationTime) {
+    // time here is always annotation time, but the resource could start later on.
+    // const time = minusTime(annotationTime, this.source.start);
+
     if (time > this.element.duration) {
       Logger.error(`Clock synced out of bounds (max: ${this.element.duration}, got: ${time})`);
       return;
@@ -64,6 +104,10 @@ export class MediaElement {
     if (Math.abs(this.element.currentTime - time) > this.mediaSyncMarginSecs) {
       this.element.currentTime = time;
     }
+  }
+
+  getElementTime() {
+    return this.element.currentTime;
   }
 
   getCanvasId() {
@@ -108,25 +152,78 @@ export class MediaElement {
   }
 
   isMpeg(): boolean {
+    if (!this.element.canPlayType) {
+      return true;
+    }
     return this.element.canPlayType('application/vnd.apple.mpegurl') !== '';
   }
 
   stop() {
-    this.element.pause();
+    this._pauseElement();
     this.element.currentTime = this.source.start;
   }
 
   play(time?: AnnotationTime): Promise<void> {
-    Logger.log(`MediaElement.play(${time})`);
+    Logger.log(`MediaElement.play(${time}) - ${this.element.src}`);
 
     if (typeof time !== 'undefined') {
       this.element.currentTime = time;
     }
-    return this.element.play();
+    return this._playElement();
   }
 
+  lastPause = 0;
+  isPausing = false;
+
   pause() {
-    this.element.pause();
+    Logger.log(`MediaElement.pause() request - ${this.element.src}`);
+    const now = Date.now();
+    if (this.lastPause + 1000 > now) {
+      if (this.isPausing) {
+        return;
+      }
+      this.isPausing = true;
+      setTimeout(() => {
+        this._pauseElement();
+        this.isPausing = false;
+        this.lastPause = Date.now();
+      }, 500);
+      return;
+    }
+
+    this.lastPause = Date.now();
+    this._pauseElement();
+  }
+
+  addEventListener(name: string, callback: any) {
+    this.element.addEventListener(name, () => {
+      if (name === 'play') {
+        if (this.playWasRequested) {
+          callback();
+        }
+        return;
+      }
+      if (name === 'pause') {
+        if (this.pauseWasRequested) {
+          callback();
+        }
+        return;
+      }
+
+      callback();
+    });
+  }
+
+  getRawElement() {
+    return this.element;
+  }
+
+  isPaused() {
+    return this.element.paused;
+  }
+
+  setVolume(volume: number) {
+    this.element.volume = volume;
   }
 
   isBuffering() {

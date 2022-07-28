@@ -23,6 +23,7 @@ export class TimePlanPlayer {
   notifyRangeChange: (rangeId: string, stops: { from: TimeStop; to: TimeStop }) => void;
   notifyTimeChange: (time: TimelineTime) => void;
   notifyPlaying: (playing: boolean) => void;
+  notifyBuffering: () => void;
   logging: boolean;
 
   constructor(
@@ -30,9 +31,10 @@ export class TimePlanPlayer {
     plan: TimePlan,
     notifyRangeChange?: (rangeId: string, stops: { from: TimeStop; to: TimeStop }) => void,
     notifyTimeChange?: (time: TimelineTime) => void,
-    notifyPlaying?: (playing: boolean) => void
+    notifyPlaying?: (playing: boolean) => void,
+    notifyBuffering?: () => void
   ) {
-    Logger.log('TimePlanPlayer', { media, plan })
+    Logger.log('TimePlanPlayer', { media, plan });
     this.media = media;
     this.plan = plan;
     this.fullPlan = plan;
@@ -43,6 +45,7 @@ export class TimePlanPlayer {
     this.notifyRangeChange = notifyRangeChange || noop;
     this.notifyTimeChange = notifyTimeChange || noop;
     this.notifyPlaying = notifyPlaying || noop;
+    this.notifyBuffering = notifyBuffering || noop;
     this.logging = true;
     this.currentRange = this.currentStop.rangeStack[0];
 
@@ -55,11 +58,19 @@ export class TimePlanPlayer {
           this.notifyPlaying(true);
         }
       } else {
-        el.pause();
+        // el.pause();
       }
     });
 
-    media.onPause((canvasId) => {
+    media.onBuffering(() => {
+      this.notifyBuffering();
+    });
+
+    media.onPause((canvasId, time, el) => {
+      if (el.isBuffering()) {
+        return;
+      }
+
       if (canvasId === this.currentStop.canvasId) {
         if (this.playing) {
           this.notifyPlaying(false);
@@ -164,7 +175,8 @@ export class TimePlanPlayer {
     this.log('Play', this.getTime());
     if (!this.playing) {
       this.setIsPlaying(true);
-      this.media.play(this.currentStop.canvasId).catch(() => {
+      this.media.play(this.currentStop.canvasId).catch((err) => {
+        console.log('Err', err);
         this.setIsPlaying(false);
         this.notifyPlaying(false);
       });
@@ -251,7 +263,7 @@ export class TimePlanPlayer {
     Logger.groupEnd();
   }
 
-  next(): TimelineTime {
+  async next(): Promise<TimelineTime> {
     const currentRangeIndex = this.plan.rangeOrder.indexOf(this.currentRange);
     const isLast = currentRangeIndex >= 0 && currentRangeIndex === this.plan.rangeOrder.length - 1;
     const nextRangeIdx = !isLast ? this.plan.rangeOrder.indexOf(this.currentRange) + 1 : undefined;
@@ -285,11 +297,11 @@ export class TimePlanPlayer {
       ) {
         this.currentRange = this.playing ? nextStop.rangeId : nextRange;
         this.setInternalTime(nextStop.start);
-        this.advanceToStop(this.currentStop, nextStop, this.playing ? nextStop.rangeId : nextRange);
+        await this.advanceToStop(this.currentStop, nextStop, this.playing ? nextStop.rangeId : nextRange);
       } else {
         this.currentRange = nextRange;
         this.setInternalTime(this.currentStop.start);
-        this.advanceToStop(this.currentStop, this.currentStop, nextRange);
+        await this.advanceToStop(this.currentStop, this.currentStop, nextRange);
       }
       return this.getTime();
     }
@@ -297,15 +309,21 @@ export class TimePlanPlayer {
     if (nextStop) {
       this.setInternalTime(nextStop.start);
       this.currentRange = nextStop.rangeId;
-      this.advanceToStop(this.currentStop, nextStop, nextStop.rangeId);
+      await this.advanceToStop(this.currentStop, nextStop, nextStop.rangeId);
     } else {
-      this.goToEndOfRange(this.currentStop.rangeId);
+      await this.goToEndOfRange(this.currentStop.rangeId);
     }
+
+    setTimeout(() => {
+      if (this.playing) {
+        this.play();
+      }
+    }, 100);
 
     return this.getTime();
   }
 
-  goToEndOfRange(rangeId: string) {
+  async goToEndOfRange(rangeId: string) {
     let state: TimeStop | undefined = undefined;
 
     for (let i = 0; i < this.plan.stops.length; i++) {
@@ -316,7 +334,7 @@ export class TimePlanPlayer {
     }
 
     if (state) {
-      this.advanceToStop(this.currentStop, state, rangeId);
+      await this.advanceToStop(this.currentStop, state, rangeId);
       this.setInternalTime(state.end);
     }
   }
@@ -474,21 +492,23 @@ export class TimePlanPlayer {
   }
 
   // Time that has ticked over.
-  advanceToTime(time: TimelineTime, paused?: boolean): {
+  advanceToTime(
+    time: TimelineTime,
+    paused?: boolean
+  ): {
     paused?: boolean;
     buffering?: boolean;
     time: TimelineTime | undefined;
   } {
     Logger.groupCollapsed(`TimeplanPlayer.advanceToTime(${time}, ${paused ? 'true' : 'false'})`);
 
-    // this.log('advanceToTime', this.getTime().toFixed(0), time.toFixed(0));
-
     const stop = this.findStop(time);
     if (stop && this.currentStop !== stop) {
       Logger.log('advanceToTime.a');
 
       this.setInternalTime(time);
-      this.advanceToStop(this.currentStop, stop, undefined, undefined, paused);
+
+      this.advanceToStop(this.currentStop, stop, undefined, time, paused);
       Logger.groupEnd();
       return { buffering: this.isBuffering(), time };
     }
@@ -544,7 +564,7 @@ export class TimePlanPlayer {
       return;
     }
 
-    let promise
+    let promise;
 
     this.log('advanceToStop', to.start);
     const changeCanvas = this.currentStop.canvasId !== to.canvasId;
@@ -552,8 +572,10 @@ export class TimePlanPlayer {
     this.setInternalTime(typeof time !== 'undefined' ? time : to.start);
 
     if (changeCanvas && !paused) {
+      this.log(`advanceToStop -> Media.play(${this.currentStop.canvasId}, ${this.currentMediaTime()})`);
       promise = this.media.play(this.currentStop.canvasId, this.currentMediaTime());
     } else {
+      this.log(`advanceToStop -> seekToMediaTime.play(${this.currentMediaTime()})`);
       promise = this.media.seekToMediaTime(this.currentMediaTime());
     }
 
