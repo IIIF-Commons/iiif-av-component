@@ -6,7 +6,7 @@ import { HlsFormat } from '../media-formats/hls-format';
 import { MpegFormat } from '../media-formats/mpeg-format';
 import { DefaultFormat } from '../media-formats/default-format';
 import { MediaSource } from '../types/media-source';
-import { AnnotationTime, minusTime } from '../helpers/relative-time';
+import { AnnotationTime } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
 
 export class MediaElement {
