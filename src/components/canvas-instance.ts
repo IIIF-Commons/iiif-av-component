@@ -2005,7 +2005,7 @@ export class CanvasInstance extends BaseComponent {
       this.pause();
     }
 
-    if (this._canvasClockTime >= this._getDuration()) {
+    if (this._canvasClockTime > this._getDuration()) {
       this._canvasClockTime = this._getDuration();
       this.pause();
     }

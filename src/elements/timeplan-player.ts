@@ -492,14 +492,14 @@ export class TimePlanPlayer {
   }
 
   // Time that has ticked over.
-  async advanceToTime(
+  advanceToTime(
     time: TimelineTime,
     paused?: boolean
-  ): Promise<{
+  ): {
     paused?: boolean;
     buffering?: boolean;
     time: TimelineTime | undefined;
-  }> {
+  } {
     Logger.groupCollapsed(`TimeplanPlayer.advanceToTime(${time}, ${paused ? 'true' : 'false'})`);
 
     const stop = this.findStop(time);
@@ -508,7 +508,7 @@ export class TimePlanPlayer {
 
       this.setInternalTime(time);
 
-      await this.advanceToStop(this.currentStop, stop, undefined, time, paused);
+      this.advanceToStop(this.currentStop, stop, undefined, time, paused);
       Logger.groupEnd();
       return { buffering: this.isBuffering(), time };
     }
@@ -525,7 +525,7 @@ export class TimePlanPlayer {
       Logger.log('advanceToTime.b');
 
       this.pause();
-      await this.setTime(this.currentStop.end);
+      this.setTime(this.currentStop.end);
       Logger.groupEnd();
       return {
         paused: true,
