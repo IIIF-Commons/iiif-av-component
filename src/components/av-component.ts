@@ -45,8 +45,6 @@ export class AVComponent extends BaseComponent {
     super(options);
     this._init();
     this._resize();
-
-    console.log('Updates are working 2.');
   }
 
   protected _init(): boolean {

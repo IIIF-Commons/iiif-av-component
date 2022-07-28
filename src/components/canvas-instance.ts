@@ -1176,12 +1176,12 @@ export class CanvasInstance extends BaseComponent {
     }
   }
 
-  private _next(): void {
+  private async _next(): Promise<void> {
     if (AVComponent.newRanges && this.isVirtual()) {
       Logger.groupCollapsed('next');
-      const newTime = this.timePlanPlayer.next();
-      Logger.log('CanvasInstance.previous()', newTime);
-      this._setCurrentTime(newTime, false);
+      const newTime = await this.timePlanPlayer.next();
+      Logger.log('CanvasInstance.next()', newTime);
+      await this._setCurrentTime(newTime, false);
       Logger.groupEnd();
       return;
     }
@@ -2128,7 +2128,8 @@ export class CanvasInstance extends BaseComponent {
           if (contentAnnotation.element[0].paused) {
             const promise = contentAnnotation.element[0].play();
             if (promise) {
-              promise.catch(function () {
+              promise.catch(function (err) {
+                console.log(err);
                 // no-op
               });
             }

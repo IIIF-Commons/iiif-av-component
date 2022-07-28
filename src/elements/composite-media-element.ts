@@ -27,19 +27,24 @@ export class CompositeMediaElement {
       this.canvasMap[canvasId] = this.canvasMap[canvasId] ? this.canvasMap[canvasId] : [];
       this.canvasMap[canvasId].push(el);
       // Attach events.
-      el.element.addEventListener('play', () => {
+      el.addEventListener('play', () => {
         if (el === this.activeElement) {
-          this._onPlay.forEach((fn) => fn(canvasId, el.element.currentTime, el));
+          Logger.log('HTMLElement.play() response', {
+            paused: el.getRawElement().paused,
+            readState: el.getRawElement().readyState,
+          });
+          this._onPlay.forEach((fn) => fn(canvasId, el.getElementTime(), el));
         }
       });
-      el.element.addEventListener('pause', () => {
+      el.addEventListener('pause', () => {
         if (el === this.activeElement) {
-          this._onPause.forEach((fn) => fn(canvasId, el.element.currentTime, el));
+          Logger.log('HTMLElement.pause() response');
+          this._onPause.forEach((fn) => fn(canvasId, el.getElementTime(), el));
         }
       });
-      el.element.addEventListener('waiting', () => {
+      el.addEventListener('waiting', () => {
         if (el === this.activeElement) {
-          this._onBuffering.forEach((fn) => fn(canvasId, el.element.currentTime, el));
+          this._onBuffering.forEach((fn) => fn(canvasId, el.getElementTime(), el));
         }
       });
     }
@@ -56,29 +61,36 @@ export class CompositeMediaElement {
     });
 
     if (this.activeElement) {
-      this.updateActiveElement(this.activeElement.getCanvasId(), time);
+      this.updateActiveElement(this.activeElement.getCanvasId(), time, this.playing);
       const realTime = minusTime(time, this.activeElement.source.start);
       this.activeElement.syncClock(realTime);
     }
     Logger.groupEnd();
   }
 
-  updateActiveElement(canvasId: string, time: AnnotationTime) {
+  updateActiveElement(canvasId: string, time: AnnotationTime, play?: boolean) {
     const newElement = this.findElementInRange(canvasId, time);
 
-    Logger.log(`CompositeMediaElement.seekTo(canvasId: ${canvasId}, time: ${time})`, {
-      canvasId: newElement ? newElement.source.canvasId : null,
-      newElement,
-    });
-
     if (this.activeElement && newElement && newElement !== this.activeElement) {
+      Logger.log(`CompositeMediaElement.updateActiveElement(canvasId: ${canvasId}, time: ${time})`, {
+        canvasId: newElement ? newElement.source.canvasId : null,
+        newElement,
+      });
+
       // Moving track.
       // Stop the current track.
       this.activeElement.stop();
 
       // Set new current track.
       this.activeElement = newElement;
+
+      if (play) {
+        newElement.play(time);
+      }
+
+      return newElement;
     }
+    return null;
   }
 
   onPlay(func: (canvasId: string, time: number, el: MediaElement) => void) {
@@ -97,7 +109,7 @@ export class CompositeMediaElement {
     if (!this.canvasMap[canvasId]) {
       return undefined;
     }
-    for (const el of this.canvasMap[canvasId]) {
+    for (const el of this.canvasMap[canvasId].reverse()) {
       if (el.isWithinRange(time)) {
         return el;
       }
@@ -106,11 +118,7 @@ export class CompositeMediaElement {
   }
 
   appendTo($element: JQueryStatic) {
-    Logger.log(
-      'Appending...',
-      this.elements.map((media) => media.element)
-    );
-    $element.append(this.elements.map((media) => media.element));
+    $element.append(this.elements.map((media) => media.getRawElement()));
   }
 
   async load(): Promise<void> {
@@ -119,12 +127,12 @@ export class CompositeMediaElement {
 
   async seekToMediaTime(annotationTime: AnnotationTime) {
     const prevActiveElement = this.activeElement;
+    Logger.groupCollapsed('Buffering');
 
     if (this.activeElement) {
-      this.updateActiveElement(this.activeElement.getCanvasId(), annotationTime);
+      const newElement = this.updateActiveElement(this.activeElement.getCanvasId(), annotationTime, false);
 
       const realTime = minusTime(annotationTime, this.activeElement.source.start);
-
 
       let defer;
       const promise = new Promise((resolve) => (defer = resolve));
@@ -137,8 +145,9 @@ export class CompositeMediaElement {
           this.playing = false;
         });
 
-        if (prevActiveElement !== this.activeElement) {
-          if (this.activeElement.isBuffering() || this.activeElement.element.paused) {
+        if (prevActiveElement !== this.activeElement && newElement) {
+          Logger.log(`Active element changed...`);
+          if (newElement.isBuffering() || newElement.isPaused()) {
             const cb = () => {
               if (!this.isBuffering()) {
                 defer();
@@ -147,13 +156,16 @@ export class CompositeMediaElement {
             const interval = setInterval(cb, 200);
             await promise;
             clearInterval(interval);
-            await this.activeElement.element.play();
+            Logger.log('ActiveElement nudge (play)');
+            await newElement.play();
           }
         }
       } else {
         this.activeElement.syncClock(realTime);
       }
     }
+
+    Logger.groupEnd();
   }
 
   async seekTo(canvasId: string, time: AnnotationTime) {
@@ -169,7 +181,8 @@ export class CompositeMediaElement {
     }
     if (this.activeElement) {
       Logger.log(`CompositeMediaElement.play(${canvasId}, ${time})`);
-      return this.activeElement.play(time).catch(() => {
+      return this.activeElement.play(time).catch((err) => {
+        console.log('err', err);
         this.playing = false;
       });
     }
@@ -178,14 +191,14 @@ export class CompositeMediaElement {
   pause() {
     Logger.log('Composite.pause()');
     this.playing = false;
-    if (this.activeElement && !this.activeElement.element.paused) {
+    if (this.activeElement && !this.activeElement.isPaused()) {
       this.activeElement.pause();
     }
   }
 
   setVolume(volume: number) {
     for (const el of this.elements) {
-      el.element.volume = volume;
+      el.setVolume(volume);
     }
   }
 

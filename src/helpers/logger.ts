@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-const isDev = () => IS_DEV && (window && window.__DEBUG_AV_COMPONENT__);
+const isDev = () => IS_DEV && window && window.__DEBUG_AV_COMPONENT__;
 
 export const Logger = {
   enabled: true,
@@ -27,7 +27,7 @@ export const Logger = {
   },
   groupCollapsed(...args) {
     if (this.enabled && isDev()) {
-      console.groupCollapsed(...args);
+      console.group(...args);
     }
   },
   group(...args) {
