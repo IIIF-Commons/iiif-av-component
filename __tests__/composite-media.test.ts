@@ -87,16 +87,16 @@ describe('Composite media', () => {
 
     await player.next();
     expect(player._time).toEqual(967.76);
-    expect(player.media.activeElement).toEqual(composite.elements[4]);
+    expect(player.media.activeElement).toEqual(composite.elements[3]);
     expect(mocks[1].pause).toHaveBeenCalledOnce();
-    expect(mocks[4].play).toHaveBeenCalledOnce();
+    expect(mocks[3].play).toHaveBeenCalledOnce();
 
     mocks[7].buffering = true;
 
     const promise = player.next();
     expect(player._time).toEqual(1825.08);
     expect(player.media.activeElement).toEqual(composite.elements[7]);
-    expect(mocks[4].pause).toHaveBeenCalledOnce();
+    expect(mocks[3].pause).toHaveBeenCalledOnce();
 
     await player.advanceToTime(timelineTime(1825.079999923706), false);
     await player.advanceToTime(timelineTime(1825.08899974823), false);
@@ -110,16 +110,18 @@ describe('Composite media', () => {
 
     await promise;
 
-    expect(mocks[7].play).toHaveBeenCalledOnce();
+    expect(mocks[7].play).toHaveBeenCalled();
 
     // Reset for going backwards.
     mocks[0].pause.mockClear();
     mocks[1].pause.mockClear();
+    mocks[3].pause.mockClear();
     mocks[4].pause.mockClear();
     mocks[7].pause.mockClear();
     mocks[0].play.mockClear();
     mocks[1].play.mockClear();
     mocks[4].play.mockClear();
+    mocks[3].play.mockClear();
     mocks[7].play.mockClear();
 
     // Now start advancing time.
@@ -133,14 +135,14 @@ describe('Composite media', () => {
 
     await player.previous();
     expect(player._time).toEqual(967.76);
-    expect(player.media.activeElement).toEqual(composite.elements[4]);
+    expect(player.media.activeElement).toEqual(composite.elements[3]);
     expect(mocks[7].pause).toHaveBeenCalledOnce();
-    expect(mocks[4].play).toHaveBeenCalledOnce();
+    expect(mocks[3].play).toHaveBeenCalled();
 
     await player.previous();
     expect(player._time).toEqual(0);
     expect(player.media.activeElement).toEqual(composite.elements[0]);
-    expect(mocks[4].pause).toHaveBeenCalledOnce();
-    expect(mocks[0].play).toHaveBeenCalledOnce();
+    expect(mocks[3].pause).toHaveBeenCalled();
+    expect(mocks[0].play).toHaveBeenCalled();
   });
 });
