@@ -10,6 +10,7 @@ import row3 from './fixtures/row3.json';
 import row4 from './fixtures/row4.json';
 import row9 from './fixtures/row9.json';
 import row10 from './fixtures/row10.json';
+import shortRange from './fixtures/short-range.json';
 import beethoven from './fixtures/beethoven.json';
 import { createTimePlansFromManifest } from '../src/helpers/create-time-plans-from-manifest';
 import { Manifest } from 'manifesto.js';
@@ -75,6 +76,15 @@ describe('Time plan', () => {
       const plan = createTimePlansFromManifest(manifest);
 
       validTimePlan(plan as any);
+    });
+
+    test('Short range contains valid canvas indexes', () => {
+      const manifest = new Manifest(shortRange);
+      const plan = createTimePlansFromManifest(manifest);
+
+      validTimePlan(plan as any);
+
+      expect(plan).toMatchSnapshot();
     });
   });
 
@@ -143,9 +153,7 @@ describe('Time plan', () => {
           562.3599999999999,
           767.1999999999998,
           1117.2399999999998,
-          1117.2399999999998,
           1202.4399999999998,
-          1370.9999999999995,
           1370.9999999999995,
           1608.3599999999997,
           1775.2399999999998,
@@ -154,6 +162,8 @@ describe('Time plan', () => {
           2185.8,
           2328.04,
           2590.84,
+          2703.48,
+          2703.48,
           2703.48,
           2703.48,
         ]
@@ -166,10 +176,8 @@ describe('Time plan', () => {
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x00000d",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x00000f",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000011",
-          "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000013",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000014",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000015",
-          "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000019",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x00001a",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x00001b",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x00001c",
@@ -177,6 +185,8 @@ describe('Time plan', () => {
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x00001e",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x00001f",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000020",
+          "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000021",
+          "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000021",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000021",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000021",
           "http://api.bl.uk/metadata/iiif/ark:/81055/vdc_100082592360.0x000021",

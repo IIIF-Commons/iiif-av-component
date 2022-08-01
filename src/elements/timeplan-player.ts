@@ -472,14 +472,14 @@ export class TimePlanPlayer {
     for (const stop of this.plan.stops) {
       if (stop.rangeId === id) {
         this.setInternalTime(stop.start);
-        this.advanceToStop(this.currentStop, stop, id);
+        this.advanceToStop(this.currentStop, stop, id, undefined, !this.playing);
         break;
       }
     }
     for (const stop of this.plan.stops) {
       if (stop.rangeStack.indexOf(id) !== -1) {
         this.setInternalTime(stop.start);
-        this.advanceToStop(this.currentStop, stop, id);
+        this.advanceToStop(this.currentStop, stop, id, undefined, !this.playing);
         break;
       }
     }
@@ -572,11 +572,10 @@ export class TimePlanPlayer {
     this.setInternalTime(typeof time !== 'undefined' ? time : to.start);
 
     if (changeCanvas && !paused) {
-      this.log(`advanceToStop -> Media.play(${this.currentStop.canvasId}, ${this.currentMediaTime()})`);
-      promise = this.media.play(this.currentStop.canvasId, this.currentMediaTime());
+      promise = this.media.play(to.canvasId, this.currentMediaTime());
     } else {
       this.log(`advanceToStop -> seekToMediaTime.play(${this.currentMediaTime()})`);
-      promise = this.media.seekToMediaTime(this.currentMediaTime());
+      promise = this.media.seekToMediaTime(this.currentMediaTime(), to.canvasId);
     }
 
     this.notifyRangeChange(rangeId ? rangeId : to.rangeId, { to, from });

@@ -51,7 +51,7 @@ export class CompositeMediaElement {
     this.activeElement = mediaElements[0];
   }
 
-  syncClock(time: AnnotationTime) {
+  syncClock(time: AnnotationTime, _toCanvas?: string) {
     Logger.group('CompositeMediaElement.syncClock');
     Logger.log(`syncClock: ${time}`);
     Logger.log({
@@ -61,7 +61,8 @@ export class CompositeMediaElement {
     });
 
     if (this.activeElement) {
-      this.updateActiveElement(this.activeElement.getCanvasId(), time, this.playing);
+      const toCanvas = _toCanvas || this.activeElement.getCanvasId();
+      this.updateActiveElement(toCanvas, time, this.playing);
       const realTime = minusTime(time, this.activeElement.source.start);
       this.activeElement.syncClock(realTime);
     }
@@ -125,12 +126,13 @@ export class CompositeMediaElement {
     await Promise.all(this.elements.map((element) => element.load()));
   }
 
-  async seekToMediaTime(annotationTime: AnnotationTime) {
+  async seekToMediaTime(annotationTime: AnnotationTime, _toCanvas?: string) {
     const prevActiveElement = this.activeElement;
     Logger.groupCollapsed('Buffering');
 
     if (this.activeElement) {
-      const newElement = this.updateActiveElement(this.activeElement.getCanvasId(), annotationTime, false);
+      const toCanvas = _toCanvas || this.activeElement.getCanvasId();
+      const newElement = this.updateActiveElement(toCanvas, annotationTime, false);
 
       const realTime = minusTime(annotationTime, this.activeElement.source.start);
 
