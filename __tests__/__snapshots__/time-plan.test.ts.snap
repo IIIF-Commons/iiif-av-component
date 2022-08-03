@@ -28,6 +28,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           },
           "duration": 419.56,
           "end": 419.56,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000002",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -38,6 +39,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           "type": "time-stop",
         },
       ],
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000002",
       "rangeOrder": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000002",
@@ -57,6 +59,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           },
           "duration": 419.56,
           "end": 419.56,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000002",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -85,6 +88,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           },
           "duration": 2.6,
           "end": 422.16,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000004",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -95,6 +99,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           "type": "time-stop",
         },
       ],
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000004",
       "rangeOrder": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000004",
@@ -114,6 +119,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           },
           "duration": 2.6,
           "end": 422.16,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000004",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -142,6 +148,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           },
           "duration": 13.36,
           "end": 435.52000000000004,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000006",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -152,6 +159,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           "type": "time-stop",
         },
       ],
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000006",
       "rangeOrder": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000006",
@@ -171,6 +179,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           },
           "duration": 13.36,
           "end": 435.52000000000004,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000006",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -199,6 +208,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           },
           "duration": 2.68,
           "end": 438.20000000000005,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000008",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -209,6 +219,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           "type": "time-stop",
         },
       ],
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000008",
       "rangeOrder": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000008",
@@ -228,6 +239,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           },
           "duration": 2.68,
           "end": 438.20000000000005,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000008",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -256,6 +268,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           },
           "duration": 3.56,
           "end": 441.76000000000005,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x00000a",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -266,6 +279,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           "type": "time-stop",
         },
       ],
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x00000a",
       "rangeOrder": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x00000a",
@@ -285,6 +299,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
           },
           "duration": 3.56,
           "end": 441.76000000000005,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x00000a",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -298,6 +313,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
       "type": "time-plan",
     },
   ],
+  "noNav": false,
   "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
   "rangeOrder": [
     "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -321,6 +337,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
       },
       "duration": 419.56,
       "end": 419.56,
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000002",
       "rangeStack": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -339,6 +356,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
       },
       "duration": 2.6,
       "end": 422.16,
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000004",
       "rangeStack": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -357,6 +375,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
       },
       "duration": 13.36,
       "end": 435.52000000000004,
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000006",
       "rangeStack": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -375,6 +394,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
       },
       "duration": 2.68,
       "end": 438.20000000000005,
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000008",
       "rangeStack": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -393,6 +413,7 @@ exports[`Time plan > Create valid timeplans > Short range contains valid canvas 
       },
       "duration": 3.56,
       "end": 441.76000000000005,
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x00000a",
       "rangeStack": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005096109.0x000001/top",
@@ -432,6 +453,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           },
           "duration": 211.08,
           "end": 211.08,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000006",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -442,6 +464,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           "type": "time-stop",
         },
       ],
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000006",
       "rangeOrder": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000006",
@@ -461,6 +484,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           },
           "duration": 211.08,
           "end": 211.08,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000006",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -489,6 +513,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           },
           "duration": 180.36,
           "end": 391.44000000000005,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000008",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -499,6 +524,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           "type": "time-stop",
         },
       ],
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000008",
       "rangeOrder": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000008",
@@ -518,6 +544,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           },
           "duration": 180.36,
           "end": 391.44000000000005,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000008",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -546,6 +573,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           },
           "duration": 188.24,
           "end": 579.6800000000001,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x00000a",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -556,6 +584,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           "type": "time-stop",
         },
       ],
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x00000a",
       "rangeOrder": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x00000a",
@@ -575,6 +604,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           },
           "duration": 188.24,
           "end": 579.6800000000001,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x00000a",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -603,6 +633,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           },
           "duration": 183.16000000000003,
           "end": 762.8400000000001,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x00000c",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -613,6 +644,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           "type": "time-stop",
         },
       ],
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x00000c",
       "rangeOrder": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x00000c",
@@ -632,6 +664,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
           },
           "duration": 183.16000000000003,
           "end": 762.8400000000001,
+          "noNav": false,
           "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x00000c",
           "rangeStack": [
             "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -645,6 +678,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
       "type": "time-plan",
     },
   ],
+  "noNav": false,
   "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
   "rangeOrder": [
     "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -667,6 +701,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
       },
       "duration": 211.08,
       "end": 211.08,
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000006",
       "rangeStack": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -685,6 +720,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
       },
       "duration": 180.36,
       "end": 391.44000000000005,
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000008",
       "rangeStack": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -703,6 +739,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
       },
       "duration": 188.24,
       "end": 579.6800000000001,
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x00000a",
       "rangeStack": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
@@ -721,6 +758,7 @@ exports[`Time plan > Create valid timeplans > row 3 contains valid canvas indexe
       },
       "duration": 183.16000000000003,
       "end": 762.8400000000001,
+      "noNav": false,
       "rangeId": "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x00000c",
       "rangeStack": [
         "https://apiirc.ad.bl.uk/metadata/iiif/ark:/81055/tvdc_100005114787.0x000002/top",
