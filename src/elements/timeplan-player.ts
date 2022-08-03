@@ -118,7 +118,6 @@ export class TimePlanPlayer {
     const starting: number[] = [];
     const ending: number[] = [];
     for (const stop of stopsToCheck) {
-      if (!isRangeWithStop) {
       if (stop.rangeStack.indexOf(rangeId) !== -1) {
         starting.push(stop.start);
         ending.push(stop.end);
