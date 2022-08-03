@@ -991,8 +991,6 @@ export class CanvasInstance extends BaseComponent {
       this._updateCurrentTimeDisplay();
       this._updateDurationDisplay();
       this._drawWaveform();
-
-      return;
     }
 
     // Hide/show UI elements regardless of visibility.
@@ -1004,7 +1002,7 @@ export class CanvasInstance extends BaseComponent {
       this._$rangeTimelineContainer.hide();
     }
 
-    if (!this._data.range) {
+    if (!this.currentRange) {
       this._$durationHighlight.hide();
     }
 
@@ -1139,9 +1137,11 @@ export class CanvasInstance extends BaseComponent {
   private _previous(isDouble: boolean): void {
     if (AVComponent.newRanges && this.isVirtual()) {
       Logger.group('CanvasInstance.previous()');
+      this._buffering = true;
       const newTime = this.timePlanPlayer.previous();
       this._setCurrentTime(newTime);
       Logger.log('CanvasInstance.previous()', newTime);
+      this._buffering = false;
       Logger.groupEnd();
       return;
     }
@@ -1179,9 +1179,11 @@ export class CanvasInstance extends BaseComponent {
   private async _next(): Promise<void> {
     if (AVComponent.newRanges && this.isVirtual()) {
       Logger.groupCollapsed('next');
+      this._buffering = true;
       const newTime = await this.timePlanPlayer.next();
       Logger.log('CanvasInstance.next()', newTime);
       await this._setCurrentTime(newTime, false);
+      this._buffering = false;
       Logger.groupEnd();
       return;
     }
@@ -1880,7 +1882,7 @@ export class CanvasInstance extends BaseComponent {
     if (AVComponent.newRanges && this.isVirtual()) {
       if (this.timePlanPlayer.hasEnded()) {
         this._buffering = true;
-        await this.timePlanPlayer.setTime(this.timePlanPlayer.currentStop.start);
+        await this.timePlanPlayer.previous();
         this._buffering = false;
       }
       this.timePlanPlayer.play();

@@ -12,4 +12,5 @@ export type TimePlan = {
   rangeStack: string[];
   rangeOrder: string[];
   items: Array<TimeStop | TimePlan>;
+  noNav?: boolean;
 };
