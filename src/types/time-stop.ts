@@ -10,6 +10,7 @@ export type TimeStop = {
   canvasId: string;
   rawCanvasSelector: string;
   rangeStack: string[];
+  noNav?: boolean;
   canvasTime: {
     start: CanvasTime;
     end: CanvasTime;

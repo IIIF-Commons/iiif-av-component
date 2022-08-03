@@ -6,20 +6,31 @@ import { addTime, canvasTime, minusTime, TimelineTime, timelineTime } from './re
 export function createTimePlansFromManifest(manifest: Manifest) {
   const parseRange = (
     range: Range,
-    rangeStack: string[] = [],
+    _rangeStack: string[] = [],
     startDuration: TimelineTime = timelineTime(0)
   ): TimePlan => {
+    let rangeStack = _rangeStack;
+    let rangeId = range.id;
+
+    const behavior = range.getBehavior();
+    const isNoNav = behavior === 'no-nav';
+    if (behavior === 'no-nav') {
+      rangeStack = rangeStack.slice(0, -1);
+      rangeId = rangeStack[rangeStack.length - 1];
+    }
+
     const timePlan: TimePlan = {
       type: 'time-plan',
       canvases: [],
       duration: timelineTime(0),
       items: [],
       stops: [],
-      rangeOrder: [range.id],
+      rangeOrder: isNoNav ? [] : [rangeId],
       end: timelineTime(0),
       start: startDuration,
-      rangeId: range.id,
-      rangeStack,
+      rangeId: rangeId,
+      rangeStack: rangeStack,
+      noNav: isNoNav,
     };
 
     let runningDuration = startDuration;
@@ -61,7 +72,7 @@ export function createTimePlansFromManifest(manifest: Manifest) {
           start: minusTime(runningDuration, rDuration),
           end: runningDuration,
           duration: rDuration,
-          rangeId: range.id,
+          rangeId: rangeId,
           canvasId: canvasId,
           rawCanvasSelector: ro,
           canvasTime: {
@@ -69,33 +80,31 @@ export function createTimePlansFromManifest(manifest: Manifest) {
             end: rEnd,
           },
           rangeStack,
+          noNav: isNoNav,
         };
 
         timePlan.stops.push(timeStop);
         timePlan.items.push(timeStop);
       } else {
-        const behavior = (ro as Range).getBehavior();
-        if (!behavior || behavior !== 'no-nav') {
-          const rangeTimePlan = parseRange(ro as any, [...rangeStack, ro.id], runningDuration);
+        const rangeTimePlan = parseRange(ro as any, [...rangeStack, ro.id], runningDuration);
 
-          runningDuration = addTime(runningDuration, rangeTimePlan.duration);
+        runningDuration = addTime(runningDuration, rangeTimePlan.duration);
 
-          for (const rangeTimePlanCanvasId of rangeTimePlan.canvases) {
-            if (timePlan.canvases.indexOf(rangeTimePlanCanvasId) === -1) {
-              timePlan.canvases.push(rangeTimePlanCanvasId);
-            }
+        for (const rangeTimePlanCanvasId of rangeTimePlan.canvases) {
+          if (timePlan.canvases.indexOf(rangeTimePlanCanvasId) === -1) {
+            timePlan.canvases.push(rangeTimePlanCanvasId);
           }
-          timePlan.stops.push(
-            // ...rangeTimePlan.stops
-            // Unsure what this does..
-            ...rangeTimePlan.stops.map((stop) => ({
-              ...stop,
-              canvasIndex: timePlan.canvases.indexOf(stop.canvasId),
-            }))
-          );
-          timePlan.items.push(rangeTimePlan);
-          timePlan.rangeOrder.push(...rangeTimePlan.rangeOrder);
         }
+        timePlan.stops.push(
+          // ...rangeTimePlan.stops
+          // Unsure what this does..
+          ...rangeTimePlan.stops.map((stop) => ({
+            ...stop,
+            canvasIndex: timePlan.canvases.indexOf(stop.canvasId),
+          }))
+        );
+        timePlan.items.push(rangeTimePlan);
+        timePlan.rangeOrder.push(...rangeTimePlan.rangeOrder);
       }
     }
 

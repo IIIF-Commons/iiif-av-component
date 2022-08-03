@@ -119,25 +119,31 @@ export class TimePlanPlayer {
     const ending: number[] = [];
     for (const stop of stopsToCheck) {
       if (!isRangeWithStop) {
-        if (stop.rangeStack.indexOf(rangeId) !== -1) {
+      if (stop.rangeStack.indexOf(rangeId) !== -1) {
+        starting.push(stop.start);
+        ending.push(stop.end);
+      }
+      if (isRangeWithStop) {
+        if (stop.rangeId === rangeId) {
           starting.push(stop.start);
           ending.push(stop.end);
         }
-      } else if (stop.rangeId === rangeId) {
-        starting.push(stop.start);
-        ending.push(stop.end);
       }
     }
     const start = Math.min(...starting);
     const end = Math.max(...ending);
 
-    Logger.log('Range', {
+    Logger.log('Range duration', {
+      starting,
+      ending,
       rangeId,
       isRangeWithStop,
       stopsToCheck,
       start: start - this.plan.start,
       end: end - this.plan.start,
+      planStart: this.plan.start,
       duration: end - start,
+      currentStop: this.currentStop,
     });
 
     return {
@@ -280,7 +286,7 @@ export class TimePlanPlayer {
         running = false;
         break;
       }
-      if (nextStop.rangeId !== this.currentStop.rangeId) {
+      if (!nextStop.noNav && nextStop.rangeId !== this.currentStop.rangeId) {
         running = false;
         break;
       }
@@ -365,23 +371,31 @@ export class TimePlanPlayer {
     const idx = this.plan.stops.indexOf(this.currentStop);
     let newIdx = idx;
     let prevStop = this.plan.stops[idx - 1];
+    const firstStop = this.plan.stops[0];
     let running = true;
+    const isValidNav = (plan: TimeStop) => {
+      return !plan.noNav || plan === firstStop;
+    };
     while (running) {
       const nextPrevStop = this.plan.stops[newIdx - 1];
       if (!nextPrevStop) {
         running = false;
         break;
       }
-      if (nextPrevStop.rangeId === this.currentRange) {
-        currentStopHead = nextPrevStop;
-      }
-      if (prevStop.rangeId !== nextPrevStop.rangeId) {
-        running = false;
-        break;
+      if (isValidNav(nextPrevStop) && isValidNav(prevStop)) {
+        if (nextPrevStop.rangeId === this.currentRange) {
+          currentStopHead = nextPrevStop;
+        }
+        if (prevStop.rangeId !== nextPrevStop.rangeId) {
+          running = false;
+          break;
+        }
       }
 
       if (nextPrevStop) {
-        prevStop = nextPrevStop;
+        if (isValidNav(nextPrevStop)) {
+          prevStop = nextPrevStop;
+        }
         newIdx = newIdx - 1;
       }
     }
@@ -402,6 +416,7 @@ export class TimePlanPlayer {
       isDefinitelyFirstRange,
       isPreviousRangeNotAParent,
       isPreviousRangeInStack,
+      prevStop,
     });
 
     if (goBackToStartOfRange) {
@@ -434,7 +449,7 @@ export class TimePlanPlayer {
     }
 
     // Case 2, in the middle, but previous is a parent.
-    if (prevRange && isPreviousRangeNotAParent) {
+    if (prevRange && (isPreviousRangeNotAParent || prevStop === firstStop)) {
       // Then we navigate to the previous.
       this.setInternalTime(prevStop.start);
       this.currentRange = prevRange;
