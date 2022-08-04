@@ -1136,6 +1136,11 @@ export class CanvasInstance extends BaseComponent {
 
   private _previous(isDouble: boolean): void {
     if (AVComponent.newRanges && this.isVirtual()) {
+      if (this._data.limitToRange) {
+        this._setCurrentTime(this.timePlanPlayer.plan.start, false);
+        return;
+      }
+
       Logger.group('CanvasInstance.previous()');
       this._buffering = true;
       const newTime = this.timePlanPlayer.previous();
@@ -1178,6 +1183,11 @@ export class CanvasInstance extends BaseComponent {
 
   private async _next(): Promise<void> {
     if (AVComponent.newRanges && this.isVirtual()) {
+      if (this._data.limitToRange) {
+        await this._setCurrentTime(this.timePlanPlayer.plan.end, false);
+        return;
+      }
+
       Logger.groupCollapsed('next');
       this._buffering = true;
       const newTime = await this.timePlanPlayer.next();
