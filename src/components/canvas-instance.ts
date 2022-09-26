@@ -1892,7 +1892,11 @@ export class CanvasInstance extends BaseComponent {
     if (AVComponent.newRanges && this.isVirtual()) {
       if (this.timePlanPlayer.hasEnded()) {
         this._buffering = true;
-        await this.timePlanPlayer.previous();
+        if (this._data.limitToRange) {
+          await this._setCurrentTime(this.timePlanPlayer.plan.start, false);
+        } else {
+          await this.timePlanPlayer.previous();
+        }
         this._buffering = false;
       }
       this.timePlanPlayer.play();
