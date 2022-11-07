@@ -108,6 +108,7 @@ export class CanvasInstance extends BaseComponent {
     this._$element = $(this.options.target);
     this._data = this.options.data;
     this.$playerElement = $('<div class="player player--loading"></div>');
+    this.$playerElement.hide();
   }
 
   public loaded(): void {
