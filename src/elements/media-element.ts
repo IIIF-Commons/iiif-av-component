@@ -1,3 +1,5 @@
+import { getHls } from '../helpers/get-hls';
+
 const $ = require('jquery');
 import { MediaFormat } from '../media-formats/abstract-media-format';
 import { MediaOptions } from '../types/media-options';
@@ -143,10 +145,12 @@ export class MediaElement {
   }
 
   isHls() {
+    const Hls = getHls();
     return (
       this.format &&
       this.format.toString() === 'application/vnd.apple.mpegurl' &&
       typeof Hls !== 'undefined' &&
+      Hls !== null &&
       Hls.isSupported()
     );
   }
