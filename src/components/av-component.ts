@@ -459,6 +459,13 @@ export class AVComponent extends BaseComponent {
       },
       false
     );
+    canvasInstance.on(
+      Events.MEDIA_ERROR,
+      (err) => {
+        this.fire(Events.MEDIA_ERROR, err);
+      },
+      false
+    );
 
     canvasInstance.on(
       Events.WAVEFORM_READY,

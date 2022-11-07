@@ -12,4 +12,5 @@ export interface IAVComponentContent {
   unmute: string;
   fastForward: string;
   fastRewind: string;
+  noMediaMessage?: string;
 }

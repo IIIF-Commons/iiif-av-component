@@ -171,6 +171,13 @@ export class CanvasInstance extends BaseComponent {
       }
     }
 
+    if (mediaElements.length === 0) {
+      // Since this is a constructor call.
+      setTimeout(() => {
+        this.fire(Events.MEDIA_ERROR, this._data?.content?.noMediaMessage || 'No media available to play');
+      }, 200);
+    }
+
     const compositeMediaElement = new CompositeMediaElement(mediaElements);
 
     compositeMediaElement.appendTo(this.$playerElement);
