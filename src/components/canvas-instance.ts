@@ -45,6 +45,7 @@ import {
 import { Logger } from '../helpers/logger';
 // @ts-ignore
 import * as WaveformData from 'waveform-data';
+import { getHls } from '../helpers/get-hls';
 
 export class CanvasInstance extends BaseComponent {
   private _$canvasContainer: JQuery;
@@ -108,6 +109,7 @@ export class CanvasInstance extends BaseComponent {
     this._$element = $(this.options.target);
     this._data = this.options.data;
     this.$playerElement = $('<div class="player player--loading"></div>');
+    this.$playerElement.hide();
   }
 
   public loaded(): void {
@@ -169,6 +171,13 @@ export class CanvasInstance extends BaseComponent {
           this.waveforms.push(dat);
         }
       }
+    }
+
+    if (mediaElements.length === 0) {
+      // Since this is a constructor call.
+      setTimeout(() => {
+        this.fire(Events.MEDIA_ERROR, this._data?.content?.noMediaMessage || 'No media available to play');
+      }, 200);
     }
 
     const compositeMediaElement = new CompositeMediaElement(mediaElements);
@@ -1268,10 +1277,11 @@ export class CanvasInstance extends BaseComponent {
       if (this._data.adaptiveAuthEnabled) {
         player.setXHRWithCredentialsForType('MPD', true); // send cookies
       }
-      player.initialize(media, data.source);
+      player.initialize(media, data.source, false);
     } else if (data.format && data.format.toString() === 'application/vnd.apple.mpegurl') {
+      const Hls = getHls();
       // hls
-      if (Hls.isSupported()) {
+      if (Hls && Hls.isSupported()) {
         let hls = new Hls();
 
         if (this._data.adaptiveAuthEnabled) {
@@ -1280,8 +1290,6 @@ export class CanvasInstance extends BaseComponent {
               xhr.withCredentials = true; // send cookies
             },
           });
-        } else {
-          hls = new Hls();
         }
 
         if (this._data.adaptiveAuthEnabled) {
@@ -1892,7 +1900,11 @@ export class CanvasInstance extends BaseComponent {
     if (AVComponent.newRanges && this.isVirtual()) {
       if (this.timePlanPlayer.hasEnded()) {
         this._buffering = true;
-        await this.timePlanPlayer.previous();
+        if (this._data.limitToRange) {
+          await this._setCurrentTime(this.timePlanPlayer.plan.start, false);
+        } else {
+          await this.timePlanPlayer.previous();
+        }
         this._buffering = false;
       }
       this.timePlanPlayer.play();
