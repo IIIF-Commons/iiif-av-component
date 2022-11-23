@@ -154,6 +154,7 @@ export class CanvasInstance extends BaseComponent {
 
         const mediaElement = new MediaElement(mediaSource, {
           adaptiveAuthEnabled: this._data.adaptiveAuthEnabled,
+          probed: this.options.data?.canvas?.externalResource?.isProbed,
         });
 
         mediaElement.setSize(
@@ -1228,16 +1229,17 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private _renderMediaElement(data: any): void {
+    const isProbed = this.options.data?.canvas?.externalResource?.isProbed;
     let $mediaElement;
     const type: string = data.type.toString().toLowerCase();
 
     switch (type) {
       case 'video':
-        $mediaElement = $('<video crossorigin="anonymous" class="anno" />');
+        $mediaElement = $('<video class="anno" />');
         break;
       case 'sound':
       case 'audio':
-        $mediaElement = $('<audio crossorigin="anonymous" class="anno" />');
+        $mediaElement = $('<audio class="anno" />');
         break;
       // case 'textualbody':
       //     $mediaElement = $('<div class="anno">' + data.source + '</div>');
@@ -1250,6 +1252,12 @@ export class CanvasInstance extends BaseComponent {
     }
 
     const media: HTMLMediaElement = $mediaElement[0] as HTMLMediaElement;
+
+    if (!isProbed) {
+      media.setAttribute('crossorigin', 'anonymous');
+      media.crossOrigin = 'anonymous';
+    }
+
     //
     // var audioCtx = new AudioContext();
     // var source = audioCtx.createMediaElementSource(media);
