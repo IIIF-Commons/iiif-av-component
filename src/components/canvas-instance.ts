@@ -11,7 +11,6 @@ import { IAVCanvasInstanceData } from '../interfaces/canvas-instance-data';
 import { MediaElement } from '../elements/media-element';
 import { TimePlanPlayer } from '../elements/timeplan-player';
 import { VolumeEvents } from '../events/volume-events';
-import { IMaxMin } from '../interfaces/max-min';
 import { extractMediaFromAnnotationBodies } from '../helpers/extract-media-from-annotation-bodies';
 import { AVVolumeControl } from './volume-control';
 import { CompositeMediaElement } from '../elements/composite-media-element';
@@ -20,7 +19,6 @@ import { getMediaSourceFromAnnotationBody } from '../helpers/get-media-source-fr
 import { CanvasInstanceEvents } from '../events/canvas-instance-events';
 import { AVComponent } from './av-component';
 import { VirtualCanvas } from '../elements/virtual-canvas';
-import { CompositeWaveform } from '../elements/composite-waveform';
 import { Events } from '../events/av-component-events';
 import { isHLSFormat } from '../helpers/is-hls-format';
 import { isMpegDashFormat } from '../helpers/is-mpeg-dash-format';
@@ -29,23 +27,13 @@ import { getSpatialComponent } from '../helpers/get-spatial-component';
 import { canPlayHls } from '../helpers/can-play-hls';
 import { formatTime } from '../helpers/format-time';
 import { isSafari } from '../helpers/is-safari';
-import { normalise } from '../helpers/normalise-number';
 import { diffData } from '../helpers/diff-data';
 import { isVirtual } from '../helpers/is-virtual';
-import {
-  addTime,
-  fromMs,
-  minusTime,
-  multiplyTime,
-  timelineTime,
-  TimelineTime,
-  TimelineTimeMs,
-  toMs,
-} from '../helpers/relative-time';
+import { addTime, fromMs, minusTime, timelineTime, TimelineTime, TimelineTimeMs, toMs } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
-// @ts-ignore
-import * as WaveformData from 'waveform-data';
 import { getHls } from '../helpers/get-hls';
+import 'waveform-panel';
+import { WaveformPanel } from 'waveform-panel';
 
 export class CanvasInstance extends BaseComponent {
   private _$canvasContainer: JQuery;
@@ -74,7 +62,7 @@ export class CanvasInstance extends BaseComponent {
   private _canvasClockTime: TimelineTime = 0 as TimelineTime;
   private _canvasHeight = 0;
   private _canvasWidth = 0;
-  private _compositeWaveform: CompositeWaveform;
+  private _waveformPanel?: WaveformPanel;
   private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
   private _data: IAVCanvasInstanceData = this.data();
   private _highPriorityFrequency = 25;
@@ -91,11 +79,9 @@ export class CanvasInstance extends BaseComponent {
   private _stallRequestedBy: any[] = []; //todo: type
   private _volume: AVVolumeControl;
   private _wasPlaying = false;
-  private _waveformCanvas: HTMLCanvasElement | null;
-  private _waveformCtx: CanvasRenderingContext2D | null;
-  //private _waveformNeedsRedraw: boolean = true;
   public ranges: Range[] = [];
   public waveforms: string[] = [];
+  public waveformSources: { source: string; canvas: string; start: number; end: number }[] = [];
   private _buffering = false;
   private _bufferShown = false;
   public $playerElement: JQuery;
@@ -154,6 +140,7 @@ export class CanvasInstance extends BaseComponent {
 
         const mediaElement = new MediaElement(mediaSource, {
           adaptiveAuthEnabled: this._data.adaptiveAuthEnabled,
+          probed: this.options.data?.canvas?.externalResource?.isProbed,
         });
 
         mediaElement.setSize(
@@ -169,6 +156,7 @@ export class CanvasInstance extends BaseComponent {
         if (seeAlso && seeAlso.length) {
           const dat: string = seeAlso[0].id;
           this.waveforms.push(dat);
+          this.waveformSources.push({ source: dat, canvas: canvas.id, start: 0, end: canvas.getDuration() as number });
         }
       }
     }
@@ -256,14 +244,14 @@ export class CanvasInstance extends BaseComponent {
                                     <span class="sr-only>${this._data.content.next}</span>
                                 </button>`);
     this._$fastForward = $(`
-                                <button class="btn" title="${this._data.content.next}">
+                                <button class="btn" title="${this._data.content.fastForward}">
                                     <i class="av-icon av-icon-fast-forward" aria-hidden="true"></i>
                                     <span class="sr-only>
                                     ${this._data.content.fastForward || ''}
                                     </span>
                                 </button>`);
     this._$fastRewind = $(`
-                                <button class="btn" title="${this._data.content.next}">
+                                <button class="btn" title="${this._data.content.fastRewind}">
                                     <i class="av-icon av-icon-fast-rewind" aria-hidden="true"></i>
                                     <span class="sr-only>
                                     ${this._data.content.fastRewind || ''}
@@ -616,6 +604,12 @@ export class CanvasInstance extends BaseComponent {
       if (seeAlso && seeAlso.length) {
         const dat: string = seeAlso[0].id;
         this.waveforms.push(dat);
+        this.waveformSources.push({
+          canvas: this._data.canvas.id,
+          source: dat,
+          start: 0,
+          end: this._data.canvas?.getDuration() as any,
+        });
       }
     }
   }
@@ -751,6 +745,8 @@ export class CanvasInstance extends BaseComponent {
     if (autoChanged && !this.autoAdvanceRanges) {
       return;
     }
+
+    this.updateWaveformPanel();
 
     Logger.log('Setting current range id', range);
 
@@ -999,7 +995,7 @@ export class CanvasInstance extends BaseComponent {
 
       this._updateCurrentTimeDisplay();
       this._updateDurationDisplay();
-      this._drawWaveform();
+      this.createWaveformPanel();
     }
 
     // Hide/show UI elements regardless of visibility.
@@ -1089,7 +1085,7 @@ export class CanvasInstance extends BaseComponent {
 
     this._updateCurrentTimeDisplay();
     this._updateDurationDisplay();
-    this._drawWaveform();
+    this.createWaveformPanel();
   }
 
   public getCanvasId(): string | undefined {
@@ -1228,16 +1224,17 @@ export class CanvasInstance extends BaseComponent {
   }
 
   private _renderMediaElement(data: any): void {
+    const isProbed = this.options.data?.canvas?.externalResource?.isProbed;
     let $mediaElement;
     const type: string = data.type.toString().toLowerCase();
 
     switch (type) {
       case 'video':
-        $mediaElement = $('<video crossorigin="anonymous" class="anno" />');
+        $mediaElement = $('<video class="anno" />');
         break;
       case 'sound':
       case 'audio':
-        $mediaElement = $('<audio crossorigin="anonymous" class="anno" />');
+        $mediaElement = $('<audio class="anno" />');
         break;
       // case 'textualbody':
       //     $mediaElement = $('<div class="anno">' + data.source + '</div>');
@@ -1250,6 +1247,12 @@ export class CanvasInstance extends BaseComponent {
     }
 
     const media: HTMLMediaElement = $mediaElement[0] as HTMLMediaElement;
+
+    if (!isProbed) {
+      media.setAttribute('crossorigin', 'anonymous');
+      media.crossOrigin = 'anonymous';
+    }
+
     //
     // var audioCtx = new AudioContext();
     // var source = audioCtx.createMediaElementSource(media);
@@ -1382,111 +1385,72 @@ export class CanvasInstance extends BaseComponent {
     this._renderSyncIndicator(data);
   }
 
-  private _getWaveformData(url: string): Promise<any> {
-    return new Promise(function (resolve) {
-      fetch(url)
-        .then((resp) => {
-          if (resp.ok) {
-            return resp;
-          }
-          throw new Error('Unable to request waveform');
-        })
-        .then((response) => response.arrayBuffer())
-        .then((buffer) => resolve(WaveformData.create(buffer)))
-        .catch(() => resolve({ error: true }));
-    });
-  }
-
-  private waveformDeltaX = 0;
-  private waveformPageX = 0;
   private waveFormInit = false;
 
-  private _renderWaveform(forceRender = false) {
-    //return new Promise<void>((resolve) => {
+  private updateWaveformPanel() {
+    if (AVComponent.newRanges && this.isVirtual() && this._waveformPanel) {
+      const sequence: string[] = [];
+      for (const stop of this.timePlanPlayer.plan.stops) {
+        sequence.push(`${stop.canvasId}#t=${stop.canvasTime.start},${stop.canvasTime.end}`);
+      }
+      this._waveformPanel.setAttribute('sequence', sequence.join('|'));
+      this._waveformPanel.setAttribute('duration', `${this.timePlanPlayer.plan.duration}`);
+      this._waveformPanel.resize();
+    }
+  }
 
+  updateWaveformTime(t: number) {
+    if (this._waveformPanel) {
+      this._waveformPanel.setAttribute('current-time', `${t}`);
+    }
+  }
+
+  private createWaveformPanel(forceRender = false) {
     if (this.waveFormInit && !forceRender) {
       return;
     }
 
-    if (!this.waveforms.length) {
+    if (!this.waveformSources.length) {
       return;
     }
 
     // stops this getting called more than once.
     this.waveFormInit = true;
 
-    const promises = this.waveforms.map((url) => {
-      return this._getWaveformData(url);
+    this._waveformPanel = document.createElement('waveform-panel') as WaveformPanel;
+    this._waveformPanel.classList.add('waveform-panel');
+    this._waveformPanel.style.height = '100%';
+
+    this._waveformPanel.addEventListener('click-waveform', (e: any) => {
+      if (this.isVirtual()) {
+        this._setCurrentTime(this.timePlanPlayer.plan.start + e.detail.time);
+      } else {
+        this._setCurrentTime(e.detail.time);
+      }
     });
 
-    Logger.log('loading waveforms');
+    this._waveformPanel.setAttribute(
+      'srcset',
+      this.waveformSources.map((src) => `${src.source} ${src.canvas}`).join(',')
+    );
+    this._waveformPanel.setAttribute('duration', `${this._getDuration()}`);
+    this._waveformPanel.setAttribute(
+      'sequence',
+      this.waveformSources.map((src) => `${src.canvas}#t=${src.start},${src.end}`).join('|')
+    );
 
-    Promise.all(promises)
-      .then((_waveforms) => {
-        const waveforms = _waveforms.filter((e) => !e.error);
-        Logger.log('Waveforms loaded');
-        this._waveformCanvas = document.createElement('canvas');
-        this._waveformCanvas.classList.add('waveform');
-        this._$canvasContainer.append(this._waveformCanvas);
-        this.waveformPageX = this._waveformCanvas.getBoundingClientRect().x;
-        const raf = this._drawWaveform.bind(this);
-
-        // Mouse in and out we reset the delta
-        this._waveformCanvas.addEventListener('mousein', () => {
-          this.waveformDeltaX = 0;
-        });
-
-        this._$canvasTimelineContainer.on('mouseout', () => {
-          this.waveformDeltaX = 0;
-          requestAnimationFrame(raf);
-        });
-
-        this._waveformCanvas.addEventListener('mouseout', () => {
-          this.waveformDeltaX = 0;
-          requestAnimationFrame(raf);
-        });
-
-        // When mouse moves over waveform, we render
-        this._waveformCanvas.addEventListener('mousemove', (e) => {
-          this.waveformDeltaX = e.pageX - this.waveformPageX;
-          requestAnimationFrame(raf);
-        });
-
-        this._$canvasTimelineContainer.on('mousemove', (e) => {
-          this.waveformDeltaX = e.pageX - this.waveformPageX;
-          requestAnimationFrame(raf);
-        });
-
-        // When we click the waveform, it should navigate
-        this._waveformCanvas.addEventListener('click', async (e) => {
-          const rect = this._waveformCanvas!.getBoundingClientRect();
-          if (rect) {
-            this.waveformPageX = rect.x;
-            const width = rect.width || 0;
-            if (width) {
-              const { start, end } = this.getRangeTiming();
-              await this._setCurrentTime(
-                addTime(start, multiplyTime(minusTime(end, start), (e.pageX - this.waveformPageX) / width))
-              );
-            }
-          }
-        });
-
-        this._waveformCtx = this._waveformCanvas.getContext('2d');
-
-        if (this._waveformCtx) {
-          this._waveformCtx.fillStyle = this._data.waveformColor || '#fff';
-          this._compositeWaveform = new CompositeWaveform(waveforms);
-          this.fire(Events.WAVEFORM_READY);
-        }
-
-        //resolve();
-      })
-      .catch(() => {
-        Logger.warn('Could not load wave forms.');
-        //resolve();
-      });
-    //});
+    const style = document.createElement('style');
+    // language=css
+    style.innerHTML = `
+      waveform-panel {
+          max-height: 260px;
+          width: 100%;
+          align-self: center;
+      }
+    `;
+    this._$canvasContainer[0].style.display = 'flex';
+    this._$canvasContainer[0].style.width = '100%';
+    this._$canvasContainer.append(this._waveformPanel, style);
   }
 
   private getRangeTiming(): {
@@ -1509,7 +1473,7 @@ export class CanvasInstance extends BaseComponent {
 
     let durationObj: Duration | undefined;
     let start = 0 as TimelineTime;
-    let end = timelineTime(this._compositeWaveform ? this._compositeWaveform.duration : -1);
+    let end = 0 as TimelineTime;
     let duration = end;
 
     // This is very similar to
@@ -1545,175 +1509,6 @@ export class CanvasInstance extends BaseComponent {
     };
   }
 
-  private _drawWaveform() {
-    this._renderWaveform();
-
-    //if (!this._waveformCtx || !this._waveformNeedsRedraw) return;
-    // todo: this is causing waveforms not to be visible on first load
-    //if (!this._waveformCtx || !this.isVisible()) return;
-    if (!this._waveformCtx) {
-      return;
-    }
-
-    const { start, end, percent } = this.getRangeTiming();
-    const startpx = start * this._compositeWaveform.pixelsPerSecond;
-    const endpx = end * this._compositeWaveform.pixelsPerSecond;
-    const canvasWidth: number = this._waveformCtx.canvas.width;
-    const canvasHeight: number = this._waveformCtx.canvas.height;
-    const barSpacing: number = this._data.waveformBarSpacing as number;
-    const barWidth: number = this._data.waveformBarWidth as number;
-    const increment: number = Math.floor(((endpx - startpx) / canvasWidth) * barSpacing);
-    const sampleSpacing: number = canvasWidth / barSpacing;
-
-    this._waveformCtx.clearRect(0, 0, canvasWidth, canvasHeight);
-    this._waveformCtx.fillStyle = this._data.waveformColor || '#fff';
-
-    const inc = canvasWidth / (end - start);
-    const listOfBuffers: Array<[number, number]> = [];
-
-    if (this._contentAnnotations) {
-      for (let i = 0; i < this._contentAnnotations.length; i++) {
-        const contentAnnotation = this._contentAnnotations[i];
-        if (contentAnnotation && contentAnnotation.element) {
-          const element: HTMLAudioElement = contentAnnotation.element[0];
-          const annoStart: number = contentAnnotation.startOffest || 0;
-          const active: boolean = contentAnnotation.active;
-          if (active) {
-            for (let j = 0; j < element.buffered.length; j++) {
-              const reverse = element.buffered.length - j - 1;
-              const startX = element.buffered.start(reverse);
-              const endX = element.buffered.end(reverse);
-              listOfBuffers.push([(annoStart + startX - start) * inc, (annoStart + endX - start) * inc]);
-            }
-          }
-        }
-      }
-    }
-
-    const newList: any[] = [];
-
-    if (this.isVirtual() && AVComponent.newRanges) {
-      const plan = this.timePlanPlayer.plan;
-
-      const compositeCanvas = this._data.canvas as VirtualCanvas;
-      for (const stop of plan.stops) {
-        const map = compositeCanvas.durationMap[stop.canvasId];
-        if (map) {
-          const canvasEndTime = map.runningDuration;
-          const canvasStartTime = canvasEndTime - map.duration;
-
-          newList.push({
-            start: (stop.start - plan.start) / plan.duration,
-            end: (stop.end - plan.start) / plan.duration,
-            duration: stop.duration,
-            startTime: canvasStartTime + stop.canvasTime.start,
-            endTime: canvasStartTime + stop.canvasTime.start + stop.canvasTime.end,
-          });
-        } else {
-          Logger.error(`Canvas index not found`, { stop, plan });
-        }
-      }
-    } else {
-      newList.push({
-        start: 0,
-        duration: end - start,
-        end,
-        startTime: start,
-      });
-    }
-
-    let current = 0;
-    for (let x = startpx; x < endpx; x += increment) {
-      const rangePercentage = normalise(x, startpx, endpx);
-      const xpos = rangePercentage * canvasWidth;
-      if (newList[current].end < rangePercentage) {
-        current++;
-      }
-      const section: { start: number; startTime: number; duration: number } = newList[current];
-
-      // range percent 0..1
-      // section.start = 1.73
-      // section.duration = 1806
-      // section.startTime = 1382
-      // section.endTime = 5003
-      //
-      // What I need
-      // - time in seconds for the current increment
-      // startTime + (0) - the first will always be the start time.
-      // startTime + ( rangePercentage *  )
-
-      const partPercent = rangePercentage - section.start;
-      const toSample = Math.floor(
-        (section.startTime + partPercent * section.duration) * this._compositeWaveform.pixelsPerSecond
-      );
-
-      const maxMin = this._getWaveformMaxAndMin(this._compositeWaveform, toSample, sampleSpacing);
-      const height = this._scaleY(maxMin.max - maxMin.min, canvasHeight);
-      const pastCurrentTime = xpos / canvasWidth < percent;
-      const hoverWidth = this.waveformDeltaX / canvasWidth;
-      let colour = this._data.waveformColor || '#fff';
-      const ypos = (canvasHeight - height) / 2;
-
-      if (pastCurrentTime) {
-        if (this.waveformDeltaX === 0) {
-          // ======o_____
-          //   ^ this colour, no hover
-          colour = '#14A4C3';
-        } else if (xpos / canvasWidth < hoverWidth) {
-          // ======T---o_____
-          //    ^ this colour
-          colour = '#11758e'; // dark
-        } else {
-          // ======T---o_____
-          //         ^ this colour
-          colour = '#14A4C3'; // normal
-        }
-      } else if (xpos / canvasWidth < hoverWidth) {
-        // ======o-------T_____
-        //           ^ this colour
-        colour = '#86b3c3'; // lighter
-      } else {
-        colour = '#8a9aa1';
-        for (const [a, b] of listOfBuffers) {
-          if (xpos > a && xpos < b) {
-            colour = '#fff';
-            break;
-          }
-        }
-      }
-
-      this._waveformCtx.fillStyle = colour;
-      this._waveformCtx.fillRect(xpos, ypos, barWidth, height | 0);
-    }
-
-    return;
-  }
-
-  private _scaleY = (amplitude: number, height: number) => {
-    const range = 256;
-    return Math.max(this._data.waveformBarWidth as number, (amplitude * height) / range);
-  };
-
-  private _getWaveformMaxAndMin(waveform: CompositeWaveform, index: number, sampleSpacing: number): IMaxMin {
-    let max = -127;
-    let min = 128;
-
-    for (let x = index; x < index + sampleSpacing; x++) {
-      const wMax = waveform.max(x);
-      const wMin = waveform.min(x);
-
-      if (wMax > max) {
-        max = wMax;
-      }
-
-      if (wMin < min) {
-        min = wMin;
-      }
-    }
-
-    return { max, min };
-  }
-
   public isLimitedToRange() {
     return this._data.limitToRange;
   }
@@ -1724,7 +1519,9 @@ export class CanvasInstance extends BaseComponent {
 
   private _updateCurrentTimeDisplay(): void {
     if (AVComponent.newRanges && this.isVirtual()) {
-      this._$canvasTime.text(formatTime(this._canvasClockTime - this.timePlanPlayer.getStartTime()));
+      const time = this._canvasClockTime - this.timePlanPlayer.getStartTime();
+      this._$canvasTime.text(formatTime(time));
+      this.updateWaveformTime(time);
 
       return;
     }
@@ -1738,8 +1535,10 @@ export class CanvasInstance extends BaseComponent {
     if (this._data.limitToRange && duration) {
       const rangeClockTime: number = this._canvasClockTime - duration.start;
       this._$canvasTime.text(formatTime(rangeClockTime));
+      this.updateWaveformTime(rangeClockTime);
     } else {
       this._$canvasTime.text(formatTime(this._canvasClockTime));
+      this.updateWaveformTime(this._canvasClockTime);
     }
   }
 
@@ -1815,6 +1614,7 @@ export class CanvasInstance extends BaseComponent {
       this._highPriorityUpdater();
       this._lowPriorityUpdater();
       this._synchronizeMedia();
+
       return;
     }
     // seconds was originally a string or a number - didn't seem necessary
@@ -2065,7 +1865,7 @@ export class CanvasInstance extends BaseComponent {
 
     this._updateCurrentTimeDisplay();
     this._updateDurationDisplay();
-    this._drawWaveform();
+    // this.createWaveformPanel();
   }
 
   private _lowPriorityUpdater(): void {
@@ -2278,17 +2078,19 @@ export class CanvasInstance extends BaseComponent {
         }
       }
 
-      if (this._waveformCanvas) {
-        const canvasWidth: number = this._$canvasContainer.width();
-        const canvasHeight: number = this._$canvasContainer.height();
-
-        this._waveformCanvas.width = canvasWidth;
-        this._waveformCanvas.height = canvasHeight;
-        this.waveformPageX = this._waveformCanvas.getBoundingClientRect().x;
-      }
-
       this._render();
-      this._drawWaveform();
+      this.createWaveformPanel();
+
+      if (this._waveformPanel) {
+        const { width, height } = this._waveformPanel.getBoundingClientRect();
+        if (width > 1 && height > 1) {
+          try {
+            this._waveformPanel.resize();
+          } catch (e) {
+            // ignore.
+          }
+        }
+      }
     }
   }
 }

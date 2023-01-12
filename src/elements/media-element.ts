@@ -49,7 +49,9 @@ export class MediaElement {
       this.instance = new DefaultFormat(this.mediaSource, mediaOptions);
     }
     this.element.classList.add('anno');
-    this.element.crossOrigin = 'anonymous';
+    if (!mediaOptions.probed) {
+      this.element.crossOrigin = 'anonymous';
+    }
     this.element.preload = 'metadata';
     this.instance.attachTo(this.element);
     this.element.currentTime = this.source.start;
