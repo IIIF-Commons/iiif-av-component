@@ -746,8 +746,6 @@ export class CanvasInstance extends BaseComponent {
       return;
     }
 
-    this.updateWaveformPanel();
-
     Logger.log('Setting current range id', range);
 
     // This is the end of the chain for changing a range.
@@ -1086,6 +1084,7 @@ export class CanvasInstance extends BaseComponent {
     this._updateCurrentTimeDisplay();
     this._updateDurationDisplay();
     this.createWaveformPanel();
+    this.updateWaveformPanel();
   }
 
   public getCanvasId(): string | undefined {
