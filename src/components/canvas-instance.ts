@@ -188,7 +188,6 @@ export class CanvasInstance extends BaseComponent {
       plan,
       (rangeId) => {
         this.setCurrentRangeId(rangeId, { autoChanged: true });
-        this.updateWaveformPanel();
       },
       (time) => {
         this._canvasClockTime = time;
@@ -746,6 +745,8 @@ export class CanvasInstance extends BaseComponent {
     if (autoChanged && !this.autoAdvanceRanges) {
       return;
     }
+
+    this.updateWaveformPanel();
 
     Logger.log('Setting current range id', range);
 
