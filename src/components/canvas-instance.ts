@@ -81,7 +81,7 @@ export class CanvasInstance extends BaseComponent {
   private _wasPlaying = false;
   public ranges: Range[] = [];
   public waveforms: string[] = [];
-  public waveformSources: { source: string; canvas: string; start: number; end: number }[] = [];
+  public waveformSources: { source: string; canvas: string; start: number; end: number; itemData: any }[] = [];
   private _buffering = false;
   private _bufferShown = false;
   public $playerElement: JQuery;
@@ -156,7 +156,17 @@ export class CanvasInstance extends BaseComponent {
         if (seeAlso && seeAlso.length) {
           const dat: string = seeAlso[0].id;
           this.waveforms.push(dat);
-          this.waveformSources.push({ source: dat, canvas: canvas.id, start: 0, end: canvas.getDuration() as number });
+
+          const temporalOffsets: RegExpExecArray | null = /t=([^&]+)/g.exec(annotation.__jsonld.target);
+          const [start, end] = ((temporalOffsets || [])[1] || '').split(',').map((i) => parseFloat(i));
+
+          this.waveformSources.push({
+            source: dat,
+            canvas: canvas.id,
+            start,
+            end,
+            itemData: { start, end, source: annotation.id },
+          });
         }
       }
     }
@@ -608,7 +618,8 @@ export class CanvasInstance extends BaseComponent {
           canvas: this._data.canvas.id,
           source: dat,
           start: 0,
-          end: this._data.canvas?.getDuration() as any,
+          end: itemData.end - itemData.start,
+          itemData,
         });
       }
     }
@@ -1430,7 +1441,11 @@ export class CanvasInstance extends BaseComponent {
 
     this._waveformPanel.setAttribute(
       'srcset',
-      this.waveformSources.map((src) => `${src.source} ${src.canvas}`).join(',')
+      this.waveformSources
+        .map(
+          (src) => `${src.source} ${src.canvas}${src.itemData ? `#t=${src.itemData.start},${src.itemData.end}` : ''}`
+        )
+        .join('|')
     );
     this._waveformPanel.setAttribute('duration', `${this._getDuration()}`);
     this._waveformPanel.setAttribute(
