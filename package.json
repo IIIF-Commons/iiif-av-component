@@ -75,6 +75,6 @@
     "node-polyfill-webpack-plugin": "^2.0.0",
     "style-loader": "^2.0.0",
     "url-loader": "^4.1.1",
-    "waveform-panel": "https://pkg.csb.dev/digirati-co-uk/waveform-panel/commit/9e5061ca/waveform-panel"
+    "waveform-panel": "https://pkg.csb.dev/digirati-co-uk/waveform-panel/commit/8e0f76fa/waveform-panel"
   }
 }
