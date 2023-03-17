@@ -2071,7 +2071,17 @@ export class CanvasInstance extends BaseComponent {
     }
   }
 
+  resizeTimeout = -1;
   public resize(): void {
+    if (this.resizeTimeout !== -1) {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = -1;
+    }
+    this.resizeTimeout = setTimeout(this._resize.bind(this), 25) as any;
+  }
+
+  public _resize(): void {
+    this.resizeTimeout = -1;
     if (this.$playerElement) {
       const containerWidth: number | undefined = this._$canvasContainer.width();
 
