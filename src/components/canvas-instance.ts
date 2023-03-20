@@ -730,7 +730,7 @@ export class CanvasInstance extends BaseComponent {
   viewRange(rangeId: string) {
     if (this.currentRange !== rangeId) {
       Logger.log(`Switching range from ${this.currentRange} to ${rangeId}`);
-      this.setCurrentRangeId(rangeId);
+      this.setCurrentRangeId(rangeId, { noRender: true });
       // Entrypoint for changing a range. Only get's called when change came from external source.
       if (AVComponent.newRanges && this.isVirtual()) {
         this._setCurrentTime(this.timePlanPlayer.setRange(rangeId), true);
@@ -751,7 +751,11 @@ export class CanvasInstance extends BaseComponent {
   currentRange?: string;
   setCurrentRangeId(
     range: null | string,
-    { autoChanged = false, limitToRange = false }: { autoChanged?: boolean; limitToRange?: boolean } = {}
+    {
+      autoChanged = false,
+      limitToRange = false,
+      noRender = false,
+    }: { autoChanged?: boolean; limitToRange?: boolean; noRender?: boolean } = {}
   ) {
     if (autoChanged && !this.autoAdvanceRanges) {
       return;
@@ -768,7 +772,9 @@ export class CanvasInstance extends BaseComponent {
       this.fire(Events.RANGE_CHANGED, null);
     }
 
-    this._render();
+    if (!noRender) {
+      this._render();
+    }
   }
 
   setVolume(volume: number) {
@@ -1405,7 +1411,6 @@ export class CanvasInstance extends BaseComponent {
       }
       this._waveformPanel.setAttribute('sequence', sequence.join('|'));
       this._waveformPanel.setAttribute('duration', `${this.timePlanPlayer.plan.duration}`);
-      this._waveformPanel.resize();
     }
   }
 
