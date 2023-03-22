@@ -1,16 +1,14 @@
 export function formatTime(input: number): string {
   let aNumber = Math.max(0, input);
 
-  if (!Number.isSafeInteger(aNumber)) {
-    if (aNumber < 0.5) {
-      aNumber = 0;
-    } else {
-      aNumber = Number(Math.round(aNumber * 100) / 100);
-      // Covers Infinity and NaN
-      if (!Number.isSafeInteger(aNumber)) {
-        aNumber = 0;
-      }
-    }
+  if (Number.isNaN(aNumber)) {
+    aNumber = 0;
+  }
+  if (aNumber < 0.5) {
+    aNumber = 0;
+  }
+  if (!Number.isFinite(aNumber)) {
+    aNumber = 0;
   }
 
   let hours: number | string, minutes: number | string, seconds: number | string, hourValue: string;
