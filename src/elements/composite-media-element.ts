@@ -9,7 +9,6 @@ export class CompositeMediaElement {
 
   activeElement?: MediaElement;
   playing = false;
-
   canvasMap: {
     [id: string]: MediaElement[];
   } = {};
@@ -86,7 +85,11 @@ export class CompositeMediaElement {
       this.activeElement = newElement;
 
       if (play) {
+        Logger.log('CompositeMediaElement play=true');
         newElement.play(time);
+      } else {
+        Logger.log('CompositeMediaElement play=false');
+        // newElement.pause();
       }
 
       return newElement;
@@ -126,9 +129,12 @@ export class CompositeMediaElement {
     await Promise.all(this.elements.map((element) => element.load()));
   }
 
-  async seekToMediaTime(annotationTime: AnnotationTime, _toCanvas?: string) {
+  async seekToMediaTime(annotationTime: AnnotationTime, _toCanvas?: string, paused?: boolean) {
+    if (paused) {
+      this.pause();
+    }
     const prevActiveElement = this.activeElement;
-    Logger.groupCollapsed('Buffering');
+    Logger.groupCollapsed('CompositeMediaElement.seekToMediaTime Buffering', { playing: this.playing });
 
     if (this.activeElement) {
       const toCanvas = _toCanvas || this.activeElement.getCanvasId();
@@ -177,12 +183,12 @@ export class CompositeMediaElement {
   }
 
   async play(canvasId?: string, time?: AnnotationTime) {
+    Logger.log(`CompositeMediaElement.play(${canvasId}, ${time})`, { hasActive: !!this.activeElement });
     this.playing = true;
     if (canvasId && typeof time !== 'undefined') {
       await this.seekTo(canvasId, time);
     }
     if (this.activeElement) {
-      Logger.log(`CompositeMediaElement.play(${canvasId}, ${time})`);
       return this.activeElement.play(time).catch((err) => {
         console.log('err', err);
         this.playing = false;

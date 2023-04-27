@@ -262,7 +262,7 @@ export class TimePlanPlayer {
         if (setRange) {
           this.currentRange = stop.rangeId;
         }
-        await this.advanceToStop(this.currentStop, stop, undefined, time, setRange);
+        await this.advanceToStop(this.currentStop, stop, undefined, time, !this.playing);
       }
     }
     Logger.groupEnd();
@@ -595,8 +595,8 @@ export class TimePlanPlayer {
     if (changeCanvas && !paused) {
       promise = this.media.play(to.canvasId, this.currentMediaTime());
     } else {
-      this.log(`advanceToStop -> seekToMediaTime.play(${this.currentMediaTime()})`);
-      promise = this.media.seekToMediaTime(this.currentMediaTime(), to.canvasId);
+      this.log(`advanceToStop -> seekToMediaTime(${this.currentMediaTime()}) ${paused ? 'paused' : 'playing'}`);
+      promise = this.media.seekToMediaTime(this.currentMediaTime(), to.canvasId, paused);
     }
 
     this.notifyRangeChange(rangeId ? rangeId : to.rangeId, { to, from });
