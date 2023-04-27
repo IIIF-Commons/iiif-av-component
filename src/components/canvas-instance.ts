@@ -730,7 +730,7 @@ export class CanvasInstance extends BaseComponent {
   viewRange(rangeId: string) {
     if (this.currentRange !== rangeId) {
       Logger.log(`Switching range from ${this.currentRange} to ${rangeId}`);
-      this.setCurrentRangeId(rangeId, { noRender: true });
+      this.setCurrentRangeId(rangeId, { noRender: false });
       // Entrypoint for changing a range. Only get's called when change came from external source.
       if (AVComponent.newRanges && this.isVirtual()) {
         this._setCurrentTime(this.timePlanPlayer.setRange(rangeId), true);

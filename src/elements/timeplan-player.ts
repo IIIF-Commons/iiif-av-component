@@ -470,21 +470,25 @@ export class TimePlanPlayer {
   }
 
   setRange(id: string): TimelineTime {
-    Logger.log('setRange', id);
+    Logger.group('setRange', id);
 
     if (id === this.currentRange) {
+      Logger.log('id === this.currentRange');
       return this.getTime();
     }
 
     this.currentRange = id;
 
     if (id === this.currentStop.rangeId) {
+      Logger.log('id === this.currentStop.rangeId');
       // Or the start of the range?
       return this.getTime();
     }
 
+    Logger.log('Looking for stop', this.plan.stops);
     for (const stop of this.plan.stops) {
       if (stop.rangeId === id) {
+        Logger.log('Found stop, setting internalTime', stop.start);
         this.setInternalTime(stop.start);
         this.advanceToStop(this.currentStop, stop, id, undefined, !this.playing);
         break;
@@ -492,11 +496,14 @@ export class TimePlanPlayer {
     }
     for (const stop of this.plan.stops) {
       if (stop.rangeStack.indexOf(id) !== -1) {
+        Logger.log('Found stop in rangeStack, setting internalTime', stop.start);
         this.setInternalTime(stop.start);
         this.advanceToStop(this.currentStop, stop, id, undefined, !this.playing);
         break;
       }
     }
+
+    Logger.groupEnd();
 
     return this.getTime();
   }
