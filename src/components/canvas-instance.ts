@@ -666,6 +666,10 @@ export class CanvasInstance extends BaseComponent {
     return null;
   }
 
+  getDuration() {
+    return this._getDuration();
+  }
+
   private _getDuration(): TimelineTime {
     if (this.isVirtual() && AVComponent.newRanges) {
       return this.timePlanPlayer.getDuration();
@@ -1610,9 +1614,9 @@ export class CanvasInstance extends BaseComponent {
     }
   }
 
-  public setCurrentTime(seconds: TimelineTime): Promise<void> {
+  public setCurrentTime(seconds: TimelineTime, external = false): Promise<void> {
     Logger.log('External set current time?');
-    return this._setCurrentTime(seconds, false);
+    return this._setCurrentTime(seconds, false, external);
   }
 
   now(): TimelineTime {
@@ -1623,9 +1627,14 @@ export class CanvasInstance extends BaseComponent {
     return Date.now() as TimelineTimeMs;
   }
 
-  private async _setCurrentTime(seconds: TimelineTime, setRange = true): Promise<void> {
+  private async _setCurrentTime(seconds: TimelineTime, setRange = true, external = false): Promise<void> {
     if (AVComponent.newRanges && this.isVirtual()) {
       this._buffering = true;
+
+      if (external) {
+        seconds = this.timePlanPlayer.validateExternalTime(seconds);
+      }
+
       await this.timePlanPlayer.setTime(seconds, setRange);
       this._buffering = false;
       this._canvasClockStartDate = toMs(minusTime(this.now(), this._canvasClockTime));

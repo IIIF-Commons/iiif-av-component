@@ -363,10 +363,10 @@ export class AVComponent extends BaseComponent {
     }
   }
 
-  public async setCurrentTime(time: number): Promise<void> {
+  public async setCurrentTime(time: number, external = false): Promise<void> {
     const canvas: CanvasInstance | undefined = this._getCurrentCanvas();
     if (canvas) {
-      return canvas.setCurrentTime(time as TimelineTime);
+      return canvas.setCurrentTime(time as TimelineTime, external);
     }
     return;
   }

@@ -208,6 +208,21 @@ export class TimePlanPlayer {
     return annotationTime(addTime(time, timelineTime(this.currentStop.canvasTime.start)));
   }
 
+  validateExternalTime(time: TimelineTime): TimelineTime {
+    // The time externally may be rounded.
+    // For example, a track with a duration of 1200.51 seconds may be rounded to 1200
+    // This means that the time may be slightly off the intention is to skip forward to the next stop.
+    // We need to check if the time is within 1 second of the next stop.
+    // If it is, we should skip to the next stop.
+    const currentStop = this.findStop(time);
+    const nextStop = this.findStop(time + 1);
+    if (nextStop && currentStop !== nextStop) {
+      Logger.log('Skipping to next stop', { nextStop, currentStop });
+      return nextStop?.start;
+    }
+    return time;
+  }
+
   pause(): TimelineTime {
     this.log('Pause', this.getTime());
     this.setIsPlaying(false);
