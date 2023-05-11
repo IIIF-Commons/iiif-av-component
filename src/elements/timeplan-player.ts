@@ -208,6 +208,21 @@ export class TimePlanPlayer {
     return annotationTime(addTime(time, timelineTime(this.currentStop.canvasTime.start)));
   }
 
+  validateExternalTime(time: TimelineTime): TimelineTime {
+    // The time externally may be rounded.
+    // For example, a track with a duration of 1200.51 seconds may be rounded to 1200
+    // This means that the time may be slightly off the intention is to skip forward to the next stop.
+    // We need to check if the time is within 1 second of the next stop.
+    // If it is, we should skip to the next stop.
+    const currentStop = this.findStop(time);
+    const nextStop = this.findStop(time + 1);
+    if (nextStop && currentStop !== nextStop) {
+      Logger.log('Skipping to next stop', { nextStop, currentStop });
+      return nextStop?.start;
+    }
+    return time;
+  }
+
   pause(): TimelineTime {
     this.log('Pause', this.getTime());
     this.setIsPlaying(false);
@@ -262,7 +277,7 @@ export class TimePlanPlayer {
         if (setRange) {
           this.currentRange = stop.rangeId;
         }
-        await this.advanceToStop(this.currentStop, stop, undefined, time, setRange);
+        await this.advanceToStop(this.currentStop, stop, undefined, time, !this.playing);
       }
     }
     Logger.groupEnd();
@@ -470,21 +485,25 @@ export class TimePlanPlayer {
   }
 
   setRange(id: string): TimelineTime {
-    Logger.log('setRange', id);
+    Logger.group('setRange', id);
 
     if (id === this.currentRange) {
+      Logger.log('id === this.currentRange');
       return this.getTime();
     }
 
     this.currentRange = id;
 
     if (id === this.currentStop.rangeId) {
+      Logger.log('id === this.currentStop.rangeId');
       // Or the start of the range?
       return this.getTime();
     }
 
+    Logger.log('Looking for stop', this.plan.stops);
     for (const stop of this.plan.stops) {
       if (stop.rangeId === id) {
+        Logger.log('Found stop, setting internalTime', stop.start);
         this.setInternalTime(stop.start);
         this.advanceToStop(this.currentStop, stop, id, undefined, !this.playing);
         break;
@@ -492,11 +511,14 @@ export class TimePlanPlayer {
     }
     for (const stop of this.plan.stops) {
       if (stop.rangeStack.indexOf(id) !== -1) {
+        Logger.log('Found stop in rangeStack, setting internalTime', stop.start);
         this.setInternalTime(stop.start);
         this.advanceToStop(this.currentStop, stop, id, undefined, !this.playing);
         break;
       }
     }
+
+    Logger.groupEnd();
 
     return this.getTime();
   }
@@ -588,8 +610,8 @@ export class TimePlanPlayer {
     if (changeCanvas && !paused) {
       promise = this.media.play(to.canvasId, this.currentMediaTime());
     } else {
-      this.log(`advanceToStop -> seekToMediaTime.play(${this.currentMediaTime()})`);
-      promise = this.media.seekToMediaTime(this.currentMediaTime(), to.canvasId);
+      this.log(`advanceToStop -> seekToMediaTime(${this.currentMediaTime()}) ${paused ? 'paused' : 'playing'}`);
+      promise = this.media.seekToMediaTime(this.currentMediaTime(), to.canvasId, paused);
     }
 
     this.notifyRangeChange(rangeId ? rangeId : to.rangeId, { to, from });
