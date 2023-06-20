@@ -243,7 +243,7 @@ export class TimePlanPlayer {
     //
     // // Then check next stop.
     // const idx = this.plan.stops.indexOf(this.currentStop);
-    // const nextStop = idx !== -1 ? this.plan.stops[idx + 1] : undefined;
+    // const nextStop = idx !== -1 ? this.plan.stops[idx + 1] : undefined ;
     // if (nextStop && nextStop.start <= time && nextStop.end > time) {
     //     return nextStop;
     // }
@@ -373,6 +373,29 @@ export class TimePlanPlayer {
         this.advanceToStop(this.currentStop, state, rangeId);
       }
       this.setInternalTime(state.start);
+    }
+  }
+
+  /**
+   * This is a contextual helper. It's intended to change the time of the current range, at each
+   * level of the range stack. It will never switch ranges.
+   */
+  async setRangeTime(rangeId: string, time: number, external = false) {
+    let plan;
+    if (this.plan.rangeId === rangeId) {
+      plan = this.plan;
+    } else if (this.fullPlan.rangeId === rangeId) {
+      plan = this.fullPlan;
+    } else if (this.currentStop.rangeId === rangeId) {
+      plan = this.currentStop;
+    }
+    if (plan) {
+      // Only handle current range changes for now.
+      let newTime = timelineTime(plan.start + time);
+      if (external) {
+        newTime = this.validateExternalTime(newTime);
+      }
+      await this.setTime(newTime, false);
     }
   }
 

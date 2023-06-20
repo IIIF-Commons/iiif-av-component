@@ -370,6 +370,13 @@ export class AVComponent extends BaseComponent {
     }
     return;
   }
+  public async setCurrentRangeTime(time: number, rangeId: string, external = false): Promise<void> {
+    const canvas: CanvasInstance | undefined = this._getCurrentCanvas();
+    if (canvas) {
+      return canvas.setCurrentRangeTime(time as TimelineTime, rangeId, external);
+    }
+    return;
+  }
 
   public getCurrentTime(): number {
     const canvas: CanvasInstance | undefined = this._getCurrentCanvas();
