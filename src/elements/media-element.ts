@@ -1,5 +1,6 @@
 import { getHls } from '../helpers/get-hls';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const $ = require('jquery');
 import { MediaFormat } from '../media-formats/abstract-media-format';
 import { MediaOptions } from '../types/media-options';
