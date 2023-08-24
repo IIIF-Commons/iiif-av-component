@@ -19,7 +19,9 @@
     "prepublishOnly": "npm run build",
     "start": "npx webpack serve -c webpack.dev-server.js",
     "test": "vitest",
-    "test:reporter": "vitest --watch --reporter=dot --reporter=json --outputFile=.vitest-result.json"
+    "test:reporter": "vitest --watch --reporter=dot --reporter=json --outputFile=.vitest-result.json",
+    "lint": "eslint src/",
+    "lint-fix": "eslint --fix src/"
   },
   "repository": {
     "type": "git",
