@@ -1,6 +1,7 @@
 import { MediaElement } from './media-element';
 import { AnnotationTime, minusTime } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { JQueryStatic } from 'jquery';
 

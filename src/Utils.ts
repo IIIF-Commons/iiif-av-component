@@ -4,7 +4,7 @@ import { MediaType } from '@iiif/vocabulary';
 export class AVComponentUtils {
   private static _compare(a: any, b: any): string[] {
     const changed: string[] = [];
-    Object.keys(a).forEach(p => {
+    Object.keys(a).forEach((p) => {
       if (!Object.is(b[p], a[p])) {
         changed.push(p);
       }
@@ -13,11 +13,7 @@ export class AVComponentUtils {
   }
 
   public static diff(a: any, b: any) {
-    return Array.from(
-      new Set(
-        AVComponentUtils._compare(a, b).concat(AVComponentUtils._compare(b, a))
-      )
-    );
+    return Array.from(new Set(AVComponentUtils._compare(a, b).concat(AVComponentUtils._compare(b, a))));
   }
 
   public static getSpatialComponent(target: string): number[] | null {
@@ -25,7 +21,7 @@ export class AVComponentUtils {
     let xywh: number[] | null = null;
 
     if (spatial && spatial[1]) {
-      xywh = <any>spatial[1].split(",");
+      xywh = <any>spatial[1].split(',');
     }
 
     return xywh;
@@ -55,15 +51,12 @@ export class AVComponentUtils {
     return String(new Date().valueOf());
   }
 
-  public static retargetTemporalComponent(
-    canvases: Canvas[],
-    target: string
-  ): string | undefined {
-    let t: number[] | null = Utils.getTemporalComponent(target);
+  public static retargetTemporalComponent(canvases: Canvas[], target: string): string | undefined {
+    const t: number[] | null = Utils.getTemporalComponent(target);
 
     if (t) {
-      let offset: number = 0;
-      let targetWithoutTemporal: string = target.substr(0, target.indexOf("#"));
+      let offset = 0;
+      const targetWithoutTemporal: string = target.substr(0, target.indexOf('#'));
 
       // loop through canvases adding up their durations until we reach the targeted canvas
       for (let i = 0; i < canvases.length; i++) {
@@ -82,33 +75,30 @@ export class AVComponentUtils {
       t[0] = Number(t[0]) + offset;
       t[1] = Number(t[1]) + offset;
 
-      return targetWithoutTemporal + "#t=" + t[0] + "," + t[1];
+      return targetWithoutTemporal + '#t=' + t[0] + ',' + t[1];
     }
 
     return undefined;
   }
 
   public static formatTime(aNumber: number): string {
-    let hours: number | string,
-      minutes: number | string,
-      seconds: number | string,
-      hourValue: string;
+    let hours: number | string, minutes: number | string, seconds: number | string, hourValue: string;
 
     seconds = Math.ceil(aNumber);
     hours = Math.floor(seconds / (60 * 60));
-    hours = hours >= 10 ? hours : "0" + hours;
+    hours = hours >= 10 ? hours : '0' + hours;
     minutes = Math.floor((seconds % (60 * 60)) / 60);
-    minutes = minutes >= 10 ? minutes : "0" + minutes;
+    minutes = minutes >= 10 ? minutes : '0' + minutes;
     seconds = Math.floor((seconds % (60 * 60)) % 60);
-    seconds = seconds >= 10 ? seconds : "0" + seconds;
+    seconds = seconds >= 10 ? seconds : '0' + seconds;
 
     if (hours >= 1) {
-      hourValue = hours + ":";
+      hourValue = hours + ':';
     } else {
-      hourValue = "";
+      hourValue = '';
     }
 
-    return hourValue + minutes + ":" + seconds;
+    return hourValue + minutes + ':' + seconds;
   }
 
   public static isIE(): number | boolean {
@@ -128,23 +118,23 @@ export class AVComponentUtils {
     // Edge 13
     // ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586';
 
-    const msie = ua.indexOf("MSIE ");
+    const msie = ua.indexOf('MSIE ');
     if (msie > 0) {
       // IE 10 or older => return version number
-      return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)), 10);
+      return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
     }
 
-    const trident = ua.indexOf("Trident/");
+    const trident = ua.indexOf('Trident/');
     if (trident > 0) {
       // IE 11 => return version number
-      const rv = ua.indexOf("rv:");
-      return parseInt(ua.substring(rv + 3, ua.indexOf(".", rv)), 10);
+      const rv = ua.indexOf('rv:');
+      return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
     }
 
-    const edge = ua.indexOf("Edge/");
+    const edge = ua.indexOf('Edge/');
     if (edge > 0) {
       // Edge (IE 12+) => return version number
-      return parseInt(ua.substring(edge + 5, ua.indexOf(".", edge)), 10);
+      return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
     }
 
     // other browser
@@ -167,14 +157,15 @@ export class AVComponentUtils {
     //      will debounce the function. (defaults to 100ms)
     debounceDuration = debounceDuration || 100;
 
-    return function() {
+    return function () {
       if (!fn.debouncing) {
+        // eslint-disable-next-line prefer-rest-params
         const args: any = Array.prototype.slice.apply(arguments);
         fn.lastReturnVal = fn.apply(window, args);
         fn.debouncing = true;
       }
       clearTimeout(fn.debounceTimeout);
-      fn.debounceTimeout = setTimeout(function() {
+      fn.debounceTimeout = setTimeout(function () {
         fn.debouncing = false;
       }, debounceDuration);
 
@@ -184,18 +175,18 @@ export class AVComponentUtils {
 
   public static hlsMimeTypes = [
     // Apple santioned
-    "application/vnd.apple.mpegurl",
-    "vnd.apple.mpegurl",
+    'application/vnd.apple.mpegurl',
+    'vnd.apple.mpegurl',
     // Apple sanctioned for backwards compatibility
-    "audio/mpegurl",
+    'audio/mpegurl',
     // Very common
-    "audio/x-mpegurl",
+    'audio/x-mpegurl',
     // Very common
-    "application/x-mpegurl",
+    'application/x-mpegurl',
     // Included for completeness
-    "video/x-mpegurl",
-    "video/mpegurl",
-    "application/mpegurl"
+    'video/x-mpegurl',
+    'video/mpegurl',
+    'application/mpegurl',
   ];
 
   public static normalise(num: number, min: number, max: number): number {
@@ -207,17 +198,17 @@ export class AVComponentUtils {
   }
 
   public static isMpegDashFormat(format: MediaType) {
-    return format.toString() === "application/dash+xml";
+    return format.toString() === 'application/dash+xml';
   }
 
   public static canPlayHls() {
-    const doc = typeof document === "object" && document,
-      videoelem = doc && doc.createElement("video"),
+    const doc = typeof document === 'object' && document,
+      videoelem = doc && doc.createElement('video'),
       isvideosupport = Boolean(videoelem && videoelem.canPlayType);
 
     return (
       isvideosupport &&
-      this.hlsMimeTypes.some(function(canItPlay) {
+      this.hlsMimeTypes.some(function (canItPlay) {
         return /maybe|probably/i.test((<any>videoelem).canPlayType(canItPlay));
       })
     );

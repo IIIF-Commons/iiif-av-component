@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import { convertToPercentage } from '../helpers/convert-to-percentage';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const $ = require('jquery');
 import { Annotation, AnnotationBody, Canvas, Duration, Range, Utils } from 'manifesto.js';
 import { Behavior, MediaType } from '@iiif/vocabulary/dist-commonjs';
@@ -189,9 +189,11 @@ export class CanvasInstance extends BaseComponent {
 
     // this._renderSyncIndicator(data)
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const plan = createTimePlansFromManifest(helper.manifest as any, mediaElements);
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     window.timePlanPlayer = this.timePlanPlayer = new TimePlanPlayer(
       compositeMediaElement,
@@ -333,6 +335,7 @@ export class CanvasInstance extends BaseComponent {
         if (isVirtual(this._data.canvas)) {
           this._data.canvas.canvases.forEach((canvas: Canvas) => {
             if (this._data && this._data.helper) {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               const r: Range[] = this._data.helper.getCanvasRanges(canvas);
 
@@ -359,6 +362,7 @@ export class CanvasInstance extends BaseComponent {
             }
           });
         } else {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           ranges = ranges.concat(this._data.helper.getCanvasRanges(this._data.canvas as Canvas));
         }

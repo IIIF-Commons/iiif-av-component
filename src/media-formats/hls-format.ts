@@ -9,7 +9,7 @@ export class HlsFormat extends MediaFormat {
 
     const Hls = getHls();
 
-    if(Hls) {
+    if (Hls) {
       if (options.adaptiveAuthEnabled) {
         this.hls = new Hls({
           xhrSetup: (xhr: any) => {

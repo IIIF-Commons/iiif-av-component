@@ -1,7 +1,7 @@
 /* eslint-disable no-debugger */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const $ = require('jquery');
 require('jquery-ui-dist/jquery-ui');
 require('jquery-ui-dist/jquery-ui.css');
@@ -64,8 +64,10 @@ export class AVComponent extends BaseComponent {
     if (!range) {
       return null;
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const canvasId: string | undefined = getFirstTargetedCanvasId(range);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return canvasId ? this._data.helper!.getCanvasById(canvasId) : null;
   }
@@ -185,6 +187,7 @@ export class AVComponent extends BaseComponent {
     }
 
     if (diff.includes('range') && this._data.range) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       let range: Range | null = this._data.helper.getRangeById(this._data.range.id);
 
@@ -330,6 +333,7 @@ export class AVComponent extends BaseComponent {
       // this._logMessage('get accompanying canvas');
 
       // poster canvas
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       let accompanyingCanvas: Canvas | null = this._data.helper.getAccompanyingCanvas();
 
@@ -417,6 +421,7 @@ export class AVComponent extends BaseComponent {
   private _getCanvases(): Canvas[] {
     // @todo - figure out when this is used and if it needs time slicing considerations.
     if (this._data.helper) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return this._data.helper.getCanvases();
     }
@@ -549,6 +554,7 @@ export class AVComponent extends BaseComponent {
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const prevRange: Range | null = this._data.helper.getPreviousRange();
 
@@ -566,6 +572,7 @@ export class AVComponent extends BaseComponent {
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const nextRange: Range | null = this._data.helper.getNextRange();
 
@@ -679,6 +686,7 @@ export class AVComponent extends BaseComponent {
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const range: Range | null = this._data.helper.getRangeById(rangeId);
 
