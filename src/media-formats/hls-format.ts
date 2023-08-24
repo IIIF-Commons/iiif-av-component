@@ -8,18 +8,24 @@ export class HlsFormat extends MediaFormat {
     super(source, options);
 
     const Hls = getHls();
-    if (options.adaptiveAuthEnabled) {
-      this.hls = new Hls({
-        xhrSetup: (xhr: any) => {
-          xhr.withCredentials = true; // send cookies
-        },
-      });
-    } else {
-      this.hls = new Hls();
+
+    if(Hls) {
+      if (options.adaptiveAuthEnabled) {
+        this.hls = new Hls({
+          xhrSetup: (xhr: any) => {
+            xhr.withCredentials = true; // send cookies
+          },
+        });
+      } else {
+        this.hls = new Hls();
+      }
+      this.hls.loadSource(this.source);
     }
-    this.hls.loadSource(this.source);
   }
+
   attachTo(element: HTMLMediaElement) {
-    this.hls.attachMedia(element);
+    if (this.hls) {
+      this.hls.attachMedia(element);
+    }
   }
 }
