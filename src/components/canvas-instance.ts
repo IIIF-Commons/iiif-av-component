@@ -5,7 +5,7 @@ import { convertToPercentage } from '../helpers/convert-to-percentage';
 
 const $ = require('jquery');
 import { Annotation, AnnotationBody, Canvas, Duration, Range, Utils } from 'manifesto.js';
-import { Behavior, MediaType } from '@iiif/vocabulary/dist-commonjs';
+import { Behavior, MediaType, RenderingFormat } from '@iiif/vocabulary/dist-commonjs';
 import { BaseComponent, IBaseComponentOptions } from '@iiif/base-component';
 import { IAVCanvasInstanceData } from '../interfaces/canvas-instance-data';
 import { MediaElement } from '../elements/media-element';
@@ -35,6 +35,13 @@ import { getHls } from '../helpers/get-hls';
 import 'waveform-panel';
 import { WaveformPanel } from 'waveform-panel';
 
+type AugmentedRenderingFormat = RenderingFormat | "text/vtt";
+type TextTrackDescriptor = {
+  language?: string;
+  label?: string;
+  id: string;
+};
+
 export class CanvasInstance extends BaseComponent {
   private _$canvasContainer: JQuery;
   private _$canvasDuration: JQuery;
@@ -43,6 +50,8 @@ export class CanvasInstance extends BaseComponent {
   private _$canvasTime: JQuery;
   private _$canvasTimelineContainer: JQuery;
   private _$controlsContainer: JQuery;
+  private _$captionsButton: JQuery;
+  private _$captionsContainer: JQuery;
   private _$durationHighlight: JQuery;
   private _$hoverPreviewTemplate: JQuery;
   private _$nextButton: JQuery;
@@ -62,6 +71,7 @@ export class CanvasInstance extends BaseComponent {
   private _canvasClockTime: TimelineTime = 0 as TimelineTime;
   private _canvasHeight = 0;
   private _canvasWidth = 0;
+  private _captionsSelectedIndex = 0; // hide captions by default
   private _waveformPanel?: WaveformPanel;
   private _contentAnnotations: any[]; // todo: type as HTMLMediaElement?
   private _data: IAVCanvasInstanceData = this.data();
@@ -95,7 +105,6 @@ export class CanvasInstance extends BaseComponent {
     this._$element = $(this.options.target);
     this._data = this.options.data;
     this.$playerElement = $('<div class="player player--loading"></div>');
-    this.$playerElement.hide();
   }
 
   public loaded(): void {
@@ -267,12 +276,19 @@ export class CanvasInstance extends BaseComponent {
                                     ${this._data.content.fastRewind || ''}
                                     </span>
                                 </button>`);
+    this._$captionsButton = $(`
+                                <button class="btn captions-button hide" title="Captions">
+                                    <i class="av-icon av-icon-captions" aria-hidden="true"></i>
+                                    <span class="sr-only>
+                                    </span>
+                                </button>`);
 
     this._$timeDisplay = $(
       '<div class="time-display"><span class="canvas-time"></span> / <span class="canvas-duration"></span></div>'
     );
     this._$canvasTime = this._$timeDisplay.find('.canvas-time');
     this._$canvasDuration = this._$timeDisplay.find('.canvas-duration');
+    this._$captionsContainer = $('<div class="captions-container"><span class="captions-text"></span></div>');
 
     if (this.isVirtual()) {
       this.$playerElement.addClass('virtual');
@@ -300,7 +316,8 @@ export class CanvasInstance extends BaseComponent {
       this._data.enableFastForward ? this._$fastForward : null,
       this._$nextButton,
       this._$timeDisplay,
-      $volume
+      $volume,
+      this._$captionsButton
     );
     this._$canvasTimelineContainer.append(
       this._$canvasHoverPreview,
@@ -314,7 +331,7 @@ export class CanvasInstance extends BaseComponent {
       this._$controlsContainer
     );
     this.$playerElement.append(this._$canvasContainer, this._$optionsContainer);
-
+    this._$canvasContainer.append(this._$captionsContainer);
     this._$canvasHoverPreview.hide();
     this._$rangeHoverPreview.hide();
 
@@ -443,6 +460,17 @@ export class CanvasInstance extends BaseComponent {
         return this._setCurrentTime(goToTime);
       }
       return this._setCurrentTime(start);
+    });
+
+    this._$captionsButton.on("mouseenter focusin", () => {
+      this._$captionsButton.find(".caption-choices").removeClass("offscreen");
+    });
+
+    this._$captionsButton.on("mouseleave focusout", () => {
+      const choices = this._$captionsButton.find(".caption-choices");
+      if (!choices.is(":hover")) {
+        choices.addClass("offscreen");
+      }
     });
 
     if (newRanges) {
@@ -589,6 +617,28 @@ export class CanvasInstance extends BaseComponent {
       const offsetStart = ot[0] ? parseInt(ot[0]) : ot[0],
         offsetEnd = ot[1] ? parseInt(ot[1]) : ot[1];
 
+      const captions: Array<TextTrackDescriptor> = item
+        .getRenderings()
+        .filter(r => r.getFormat() as AugmentedRenderingFormat === "text/vtt")
+        .map(vttRendering => ({
+          label:
+            vttRendering.getLabel().getValue() ??
+            vttRendering.getFormat().toString(),
+          id: vttRendering.id,
+        }))
+        .sort((a, b) => {
+          if (a.label > b.label) {
+            return 1;
+          } else if (b.label > a.label) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+      if (captions.length) {
+        captions.unshift({ id: "none", label: "None" });
+      }
+
       // todo: type this
       const itemData: any = {
         active: false,
@@ -603,6 +653,7 @@ export class CanvasInstance extends BaseComponent {
         top: percentageTop,
         type: type,
         width: percentageWidth,
+        captions: captions
       };
 
       this._renderMediaElement(itemData);
@@ -623,6 +674,34 @@ export class CanvasInstance extends BaseComponent {
         });
       }
     }
+
+    const contentAnnotation = this._contentAnnotations[0];
+    this._showApplicableCaptionChoices(contentAnnotation);
+  }
+
+  // Applies the caption choices UI (if any) for the given contentAnnotation
+  // to the captions button in the controls container. Since there are multiple
+  // contentAnnotations but just one controls container, we need to swap out
+  // the caption choices whenever a new contentAnnotation becomes active.
+  private _showApplicableCaptionChoices(contentAnnotation: any) {
+    // detach any caption choices pertaining to previously active media
+    this._$captionsButton.children('.caption-choices').detach();
+
+    if (contentAnnotation.captionChoices) {
+      // add caption choices for active media
+      this._$captionsButton.append(contentAnnotation.captionChoices);
+      this._$captionsButton.removeClass("hide");
+    } else {
+      this._$captionsButton.addClass("hide");
+    }
+  }
+
+  private _getSelectedCaptionsIndex() {
+    return this._captionsSelectedIndex;
+  }
+
+  private _setSelectedCaptionsIndex(index: number) {
+    this._captionsSelectedIndex = index;
   }
 
   private _getBody(bodies: AnnotationBody[]): AnnotationBody | null {
@@ -1334,7 +1413,37 @@ export class CanvasInstance extends BaseComponent {
         //});
       }
     } else {
-      $mediaElement.attr('src', data.source);
+      $mediaElement.append(
+        $(`<source src="${data.source}" type="${data.format}">`)
+      );
+      if (data.captions && data.captions.length) {
+        const $captionChoices: JQuery = $('<div class="caption-choices offscreen"></div>');
+        const $captionChoicesList: JQuery = $('<ul class="caption-choices-list"></ul>');
+        data.captions.forEach((subtitle, idx) => {
+          // add the track to the media element
+          $mediaElement.append(
+            $(`<track label="${subtitle.label}" kind="captions" srclang="${subtitle.language}" src="${subtitle.id}" ${idx === 0 ? "default" : ""}>`)
+          );
+
+          const isSelected = idx === this._getSelectedCaptionsIndex();
+
+          // generate an entry in the caption choices list
+          const $captionButton: JQuery = $(
+            `<li class="caption-choices-list-item">
+              <input type="radio" class="caption-choices-input" name="caption-choice" id="caption-choice-${idx}" />
+              <label for="caption-choice-${idx}" class="caption-choices-label ${isSelected ? "caption-choices-selected" : ""}">${subtitle.label}</label>
+            </li>`
+          );
+          $captionButton.find("input").on("click", () => {
+            this._setSelectedCaptionsIndex(idx);
+            this._synchronizeCaptions();
+          });
+          $captionChoicesList.append($captionButton);
+        });
+        $captionChoices.append($captionChoicesList);
+
+        data.captionChoices = $captionChoices;
+      }
     }
 
     $mediaElement
@@ -1938,7 +2047,7 @@ export class CanvasInstance extends BaseComponent {
     for (let i = 0; i < this._contentAnnotations.length; i++) {
       contentAnnotation = this._contentAnnotations[i];
 
-      if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
+      if (this._isActiveContentAnnotation(contentAnnotation)) {
         this._checkMediaSynchronization();
 
         if (!contentAnnotation.active) {
@@ -1975,6 +2084,55 @@ export class CanvasInstance extends BaseComponent {
     }
   }
 
+  private _isActiveContentAnnotation(contentAnnotation: { start: number; end: number; }): boolean {
+    return contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime;
+  }
+
+  // If the currently active contentAnnotation has captions, set up an event
+  // handler to render the caption text over the canvas.
+  private _synchronizeCaptions(activeAnnotation: any = undefined): void {
+    activeAnnotation = activeAnnotation || this._contentAnnotations.find(annotation => {
+      return this._isActiveContentAnnotation(annotation);
+    });
+    if (!activeAnnotation) {
+      return;
+    }
+
+    const mediaElement = activeAnnotation.element[0];
+    const selectedCaptionsIdx = this._getSelectedCaptionsIndex();
+    const tracksList = mediaElement.textTracks;
+
+    this._setCaptionsText("");
+
+    $(".caption-choices-label")
+      .removeClass("caption-choices-selected");
+    $(`label[for="caption-choice-${selectedCaptionsIdx}"]`)
+      .addClass("caption-choices-selected");
+
+    let textTrack: TextTrack;
+    for (let i = 0; i < tracksList.length; i++) {
+      textTrack = mediaElement.textTracks[i];
+      textTrack.mode = "hidden";
+      if (i === selectedCaptionsIdx) {
+        $(textTrack).on("cuechange", (event: Event) => {
+          // @ts-ignore
+          const activeCues = event.target.activeCues;
+          const text = activeCues.length ? activeCues[0].text : "";
+          this._setCaptionsText(text);
+        });
+      } else {
+        $(textTrack).off("cuechange");
+      }
+    }
+  }
+
+  private _setCaptionsText(text: string) {
+    const textHolder = this._$captionsContainer.find(".captions-text");
+    textHolder.text(text);
+    // hide the textHolder if there is no text
+    textHolder.toggle(!!text);
+  }
+
   private _synchronizeMedia(): void {
     if (AVComponent.newRanges && this.isVirtual()) {
       return;
@@ -1990,8 +2148,10 @@ export class CanvasInstance extends BaseComponent {
         this._canvasClockTime - contentAnnotation.start + contentAnnotation.startOffset
       );
 
-      if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
+      if (this._isActiveContentAnnotation(contentAnnotation)) {
+        this._showApplicableCaptionChoices(contentAnnotation);
         if (this._isPlaying) {
+          this._synchronizeCaptions(contentAnnotation);
           if (contentAnnotation.element[0].paused) {
             const promise = contentAnnotation.element[0].play();
             if (promise) {
@@ -2037,7 +2197,7 @@ export class CanvasInstance extends BaseComponent {
     for (let i = 0, l = this._contentAnnotations.length; i < l; i++) {
       contentAnnotation = this._contentAnnotations[i];
 
-      if (contentAnnotation.start <= this._canvasClockTime && contentAnnotation.end >= this._canvasClockTime) {
+      if (this._isActiveContentAnnotation(contentAnnotation)) {
         if (this._isPlaying) {
           if (contentAnnotation.element[0].readyState < 3) {
             this._buffering = true;
