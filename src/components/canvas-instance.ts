@@ -32,7 +32,6 @@ import { isVirtual } from '../helpers/is-virtual';
 import { addTime, fromMs, minusTime, timelineTime, TimelineTime, TimelineTimeMs, toMs } from '../helpers/relative-time';
 import { Logger } from '../helpers/logger';
 import { getHls } from '../helpers/get-hls';
-import 'waveform-panel';
 import { WaveformPanel } from 'waveform-panel';
 
 export class CanvasInstance extends BaseComponent {
